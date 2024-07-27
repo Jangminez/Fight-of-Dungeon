@@ -1,32 +1,48 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Player : MonoBehaviour
+public abstract class Player : MonoBehaviour
 {
-    // Start is called before the first frame update
-    public Vector2 _inputVec;
-    public float _speed;
+    // 플레이어 이동
+    protected Vector2 _inputVec;
+    protected float _speed;
+    protected Rigidbody2D _playerRig;
 
-    private Animator _animator;
-    
-    Rigidbody2D _playerRig;
+    // 플레이어 애니메이션
+    protected Animator _animator;
 
-    void Awake()
+    // 플레이어 상태 변수
+    protected float _hp;
+    protected float _mana;
+    protected int _gold;
+    protected bool _isDie;
+
+    // 플레이어 공격관련 변수
+    protected float _attack;
+    protected float _attackSpeed;
+    protected float _defense;
+
+    #region 플레이어 이동 & 이동 애니메이션
+
+    // InputSystem 값 받아오기
+    void OnMove(InputValue value)
     {
-        _playerRig = GetComponent<Rigidbody2D>();
-        _animator = GetComponent<Animator>();  
+        _inputVec = value.Get<Vector2>();
     }
 
-    // Update is called once per frame
-    void FixedUpdate()
+    // 플레이어 이동 구현
+    public virtual void Movement()
     {
         Vector2 nextVec = _inputVec * _speed * Time.fixedDeltaTime;
         _playerRig.MovePosition(_playerRig.position + nextVec);
+    }
 
-
-        // 플레이어 이동 애니메이션
+    // 플레이어 이동 관련 애니메이션 구현
+    public virtual void Movement_Anim()
+    {
         if (_inputVec.x < 0)
         {
             _animator.SetInteger("Direction", 3);
@@ -45,9 +61,19 @@ public class Player : MonoBehaviour
             _animator.SetInteger("Direction", 0);
         }
     }
+    #endregion
 
-    void OnMove(InputValue value)
+    #region 플레이어 공격 & 공격 애니메이션
+    abstract protected void BasicAttack();
+
+    #endregion
+
+    #region 플레이어 데미지 처리 & 사망
+    abstract protected void Hit();
+    virtual protected void Die() 
     {
-        _inputVec = value.Get<Vector2>();
+        
     }
+
+    #endregion
 }
