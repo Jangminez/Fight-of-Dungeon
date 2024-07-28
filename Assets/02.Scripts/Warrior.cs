@@ -9,7 +9,19 @@ public class Warrior : Player
     {
         _playerRig = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
+
+        SetCharater();
+    }
+
+    protected override void SetCharater()
+    {
+        _hp = 100.0f;
+        _mana = 50.0f;
         _speed = 3.0f;
+        _gold = 0;
+        _attack = 10.0f;
+        _attackSpeed = 1.0f;
+        _defense = 10f;
     }
 
     // Update is called once per frame
@@ -30,7 +42,7 @@ public class Warrior : Player
 
     }
 
-    protected override void Hit()
+    public override void Hit()
     {
         
     }

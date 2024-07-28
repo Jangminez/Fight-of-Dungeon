@@ -25,6 +25,28 @@ public abstract class Player : MonoBehaviour
     protected float _attackSpeed;
     protected float _defense;
 
+    public float Hp
+    {
+        set => _hp = Mathf.Max(0, value);
+        get => _hp;
+    }
+
+    public float Mana
+    {
+        set => _mana = Mathf.Max(0, value);
+        get => _mana;
+    }
+
+    public float Gold
+    {
+        set => _gold = (int)Mathf.Max(0, value);
+        get => _gold;
+    }
+
+
+    // 각 직업 초기화 함수
+    abstract protected void SetCharater();
+
     #region 플레이어 이동 & 이동 애니메이션
 
     // InputSystem 값 받아오기
@@ -64,12 +86,12 @@ public abstract class Player : MonoBehaviour
     #endregion
 
     #region 플레이어 공격 & 공격 애니메이션
-    abstract protected void BasicAttack();
+    abstract protected void BasicAttack(); 
 
     #endregion
 
     #region 플레이어 데미지 처리 & 사망
-    abstract protected void Hit();
+    abstract public void Hit();
     virtual protected void Die() 
     {
         
