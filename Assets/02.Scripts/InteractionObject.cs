@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CanvasOn : MonoBehaviour
+public class InteractionObject : MonoBehaviour
 {
     public Transform _canvas;
 
