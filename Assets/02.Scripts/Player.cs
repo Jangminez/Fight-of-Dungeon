@@ -15,26 +15,71 @@ public abstract class Player : MonoBehaviour
     protected Animator _animator;
 
     // 플레이어 상태 변수
+    protected float _maxHp;
     protected float _hp;
+    protected float _hpGeneration;
+    protected float _maxMana;
     protected float _mana;
-    protected int _gold;
+    protected float _manaGeneration;
     protected bool _isDie;
+    protected int _gold;
 
     // 플레이어 공격관련 변수
     protected float _attack;
     protected float _attackSpeed;
+    protected float _critical;
     protected float _defense;
+
+    // 각 직업 초기화 함수
+    abstract protected void SetCharater();
+
+    #region 플레이어 스탯
+    public float MaxHp
+    {
+        set => _maxHp = Mathf.Max(0, value);
+        get => _maxHp;
+    }
 
     public float Hp
     {
-        set => _hp = Mathf.Max(0, value);
+        set
+        {
+            if (_hp >= 0 && _hp <= _maxHp)
+            {
+                _hp = value;
+            }
+        }
         get => _hp;
+    }
+
+    public float HpGeneration
+    {
+        set => _hpGeneration = Mathf.Max(0, value);
+        get => _hpGeneration;
+    }
+
+    public float MaxMana
+    {
+        set => _maxMana = Mathf.Max(0, value);
+        get => _maxMana;
     }
 
     public float Mana
     {
-        set => _mana = Mathf.Max(0, value);
+        set
+        {
+            if (_mana >= 0 && _mana <= _maxMana)
+            {
+                _mana = value;
+            }
+        }
         get => _mana;
+    }
+
+    public float ManaGeneration
+    {
+        set => Mathf.Max(0, value);
+        get => _manaGeneration;
     }
 
     public float Gold
@@ -43,9 +88,32 @@ public abstract class Player : MonoBehaviour
         get => _gold;
     }
 
+    public float Attack
+    {
+        set => Mathf.Max(0, value);
+        get => _attack;
+    }
 
-    // 각 직업 초기화 함수
-    abstract protected void SetCharater();
+    public float AttackSpeed
+    {
+        set => Mathf.Max(0, value);
+        get => _attackSpeed;
+    }
+
+    public float Critical
+    {
+        set => Mathf.Max(0, value);
+        get => _critical;
+    }
+
+    public float Defense
+    {
+        set => Mathf.Max(0,value);
+        get => _defense;
+    }
+
+
+    #endregion
 
     #region 플레이어 이동 & 이동 애니메이션
 
@@ -94,7 +162,7 @@ public abstract class Player : MonoBehaviour
     abstract public void Hit();
     virtual protected void Die() 
     {
-        
+        this.GetComponent<SpriteRenderer>().color = Color.gray;
     }
 
     #endregion

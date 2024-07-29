@@ -15,7 +15,8 @@ public class Warrior : Player
 
     protected override void SetCharater()
     {
-        _hp = 100.0f;
+        _maxHp = 100.0f;
+        _hp = _maxHp;
         _mana = 50.0f;
         _speed = 3.0f;
         _gold = 0;
