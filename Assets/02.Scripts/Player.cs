@@ -8,27 +8,37 @@ public abstract class Player : MonoBehaviour
 {
     // 플레이어 이동
     protected Vector2 _inputVec;
-    protected float _speed;
     protected Rigidbody2D _playerRig;
 
     // 플레이어 애니메이션
     protected Animator _animator;
 
-    // 플레이어 상태 변수
-    protected float _maxHp;
-    protected float _hp;
-    protected float _hpGeneration;
-    protected float _maxMana;
-    protected float _mana;
-    protected float _manaGeneration;
+    // 플레이어 스탯 변수
+    [Header("Player Stats")]
+    [SerializeField] private float _maxHp;
+    [SerializeField] private float _hp;
+    [SerializeField] private float _hpGeneration;
+    [Space(10f)]
+    [SerializeField] private float _maxMana;
+    [SerializeField] private float _mana;
+    [SerializeField] private float _manaGeneration;
+    [Space(10f)]
+    [SerializeField] private float _attack;
+    [SerializeField] private float _attackSpeed;
+    [SerializeField] private float _critical;
+    [Space(10f)]
+    [SerializeField] private float _defense;
+    [Space(10f)]
+    [SerializeField] private float _speed;
+
+    // 플레이어 상태
     protected bool _isDie;
+
+    // 플레이어 경험치 & 골드
+    protected int _level;
+    protected int _exp;
     protected int _gold;
 
-    // 플레이어 공격관련 변수
-    protected float _attack;
-    protected float _attackSpeed;
-    protected float _critical;
-    protected float _defense;
 
     // 각 직업 초기화 함수
     abstract protected void SetCharater();
@@ -78,40 +88,57 @@ public abstract class Player : MonoBehaviour
 
     public float ManaGeneration
     {
-        set => Mathf.Max(0, value);
+        set => _manaGeneration =Mathf.Max(0, value);
         get => _manaGeneration;
-    }
-
-    public float Gold
-    {
-        set => _gold = (int)Mathf.Max(0, value);
-        get => _gold;
     }
 
     public float Attack
     {
-        set => Mathf.Max(0, value);
+        set => _attack = Mathf.Max(0, value);
         get => _attack;
     }
 
     public float AttackSpeed
     {
-        set => Mathf.Max(0, value);
+        set => _attackSpeed = Mathf.Max(0, value);
         get => _attackSpeed;
     }
 
     public float Critical
     {
-        set => Mathf.Max(0, value);
+        set => _critical =Mathf.Max(0, value);
         get => _critical;
     }
 
     public float Defense
     {
-        set => Mathf.Max(0,value);
+        set => _defense = Mathf.Max(0,value);
         get => _defense;
     }
 
+    public int Gold
+    {
+        set => _gold = Mathf.Max(0, value);
+        get => _gold;
+    }
+
+    public int Exp
+    {
+        set => _exp = Mathf.Max(0, value);
+        get => _exp;
+    }
+
+    public int Level
+    {
+        set => _level = Mathf.Max(0, value);
+        get => _level;
+    }
+
+    public float Speed
+    {
+        set => _speed = Mathf.Max(0, value);
+        get => _speed;
+    }
 
     #endregion
 

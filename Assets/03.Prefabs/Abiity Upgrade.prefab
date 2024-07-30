@@ -283,7 +283,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17895ac5abc154c4aa4acad89ce73cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _canvas: {fileID: 6793961604024575715}
+  _objectName: Upgrade
+  _interactionCanvas: {fileID: 6793961604024575715}
+  _interactionButton: {fileID: 0}
+  _upgradeUI: {fileID: 0}
+  _shopUI: {fileID: 0}
 --- !u!1001 &6211623014399160501
 PrefabInstance:
   m_ObjectHideFlags: 0

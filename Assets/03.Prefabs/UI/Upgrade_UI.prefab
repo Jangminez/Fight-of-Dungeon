@@ -88,7 +88,7 @@ GameObject:
   - component: {fileID: 8726563863129593397}
   - component: {fileID: 7542778096620971813}
   m_Layer: 5
-  m_Name: List_Name
+  m_Name: Attack_Level
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -845,7 +845,7 @@ GameObject:
   - component: {fileID: 901485072822289060}
   - component: {fileID: 813729395919827449}
   m_Layer: 5
-  m_Name: Value_Text
+  m_Name: Attack_Value
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1073,7 +1073,7 @@ GameObject:
   - component: {fileID: 4995397069370538999}
   - component: {fileID: 5801471628517002455}
   m_Layer: 5
-  m_Name: Value_Text
+  m_Name: Critical_Value
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1376,7 +1376,7 @@ GameObject:
   - component: {fileID: 4224921216390076249}
   - component: {fileID: 2634585361722795190}
   m_Layer: 5
-  m_Name: Value_Text
+  m_Name: MpRegen_Value
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1604,7 +1604,7 @@ GameObject:
   - component: {fileID: 7213616481202509161}
   - component: {fileID: 2747902687705074464}
   m_Layer: 5
-  m_Name: List_Name
+  m_Name: Hp_Level
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1762,7 +1762,7 @@ GameObject:
   - component: {fileID: 9007171548743820584}
   - component: {fileID: 5032133392916867487}
   m_Layer: 5
-  m_Name: Mana Regeneration
+  m_Name: Mp Regeneration
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1926,6 +1926,30 @@ MonoBehaviour:
   _defenseBtn: {fileID: 5120576128313957403}
   _maxMpBtn: {fileID: 8663996357684218106}
   _mpGenerationBtn: {fileID: 4076284844832413181}
+  _attackLevel: {fileID: 7542778096620971813}
+  _attackValue: {fileID: 813729395919827449}
+  _attackCost: {fileID: 2068327654854748193}
+  _asLevel: {fileID: 3800563906610442900}
+  _asValue: {fileID: 8545251141108131163}
+  _asCost: {fileID: 3027502704316839563}
+  _criticalLevel: {fileID: 7040308885580089588}
+  _criticalValue: {fileID: 5801471628517002455}
+  _criticalCost: {fileID: 7718227039102597600}
+  _maxHpLevel: {fileID: 2747902687705074464}
+  _maxHpValue: {fileID: 6098225102720924432}
+  _maxHpCost: {fileID: 8164653827894975584}
+  _hpRegenLevel: {fileID: 1936125646080388299}
+  _hpRegenValue: {fileID: 6112197636221710694}
+  _hpRegenCost: {fileID: 6429301747480993603}
+  _defenseLevel: {fileID: 7397001479675471647}
+  _defenseValue: {fileID: 1206414160018727003}
+  _defenseCost: {fileID: 1403391258541922660}
+  _maxMpLevel: {fileID: 6487670048993681914}
+  _maxMpValue: {fileID: 3290868837110255239}
+  _maxMpCost: {fileID: 5623207822475226799}
+  _mpRegenLevel: {fileID: 3370067586348198977}
+  _mpRegenValue: {fileID: 2634585361722795190}
+  _mpRegenCost: {fileID: 1391303048111048260}
 --- !u!1 &3067323656547057359
 GameObject:
   m_ObjectHideFlags: 0
@@ -2089,7 +2113,7 @@ GameObject:
   - component: {fileID: 813536775202267556}
   - component: {fileID: 6112197636221710694}
   m_Layer: 5
-  m_Name: Value_Text
+  m_Name: HpRegen_Value
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2317,7 +2341,7 @@ GameObject:
   - component: {fileID: 1421501561199029821}
   - component: {fileID: 6429301747480993603}
   m_Layer: 5
-  m_Name: Cost
+  m_Name: HpRegen_Cost
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2545,7 +2569,7 @@ GameObject:
   - component: {fileID: 7581692278549465136}
   - component: {fileID: 7040308885580089588}
   m_Layer: 5
-  m_Name: List_Name
+  m_Name: Critical_Level
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2624,7 +2648,7 @@ GameObject:
   - component: {fileID: 5015302440077674263}
   - component: {fileID: 6487670048993681914}
   m_Layer: 5
-  m_Name: List_Name
+  m_Name: Mp_Level
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2854,7 +2878,7 @@ GameObject:
   - component: {fileID: 7848231549709945053}
   - component: {fileID: 1936125646080388299}
   m_Layer: 5
-  m_Name: List_Name
+  m_Name: HpRegen_Level
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2933,7 +2957,7 @@ GameObject:
   - component: {fileID: 1272722737443913286}
   - component: {fileID: 8545251141108131163}
   m_Layer: 5
-  m_Name: Value_Text
+  m_Name: As_Value
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3313,7 +3337,7 @@ GameObject:
   - component: {fileID: 2713142793959676814}
   - component: {fileID: 3027502704316839563}
   m_Layer: 5
-  m_Name: Cost
+  m_Name: As_Cost
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3392,7 +3416,7 @@ GameObject:
   - component: {fileID: 3310097138775339583}
   - component: {fileID: 3290868837110255239}
   m_Layer: 5
-  m_Name: Value_Text
+  m_Name: Mp_Value
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3696,7 +3720,7 @@ GameObject:
   - component: {fileID: 5139031360133050472}
   - component: {fileID: 1403391258541922660}
   m_Layer: 5
-  m_Name: Cost
+  m_Name: Defense_Cost
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3927,7 +3951,7 @@ GameObject:
   - component: {fileID: 4354950039308979754}
   - component: {fileID: 8680083954907576984}
   m_Layer: 5
-  m_Name: Mana
+  m_Name: Mp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4006,7 +4030,7 @@ GameObject:
   - component: {fileID: 1836474823253231521}
   - component: {fileID: 7397001479675471647}
   m_Layer: 5
-  m_Name: List_Name
+  m_Name: Defense_Level
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4161,7 +4185,7 @@ GameObject:
   - component: {fileID: 9020008548374517617}
   - component: {fileID: 6098225102720924432}
   m_Layer: 5
-  m_Name: Value_Text
+  m_Name: Hp_Value
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4398,7 +4422,7 @@ GameObject:
   - component: {fileID: 2279465867483304273}
   - component: {fileID: 8164653827894975584}
   m_Layer: 5
-  m_Name: Cost
+  m_Name: Hp_Cost
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5012,7 +5036,7 @@ GameObject:
   - component: {fileID: 1755710863892468974}
   - component: {fileID: 1206414160018727003}
   m_Layer: 5
-  m_Name: Value_Text
+  m_Name: Defense_Value
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5442,7 +5466,7 @@ GameObject:
   - component: {fileID: 8508068069690964601}
   - component: {fileID: 1391303048111048260}
   m_Layer: 5
-  m_Name: Cost
+  m_Name: MpRegen_Cost
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5823,7 +5847,7 @@ GameObject:
   - component: {fileID: 1572021300192786278}
   - component: {fileID: 5623207822475226799}
   m_Layer: 5
-  m_Name: Cost
+  m_Name: Mp_Cost
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5902,7 +5926,7 @@ GameObject:
   - component: {fileID: 2451600106933938422}
   - component: {fileID: 2068327654854748193}
   m_Layer: 5
-  m_Name: Cost
+  m_Name: Attack_Cost
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5981,7 +6005,7 @@ GameObject:
   - component: {fileID: 3425988553837622570}
   - component: {fileID: 3370067586348198977}
   m_Layer: 5
-  m_Name: List_Name
+  m_Name: MpRegen_Level
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6136,7 +6160,7 @@ GameObject:
   - component: {fileID: 6937325333541777487}
   - component: {fileID: 3800563906610442900}
   m_Layer: 5
-  m_Name: List_Name
+  m_Name: As_Level
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6448,7 +6472,7 @@ GameObject:
   - component: {fileID: 6492407195803259143}
   - component: {fileID: 7718227039102597600}
   m_Layer: 5
-  m_Name: Cost
+  m_Name: Critical_Cost
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

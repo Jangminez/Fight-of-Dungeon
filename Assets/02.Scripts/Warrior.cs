@@ -15,14 +15,18 @@ public class Warrior : Player
 
     protected override void SetCharater()
     {
-        _maxHp = 100.0f;
-        _hp = _maxHp;
-        _mana = 50.0f;
-        _speed = 3.0f;
-        _gold = 0;
-        _attack = 10.0f;
-        _attackSpeed = 1.0f;
-        _defense = 10f;
+        MaxHp = 100.0f;
+        Hp = MaxHp;
+        HpGeneration = 1f;
+        MaxMana = 50.0f;
+        Mana = MaxMana;
+        ManaGeneration = 0.5f;
+        Speed = 3.0f;
+        Gold = 0;
+        Attack = 10.0f;
+        AttackSpeed = 1.0f;
+        Critical = 0.0f;
+        Defense = 10.0f;
     }
 
     // Update is called once per frame
@@ -35,7 +39,7 @@ public class Warrior : Player
     private void LateUpdate()
     {
         // 플레이어 이동 애니메이션
-        Movement_Anim();
+        Movement_Anim(); 
     }
 
     protected override void BasicAttack()
