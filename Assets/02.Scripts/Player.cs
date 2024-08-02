@@ -39,6 +39,7 @@ public abstract class Player : MonoBehaviour
     protected int _exp;
     protected int _gold;
 
+    public Transform _target;
 
     // 각 직업 초기화 함수
     abstract protected void SetCharater();
@@ -181,15 +182,28 @@ public abstract class Player : MonoBehaviour
     #endregion
 
     #region 플레이어 공격 & 공격 애니메이션
-    abstract protected void BasicAttack(); 
+    abstract protected void BasicAttack();
 
     #endregion
 
     #region 플레이어 데미지 처리 & 사망
-    abstract public void Hit();
+    [ContextMenu("Hit")]
+    virtual public void Hit()
+    {
+        StartCoroutine(HitEffect());
+    }
+
     virtual protected void Die() 
     {
         this.GetComponent<SpriteRenderer>().color = Color.gray;
+    }
+
+
+    IEnumerator HitEffect()
+    {
+        this.GetComponent<SpriteRenderer>().color = Color.red;
+        yield return new WaitForSeconds(0.2f);
+        this.GetComponent<SpriteRenderer>().color = Color.white;
     }
 
     #endregion

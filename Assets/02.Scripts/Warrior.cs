@@ -20,7 +20,7 @@ public class Warrior : Player
         HpGeneration = 1f;
         MaxMana = 50.0f;
         Mana = MaxMana;
-        ManaGeneration = 0.5f;
+        ManaGeneration = 0.2f;
         Speed = 3.0f;
         Gold = 0;
         Attack = 10.0f;

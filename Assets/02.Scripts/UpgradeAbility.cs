@@ -59,7 +59,7 @@ public class UpgradeAbility : MonoBehaviour
         _maxMpLv, _mpRegenLv = 1;
 
 
-    [SerializeField]private Player _player;
+    private Player _player;
 
     private void Awake()
     {
@@ -78,6 +78,11 @@ public class UpgradeAbility : MonoBehaviour
     }
 
     private void Start()
+    {
+        InitUI();
+    }
+
+    private void InitUI()
     {
         // UI 초기화
         UpgradeValue(_attackLevel, _attackValue, _attackCost, _attackLv, _player.Attack, 5.0f, 0, "공격력");
