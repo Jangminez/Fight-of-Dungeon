@@ -188,13 +188,24 @@ public abstract class Player : MonoBehaviour
 
     #region 플레이어 데미지 처리 & 사망
     [ContextMenu("Hit")]
-    virtual public void Hit()
+    virtual public void Hit(float damage)
     {
+        Hp -= damage;
         StartCoroutine(HitEffect());
+
+        if (Hp == 0f)
+        {
+            Die();
+        }
     }
 
     virtual protected void Die() 
     {
+        _isDie = true;
+        Hp = 0f;
+        Speed = 0f;
+  
+        this.GetComponent<BoxCollider2D>().enabled = false;
         this.GetComponent<SpriteRenderer>().color = Color.gray;
     }
 
