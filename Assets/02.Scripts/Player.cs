@@ -32,7 +32,7 @@ public abstract class Player : MonoBehaviour
     [SerializeField] private float _speed;
 
     // 플레이어 상태
-    protected bool _isDie;
+    public bool _isDie;
 
     // 플레이어 경험치 & 골드
     protected int _level;
@@ -48,22 +48,24 @@ public abstract class Player : MonoBehaviour
 
     IEnumerator Regen()
     {
-        if(Hp < MaxHp)
+        if (!_isDie)
         {
-            Hp += HpGeneration;
+            if (Hp < MaxHp)
+            {
+                Hp += HpGeneration;
 
-            if(Hp >= MaxHp)
-                Hp = MaxHp;
+                if (Hp >= MaxHp)
+                    Hp = MaxHp;
+            }
+
+            if (Mp < MaxMp)
+            {
+                Mp += MpGeneration;
+
+                if (Mp >= MaxMp)
+                    Mp = MaxMp;
+            }
         }
-
-        if(Mp < MaxMp)
-        {
-            Mp += MpGeneration;
-
-            if(Mp >= MaxMp)
-                Mp = MaxMp;
-        }
-
 
         yield return new WaitForSeconds(1);
 
