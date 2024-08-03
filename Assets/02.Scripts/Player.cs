@@ -235,6 +235,13 @@ public abstract class Player : MonoBehaviour
         }
     }
 
+    IEnumerator HitEffect()
+    {
+        this.GetComponent<SpriteRenderer>().color = Color.red;
+        yield return new WaitForSeconds(0.2f);
+        this.GetComponent<SpriteRenderer>().color = Color.white;
+    }
+
     [ContextMenu("Die")]
     protected void Die() 
     {
@@ -247,14 +254,6 @@ public abstract class Player : MonoBehaviour
 
         StopCoroutine("Regen");
         StartCoroutine("Respawn");
-    }
-
-
-    IEnumerator HitEffect()
-    {
-        this.GetComponent<SpriteRenderer>().color = Color.red;
-        yield return new WaitForSeconds(0.2f);
-        this.GetComponent<SpriteRenderer>().color = Color.white;
     }
 
     IEnumerator Respawn()
