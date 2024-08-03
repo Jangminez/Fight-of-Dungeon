@@ -7,10 +7,13 @@ public class PlayerUIController : MonoBehaviour
 {
     private Player _player;
     [SerializeField] private Image _hpBar;
-    [SerializeField] private Image _mpBar;
     [SerializeField] private Text _hpText;
+    [Space(10f)]
+    [SerializeField] private Image _mpBar;
     [SerializeField] private Text _mpText;
-
+    [Space(10f)]
+    [SerializeField] private Image _expBar;
+    [SerializeField] private Text _expText;
     [SerializeField] private Transform _RespawnUI;
 
     private void Start()
@@ -25,6 +28,9 @@ public class PlayerUIController : MonoBehaviour
 
         _mpBar.fillAmount = _player.Mp / _player.MaxMp;
         _mpText.text = _player.Mp.ToString() + " / " + _player.MaxMp.ToString();
+
+        _expBar.fillAmount = _player.Exp / _player.NextExp;
+        _expText.text = _player.Exp.ToString() + " / " + _player.NextExp.ToString();
 
         if (_player._isDie && !_RespawnUI.gameObject.activeSelf)
         {

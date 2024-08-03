@@ -35,6 +35,9 @@ public class Warrior : Player
 
         Defense = 10.0f;
 
+        Exp = 0;
+        NextExp = 100;
+
         StartCoroutine("Regen");
     }
 

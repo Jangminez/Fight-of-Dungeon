@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Authentication.ExtendedProtection;
 using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -36,7 +37,10 @@ public abstract class Player : MonoBehaviour
 
     // 플레이어 경험치 & 골드
     protected int _level;
+
     protected int _exp;
+    protected int _nextExp;
+
     protected int _gold;
 
     public Transform _target;
@@ -150,6 +154,12 @@ public abstract class Player : MonoBehaviour
     {
         set => _gold = Mathf.Max(0, value);
         get => _gold;
+    }
+
+    public int NextExp
+    {
+        set => _nextExp = Mathf.Max(0, value);
+        get => _nextExp;
     }
 
     public int Exp
@@ -275,4 +285,10 @@ public abstract class Player : MonoBehaviour
         this.transform.position = _spawnPoint.transform.position + new Vector3(0f, 1f, 0f);
     }
     #endregion
+
+    virtual protected void LevelUp()
+    {
+        Exp = 0;
+        NextExp *= 2;
+    }
 }
