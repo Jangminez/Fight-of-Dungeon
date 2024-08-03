@@ -15,18 +15,27 @@ public class Warrior : Player
 
     protected override void SetCharater()
     {
+        _isDie = false;
+
         MaxHp = 100.0f;
         Hp = MaxHp;
         HpGeneration = 1f;
-        MaxMana = 50.0f;
-        Mana = MaxMana;
-        ManaGeneration = 0.2f;
+
+        MaxMp = 50.0f;
+        Mp = MaxMp;
+        MpGeneration = 0.2f;
+
         Speed = 3.0f;
+
         Gold = 0;
+
         Attack = 10.0f;
         AttackSpeed = 1.0f;
         Critical = 0.0f;
+
         Defense = 10.0f;
+
+        StartCoroutine("Regen");
     }
 
     // Update is called once per frame
@@ -46,4 +55,20 @@ public class Warrior : Player
     {
 
     }
+
+    protected override void Skill1()
+    {
+        
+    }
+
+    protected override void Skill2()
+    {
+
+    }
+
+    protected override void Skill3()
+    {
+
+    }
+
 }

@@ -91,8 +91,8 @@ public class UpgradeAbility : MonoBehaviour
         UpgradeValue(_maxHpLevel, _maxHpValue, _maxHpCost, _maxHpLv, _player.MaxHp, 10f, 0, "체력");
         UpgradeValue(_hpRegenLevel, _hpRegenValue, _hpRegenCost, _hpRegenLv, _player.HpGeneration, 2.0f, 0, "체력 재생속도");
         UpgradeValue(_defenseLevel, _defenseValue, _defenseCost, _defenseLv, _player.Defense, 5.0f, 0, "방어력");
-        UpgradeValue(_maxMpLevel, _maxMpValue, _maxMpCost, _maxMpLv, _player.MaxMana, 3.0f, 0, "마나");
-        UpgradeValue(_mpRegenLevel, _mpRegenValue, _mpRegenCost, _mpRegenLv, _player.ManaGeneration, 1.0f, 0, "마나 재생속도");
+        UpgradeValue(_maxMpLevel, _maxMpValue, _maxMpCost, _maxMpLv, _player.MaxMp, 3.0f, 0, "마나");
+        UpgradeValue(_mpRegenLevel, _mpRegenValue, _mpRegenCost, _mpRegenLv, _player.MpGeneration, 1.0f, 0, "마나 재생속도");
     }
 
     // 공격 업그레이드
@@ -162,9 +162,9 @@ public class UpgradeAbility : MonoBehaviour
     {
         Debug.Log("최대 마나 업!");
 
-        _player.MaxMana += 5f;
+        _player.MaxMp += 5f;
         _maxMpLv += 1;
-        UpgradeValue(_maxMpLevel, _maxMpValue, _maxMpCost, _maxMpLv, _player.MaxMana, 3f, 50, "마나");
+        UpgradeValue(_maxMpLevel, _maxMpValue, _maxMpCost, _maxMpLv, _player.MaxMp, 3f, 50, "마나");
     }
 
     // 마나 재생속도 업그레이드
@@ -172,9 +172,9 @@ public class UpgradeAbility : MonoBehaviour
     {
         Debug.Log("마나 재생속도 업!");
 
-        _player.ManaGeneration += 1f;
+        _player.MpGeneration += 1f;
         _mpRegenLv += 1;
-        UpgradeValue(_mpRegenLevel, _mpRegenValue, _mpRegenCost, _mpRegenLv, _player.ManaGeneration, 1f, 100, "마나 재생속도");
+        UpgradeValue(_mpRegenLevel, _mpRegenValue, _mpRegenCost, _mpRegenLv, _player.MpGeneration, 1f, 100, "마나 재생속도");
     }
 
 

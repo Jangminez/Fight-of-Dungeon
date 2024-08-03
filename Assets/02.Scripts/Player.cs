@@ -19,9 +19,9 @@ public abstract class Player : MonoBehaviour
     [SerializeField] private float _hp;
     [SerializeField] private float _hpGeneration;
     [Space(10f)]
-    [SerializeField] private float _maxMana;
-    [SerializeField] private float _mana;
-    [SerializeField] private float _manaGeneration;
+    [SerializeField] private float _maxMp;
+    [SerializeField] private float _mp;
+    [SerializeField] private float _mpGeneration;
     [Space(10f)]
     [SerializeField] private float _attack;
     [SerializeField] private float _attackSpeed;
@@ -41,8 +41,34 @@ public abstract class Player : MonoBehaviour
 
     public Transform _target;
 
+    public Transform _spawnPoint;
+
     // 각 직업 초기화 함수
     abstract protected void SetCharater();
+
+    IEnumerator Regen()
+    {
+        if(Hp < MaxHp)
+        {
+            Hp += HpGeneration;
+
+            if(Hp >= MaxHp)
+                Hp = MaxHp;
+        }
+
+        if(Mp < MaxMp)
+        {
+            Mp += MpGeneration;
+
+            if(Mp >= MaxMp)
+                Mp = MaxMp;
+        }
+
+
+        yield return new WaitForSeconds(1);
+
+        StartCoroutine("Regen");
+    }
 
     #region 플레이어 스탯
     public float MaxHp
@@ -57,8 +83,9 @@ public abstract class Player : MonoBehaviour
         {
             if (_hp >= 0 && _hp <= _maxHp)
             {
-                _hp = value;
+                _hp = Mathf.Max(0, value);
             }
+
         }
         get => _hp;
     }
@@ -69,28 +96,28 @@ public abstract class Player : MonoBehaviour
         get => _hpGeneration;
     }
 
-    public float MaxMana
+    public float MaxMp
     {
-        set => _maxMana = Mathf.Max(0, value);
-        get => _maxMana;
+        set => _maxMp = Mathf.Max(0, value);
+        get => _maxMp;
     }
 
-    public float Mana
+    public float Mp
     {
         set
         {
-            if (_mana >= 0 && _mana <= _maxMana)
+            if (_mp >= 0 && _mp <= _maxMp)
             {
-                _mana = value;
+                _mp = Mathf.Max(0, value);
             }
         }
-        get => _mana;
+        get => _mp;
     }
 
-    public float ManaGeneration
+    public float MpGeneration
     {
-        set => _manaGeneration =Mathf.Max(0, value);
-        get => _manaGeneration;
+        set => _mpGeneration =Mathf.Max(0, value);
+        get => _mpGeneration;
     }
 
     public float Attack
@@ -183,30 +210,43 @@ public abstract class Player : MonoBehaviour
 
     #region 플레이어 공격 & 공격 애니메이션
     abstract protected void BasicAttack();
+    abstract protected void Skill1();
+    abstract protected void Skill2();
+    abstract protected void Skill3();
 
     #endregion
 
-    #region 플레이어 데미지 처리 & 사망
+    #region 플레이어 데미지 처리 & 사망 & 리스폰
     [ContextMenu("Hit")]
-    virtual public void Hit(float damage)
+    public void Hit()
     {
-        Hp -= damage;
-        StartCoroutine(HitEffect());
+        //Hp -= damage;
+
+        Hp -= 30f;
 
         if (Hp == 0f)
         {
             Die();
         }
+
+        else
+        {
+            StartCoroutine(HitEffect());
+        }
     }
 
-    virtual protected void Die() 
+    [ContextMenu("Die")]
+    protected void Die() 
     {
         _isDie = true;
         Hp = 0f;
-        Speed = 0f;
-  
+
+        this.GetComponent<PlayerInput>().enabled = false;
         this.GetComponent<BoxCollider2D>().enabled = false;
         this.GetComponent<SpriteRenderer>().color = Color.gray;
+
+        StopCoroutine("Regen");
+        StartCoroutine("Respawn");
     }
 
 
@@ -217,5 +257,21 @@ public abstract class Player : MonoBehaviour
         this.GetComponent<SpriteRenderer>().color = Color.white;
     }
 
+    IEnumerator Respawn()
+    {
+        yield return new WaitForSeconds(10f);
+
+        this.GetComponent<PlayerInput>().enabled = true;
+        this.GetComponent<BoxCollider2D>().enabled = true;
+        this.GetComponent<SpriteRenderer>().color = Color.white;
+
+        _isDie = false;
+        Hp = MaxHp;
+        Mp = MaxMp;
+
+        StartCoroutine("Regen");
+
+        this.transform.position = _spawnPoint.transform.position + new Vector3(0f, 1f, 0f);
+    }
     #endregion
 }
