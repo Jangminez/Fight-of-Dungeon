@@ -35,6 +35,7 @@ public class Warrior : Player
 
         Defense = 10.0f;
 
+        Level = 1;
         Exp = 0;
         NextExp = 100;
 

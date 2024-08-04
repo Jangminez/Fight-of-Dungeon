@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Security.Authentication.ExtendedProtection;
+using System.Xml.Schema;
 using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -32,19 +34,23 @@ public abstract class Player : MonoBehaviour
     [Space(10f)]
     [SerializeField] private float _speed;
 
+    [Space(10f)]
     // 플레이어 상태
-    public bool _isDie;
+    [SerializeField] protected bool _isDie;
 
+    [Space(10f)]
     // 플레이어 경험치 & 골드
-    protected int _level;
+    [SerializeField] protected int _level;
 
-    protected int _exp;
-    protected int _nextExp;
+    [SerializeField] protected int _exp;
+    [SerializeField] protected int _nextExp;
 
-    protected int _gold;
+    [Space(10f)]
+    [SerializeField] protected int _gold;
 
+    [Space(10f)]
     public Transform _target;
-
+    [Space(10f)]
     public Transform _spawnPoint;
 
     // 각 직업 초기화 함수
@@ -79,7 +85,15 @@ public abstract class Player : MonoBehaviour
     #region 플레이어 스탯
     public float MaxHp
     {
-        set => _maxHp = Mathf.Max(0, value);
+        set
+        {
+            if (_maxHp != value)
+            {
+                _maxHp = Mathf.Max(0, value);
+                GetComponent<PlayerUIController>().HpChanged();
+            }
+
+        }
         get => _maxHp;
     }
 
@@ -87,9 +101,10 @@ public abstract class Player : MonoBehaviour
     {
         set
         {
-            if (_hp >= 0 && _hp <= _maxHp)
+            if (_hp >= 0 && _hp <= _maxHp && _hp != value)
             {
                 _hp = Mathf.Max(0, value);
+                GetComponent<PlayerUIController>().HpChanged();
             }
 
         }
@@ -104,7 +119,14 @@ public abstract class Player : MonoBehaviour
 
     public float MaxMp
     {
-        set => _maxMp = Mathf.Max(0, value);
+        set
+        {
+            if (_maxMp != value)
+            {
+                _maxMp = Mathf.Max(0, value);
+                GetComponent<PlayerUIController>().MpChanged();
+            }
+        }
         get => _maxMp;
     }
 
@@ -112,9 +134,10 @@ public abstract class Player : MonoBehaviour
     {
         set
         {
-            if (_mp >= 0 && _mp <= _maxMp)
+            if (_mp >= 0 && _mp <= _maxMp && _mp != value)
             {
                 _mp = Mathf.Max(0, value);
+                GetComponent<PlayerUIController>().MpChanged();
             }
         }
         get => _mp;
@@ -152,7 +175,14 @@ public abstract class Player : MonoBehaviour
 
     public int Gold
     {
-        set => _gold = Mathf.Max(0, value);
+        set 
+        {
+            if (_gold != value)
+            {
+                _gold = Mathf.Max(0, value);
+                GetComponent<PlayerUIController>().GoldChanged();
+            }
+        }
         get => _gold;
     }
 
@@ -164,13 +194,35 @@ public abstract class Player : MonoBehaviour
 
     public int Exp
     {
-        set => _exp = Mathf.Max(0, value);
+        set
+            {
+                if (_exp != value)
+                {
+                    _exp = Mathf.Max(0, value);
+                    GetComponent<PlayerUIController>().ExpChanged();
+
+                    if(_exp >= _nextExp)
+                    {
+                        LevelUp();
+                    }
+                }
+
+           
+            }
         get => _exp;
     }
 
     public int Level
     {
-        set => _level = Mathf.Max(0, value);
+        set
+        {
+            if (_level != value)
+            {
+                _level = Mathf.Max(0, value);
+                GetComponent<PlayerUIController>().LevelChanged();
+            }
+        }
+
         get => _level;
     }
 
@@ -178,6 +230,20 @@ public abstract class Player : MonoBehaviour
     {
         set => _speed = Mathf.Max(0, value);
         get => _speed;
+    }
+
+    public bool Die
+    {
+        private set
+        {
+            _isDie = value;
+
+            if (_isDie)
+            {
+                GetComponent<PlayerUIController>().OnRespawn();
+            }
+        }
+        get => _isDie;
     }
 
     #endregion
@@ -238,7 +304,7 @@ public abstract class Player : MonoBehaviour
 
         if (Hp == 0f)
         {
-            Die();
+            OnDie();
         }
 
         else
@@ -255,7 +321,7 @@ public abstract class Player : MonoBehaviour
     }
 
     [ContextMenu("Die")]
-    protected void Die() 
+    protected void OnDie() 
     {
         _isDie = true;
         Hp = 0f;
@@ -288,7 +354,21 @@ public abstract class Player : MonoBehaviour
 
     virtual protected void LevelUp()
     {
-        Exp = 0;
+        Exp -= NextExp;
         NextExp *= 2;
+        Level += 1;
+    }
+
+
+    [ContextMenu("Get Gold")]
+    virtual public void GetGold()
+    {
+        Gold += 50;
+    }
+
+    [ContextMenu("Get Exp")]
+    virtual public void GetExp()
+    {
+        Exp += 3;
     }
 }
