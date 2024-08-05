@@ -206,8 +206,6 @@ public abstract class Player : MonoBehaviour
                         LevelUp();
                     }
                 }
-
-           
             }
         get => _exp;
     }
@@ -354,9 +352,17 @@ public abstract class Player : MonoBehaviour
 
     virtual protected void LevelUp()
     {
-        Exp -= NextExp;
-        NextExp *= 2;
+        _exp -= _nextExp;
+        _nextExp *= 2;
         Level += 1;
+
+        GetComponent<PlayerUIController>().ExpChanged();
+
+        if (_exp >= _nextExp)
+        {
+            LevelUp();
+        }
+
     }
 
 
@@ -369,6 +375,7 @@ public abstract class Player : MonoBehaviour
     [ContextMenu("Get Exp")]
     virtual public void GetExp()
     {
-        Exp += 3;
+        Exp += 1000;
     }
 }
+ 

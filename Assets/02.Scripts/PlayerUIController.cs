@@ -37,15 +37,13 @@ public class PlayerUIController : MonoBehaviour
     {
         if (_player != null)
             _mpBar.fillAmount = _player.Mp / _player.MaxMp;
-
     }
 
     // EXP 값 변경 시 UI 변경
     public void ExpChanged()
     {
-        if (_player != null)
+        //if(_player != null)
             _expBar.value = _player.Exp / _player.NextExp;
-
     }
 
     // Level 값 변경 시 UI 변경
