@@ -15,7 +15,7 @@ public class Warrior : Player
 
     protected override void SetCharater()
     {
-        _isDie = false;
+        Die = false;
 
         MaxHp = 100.0f;
         Hp = MaxHp;

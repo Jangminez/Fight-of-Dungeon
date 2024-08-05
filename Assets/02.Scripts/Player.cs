@@ -36,17 +36,17 @@ public abstract class Player : MonoBehaviour
 
     [Space(10f)]
     // 플레이어 상태
-    [SerializeField] protected bool _isDie;
+    [SerializeField] private bool _isDie;
 
     [Space(10f)]
     // 플레이어 경험치 & 골드
-    [SerializeField] protected int _level;
+    [SerializeField] private int _level;
 
-    [SerializeField] protected int _exp;
-    [SerializeField] protected int _nextExp;
+    [SerializeField] private float _exp;
+    [SerializeField] private float _nextExp;
 
     [Space(10f)]
-    [SerializeField] protected int _gold;
+    [SerializeField] private int _gold;
 
     [Space(10f)]
     public Transform _target;
@@ -186,19 +186,19 @@ public abstract class Player : MonoBehaviour
         get => _gold;
     }
 
-    public int NextExp
+    public float NextExp
     {
-        set => _nextExp = Mathf.Max(0, value);
+        set => _nextExp = Mathf.Round(Mathf.Max(0, value));
         get => _nextExp;
     }
 
-    public int Exp
+    public float Exp
     {
         set
             {
                 if (_exp != value)
                 {
-                    _exp = Mathf.Max(0, value);
+                    _exp = Mathf.Round(Mathf.Max(0, value));
                     GetComponent<PlayerUIController>().ExpChanged();
 
                     if(_exp >= _nextExp)
@@ -207,6 +207,7 @@ public abstract class Player : MonoBehaviour
                     }
                 }
             }
+
         get => _exp;
     }
 
@@ -232,7 +233,7 @@ public abstract class Player : MonoBehaviour
 
     public bool Die
     {
-        private set
+        protected set
         {
             _isDie = value;
 
@@ -353,7 +354,8 @@ public abstract class Player : MonoBehaviour
     virtual protected void LevelUp()
     {
         _exp -= _nextExp;
-        _nextExp *= 2;
+        NextExp *= 1.5f;
+
         Level += 1;
 
         GetComponent<PlayerUIController>().ExpChanged();

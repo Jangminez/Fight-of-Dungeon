@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class PlayerUIController : MonoBehaviour
 {
-    private Player _player;
+    [SerializeField]private Player _player;
 
     [Header("HP & MP")]
     [SerializeField] private Image _hpBar;
@@ -42,7 +42,7 @@ public class PlayerUIController : MonoBehaviour
     // EXP 값 변경 시 UI 변경
     public void ExpChanged()
     {
-        //if(_player != null)
+        if(_player != null)
             _expBar.value = _player.Exp / _player.NextExp;
     }
 
