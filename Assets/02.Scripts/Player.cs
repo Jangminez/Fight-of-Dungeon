@@ -325,8 +325,10 @@ public abstract class Player : MonoBehaviour
         _isDie = true;
         Hp = 0f;
 
+        // 조작 X, 충돌 X
         this.GetComponent<PlayerInput>().enabled = false;
         this.GetComponent<BoxCollider2D>().enabled = false;
+        // 캐릭터 효과
         this.GetComponent<SpriteRenderer>().color = Color.gray;
 
         StopCoroutine("Regen");

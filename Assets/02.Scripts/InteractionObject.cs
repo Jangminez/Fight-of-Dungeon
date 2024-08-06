@@ -6,7 +6,8 @@ using UnityEngine.UI;
 public class InteractionObject : MonoBehaviour
 {
     [Tooltip("Upgrade or Shop")]
-    [SerializeField]private string _objectName;
+    public enum objectName { Shop, Upgrade }
+    public objectName Name; 
 
     public Transform _interactionCanvas;
     public Transform _interactionButton;
@@ -42,13 +43,13 @@ public class InteractionObject : MonoBehaviour
 
     private void OpenUI()
     {
-        switch( _objectName )
+        switch( Name )
         {
-            case "Upgrade":
+            case objectName.Upgrade:
                 _upgradeUI.gameObject.SetActive(true);
                 break;
 
-            case "Shop":
+            case objectName.Shop:
                 _shopUI.gameObject.SetActive(true);
                 break;
         }
