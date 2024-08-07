@@ -6,19 +6,19 @@ using UnityEngine;
 public class PlayerFindTarget : MonoBehaviour
 {
     [SerializeField] private LayerMask layer;
-    [SerializeField] private Collider[] enemys;
-    [SerializeField] private Collider _target;
+    [SerializeField] private Collider2D[] enemys;
+    [SerializeField] private Collider2D _target;
 
 
     private void Update()
     {
-        enemys = Physics.OverlapSphere(transform.position, GameManager.Instance.player.AttackRange, layer);
+        enemys = Physics2D.OverlapCircleAll(transform.position, GameManager.Instance.player.AttackRange, layer);
 
         if (enemys.Length > 0)
         {
             float closeEnemy1 = Vector2.Distance(transform.position, enemys[0].transform.position);
 
-            foreach (Collider coll in enemys)
+            foreach (Collider2D coll in enemys)
             {
                 float closeEnemy2 = Vector2.Distance(transform.position, coll.transform.position);
 

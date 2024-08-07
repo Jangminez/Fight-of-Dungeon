@@ -293,14 +293,6 @@ public abstract class Player : MonoBehaviour
     }
     #endregion
 
-    #region 플레이어 공격 & 공격 애니메이션
-    abstract protected void BasicAttack();
-    abstract protected void Skill1();
-    abstract protected void Skill2();
-    abstract protected void Skill3();
-
-    #endregion
-
     #region 플레이어 이벤트 처리
     [ContextMenu("Hit")]
     public void Hit()

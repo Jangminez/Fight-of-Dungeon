@@ -55,25 +55,4 @@ public class Warrior : Player
         // 플레이어 이동 애니메이션
         Movement_Anim(); 
     }
-
-    protected override void BasicAttack()
-    {
-
-    }
-
-    protected override void Skill1()
-    {
-        
-    }
-
-    protected override void Skill2()
-    {
-
-    }
-
-    protected override void Skill3()
-    {
-
-    }
-
 }
