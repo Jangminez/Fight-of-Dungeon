@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 2483568535582410246}
   - component: {fileID: 3996923167820624716}
   - component: {fileID: 6149408725795844157}
+  - component: {fileID: 3564142985397918376}
   - component: {fileID: 4585745101583446580}
   m_Layer: 20
   m_Name: Test_Player
@@ -282,9 +283,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   layer:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 0
   enemys: []
   _target: {fileID: 0}
+--- !u!114 &3564142985397918376
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 859864941941340255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bb7a7e3846b90e41b2d2aa6db05e14c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _basicAttack: {fileID: 7413587414467280079, guid: 25079baa3b3425a4d98dcb726fed567f,
+    type: 3}
 --- !u!114 &4585745101583446580
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -298,7 +313,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _canvas: {fileID: 6210357187867706566}
-  _player: {fileID: 0}
   _currentLayer: 
 --- !u!1 &5751566174909748585
 GameObject:

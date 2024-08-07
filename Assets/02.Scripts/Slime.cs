@@ -11,15 +11,22 @@ public class Slime : Enemy
 
     public override void InitMonster()
     {
-        stats.hp = 100f;
-        stats.attack = 10f;
-        stats.attackSpeed = 0.5f;
-        stats.defense = 5f;
-        stats.speed = 1f;
+        if(!stat.isDie)
+            _initTransform = this.transform.position;
 
-        stats.exp = 10f;
-        stats.gold = 30;
+        stat.maxHp = 100f;
+        stat.hp = stat.maxHp;
 
-        stats.isDie = false;
+        stat.attack = 10f;
+        stat.attackSpeed = 0.5f;
+
+        stat.defense = 5f;
+
+        stat.speed = 1f;
+
+        stat.exp = 10f;
+        stat.gold = 30;
+
+        stat.isDie = false;
     }
 }

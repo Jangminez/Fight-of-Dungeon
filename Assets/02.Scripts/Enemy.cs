@@ -7,12 +7,17 @@ public abstract class Enemy : MonoBehaviour
 {
     private SpriteRenderer spr;
     private Rigidbody2D rb;
+    private Animator anim;
+    public Vector3 _initTransform;
+    public enum States { Idle, Chase, Attack, Die, Return}
+    public States state;
 
     public Rigidbody2D _target;
 
     [Serializable]
     public struct Stats
     {
+        public float maxHp;
         public float hp;
         public float attack;
         public float attackSpeed;
@@ -23,25 +28,96 @@ public abstract class Enemy : MonoBehaviour
         public bool isDie;
     }
 
-    public Stats stats;
+    public Stats stat;
+
+    public float MaxHp
+    {
+        set => stat.maxHp = Mathf.Max(0, value);
+        get => stat.maxHp;
+    }
+
+    public float Hp
+    {
+        set
+        {
+            if (stat.hp >= 0 && stat.hp != value)
+            {
+                stat.hp = Mathf.Max(0, value);
+                GetComponent<MonsterHp>().ChangeHp();
+            }
+
+        }
+        get => stat.hp;
+    }
+
+
 
     private void Awake()
     {
         // 필요한 변수 컴포넌트 할당
         spr = GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();    
         _target = GameObject.FindWithTag("Player").GetComponent<Rigidbody2D>();
     }
 
     private void FixedUpdate()
     {
-        // 플레이어 추적
-        if (Vector2.Distance(_target.position, rb.position) < 5f && !stats.isDie)
+        if(state == States.Idle && !stat.isDie)
         {
+            rb.velocity = Vector2.zero;
+
+            if (Vector2.Distance(_target.position, rb.position) < 5f && !stat.isDie)
+            {
+                state = States.Chase;
+            }
+        }
+
+        else if(state == States.Chase && !stat.isDie)
+        {
+            // 플레이어 추적
             Vector2 dirVec = _target.position - rb.position;
-            Vector2 nextVec = dirVec.normalized * stats.speed * Time.fixedDeltaTime;
+            Vector2 nextVec = dirVec.normalized * stat.speed * Time.fixedDeltaTime;
 
             rb.MovePosition(rb.position + nextVec);
+
+            if (Vector2.Distance(_target.position, rb.position) < 2f && !stat.isDie)
+            {
+                state = States.Attack;
+            }
+
+            else if (Vector2.Distance(_target.position, rb.position) > 5f && !stat.isDie)
+            {
+                state = States.Idle;
+            }
+        }
+
+        else if(state == States.Attack && !stat.isDie)
+        {
+            anim.SetTrigger("Attack");
+
+            if (Vector2.Distance(_target.position, rb.position) > 2f && !stat.isDie)
+            {
+                state = States.Chase;
+            }
+        }
+
+        else if(state == States.Die)
+        {
+            anim.SetTrigger("Die");
+        }
+
+        else if(state == States.Return)
+        {
+            Vector3 dirVec = _initTransform - this.transform.position;
+            Vector3 nextVec = dirVec.normalized * stat.speed * Time.fixedDeltaTime;
+     
+            rb.MovePosition(rb.position + new Vector2(nextVec.x, nextVec.y));
+
+            if(Vector3.Distance(_initTransform, this.transform.position) < 0.01f)
+            {
+                state = States.Idle;
+            }
         }
     }
     // 몬스터 초기화 함수
@@ -52,18 +128,19 @@ public abstract class Enemy : MonoBehaviour
     public virtual void Hit(float damage)
     {
         // 최종 데미지 계산
-        float finalDamage = damage - stats.defense;
+        float finalDamage = damage - stat.defense;
         if (finalDamage < 0f)
         {
             finalDamage = 0f;
         }
 
-        stats.hp -= finalDamage;
+        Hp -= finalDamage;
 
         // 피격 이펙트 실행
         StartCoroutine("HitEffect");
+        anim.SetTrigger("Hit");
 
-        if (stats.hp <= 0)
+        if (stat.hp <= 0)
         {
             StopAllCoroutines();
 
@@ -80,19 +157,31 @@ public abstract class Enemy : MonoBehaviour
 
     public virtual void Die()
     {
-        stats.hp = 0f;
-        stats.isDie = true;
+        state = States.Die;
+
+        Hp = 0f;
+        stat.isDie = true;
+
+        GetComponent<Rigidbody2D>().velocity = Vector2.zero;
         GetComponent<Collider2D>().enabled = false;
         spr.color = Color.gray;
 
+
         GiveExpGold(GameManager.Instance.player);
+
     }
 
     public virtual void GiveExpGold(Player player)
     {
-        player.Exp += stats.exp;
-        player.Gold += stats.gold;
+        player.Exp += stat.exp;
+        player.Gold += stat.gold;
     }
 
     #endregion
+
+    virtual public void OutofArea()
+    {
+        state = States.Return;
+    }
+
 }

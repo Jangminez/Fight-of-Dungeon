@@ -55,8 +55,21 @@ public abstract class Player : MonoBehaviour
     [Space(10f)]
     public Transform _spawnPoint;
 
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.G))
+        {
+            GetGold();
+        }
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            GetExp();
+        }
+    }
     // 각 직업 초기화 함수
     abstract protected void SetCharater();
+
 
     IEnumerator Regen()
     {
