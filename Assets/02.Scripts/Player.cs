@@ -374,7 +374,7 @@ public abstract class Player : MonoBehaviour
     [ContextMenu("Get Gold")]
     virtual public void GetGold()
     {
-        Gold += 50;
+        Gold += 500000;
     }
 
     [ContextMenu("Get Exp")]

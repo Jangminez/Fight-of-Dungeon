@@ -94,6 +94,14 @@ public class UpgradeAbility : MonoBehaviour
 
     private void Upgrade()
     {
+        // °ñµå È®ÀÎ
+        if (_player.Gold >= Int32.Parse(myUI.cost.text))
+        {
+            _player.Gold -= Int32.Parse(myUI.cost.text);
+        }
+
+        else return;
+
         switch (upgradeInfo.type)
         {
             case UpgradeInfo.upgradeType.Attack:
