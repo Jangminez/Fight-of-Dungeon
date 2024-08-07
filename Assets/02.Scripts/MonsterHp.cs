@@ -19,21 +19,22 @@ public class MonsterHp : MonoBehaviour
 
     public void ChangeHp()
     {
-        if (_enemy.Hp == 0)
+        if (_enemy != null)
         {
-            _canvas.gameObject.SetActive(false);
-        }
+            if (_enemy.Hp == 0)
+            {
+                _canvas.gameObject.SetActive(false);
+            }
 
-        else
-        {
-            _canvas.gameObject.SetActive(true);
-        }
+            else
+            {
+                _canvas.gameObject.SetActive(true);
+            }
 
-        if (_hpBar != null)
-        {
-            _hpBar.fillAmount = _enemy.Hp / _enemy.MaxHp;
-
-
+            if (_hpBar != null)
+            {
+                _hpBar.fillAmount = _enemy.Hp / _enemy.MaxHp;
+            }
         }
     }
 }
