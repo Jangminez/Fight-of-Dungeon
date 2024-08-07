@@ -33,6 +33,8 @@ public abstract class Player : MonoBehaviour
     [SerializeField] private float _defense;
     [Space(10f)]
     [SerializeField] private float _speed;
+    [Space(10f)]
+    [SerializeField] private float _attackRange;
 
     [Space(10f)]
     // 플레이어 상태
@@ -245,6 +247,12 @@ public abstract class Player : MonoBehaviour
         get => _isDie;
     }
 
+    public float AttackRange
+    {
+        set => _attackRange = Mathf.Max(0, value);
+        get => _attackRange;
+    }
+
     #endregion
 
     #region 플레이어 이동 & 이동 애니메이션
@@ -293,7 +301,7 @@ public abstract class Player : MonoBehaviour
 
     #endregion
 
-    #region 플레이어 데미지 처리 & 사망 & 리스폰
+    #region 플레이어 이벤트 처리
     [ContextMenu("Hit")]
     public void Hit()
     {
@@ -351,7 +359,6 @@ public abstract class Player : MonoBehaviour
 
         this.transform.position = _spawnPoint.transform.position + new Vector3(0f, 1f, 0f);
     }
-    #endregion
 
     virtual protected void LevelUp()
     {
@@ -368,6 +375,8 @@ public abstract class Player : MonoBehaviour
         }
 
     }
+
+    #endregion
 
 
     [ContextMenu("Get Gold")]

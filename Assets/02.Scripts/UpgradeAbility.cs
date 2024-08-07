@@ -48,6 +48,7 @@ public class UpgradeAbility : MonoBehaviour
 
     private void Start()
     {
+        // UI 초기화 함수
         InitUI();
     }
 

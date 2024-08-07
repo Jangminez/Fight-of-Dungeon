@@ -32,6 +32,7 @@ public class Warrior : Player
         Attack = 10.0f;
         AttackSpeed = 1.0f;
         Critical = 0.0f;
+        AttackRange = 2f;
 
         Defense = 10.0f;
 
