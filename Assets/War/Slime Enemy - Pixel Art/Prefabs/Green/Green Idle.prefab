@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8068589428734277747}
   - component: {fileID: 184416243508815134}
   - component: {fileID: 3506398424512811456}
+  - component: {fileID: 7060605072579731863}
   m_Layer: 3
   m_Name: Green Idle
   m_TagString: Untagged
@@ -121,6 +122,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e7f63a18cad07147808884e766061d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _target: {fileID: 0}
   stats:
     hp: 0
     attack: 0
@@ -165,3 +167,30 @@ CapsuleCollider2D:
   m_Offset: {x: 0.0033848286, y: -0.15907931}
   m_Size: {x: 1.151968, y: 1.151968}
   m_Direction: 0
+--- !u!50 &7060605072579731863
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8068589428734277748}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4

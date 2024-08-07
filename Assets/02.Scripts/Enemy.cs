@@ -5,6 +5,11 @@ using UnityEngine;
 
 public abstract class Enemy : MonoBehaviour
 {
+    private SpriteRenderer spr;
+    private Rigidbody2D rb;
+
+    public Rigidbody2D _target;
+
     [Serializable]
     public struct Stats
     {
@@ -17,16 +22,38 @@ public abstract class Enemy : MonoBehaviour
         public int gold;
         public bool isDie;
     }
+
     public Stats stats;
 
+    private void Awake()
+    {
+        // 필요한 변수 컴포넌트 할당
+        spr = GetComponent<SpriteRenderer>();
+        rb = GetComponent<Rigidbody2D>();
+        _target = GameObject.FindWithTag("Player").GetComponent<Rigidbody2D>();
+    }
+
+    private void FixedUpdate()
+    {
+        // 플레이어 추적
+        if (Vector2.Distance(_target.position, rb.position) < 5f && !stats.isDie)
+        {
+            Vector2 dirVec = _target.position - rb.position;
+            Vector2 nextVec = dirVec.normalized * stats.speed * Time.fixedDeltaTime;
+
+            rb.MovePosition(rb.position + nextVec);
+        }
+    }
     // 몬스터 초기화 함수
     public abstract void InitMonster();
 
+
+    #region 몬스터 피격 및 사망
     public virtual void Hit(float damage)
     {
         // 최종 데미지 계산
         float finalDamage = damage - stats.defense;
-        if(finalDamage < 0f)
+        if (finalDamage < 0f)
         {
             finalDamage = 0f;
         }
@@ -39,16 +66,16 @@ public abstract class Enemy : MonoBehaviour
         if (stats.hp <= 0)
         {
             StopAllCoroutines();
-  
+
             Die();
         }
     }
-    
+
     IEnumerator HitEffect()
     {
-        GetComponent<SpriteRenderer>().color = Color.red;
+        spr.color = Color.red;
         yield return new WaitForSeconds(0.1f);
-        GetComponent<SpriteRenderer>().color = Color.white;
+        spr.color = Color.white;
     }
 
     public virtual void Die()
@@ -56,7 +83,7 @@ public abstract class Enemy : MonoBehaviour
         stats.hp = 0f;
         stats.isDie = true;
         GetComponent<Collider2D>().enabled = false;
-        GetComponent<SpriteRenderer>().color = Color.gray;
+        spr.color = Color.gray;
 
         GiveExpGold(GameManager.Instance.player);
     }
@@ -66,4 +93,6 @@ public abstract class Enemy : MonoBehaviour
         player.Exp += stats.exp;
         player.Gold += stats.gold;
     }
+
+    #endregion
 }
