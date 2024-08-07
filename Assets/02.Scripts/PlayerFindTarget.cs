@@ -34,7 +34,6 @@ public class PlayerFindTarget : MonoBehaviour
         {
             GameManager.Instance.player._target = null;
         }
-
     }
 
     private void OnDrawGizmosSelected()
