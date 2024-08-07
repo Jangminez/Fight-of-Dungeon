@@ -82,7 +82,7 @@ public abstract class Player : MonoBehaviour
         StartCoroutine("Regen");
     }
 
-    #region 플레이어 스탯
+    #region 플레이어 변수 프로퍼티
     public float MaxHp
     {
         set
@@ -322,7 +322,7 @@ public abstract class Player : MonoBehaviour
     [ContextMenu("Die")]
     protected void OnDie() 
     {
-        _isDie = true;
+        Die = true;
         Hp = 0f;
 
         // 조작 X, 충돌 X
