@@ -24,13 +24,13 @@ public class Slime : Enemy
             anim.SetTrigger("Respawn");
         }
 
-        stat.maxHp = 100f;
+        stat.maxHp = 30f;
         Hp = stat.maxHp;
 
-        stat.attack = 10f;
+        stat.attack = 5f;
         stat.attackSpeed = 1.5f;
 
-        stat.defense = 5f;
+        stat.defense = 1f;
 
         stat.speed = 1f;
 

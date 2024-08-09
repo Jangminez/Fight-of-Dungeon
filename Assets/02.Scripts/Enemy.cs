@@ -9,7 +9,7 @@ public abstract class Enemy : MonoBehaviour
     private Rigidbody2D rb;
     protected Animator anim;
     public Vector3 _initTransform;
-    public enum States { Idle, Chase, Attack, Return}
+    public enum States { Idle, Chase, Attack, Return, Die}
     public States state;
 
     public Rigidbody2D _target;
@@ -181,6 +181,8 @@ public abstract class Enemy : MonoBehaviour
     {
         Hp = 0f;
         stat.isDie = true;
+
+        state = States.Die;
         GetComponent<Rigidbody2D>().velocity = Vector2.zero;
         GetComponent<Collider2D>().enabled = false;
         spr.color = Color.gray;
