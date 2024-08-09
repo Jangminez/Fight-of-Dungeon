@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class PlayerAttackController : MonoBehaviour
@@ -27,10 +28,12 @@ public class PlayerAttackController : MonoBehaviour
     {
         while (_isAttack)
         {
+            yield return new WaitForSeconds(1 / GameManager.Instance.player.AttackSpeed);
+
             if (GameManager.Instance.player._target == null) // 타겟이 존재하지않으면 공격 X
             {
                 _isAttack= false;
-                break;
+                yield break;
             }
 
             // 공격 이펙트 생성 및 위치 지정
@@ -39,7 +42,7 @@ public class PlayerAttackController : MonoBehaviour
             attack.GetComponent<SpriteRenderer>().sortingLayerName = GetComponent<SpriteRenderer>().sortingLayerName;
             Destroy(attack, 0.5f);
 
-            yield return new WaitForSeconds(1 / GameManager.Instance.player.AttackSpeed);
+
         }
 
     }

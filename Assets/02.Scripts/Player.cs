@@ -281,6 +281,11 @@ public abstract class Player : MonoBehaviour
     {
         Vector2 nextVec = _inputVec * _speed * Time.fixedDeltaTime;
         _playerRig.MovePosition(_playerRig.position + nextVec);
+
+        if(nextVec ==  Vector2.zero)
+        {
+            _animator.SetBool("IsMoving", false);
+        }
     }
 
     // 플레이어 이동 관련 애니메이션 구현
@@ -289,30 +294,38 @@ public abstract class Player : MonoBehaviour
         if (_inputVec.x < 0)
         {
             _animator.SetInteger("Direction", 3);
+            _animator.SetBool("IsMoving", true);
         }
         else if (_inputVec.x > 0)
         {
             _animator.SetInteger("Direction", 2);
+            _animator.SetBool("IsMoving", true);
         }
 
         if (_inputVec.y > 0)
         {
             _animator.SetInteger("Direction", 1);
+            _animator.SetBool("IsMoving", true);
         }
         else if (_inputVec.y < 0)
         {
             _animator.SetInteger("Direction", 0);
+            _animator.SetBool("IsMoving", true);
         }
     }
     #endregion
 
     #region 플레이어 이벤트 처리
-    [ContextMenu("Hit")]
-    public void Hit()
+    public void Hit(float damage)
     {
-        //Hp -= damage;
+        if (Die)
+            return;
 
-        Hp -= 30f;
+        float finalDm = damage - Defense;
+        if(finalDm <= 0)
+            finalDm = 0;
+
+        Hp -= finalDm;
 
         if (Hp == 0f)
         {
@@ -337,10 +350,12 @@ public abstract class Player : MonoBehaviour
     {
         Die = true;
         Hp = 0f;
+        _target = null;
 
         // 조작 X, 충돌 X
         this.GetComponent<PlayerInput>().enabled = false;
         this.GetComponent<BoxCollider2D>().enabled = false;
+        this.GetComponent<PlayerFindTarget>().enabled = false;
         // 캐릭터 효과
         this.GetComponent<SpriteRenderer>().color = Color.gray;
 
@@ -354,6 +369,8 @@ public abstract class Player : MonoBehaviour
 
         this.GetComponent<PlayerInput>().enabled = true;
         this.GetComponent<BoxCollider2D>().enabled = true;
+        this.GetComponent<PlayerFindTarget>().enabled = true;
+
         this.GetComponent<SpriteRenderer>().color = Color.white;
 
         _isDie = false;

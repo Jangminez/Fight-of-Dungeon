@@ -81,7 +81,7 @@ public abstract class Enemy : MonoBehaviour
                     state = States.Chase;
                 }
 
-                if(timer > 5f)
+                if (timer > 5f)
                 {
                     timer = 0f;
                     state = States.Return;
@@ -107,6 +107,7 @@ public abstract class Enemy : MonoBehaviour
                 {
                     state = States.Idle;
                 }
+
             }
 
             else if (state == States.Attack)
@@ -131,9 +132,14 @@ public abstract class Enemy : MonoBehaviour
                     state = States.Idle;
                 }
             }
-        }
 
+            if (GameManager.Instance.player.Die)
+            {
+                state = States.Return;
+            }
+        }
         Die();
+
     }
     // 몬스터 초기화 함수
     public abstract void InitMonster();

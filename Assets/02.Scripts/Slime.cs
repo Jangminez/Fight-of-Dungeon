@@ -28,7 +28,7 @@ public class Slime : Enemy
         Hp = stat.maxHp;
 
         stat.attack = 10f;
-        stat.attackSpeed = 0.5f;
+        stat.attackSpeed = 1.5f;
 
         stat.defense = 5f;
 

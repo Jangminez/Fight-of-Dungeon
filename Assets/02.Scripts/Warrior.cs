@@ -34,7 +34,7 @@ public class Warrior : Player
         Critical = 0.0f;
         AttackRange = 2f;
 
-        Defense = 10.0f;
+        Defense = 5.0f;
 
         Level = 1;
         Exp = 0;

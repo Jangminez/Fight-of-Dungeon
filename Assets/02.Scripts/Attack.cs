@@ -8,7 +8,7 @@ public class Attack : MonoBehaviour
     {
         if (collision.GetComponent<Enemy>() != null)
         {
-            collision.GetComponent<Enemy>().Hit(GameManager.Instance.player.Attack);
+            collision.GetComponent<Enemy>().Hit(damage: GameManager.Instance.player.Attack);
         }
     }
 }
