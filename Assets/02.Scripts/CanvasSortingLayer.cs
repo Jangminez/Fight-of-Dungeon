@@ -1,17 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class CanvasSortingLayer : MonoBehaviour
 {
     public Canvas _canvas;
-    private SpriteRenderer _sr;
+    private SortingGroup _sg;
     public string _currentLayer;
 
     private void Awake()
     {
-        _sr = GetComponent<SpriteRenderer>();
-        _currentLayer = _sr.sortingLayerName;
+        _sg = GetComponent<SortingGroup>();
+        _currentLayer = _sg.sortingLayerName;
     }
 
 
@@ -19,9 +20,9 @@ public class CanvasSortingLayer : MonoBehaviour
     void Update()
     {
         // 플레이어의 레이어가 바뀌면 캔버스의 레이어 변경뮤
-        if (_sr.sortingLayerName != _currentLayer)
+        if (_sg.sortingLayerName != _currentLayer)
         {
-            _currentLayer = _sr.sortingLayerName;
+            _currentLayer = _sg.sortingLayerName;
             _canvas.sortingLayerName = _currentLayer;
         }
     }

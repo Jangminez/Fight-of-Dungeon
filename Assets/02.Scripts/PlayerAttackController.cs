@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class PlayerAttackController : MonoBehaviour
 {
@@ -9,8 +10,12 @@ public class PlayerAttackController : MonoBehaviour
 
     public Transform _basicAttack;
 
+    private Animator _anim;
+
     private void Start()
     {
+        _anim = GetComponent<Animator>();
+
         _isAttack = false;
     }
 
@@ -19,7 +24,9 @@ public class PlayerAttackController : MonoBehaviour
         if(GameManager.Instance.player._target != null & !_isAttack)
         {
             _isAttack = true;
+            _anim.SetFloat("AttackSpeed", GameManager.Instance.player.AttackSpeed);
             StartCoroutine("BasicAttack");
+
         }
 
     }
@@ -35,11 +42,12 @@ public class PlayerAttackController : MonoBehaviour
                 _isAttack= false;
                 yield break;
             }
+            _anim.SetTrigger("Attack");
 
             // 공격 이펙트 생성 및 위치 지정
             GameObject attack = Instantiate(_basicAttack.gameObject);
             attack.transform.position = GameManager.Instance.player._target.transform.position;
-            attack.GetComponent<SpriteRenderer>().sortingLayerName = GetComponent<SpriteRenderer>().sortingLayerName;
+            attack.GetComponent<SpriteRenderer>().sortingLayerName = GetComponent<SortingGroup>().sortingLayerName;
             Destroy(attack, 0.5f);
 
 

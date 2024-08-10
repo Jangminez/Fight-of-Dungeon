@@ -152,7 +152,7 @@ public abstract class Enemy : MonoBehaviour
         float finalDamage = damage - stat.defense;
         if (finalDamage < 0f)
         {
-            finalDamage = 0f;
+            finalDamage = 1f;
         }
 
         Hp -= finalDamage;

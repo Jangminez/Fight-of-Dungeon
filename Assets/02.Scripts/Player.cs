@@ -293,23 +293,23 @@ public abstract class Player : MonoBehaviour
     {
         if (_inputVec.x < 0)
         {
-            _animator.SetInteger("Direction", 3);
+           // _animator.SetInteger("Direction", 3);
             _animator.SetBool("IsMoving", true);
         }
         else if (_inputVec.x > 0)
         {
-            _animator.SetInteger("Direction", 2);
+            //_animator.SetInteger("Direction", 2);
             _animator.SetBool("IsMoving", true);
         }
 
         if (_inputVec.y > 0)
         {
-            _animator.SetInteger("Direction", 1);
+            //_animator.SetInteger("Direction", 1);
             _animator.SetBool("IsMoving", true);
         }
         else if (_inputVec.y < 0)
         {
-            _animator.SetInteger("Direction", 0);
+            //_animator.SetInteger("Direction", 0);
             _animator.SetBool("IsMoving", true);
         }
     }
@@ -323,7 +323,7 @@ public abstract class Player : MonoBehaviour
 
         float finalDm = damage - Defense;
         if(finalDm <= 0)
-            finalDm = 0;
+            finalDm = 1;
 
         Hp -= finalDm;
 
@@ -340,9 +340,9 @@ public abstract class Player : MonoBehaviour
 
     IEnumerator HitEffect()
     {
-        this.GetComponent<SpriteRenderer>().color = Color.red;
+        //this.GetComponent<SpriteRenderer>().color = Color.red;
         yield return new WaitForSeconds(0.2f);
-        this.GetComponent<SpriteRenderer>().color = Color.white;
+        //this.GetComponent<SpriteRenderer>().color = Color.white;
     }
 
     [ContextMenu("Die")]
@@ -352,12 +352,12 @@ public abstract class Player : MonoBehaviour
         Hp = 0f;
         _target = null;
 
+        _animator.SetTrigger("Die");
         // 조작 X, 충돌 X
         this.GetComponent<PlayerInput>().enabled = false;
-        this.GetComponent<BoxCollider2D>().enabled = false;
+        this.GetComponent<Collider2D>().enabled = false;
         this.GetComponent<PlayerFindTarget>().enabled = false;
         // 캐릭터 효과
-        this.GetComponent<SpriteRenderer>().color = Color.gray;
 
         StopCoroutine("Regen");
         StartCoroutine("Respawn");
@@ -368,10 +368,9 @@ public abstract class Player : MonoBehaviour
         yield return new WaitForSeconds(10f);
 
         this.GetComponent<PlayerInput>().enabled = true;
-        this.GetComponent<BoxCollider2D>().enabled = true;
+        this.GetComponent<Collider2D>().enabled = true;
         this.GetComponent<PlayerFindTarget>().enabled = true;
 
-        this.GetComponent<SpriteRenderer>().color = Color.white;
 
         _isDie = false;
         Hp = MaxHp;

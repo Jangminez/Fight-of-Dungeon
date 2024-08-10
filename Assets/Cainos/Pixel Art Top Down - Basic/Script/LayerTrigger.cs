@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace Cainos.PixelArtTopDown_Basic
 {
@@ -11,15 +12,34 @@ namespace Cainos.PixelArtTopDown_Basic
         public string layer;
         public string sortingLayer;
 
+        private void Start()
+        {
+            layer = "Player";
+        }
+
         private void OnTriggerExit2D(Collider2D other)
         {
+
             other.gameObject.layer = LayerMask.NameToLayer(layer);
 
-            other.gameObject.GetComponent<SpriteRenderer>().sortingLayerName = sortingLayer;
-            SpriteRenderer[] srs = other.gameObject.GetComponentsInChildren<SpriteRenderer>();
-            foreach ( SpriteRenderer sr in srs)
+            if (other.gameObject.GetComponent<SpriteRenderer>() != null)
             {
-                sr.sortingLayerName = sortingLayer;
+                other.gameObject.GetComponent<SpriteRenderer>().sortingLayerName = sortingLayer;
+                SpriteRenderer[] srs = other.gameObject.GetComponentsInChildren<SpriteRenderer>();
+                foreach (SpriteRenderer sr in srs)
+                {
+                    sr.sortingLayerName = sortingLayer;
+                }
+            }
+
+            else if (other.gameObject.GetComponent<SortingGroup>() != null)
+            {
+                other.gameObject.GetComponent<SortingGroup>().sortingLayerName = sortingLayer;
+                SortingGroup[] sgs = other.gameObject.GetComponentsInChildren<SortingGroup>();
+                foreach (SortingGroup sg in sgs)
+                {
+                    sg.sortingLayerName = sortingLayer;
+                }
             }
         }
 

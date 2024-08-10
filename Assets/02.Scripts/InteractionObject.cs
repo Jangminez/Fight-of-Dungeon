@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro.EditorUtilities;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,7 +8,7 @@ public class InteractionObject : MonoBehaviour
 {
     [Tooltip("Upgrade or Shop")]
     public enum objectName { Shop, Upgrade }
-    public objectName Name; 
+    public objectName _object; 
 
     public Transform _interactionCanvas;
     public Transform _interactionButton;
@@ -43,7 +44,7 @@ public class InteractionObject : MonoBehaviour
 
     private void OpenUI()
     {
-        switch( Name )
+        switch( _object )
         {
             case objectName.Upgrade:
                 _upgradeUI.gameObject.SetActive(true);

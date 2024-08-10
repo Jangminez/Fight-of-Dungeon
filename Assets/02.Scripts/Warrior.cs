@@ -17,11 +17,11 @@ public class Warrior : Player
     {
         Die = false;
 
-        MaxHp = 100.0f;
+        MaxHp = 50.0f;
         Hp = MaxHp;
         HpGeneration = 1f;
 
-        MaxMp = 50.0f;
+        MaxMp = 20.0f;
         Mp = MaxMp;
         MpGeneration = 0.2f;
 
@@ -29,7 +29,7 @@ public class Warrior : Player
 
         Gold = 0;
 
-        Attack = 10.0f;
+        Attack = 6f;
         AttackSpeed = 1.0f;
         Critical = 0.0f;
         AttackRange = 2f;
