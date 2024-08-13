@@ -291,26 +291,14 @@ public abstract class Player : MonoBehaviour
     // 플레이어 이동 관련 애니메이션 구현
     public virtual void Movement_Anim()
     {
-        if (_inputVec.x < 0)
+        if(_inputVec.x !=0  || _inputVec.y !=0)
         {
-           // _animator.SetInteger("Direction", 3);
-            _animator.SetBool("IsMoving", true);
-        }
-        else if (_inputVec.x > 0)
-        {
-            //_animator.SetInteger("Direction", 2);
-            _animator.SetBool("IsMoving", true);
+            _animator.SetFloat("RunState", 0.5f);
         }
 
-        if (_inputVec.y > 0)
+        else
         {
-            //_animator.SetInteger("Direction", 1);
-            _animator.SetBool("IsMoving", true);
-        }
-        else if (_inputVec.y < 0)
-        {
-            //_animator.SetInteger("Direction", 0);
-            _animator.SetBool("IsMoving", true);
+            _animator.SetFloat("RunState", 0f);
         }
     }
     #endregion
@@ -379,6 +367,7 @@ public abstract class Player : MonoBehaviour
         StartCoroutine("Regen");
 
         this.transform.position = _spawnPoint.transform.position + new Vector3(0f, 1f, 0f);
+        _animator.SetTrigger("Respawn");
     }
 
     virtual protected void LevelUp()
