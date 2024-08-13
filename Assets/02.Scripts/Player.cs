@@ -6,6 +6,7 @@ using System.Xml.Schema;
 using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Jobs;
 
 public abstract class Player : MonoBehaviour
 {
@@ -282,9 +283,10 @@ public abstract class Player : MonoBehaviour
         Vector2 nextVec = _inputVec * _speed * Time.fixedDeltaTime;
         _playerRig.MovePosition(_playerRig.position + nextVec);
 
+        SetDirection();
         if(nextVec ==  Vector2.zero)
         {
-            _animator.SetBool("IsMoving", false);
+            _animator.SetFloat("RunState", 0f);
         }
     }
 
@@ -299,6 +301,19 @@ public abstract class Player : MonoBehaviour
         else
         {
             _animator.SetFloat("RunState", 0f);
+        }
+    }
+
+    void SetDirection()
+    {
+        if(_inputVec.x > 0)
+        {
+            _animator.transform.localScale = new Vector3(-1, 1, 1);
+        }
+
+        else if (_inputVec.x < 0)
+        {
+            _animator.transform.localScale = new Vector3(1, 1, 1);
         }
     }
     #endregion

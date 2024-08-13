@@ -8,6 +8,7 @@ public class CanvasSortingLayer : MonoBehaviour
     public Canvas _canvas;
     private SortingGroup _sg;
     public string _currentLayer;
+    public float _sortY;
 
     private void Awake()
     {
@@ -25,5 +26,8 @@ public class CanvasSortingLayer : MonoBehaviour
             _currentLayer = _sg.sortingLayerName;
             _canvas.sortingLayerName = _currentLayer;
         }
+
+        _canvas.transform.position = transform.position + new Vector3(0f, _sortY, 0f);
+
     }
 }
