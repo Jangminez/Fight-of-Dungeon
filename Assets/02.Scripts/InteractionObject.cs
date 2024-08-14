@@ -6,15 +6,10 @@ using UnityEngine.UI;
 
 public class InteractionObject : MonoBehaviour
 {
-    private enum objectName { Shop, Upgrade }
-    [SerializeField]
-    private objectName _openUI;
-
     public Transform _interactionCanvas;
     public Transform _interactionButton;
 
-    public Transform _upgradeUI;
-    public Transform _shopUI;
+    public Transform _myUI;
 
     private void Awake()
     {
@@ -44,14 +39,6 @@ public class InteractionObject : MonoBehaviour
 
     private void OpenUI()
     {
-        if(_openUI == objectName.Upgrade)
-        {
-            _upgradeUI.gameObject.SetActive(true);
-        }
-
-        else if(_openUI == objectName.Shop)
-        {
-            _shopUI.gameObject.SetActive(true);
-        }
+        _myUI.gameObject.SetActive(true);
     }
 }
