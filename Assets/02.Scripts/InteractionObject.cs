@@ -6,9 +6,9 @@ using UnityEngine.UI;
 
 public class InteractionObject : MonoBehaviour
 {
-    [Tooltip("Upgrade or Shop")]
-    public enum objectName { Shop, Upgrade }
-    public objectName _object; 
+    private enum objectName { Shop, Upgrade }
+    [SerializeField]
+    private objectName _openUI;
 
     public Transform _interactionCanvas;
     public Transform _interactionButton;
@@ -44,15 +44,14 @@ public class InteractionObject : MonoBehaviour
 
     private void OpenUI()
     {
-        switch( _object )
+        if(_openUI == objectName.Upgrade)
         {
-            case objectName.Upgrade:
-                _upgradeUI.gameObject.SetActive(true);
-                break;
+            _upgradeUI.gameObject.SetActive(true);
+        }
 
-            case objectName.Shop:
-                _shopUI.gameObject.SetActive(true);
-                break;
+        else if(_openUI == objectName.Shop)
+        {
+            _shopUI.gameObject.SetActive(true);
         }
     }
 }
