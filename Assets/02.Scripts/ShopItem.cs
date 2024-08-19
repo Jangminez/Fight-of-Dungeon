@@ -10,7 +10,7 @@ public class ShopItem : MonoBehaviour, IDeselectHandler
     public ScriptableItem _myItem;
     public Transform Information;
     private Button _myBtn;
-    private Button _buyBtn;
+    [SerializeField]private Button _buyBtn;
 
 
     void Awake()
@@ -35,19 +35,14 @@ public class ShopItem : MonoBehaviour, IDeselectHandler
     {
         // 플레이어의 골드가 충분하다면 구매
         if(GameManager.Instance.player.Gold >= Int32.Parse(_myItem.itemCost))
-            GameManager.Instance.player.Gold -= Int32.Parse(_myItem.itemCost);
-        else
-            return;
-
-        IEquipmentable equipment = GetComponent<IEquipmentable>();
-        if(equipment != null){
-            equipment.Equipped();
+        {
+            Inventory.Instance.AddInventory(_myItem);
         }
     }
 
     public void OnDeselect(BaseEventData eventData)
     {
-        Invoke("OffInformation", 0.1f);
+        //Invoke("OffInformation", 0.1f);
     }
 
     void OffInformation(){
