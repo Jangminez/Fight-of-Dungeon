@@ -37,7 +37,7 @@ public class PlayerAttackController : MonoBehaviour
         {
             yield return new WaitForSeconds(1 / GameManager.Instance.player.AttackSpeed);
 
-            if (GameManager.Instance.player._target == null) // Å¸°ÙÀÌ Á¸ÀçÇÏÁö¾ÊÀ¸¸é °ø°İ X
+            if (GameManager.Instance.player._target == null) // í”Œë ˆì´ì–´ì˜ íƒ€ê²Ÿì´ ì—†ìœ¼ë©´ ê³µê²© ì¤‘ì§€
             {
                 _isAttack= false;
                 yield break;
@@ -46,7 +46,7 @@ public class PlayerAttackController : MonoBehaviour
             _anim.SetFloat("NormalState", 0f);
             _anim.SetTrigger("Attack");
 
-            // °ø°İ ÀÌÆåÆ® »ı¼º ¹× À§Ä¡ ÁöÁ¤
+            // íƒ€ê²Ÿì˜ ìœ„ì¹˜ì— ê³µê²© ì´í™íŠ¸ ìƒì„±
             GameObject attack = Instantiate(_basicAttack.gameObject);
             attack.transform.position = GameManager.Instance.player._target.transform.position;
             attack.GetComponent<SpriteRenderer>().sortingLayerName = GetComponent<SortingGroup>().sortingLayerName;

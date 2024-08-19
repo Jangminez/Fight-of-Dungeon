@@ -10,14 +10,11 @@ using UnityEngine.Jobs;
 
 public abstract class Player : MonoBehaviour
 {
-    // ÇÃ·¹ÀÌ¾î ÀÌµ¿
     protected Vector2 _inputVec;
     protected Rigidbody2D _playerRig;
 
-    // ÇÃ·¹ÀÌ¾î ¾Ö´Ï¸ŞÀÌ¼Ç
     protected Animator _animator;
 
-    // ÇÃ·¹ÀÌ¾î ½ºÅÈ º¯¼ö
     [Header("Player Stats")]
     [SerializeField] private float _maxHp;
     [SerializeField] private float _hp;
@@ -38,11 +35,9 @@ public abstract class Player : MonoBehaviour
     [SerializeField] private float _attackRange;
 
     [Space(10f)]
-    // ÇÃ·¹ÀÌ¾î »óÅÂ
     [SerializeField] private bool _isDie;
 
     [Space(10f)]
-    // ÇÃ·¹ÀÌ¾î °æÇèÄ¡ & °ñµå
     [SerializeField] private int _level;
 
     [SerializeField] private float _exp;
@@ -68,37 +63,13 @@ public abstract class Player : MonoBehaviour
             GetExp();
         }
     }
-    // °¢ Á÷¾÷ ÃÊ±âÈ­ ÇÔ¼ö
+    // í”Œë ˆì´ì–´ ì´ˆê¸°í™” í•¨ìˆ˜
     abstract protected void SetCharater();
 
 
-    IEnumerator Regen()
-    {
-        if (!_isDie)
-        {
-            if (Hp < MaxHp)
-            {
-                Hp += HpGeneration;
 
-                if (Hp >= MaxHp)
-                    Hp = MaxHp;
-            }
 
-            if (Mp < MaxMp)
-            {
-                Mp += MpGeneration;
-
-                if (Mp >= MaxMp)
-                    Mp = MaxMp;
-            }
-        }
-
-        yield return new WaitForSeconds(1);
-
-        StartCoroutine("Regen");
-    }
-
-    #region ÇÃ·¹ÀÌ¾î º¯¼ö ÇÁ·ÎÆÛÆ¼
+    #region í”Œë ˆì´ì–´ ìŠ¤íƒ¯
     public float MaxHp
     {
         set
@@ -269,15 +240,15 @@ public abstract class Player : MonoBehaviour
 
     #endregion
 
-    #region ÇÃ·¹ÀÌ¾î ÀÌµ¿ & ÀÌµ¿ ¾Ö´Ï¸ŞÀÌ¼Ç
+    #region í”Œë ˆì´ì–´ ì´ë™ ë° ì• ë‹ˆë©”ì´ì…˜
 
-    // InputSystem °ª ¹Ş¾Æ¿À±â
+    // InputSystem ê°’ ë°›ì•„ì˜¤ê¸°
     void OnMove(InputValue value)
     {
         _inputVec = value.Get<Vector2>();
     }
 
-    // ÇÃ·¹ÀÌ¾î ÀÌµ¿ ±¸Çö
+    // í”Œë ˆì´ì–´ ì´ë™ êµ¬í˜„
     public virtual void Movement()
     {
         Vector2 nextVec = _inputVec * _speed * Time.fixedDeltaTime;
@@ -290,7 +261,7 @@ public abstract class Player : MonoBehaviour
         }
     }
 
-    // ÇÃ·¹ÀÌ¾î ÀÌµ¿ °ü·Ã ¾Ö´Ï¸ŞÀÌ¼Ç ±¸Çö
+    // í”Œë ˆì´ì–´ ì´ë™ ì• ë‹ˆë©”ì´ì…˜
     public virtual void Movement_Anim()
     {
         if(_inputVec.x !=0  || _inputVec.y !=0)
@@ -318,7 +289,7 @@ public abstract class Player : MonoBehaviour
     }
     #endregion
 
-    #region ÇÃ·¹ÀÌ¾î ÀÌº¥Æ® Ã³¸®
+    #region í”Œë ˆì´ì–´ ì´ë²¤íŠ¸ ì²˜ë¦¬
     public void Hit(float damage)
     {
         if (Die)
@@ -356,11 +327,11 @@ public abstract class Player : MonoBehaviour
         _target = null;
 
         _animator.SetTrigger("Die");
-        // Á¶ÀÛ X, Ãæµ¹ X
+        // ï¿½ï¿½ï¿½ï¿½ X, ï¿½æµ¹ X
         this.GetComponent<PlayerInput>().enabled = false;
         this.GetComponent<Collider2D>().enabled = false;
         this.GetComponent<PlayerFindTarget>().enabled = false;
-        // Ä³¸¯ÅÍ È¿°ú
+        // Ä³ï¿½ï¿½ï¿½ï¿½ È¿ï¿½ï¿½
 
         StopCoroutine("Regen");
         StartCoroutine("Respawn");
@@ -401,6 +372,31 @@ public abstract class Player : MonoBehaviour
 
     }
 
+    IEnumerator Regen()
+    {
+        if (!_isDie)
+        {
+            if (Hp < MaxHp)
+            {
+                Hp += HpGeneration;
+
+                if (Hp >= MaxHp)
+                    Hp = MaxHp;
+            }
+
+            if (Mp < MaxMp)
+            {
+                Mp += MpGeneration;
+
+                if (Mp >= MaxMp)
+                    Mp = MaxMp;
+            }
+        }
+
+        yield return new WaitForSeconds(1);
+
+        StartCoroutine("Regen");
+    }
     #endregion
 
 

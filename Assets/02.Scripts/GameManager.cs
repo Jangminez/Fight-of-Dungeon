@@ -12,13 +12,13 @@ public class GameManager : MonoBehaviour
     {
         get
         {
-            // ÀÎ½ºÅÏ½º°¡ ¾ø´Â °æ¿ì¿¡ ÀÎ½ºÅÏ½º ÇÒ´ç
+            // ì‹±ê¸€í†¤ êµ¬í˜„
             if (!_instance)
             {
                 _instance = FindObjectOfType(typeof(GameManager)) as GameManager;
 
                 if (_instance == null)
-                    Debug.Log("°ÔÀÓ ¸Å´ÏÀú°¡ Á¸ÀçÇÏÁö¾Ê½À´Ï´Ù.");
+                    Debug.Log("ì¸ìŠ¤í„´ìŠ¤ë¥¼ ìƒì„±í•©ë‹ˆë‹¤");
             }
             return _instance;
         }
@@ -26,15 +26,15 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        // ÀÎ½ºÅÏ½º°¡ ¾ø´Ù¸é »ı¼º
+        // ì¸ìŠ¤í„´ìŠ¤ê°€ ì—†ì„ ë•Œ í•´ë‹¹ ì˜¤ë¸Œì íŠ¸ë¡œ ì„¤ì •
         if (_instance == null)
             _instance = this;
 
-        // ÀÎ½ºÅÏ½º°¡ Á¸ÀçÇÏ¸é »õ·Î »ı±â´Â ÀÎ½ºÅÏ½º »èÁ¦
+        // ì¸ìŠ¤í„´ìŠ¤ê°€ ì¡´ì¬í•œë‹¤ë©´ í˜„ì¬ ì˜¤ë¸Œì íŠ¸ íŒŒê´´
         else if (_instance != null)
             Destroy(gameObject);
 
-        // ¾ÀÀÌ ÀüÈ¯ µÇ¾îµµ ¼±¾ğÇÑ ÀÎ½ºÅÏ½º°¡ ÆÄ±«µÇÁö¾ÊÀ½
+        // ì”¬ ë¡œë“œì‹œì—ë„ íŒŒê´´ë˜ì§€ì•ŠìŒ 
         DontDestroyOnLoad(gameObject);
     }
 }

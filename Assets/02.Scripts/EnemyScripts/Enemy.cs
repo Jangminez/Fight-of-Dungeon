@@ -56,7 +56,6 @@ public abstract class Enemy : MonoBehaviour
 
     private void Awake()
     {
-        // ÇÊ¿äÇÑ º¯¼ö ÄÄÆ÷³ÍÆ® ÇÒ´ç
         spr = GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();    
@@ -92,7 +91,7 @@ public abstract class Enemy : MonoBehaviour
 
             else if (state == States.Chase)
             {
-                // ÇÃ·¹ÀÌ¾î ÃßÀû
+                // íƒ€ê²Ÿì˜ ìœ„ì¹˜ í™•ì¸ í›„ ì´ë™
                 Vector2 dirVec = _target.position - rb.position;
                 Vector2 nextVec = dirVec.normalized * stat.speed * Time.fixedDeltaTime;
 
@@ -141,14 +140,13 @@ public abstract class Enemy : MonoBehaviour
         Die();
 
     }
-    // ¸ó½ºÅÍ ÃÊ±âÈ­ ÇÔ¼ö
+    // ëª¬ìŠ¤í„° ì´ˆê¸°í™” í•¨ìˆ˜
     public abstract void InitMonster();
 
 
-    #region ¸ó½ºÅÍ ÇÇ°İ ¹× »ç¸Á
+    #region ëª¬ìŠ¤í„° í”¼ê²© ë° ì‚¬ë§ ì´ë²¤íŠ¸
     public virtual void Hit(float damage)
     {
-        // ÃÖÁ¾ µ¥¹ÌÁö °è»ê
         float finalDamage = damage - stat.defense;
         if (finalDamage < 0f)
         {
@@ -157,7 +155,6 @@ public abstract class Enemy : MonoBehaviour
 
         Hp -= finalDamage;
 
-        // ÇÇ°İ ÀÌÆåÆ® ½ÇÇà
         StartCoroutine("HitEffect");
         anim.SetTrigger("Hit");
 

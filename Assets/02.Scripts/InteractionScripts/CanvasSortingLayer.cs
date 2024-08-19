@@ -20,7 +20,7 @@ public class CanvasSortingLayer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // ÇÃ·¹ÀÌ¾îÀÇ ·¹ÀÌ¾î°¡ ¹Ù²î¸é Äµ¹ö½ºÀÇ ·¹ÀÌ¾î º¯°æ¹Â
+        // SortingLayerê°€ ë³€ê²½ë˜ë©´ í˜„ì¬ ì˜¤ë¸Œì íŠ¸ì™€ ê°™ì€ ë ˆì´ì–´ë¡œ ë³€ê²½
         if (_sg.sortingLayerName != _currentLayer)
         {
             _currentLayer = _sg.sortingLayerName;

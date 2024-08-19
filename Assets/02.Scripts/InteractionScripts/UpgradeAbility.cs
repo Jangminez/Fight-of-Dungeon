@@ -11,7 +11,7 @@ using UnityEngine.UI;
 public class UpgradeAbility : MonoBehaviour
 {
     [Serializable]
-    public struct HUD // UI Ç¥½Ã
+    public struct HUD // UI ë³€ìˆ˜
     {
         public Button btn;
         public Text level;
@@ -20,7 +20,7 @@ public class UpgradeAbility : MonoBehaviour
     }
 
     [Serializable]
-    public struct UpgradeInfo   // ¾÷±×·¹ÀÌµå Á¤º¸ Áõ°¡°ª, Áõ°¡ ºñ¿ë, ·¹º§
+    public struct UpgradeInfo   // ì—…ê·¸ë ˆì´ë“œ ì •ë³´ 
     {
         public enum upgradeType { Attack, AttackSpeed, Critical, MaxHp, HpRegen, Defense ,MaxMp, MpRegen };
         public upgradeType type;
@@ -36,65 +36,65 @@ public class UpgradeAbility : MonoBehaviour
 
     private void Awake()
     {
-        // ÇÃ·¹ÀÌ¾î Ã£±â
+        // í”Œë ˆì´ì–´ ì°¾ê¸°
         _player = GameManager.Instance.player;
 
-        // ¹öÆ° Å¬¸¯ÀÌº¥Æ®¿¡ ÇÔ¼ö ¿¬°á
+        // ë²„íŠ¼ í´ë¦­ì‹œ ì‹¤í–‰í•  í•¨ìˆ˜ ì—°ê²°
         myUI.btn.onClick.AddListener(Upgrade);
 
-        // ¾÷±×·¹ÀÌµå Ç×¸ñ ·¹º§ ÃÊ±âÈ­
+        // ì—…ê·¸ë ˆì´ë“œ ë ˆë²¨
         upgradeInfo.level = 0;
     }
 
     private void Start()
     {
-        // UI ÃÊ±âÈ­ ÇÔ¼ö
+        // UI ì´ˆê¸°í™”
         InitUI();
     }
 
     private void InitUI()
     {
-        // UI ÃÊ±âÈ­
+        // UI ì´ˆê¸°í™”
         switch (upgradeInfo.type)
         {
             case UpgradeInfo.upgradeType.Attack:
-                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.Attack, upgradeInfo.incValue, 1, "°ø°Ý·Â");
+                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.Attack, upgradeInfo.incValue, 1, "ï¿½ï¿½ï¿½Ý·ï¿½");
                 break;
 
             case UpgradeInfo.upgradeType.AttackSpeed:
-                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.AttackSpeed, upgradeInfo.incValue, 1, "°ø°Ý¼Óµµ");
+                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.AttackSpeed, upgradeInfo.incValue, 1, "ï¿½ï¿½ï¿½Ý¼Óµï¿½");
                 break;
 
             case UpgradeInfo.upgradeType.Critical:
                 _player.Critical += upgradeInfo.incValue;
-                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.Critical, upgradeInfo.incValue, 1, "Å©¸®Æ¼ÄÃ È®·ü");
+                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.Critical, upgradeInfo.incValue, 1, "Å©ï¿½ï¿½Æ¼ï¿½ï¿½ È®ï¿½ï¿½");
                 break;
 
             case UpgradeInfo.upgradeType.MaxHp:
-                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.MaxHp, upgradeInfo.incValue, 1, "Ã¼·Â");
+                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.MaxHp, upgradeInfo.incValue, 1, "Ã¼ï¿½ï¿½");
                 break;
 
             case UpgradeInfo.upgradeType.HpRegen:
-                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.HpGeneration, upgradeInfo.incValue, 1, "Ã¼·Â Àç»ý¼Óµµ");
+                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.HpGeneration, upgradeInfo.incValue, 1, "Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Óµï¿½");
                 break;
 
             case UpgradeInfo.upgradeType.Defense:
-                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.Defense, upgradeInfo.incValue, 1, "¹æ¾î·Â");
+                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.Defense, upgradeInfo.incValue, 1, "ï¿½ï¿½ï¿½ï¿½");
                 break;
 
             case UpgradeInfo.upgradeType.MaxMp:
-                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.MaxMp, upgradeInfo.incValue, 1, "¸¶³ª");
+                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.MaxMp, upgradeInfo.incValue, 1, "ï¿½ï¿½ï¿½ï¿½");
                 break;
 
             case UpgradeInfo.upgradeType.MpRegen:
-                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.MpGeneration, upgradeInfo.incValue, 1, "¸¶³ª Àç»ý¼Óµµ");
+                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.MpGeneration, upgradeInfo.incValue, 1, "ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Óµï¿½");
                 break;
         }
     }
 
     private void Upgrade()
     {
-        // °ñµå È®ÀÎ
+        // ê³¨ë“œê°€ ì¶©ë¶„í•˜ë©´ ì—…ê·¸ë ˆì´ë“œ ì§„í–‰
         if (_player.Gold >= Int32.Parse(myUI.cost.text))
         {
             _player.Gold -= Int32.Parse(myUI.cost.text);
@@ -106,42 +106,42 @@ public class UpgradeAbility : MonoBehaviour
         {
             case UpgradeInfo.upgradeType.Attack:
                 _player.Attack += upgradeInfo.incValue;
-                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.Attack, upgradeInfo.incValue, upgradeInfo.incCost, "°ø°Ý·Â");
+                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.Attack, upgradeInfo.incValue, upgradeInfo.incCost, "ê³µê²©ë ¥");
                 break;
 
             case UpgradeInfo.upgradeType.AttackSpeed:
                 _player.AttackSpeed += upgradeInfo.incValue;
-                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.AttackSpeed, upgradeInfo.incValue, upgradeInfo.incCost, "°ø°Ý¼Óµµ");
+                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.AttackSpeed, upgradeInfo.incValue, upgradeInfo.incCost, "ê³µê²©ì†ë„");
                 break;
 
             case UpgradeInfo.upgradeType.Critical:
                 _player.Critical += upgradeInfo.incValue;
-                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.Critical, upgradeInfo.incValue, upgradeInfo.incCost, "Å©¸®Æ¼ÄÃ È®·ü");
+                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.Critical, upgradeInfo.incValue, upgradeInfo.incCost, "í¬ë¦¬í‹°ì»¬ í™•ë¥ ");
                 break;
 
             case UpgradeInfo.upgradeType.MaxHp:
                 _player.MaxHp += upgradeInfo.incValue;
-                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.MaxHp, upgradeInfo.incValue, upgradeInfo.incCost, "Ã¼·Â");
+                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.MaxHp, upgradeInfo.incValue, upgradeInfo.incCost, "ì²´ë ¥");
                 break;
 
             case UpgradeInfo.upgradeType.HpRegen:
                 _player.HpGeneration += upgradeInfo.incValue;
-                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.HpGeneration, upgradeInfo.incValue, upgradeInfo.incCost, "Ã¼·Â Àç»ý¼Óµµ");
+                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.HpGeneration, upgradeInfo.incValue, upgradeInfo.incCost, "ì²´ë ¥ ìž¬ìƒì†ë„");
                 break;
 
             case UpgradeInfo.upgradeType.Defense:
                 _player.Defense += upgradeInfo.incValue;
-                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.Defense, upgradeInfo.incValue, upgradeInfo.incCost, "¹æ¾î·Â");
+                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.Defense, upgradeInfo.incValue, upgradeInfo.incCost, "ë°©ì–´ë ¥");
                 break;
 
             case UpgradeInfo.upgradeType.MaxMp:
                 _player.MaxMp += upgradeInfo.incValue;
-                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.MaxMp, upgradeInfo.incValue, upgradeInfo.incCost, "¸¶³ª");
+                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.MaxMp, upgradeInfo.incValue, upgradeInfo.incCost, "ë§ˆë‚˜");
                 break;
 
             case UpgradeInfo.upgradeType.MpRegen: 
                 _player.MpGeneration += upgradeInfo.incValue;
-                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.MpGeneration, upgradeInfo.incValue, upgradeInfo.incCost, "¸¶³ª Àç»ý¼Óµµ");
+                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.MpGeneration, upgradeInfo.incValue, upgradeInfo.incCost, "ë§ˆë‚˜ ìž¬ìƒì†ë„");
                 break;
         }
 
@@ -150,8 +150,8 @@ public class UpgradeAbility : MonoBehaviour
 
     private void SetUI(Text level, Text value, Text cost, int Lv ,float initValue ,float increase, float costInc, string name)
     {
-        //UI º¯°æ
-        if (name == "Å©¸®Æ¼ÄÃ È®·ü")
+        //UI ï¿½ï¿½ï¿½ï¿½
+        if (name == "í¬ë¦¬í‹°ì»¬ í™•ë¥ ")
         {
             level.text = "Lv" + (Lv + 1).ToString() + " " + name;
             value.text = initValue.ToString() + "%" + " -> " + (initValue + increase).ToString() + "%";
@@ -159,10 +159,10 @@ public class UpgradeAbility : MonoBehaviour
             return;
         }
 
-        else if(name == "Ã¼·Â Àç»ý¼Óµµ" || name =="¸¶³ª Àç»ý¼Óµµ")
+        else if(name == "ì²´ë ¥ ìž¬ìƒì†ë„" || name =="ë§ˆë‚˜ ìž¬ìƒì†ë„")
         {
             level.text = "Lv" + (Lv + 1).ToString() + " " + name;
-            value.text = "ÃÊ´ç " + Math.Round(initValue, 1).ToString() + " -> " + Math.Round((initValue + increase), 1).ToString();
+            value.text = "ì´ˆë‹¹ " + Math.Round(initValue, 1).ToString() + " -> " + Math.Round((initValue + increase), 1).ToString();
             cost.text = Mathf.Round((float.Parse(cost.text) * costInc)).ToString();
             return;
         }

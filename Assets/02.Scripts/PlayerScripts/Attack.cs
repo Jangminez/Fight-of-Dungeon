@@ -9,19 +9,19 @@ public class Attack : MonoBehaviour
     {
         if (collision.GetComponent<Enemy>() != null)
         {
-            cri = Random.Range(1f, 101f); // 1 ~ 100 »çÀÌÀÇ ½Ç¼ö »Ì±â
+            cri = Random.Range(1f, 101f); // 1 ~ 100 í™•ë¥  ì§€ì •
 
-            if (cri <= GameManager.Instance.player.Critical) // Å©¸®Æ¼ÄÃ È®·ü¿¡ ¼ÓÇÏ¸é µ¥¹ÌÁö 1.5¹è
+            if (cri <= GameManager.Instance.player.Critical) // ê³µê²©ì´ í¬ë¦¬í‹°ì»¬ ì¼ ë•Œ
             {
                 collision.GetComponent<Enemy>().Hit(damage: GameManager.Instance.player.Attack * 1.5f);
 
-                Debug.Log("Å©¸®Æ¼ÄÃ!");
+                Debug.Log("í¬ë¦¬í‹°ì»¬!");
             }
 
-            else // ¾Æ´Ò ¶§ ±×³É °ø°İ
+            else // ì¼ë°˜ ê³µê²©
             {
                 collision.GetComponent<Enemy>().Hit(damage: GameManager.Instance.player.Attack);
-                Debug.Log("ÀÏ¹İ °ø°İ");
+                Debug.Log("ì¼ë°˜ ê³µê²©");
             }
         }
 

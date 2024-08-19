@@ -25,42 +25,42 @@ public class PlayerUIController : MonoBehaviour
         _player = GetComponent<Player>();
     }
 
-    // HP °ü·Ã °ª º¯°æ ½Ã UI º¯°æ
+    // HPì˜ ê°’ì´ ë³€ê²½ë  ë•Œ  UI ë³€ê²½
     public void HpChanged()
     {
         if (_player != null)
             _hpBar.fillAmount = _player.Hp / _player.MaxHp;
     }
 
-    // MP °ü·Ã °ª º¯°æ ½Ã UI º¯°æ
+    // MPì˜ ê°’ì´ ë³€ê²½ë  ë•Œ UI ë³€ê²½
     public void MpChanged()
     {
         if (_player != null)
             _mpBar.fillAmount = _player.Mp / _player.MaxMp;
     }
 
-    // EXP °ª º¯°æ ½Ã UI º¯°æ
+    // EXP ê°’ì´ ë³€ê²½ë  ë•Œ UI ë³€ê²½
     public void ExpChanged()
     {
         if(_player != null)
             _expBar.value = _player.Exp / _player.NextExp;
     }
 
-    // Level °ª º¯°æ ½Ã UI º¯°æ
+    // Level ê°’ì´ ë³€ê²½ë  ë•Œ UI ë³€ê²½
     public void LevelChanged()
     {
         if (_player != null)
             _levelText.text = _player.Level.ToString();
     }
 
-    // Gold °ª º¯°æ ½Ã UI º¯°æ
+    // Gold ê³¨ë“œì˜ ê°’ì´ ë³€ê²½ë  ë•Œ UI ê°’ ë³€ê²½
     public void GoldChanged()
     {
         if (_player != null)
             _goldText.text = _player.Gold.ToString();
     }
 
-    // ÇÃ·¹ÀÌ¾îÀÇ »óÅÂ°¡ Die ÀÏ¶§ ¸®½ºÆù UI »ı¼º
+    // Dieì˜ ê°’ì´ trueê°€ ë˜ë©´ Respawn UI ì‹¤í–‰
     public void OnRespawn()
     {
         if (_player != null)
