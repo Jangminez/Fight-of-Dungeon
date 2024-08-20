@@ -23,6 +23,7 @@ public class ShopItem : MonoBehaviour
 
     void LateUpdate() 
     {
+        // 아이템 버튼과 구매버튼을 누른게 아니라면 아이템 정보창 OFF
         if(EventSystem.current.currentSelectedGameObject != _myBtn.gameObject &&
         EventSystem.current.currentSelectedGameObject != _buyBtn.gameObject)
         {
@@ -48,8 +49,5 @@ public class ShopItem : MonoBehaviour
         {
             Inventory.Instance.AddInventory(_myItem);
         }
-    }
-    void OffInformation(){
-        Information.gameObject.SetActive(false);
     }
 }
