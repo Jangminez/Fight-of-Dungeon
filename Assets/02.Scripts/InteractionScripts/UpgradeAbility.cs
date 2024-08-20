@@ -58,36 +58,36 @@ public class UpgradeAbility : MonoBehaviour
         switch (upgradeInfo.type)
         {
             case UpgradeInfo.upgradeType.Attack:
-                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.Attack, upgradeInfo.incValue, 1, "���ݷ�");
+                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.Attack, upgradeInfo.incValue, 1, "공격력");
                 break;
 
             case UpgradeInfo.upgradeType.AttackSpeed:
-                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.AttackSpeed, upgradeInfo.incValue, 1, "���ݼӵ�");
+                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.AttackSpeed, upgradeInfo.incValue, 1, "공격속도");
                 break;
 
             case UpgradeInfo.upgradeType.Critical:
                 _player.Critical += upgradeInfo.incValue;
-                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.Critical, upgradeInfo.incValue, 1, "ũ��Ƽ�� Ȯ��");
+                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.Critical, upgradeInfo.incValue, 1, "크리티컬 확률");
                 break;
 
             case UpgradeInfo.upgradeType.MaxHp:
-                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.MaxHp, upgradeInfo.incValue, 1, "ü��");
+                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.MaxHp, upgradeInfo.incValue, 1, "체력");
                 break;
 
             case UpgradeInfo.upgradeType.HpRegen:
-                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.HpGeneration, upgradeInfo.incValue, 1, "ü�� ����ӵ�");
+                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.HpGeneration, upgradeInfo.incValue, 1, "체력 재생속도");
                 break;
 
             case UpgradeInfo.upgradeType.Defense:
-                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.Defense, upgradeInfo.incValue, 1, "����");
+                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.Defense, upgradeInfo.incValue, 1, "방어력");
                 break;
 
             case UpgradeInfo.upgradeType.MaxMp:
-                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.MaxMp, upgradeInfo.incValue, 1, "����");
+                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.MaxMp, upgradeInfo.incValue, 1, "마나");
                 break;
 
             case UpgradeInfo.upgradeType.MpRegen:
-                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.MpGeneration, upgradeInfo.incValue, 1, "���� ����ӵ�");
+                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.MpGeneration, upgradeInfo.incValue, 1, "마나 재생속도");
                 break;
         }
     }

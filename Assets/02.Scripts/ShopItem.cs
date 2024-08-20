@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ShopItem : MonoBehaviour, IDeselectHandler
+public class ShopItem : MonoBehaviour
 {
     public ScriptableItem _myItem;
     public Transform Information;
@@ -21,6 +21,14 @@ public class ShopItem : MonoBehaviour, IDeselectHandler
         _buyBtn.onClick.AddListener(BuyItem);
     }
 
+    void LateUpdate() 
+    {
+        if(EventSystem.current.currentSelectedGameObject != _myBtn.gameObject &&
+        EventSystem.current.currentSelectedGameObject != _buyBtn.gameObject)
+        {
+            Information.gameObject.SetActive(false);
+        }
+    }
     void ClickItem() 
     {
         // 아이템 정보 UI에 표시
@@ -29,6 +37,8 @@ public class ShopItem : MonoBehaviour, IDeselectHandler
         Information.GetChild(1).GetComponent<Text>().text = _myItem.itemDescription;
         Information.GetChild(2).GetComponent<Text>().text = _myItem.itemAbility;
         Information.GetChild(3).GetComponent<Text>().text = _myItem.itemCost;
+        Information.GetChild(5).GetComponent<Text>().text = _myItem.requireItem;
+
     }
 
     void BuyItem()
@@ -39,12 +49,6 @@ public class ShopItem : MonoBehaviour, IDeselectHandler
             Inventory.Instance.AddInventory(_myItem);
         }
     }
-
-    public void OnDeselect(BaseEventData eventData)
-    {
-        //Invoke("OffInformation", 0.1f);
-    }
-
     void OffInformation(){
         Information.gameObject.SetActive(false);
     }

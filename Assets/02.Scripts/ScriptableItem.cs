@@ -11,9 +11,5 @@ public class ScriptableItem : ScriptableObject
     public string itemDescription;
     public string itemAbility;
     public string itemCost;
-
-
-    void Awake(){
-        item = this.GameObject();
-    }
+    public string requireItem;
 }
