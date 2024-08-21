@@ -13,18 +13,16 @@ public class Attack : MonoBehaviour
 
             if (cri <= GameManager.Instance.player.Critical) // 공격이 크리티컬 일 때
             {
-                collision.GetComponent<Enemy>().Hit(damage: GameManager.Instance.player.Attack * 1.5f);
+                collision.GetComponent<Enemy>().Hit(damage: GameManager.Instance.player.FinalAttack * 1.5f);
 
                 Debug.Log("크리티컬!");
             }
 
             else // 일반 공격
             {
-                collision.GetComponent<Enemy>().Hit(damage: GameManager.Instance.player.Attack);
+                collision.GetComponent<Enemy>().Hit(damage: GameManager.Instance.player.FinalAttack);
                 Debug.Log("일반 공격");
             }
         }
-
-
     }
 }

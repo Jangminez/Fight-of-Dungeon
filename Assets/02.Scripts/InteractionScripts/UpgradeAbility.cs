@@ -75,7 +75,7 @@ public class UpgradeAbility : MonoBehaviour
                 break;
 
             case UpgradeInfo.upgradeType.HpRegen:
-                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.HpGeneration, upgradeInfo.incValue, 1, "체력 재생속도");
+                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.HpRegen, upgradeInfo.incValue, 1, "체력 재생속도");
                 break;
 
             case UpgradeInfo.upgradeType.Defense:
@@ -87,7 +87,7 @@ public class UpgradeAbility : MonoBehaviour
                 break;
 
             case UpgradeInfo.upgradeType.MpRegen:
-                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.MpGeneration, upgradeInfo.incValue, 1, "마나 재생속도");
+                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.MpRegen, upgradeInfo.incValue, 1, "마나 재생속도");
                 break;
         }
     }
@@ -125,8 +125,8 @@ public class UpgradeAbility : MonoBehaviour
                 break;
 
             case UpgradeInfo.upgradeType.HpRegen:
-                _player.HpGeneration += upgradeInfo.incValue;
-                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.HpGeneration, upgradeInfo.incValue, upgradeInfo.incCost, "체력 재생속도");
+                _player.HpRegen += upgradeInfo.incValue;
+                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.HpRegen, upgradeInfo.incValue, upgradeInfo.incCost, "체력 재생속도");
                 break;
 
             case UpgradeInfo.upgradeType.Defense:
@@ -140,8 +140,8 @@ public class UpgradeAbility : MonoBehaviour
                 break;
 
             case UpgradeInfo.upgradeType.MpRegen: 
-                _player.MpGeneration += upgradeInfo.incValue;
-                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.MpGeneration, upgradeInfo.incValue, upgradeInfo.incCost, "마나 재생속도");
+                _player.MpRegen += upgradeInfo.incValue;
+                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.MpRegen, upgradeInfo.incValue, upgradeInfo.incCost, "마나 재생속도");
                 break;
         }
 

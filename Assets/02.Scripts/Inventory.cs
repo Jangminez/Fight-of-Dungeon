@@ -9,7 +9,7 @@ public class Inventory : MonoBehaviour
     private static Inventory _instance;
 
     public List<Transform> _slots;
-
+    public List<Equipment> _equipments;
     public static Inventory Instance
     {
         get
@@ -45,11 +45,12 @@ public class Inventory : MonoBehaviour
             if(slot.childCount == 0)
             {
                 // 인터페이스 확인 후 장착 & 골드 차감
-                IEquipmentable equipment = scriptable.item.GetComponent<IEquipmentable>();
+                Equipment equipment = scriptable.item.GetComponent<Equipment>();
                 if(equipment != null)
                 {
+                    _equipments.Add(equipment);
+                    equipment.EquipmentItem();
                     Instantiate(scriptable.item, slot);
-                    equipment.Equipped();
                     GameManager.Instance.player.Gold -= Int32.Parse(scriptable.itemCost);
                     break;
                 }

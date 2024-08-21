@@ -18,18 +18,8 @@ public class ShopItem : MonoBehaviour
         _myBtn = GetComponent<Button>();
         _myBtn.onClick.AddListener(ClickItem);
         _buyBtn = Information.GetChild(4).GetComponent<Button>();
-        _buyBtn.onClick.AddListener(BuyItem);
     }
 
-    void LateUpdate() 
-    {
-        // 아이템 버튼과 구매버튼을 누른게 아니라면 아이템 정보창 OFF
-        if(EventSystem.current.currentSelectedGameObject != _myBtn.gameObject &&
-        EventSystem.current.currentSelectedGameObject != _buyBtn.gameObject)
-        {
-            Information.gameObject.SetActive(false);
-        }
-    }
     void ClickItem() 
     {
         // 아이템 정보 UI에 표시
@@ -40,6 +30,9 @@ public class ShopItem : MonoBehaviour
         Information.GetChild(3).GetComponent<Text>().text = _myItem.itemCost;
         Information.GetChild(5).GetComponent<Text>().text = _myItem.requireItem;
 
+        // 기존 리스너 제거 후 새로 할당
+        _buyBtn.onClick.RemoveAllListeners();
+        _buyBtn.onClick.AddListener(BuyItem);
     }
 
     void BuyItem()
@@ -48,6 +41,7 @@ public class ShopItem : MonoBehaviour
         if(GameManager.Instance.player.Gold >= Int32.Parse(_myItem.itemCost))
         {
             Inventory.Instance.AddInventory(_myItem);
+            Information.gameObject.SetActive(false);
         }
     }
 }

@@ -16,7 +16,6 @@ public class InteractionObject : MonoBehaviour
         _interactionCanvas.gameObject.SetActive(false);
         _interactionButton.gameObject.SetActive(false);
 
-        _interactionButton.GetComponent<Button>().onClick.AddListener(OpenUI);
     }
 
     private void OnTriggerStay2D(Collider2D collision)
@@ -25,6 +24,7 @@ public class InteractionObject : MonoBehaviour
         {
             _interactionCanvas.gameObject.SetActive(true);
             _interactionButton.gameObject.SetActive(true);
+            _interactionButton.GetComponent<Button>().onClick.AddListener(OpenUI);
         }
     }
 
@@ -34,6 +34,7 @@ public class InteractionObject : MonoBehaviour
         {
             _interactionCanvas.gameObject.SetActive(false);
             _interactionButton.gameObject.SetActive(false);
+            _interactionButton.GetComponent<Button>().onClick.RemoveAllListeners();          
         }
     }
 

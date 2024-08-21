@@ -26,7 +26,6 @@ public class PlayerAttackController : MonoBehaviour
             _isAttack = true;
             _anim.SetFloat("AttackSpeed", GameManager.Instance.player.AttackSpeed);
             StartCoroutine("BasicAttack");
-
         }
 
     }
@@ -51,8 +50,6 @@ public class PlayerAttackController : MonoBehaviour
             attack.transform.position = GameManager.Instance.player._target.transform.position;
             attack.GetComponent<SpriteRenderer>().sortingLayerName = GetComponent<SortingGroup>().sortingLayerName;
             Destroy(attack, 0.5f);
-
-
         }
 
     }

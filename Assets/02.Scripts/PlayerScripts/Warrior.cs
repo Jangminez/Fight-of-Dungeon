@@ -19,11 +19,11 @@ public class Warrior : Player
 
         MaxHp = 50.0f;
         Hp = MaxHp;
-        HpGeneration = 1f;
+        HpRegen = 1f;
 
         MaxMp = 20.0f;
         Mp = MaxMp;
-        MpGeneration = 0.2f;
+        MpRegen = 0.2f;
 
         Speed = 3.0f;
 
@@ -46,13 +46,13 @@ public class Warrior : Player
     // Update is called once per frame
     void FixedUpdate()
     {
-        // ÇÃ·¹ÀÌ¾î ÀÌµ¿
+        // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½Ìµï¿½
         Movement();
     }
 
     private void LateUpdate()
     {
-        // ÇÃ·¹ÀÌ¾î ÀÌµ¿ ¾Ö´Ï¸ÞÀÌ¼Ç
+        // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½Ìµï¿½ ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½
         Movement_Anim(); 
     }
 }

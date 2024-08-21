@@ -18,19 +18,31 @@ public abstract class Player : MonoBehaviour
     [Header("Player Stats")]
     [SerializeField] private float _maxHp;
     [SerializeField] private float _hp;
-    [SerializeField] private float _hpGeneration;
+    [SerializeField] private float _hpBonus;
+    [SerializeField] private float _hpRegen;
+    [SerializeField] private float _hpRegenBonus;
+
     [Space(10f)]
     [SerializeField] private float _maxMp;
     [SerializeField] private float _mp;
-    [SerializeField] private float _mpGeneration;
+    [SerializeField] private float _mpBonus;
+    [SerializeField] private float _mpRegen;
+    [SerializeField] private float _mpRegenBonus;
+    
     [Space(10f)]
     [SerializeField] private float _attack;
+    [SerializeField] private float _attackBonus;
     [SerializeField] private float _attackSpeed;
+    [SerializeField] private float _asBonus;
+    [SerializeField] private float _finalAs;
     [SerializeField] private float _critical;
     [Space(10f)]
     [SerializeField] private float _defense;
+    [SerializeField] private float _defenseBonus;
+
     [Space(10f)]
     [SerializeField] private float _speed;
+
     [Space(10f)]
     [SerializeField] private float _attackRange;
 
@@ -50,24 +62,8 @@ public abstract class Player : MonoBehaviour
     public Transform _target;
     [Space(10f)]
     public Transform _spawnPoint;
-
-    private void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.G))
-        {
-            GetGold();
-        }
-
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            GetExp();
-        }
-    }
     // 플레이어 초기화 함수
     abstract protected void SetCharater();
-
-
-
 
     #region 플레이어 스탯
     public float MaxHp
@@ -88,7 +84,7 @@ public abstract class Player : MonoBehaviour
     {
         set
         {
-            if (_hp >= 0 && _hp <= _maxHp && _hp != value)
+            if (_hp >= 0 && _hp <= FinalHp && _hp != value)
             {
                 _hp = Mathf.Max(0, value);
                 GetComponent<PlayerUIController>().HpChanged();
@@ -98,10 +94,22 @@ public abstract class Player : MonoBehaviour
         get => _hp;
     }
 
-    public float HpGeneration
+    public float HpBonus   
     {
-        set => _hpGeneration = Mathf.Max(0, value);
-        get => _hpGeneration;
+        set => _hpBonus = Mathf.Max(0, value);
+        get => _hpBonus;
+    }
+
+    public float HpRegen
+    {
+        set => _hpRegen = Mathf.Max(0, value);
+        get => _hpRegen;
+    }
+
+    public float HpRegenBonus
+    {
+        set => _hpRegenBonus = Mathf.Max(0, value);
+        get => _hpRegenBonus;
     }
 
     public float MaxMp
@@ -121,7 +129,7 @@ public abstract class Player : MonoBehaviour
     {
         set
         {
-            if (_mp >= 0 && _mp <= _maxMp && _mp != value)
+            if (_mp >= 0 && _mp <= FinalMp && _mp != value)
             {
                 _mp = Mathf.Max(0, value);
                 GetComponent<PlayerUIController>().MpChanged();
@@ -130,10 +138,22 @@ public abstract class Player : MonoBehaviour
         get => _mp;
     }
 
-    public float MpGeneration
+        public float MpBonus   
     {
-        set => _mpGeneration =Mathf.Max(0, value);
-        get => _mpGeneration;
+        set => _mpBonus = Mathf.Max(0, value);
+        get => _mpBonus;
+    }
+
+    public float MpRegen
+    {
+        set => _mpRegen =Mathf.Max(0, value);
+        get => _mpRegen;
+    }
+
+        public float MpRegenBonus
+    {
+        set => _mpRegenBonus = Mathf.Max(0, value);
+        get => _mpRegenBonus;
     }
 
     public float Attack
@@ -142,10 +162,22 @@ public abstract class Player : MonoBehaviour
         get => _attack;
     }
 
+    public float AttackBonus
+    {
+        set => _attackBonus = Mathf.Max(0, value);
+        get => _attackBonus;
+    }
+
     public float AttackSpeed
     {
         set => _attackSpeed = Mathf.Max(0, value);
         get => _attackSpeed;
+    }
+
+    public float AsBonus
+    {
+        set => _asBonus = Mathf.Max(0, value);
+        get => _asBonus;
     }
 
     public float Critical
@@ -158,6 +190,12 @@ public abstract class Player : MonoBehaviour
     {
         set => _defense = Mathf.Max(0,value);
         get => _defense;
+    }
+
+        public float DefenseBonus
+    {
+        set => _defenseBonus = Mathf.Max(0, value);
+        get => _defenseBonus;
     }
 
     public int Gold
@@ -240,6 +278,16 @@ public abstract class Player : MonoBehaviour
 
     #endregion
 
+    #region 플레이어 최종 스탯
+    public float FinalHp => _maxHp * (1 + _hpBonus);
+    public float FinalHpRegen => _hpRegen * (1 + _hpRegenBonus);
+    public float FinalMp => _maxMp * (1 + _mpBonus);
+    public float FinalMpRegen => _mpRegen * (1 + _mpRegenBonus);
+    public float FinalAttack => _attack * (1 + _attackBonus);
+    public float FinalAS => _attackSpeed * (1 + _asBonus);
+    public float FinalDefense => _defense * (1 + _defenseBonus);
+    #endregion
+
     #region 플레이어 이동 및 애니메이션
 
     // InputSystem 값 받아오기
@@ -295,7 +343,7 @@ public abstract class Player : MonoBehaviour
         if (Die)
             return;
 
-        float finalDm = damage - Defense;
+        float finalDm = damage - FinalDefense;
         if(finalDm <= 0)
             finalDm = 1;
 
@@ -347,8 +395,8 @@ public abstract class Player : MonoBehaviour
 
 
         _isDie = false;
-        Hp = MaxHp;
-        Mp = MaxMp;
+        Hp = FinalHp;
+        Mp = FinalMp;
 
         StartCoroutine("Regen");
 
@@ -376,20 +424,20 @@ public abstract class Player : MonoBehaviour
     {
         if (!_isDie)
         {
-            if (Hp < MaxHp)
+            if (Hp < FinalHp)
             {
-                Hp += HpGeneration;
+                Hp += FinalHpRegen;
 
-                if (Hp >= MaxHp)
-                    Hp = MaxHp;
+                if (Hp >= FinalHp)
+                    Hp = FinalHp;
             }
 
-            if (Mp < MaxMp)
+            if (Mp < FinalMp)
             {
-                Mp += MpGeneration;
+                Mp += FinalMpRegen;
 
-                if (Mp >= MaxMp)
-                    Mp = MaxMp;
+                if (Mp >= FinalMp)
+                    Mp = FinalMp;
             }
         }
 
@@ -399,6 +447,19 @@ public abstract class Player : MonoBehaviour
     }
     #endregion
 
+    #region 테스트용 함수
+        private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.G))
+        {
+            GetGold();
+        }
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            GetExp();
+        }
+    }
 
     [ContextMenu("Get Gold")]
     virtual public void GetGold()
@@ -411,5 +472,6 @@ public abstract class Player : MonoBehaviour
     {
         Exp += 1000;
     }
+    #endregion
 }
  

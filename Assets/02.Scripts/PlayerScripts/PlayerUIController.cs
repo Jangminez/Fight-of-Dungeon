@@ -29,14 +29,14 @@ public class PlayerUIController : MonoBehaviour
     public void HpChanged()
     {
         if (_player != null)
-            _hpBar.fillAmount = _player.Hp / _player.MaxHp;
+            _hpBar.fillAmount = _player.Hp / _player.FinalHp;
     }
 
     // MP의 값이 변경될 때 UI 변경
     public void MpChanged()
     {
         if (_player != null)
-            _mpBar.fillAmount = _player.Mp / _player.MaxMp;
+            _mpBar.fillAmount = _player.Mp / _player.FinalMp;
     }
 
     // EXP 값이 변경될 때 UI 변경
