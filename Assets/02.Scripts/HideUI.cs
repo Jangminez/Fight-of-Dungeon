@@ -11,4 +11,6 @@ public class HideUI : MonoBehaviour, IPointerClickHandler
     {
         _information.gameObject.SetActive(false);
     }
+
+
 }

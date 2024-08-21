@@ -9,6 +9,7 @@ public class Equipment : MonoBehaviour
     public enum CalType {Plus, Percentage}
     public ValueType _valueType;
     public CalType _calType;
+    public ScriptableItem _item;
     public float _value;
 
 

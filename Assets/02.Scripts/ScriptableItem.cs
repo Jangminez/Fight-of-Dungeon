@@ -12,4 +12,5 @@ public class ScriptableItem : ScriptableObject
     public string itemAbility;
     public string itemCost;
     public string requireItem;
+    public List<ScriptableItem> needItem;
 }

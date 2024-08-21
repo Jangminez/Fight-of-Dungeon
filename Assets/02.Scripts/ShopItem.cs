@@ -1,8 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class ShopItem : MonoBehaviour
@@ -38,10 +38,23 @@ public class ShopItem : MonoBehaviour
     void BuyItem()
     {
         // 플레이어의 골드가 충분하다면 구매
-        if(GameManager.Instance.player.Gold >= Int32.Parse(_myItem.itemCost))
+        if(GameManager.Instance.player.Gold >= Int32.Parse(_myItem.itemCost) && _myItem.needItem.Count == 0)
         {
             Inventory.Instance.AddInventory(_myItem);
-            Information.gameObject.SetActive(false);
+        }
+
+        else if(GameManager.Instance.player.Gold >= Int32.Parse(_myItem.itemCost) && _myItem.needItem.Count > 0)
+        {
+            foreach(var item in _myItem.needItem)
+            {
+                foreach(var slot in Inventory.Instance._slots)
+                {
+                    if(slot.childCount > 0 && item == slot.GetChild(0).GetComponent<Equipment>()._item){
+                        Destroy(slot.GetChild(0).gameObject);
+                    }
+                }
+            }
+            Inventory.Instance.AddInventory(_myItem);
         }
     }
 }

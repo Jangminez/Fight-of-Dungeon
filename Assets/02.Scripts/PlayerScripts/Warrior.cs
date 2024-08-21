@@ -46,13 +46,13 @@ public class Warrior : Player
     // Update is called once per frame
     void FixedUpdate()
     {
-        // �÷��̾� �̵�
+        // 플레이어 이동
         Movement();
     }
 
     private void LateUpdate()
     {
-        // �÷��̾� �̵� �ִϸ��̼�
+        // 플레이어 이동 애니메이션
         Movement_Anim(); 
     }
 }
