@@ -9,7 +9,6 @@ public class Inventory : MonoBehaviour
     private static Inventory _instance;
 
     public List<Transform> _slots;
-    public List<ScriptableItem> _equipments;
     public static Inventory Instance
     {
         get
@@ -48,7 +47,6 @@ public class Inventory : MonoBehaviour
                 Equipment equipment = scriptable.item.GetComponent<Equipment>();
                 if(equipment != null)
                 {
-                    _equipments.Add(scriptable);
                     equipment.EquipmentItem();
                     Instantiate(scriptable.item, slot);
                     GameManager.Instance.player.Gold -= Int32.Parse(scriptable.itemCost);

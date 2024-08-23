@@ -45,16 +45,30 @@ public class ShopItem : MonoBehaviour
 
         else if(GameManager.Instance.player.Gold >= Int32.Parse(_myItem.itemCost) && _myItem.needItem.Count > 0)
         {
+            // 인벤토리에 제작에 필요한 아이템이 있다면 담을 변수 생성
+            List<Transform> items;
+            items = new List<Transform>();
+
+            // 필요 아이템 반복
             foreach(var item in _myItem.needItem)
             {
+                // 해당 아이템이 인벤토리 슬롯에 존재하는지 확인
                 foreach(var slot in Inventory.Instance._slots)
                 {
+                    // 존재한다면 위 변수에 추가 후 탐색 할 아이템 변경
                     if(slot.childCount > 0 && item == slot.GetChild(0).GetComponent<Equipment>()._item){
-                        Destroy(slot.GetChild(0).gameObject);
+                        items.Add(slot.GetChild(0)); 
+                        break; 
                     }
                 }
             }
-            Inventory.Instance.AddInventory(_myItem);
+            // 아이템이 모두 존재한다면 해당 아이템 슬롯에서 제거 & 구매 아이템 추가
+            if(items.Count == _myItem.needItem.Count){
+                foreach (var item in items){
+                    Destroy(item.gameObject);
+                }
+                Inventory.Instance.AddInventory(_myItem);
+            }
         }
     }
 }
