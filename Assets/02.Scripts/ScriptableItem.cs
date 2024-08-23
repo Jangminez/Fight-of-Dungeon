@@ -8,9 +8,13 @@ public class ScriptableItem : ScriptableObject
 {
     public GameObject item;
     public string itemName;
+    public enum ValueType {Attack, AttackSpeed, Critical, Defense, Hp, HpRegen, Mp, MpRegen}
+    public enum CalType {Plus, Percentage}
+    public ValueType valueType;
+    public CalType calType;
+    public float incValue;
     public string itemDescription;
-    public string itemAbility;
     public string itemCost;
-    public string requireItem;
     public List<ScriptableItem> needItem;
 }
+

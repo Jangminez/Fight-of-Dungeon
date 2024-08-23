@@ -53,7 +53,6 @@ public class Inventory : MonoBehaviour
                     break;
                 }
             }
-
             // 슬롯에 아이템이 있다면 다음 슬롯 확인
             else
                 continue;

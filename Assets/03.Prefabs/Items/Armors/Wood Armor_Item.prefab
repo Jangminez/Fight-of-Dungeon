@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6111951488909600295}
   - component: {fileID: 6016290718457342744}
   - component: {fileID: 2822655223512338020}
-  - component: {fileID: -8517408055739357467}
+  - component: {fileID: -768842773413115936}
   m_Layer: 5
   m_Name: Wood Armor_Item
   m_TagString: Untagged
@@ -91,7 +91,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _img: {fileID: 0}
   _preParent: {fileID: 0}
---- !u!114 &-8517408055739357467
+--- !u!114 &-768842773413115936
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -104,5 +104,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _valueType: 4
-  _calType: 1
-  _value: 0.5
+  _calType: 0
+  _item: {fileID: 11400000, guid: 7783814cf843efc4cbafb9e122f13c2d, type: 2}
+  _value: 20

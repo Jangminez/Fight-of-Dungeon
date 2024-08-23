@@ -279,13 +279,13 @@ public abstract class Player : MonoBehaviour
     #endregion
 
     #region 플레이어 최종 스탯
-    public float FinalHp => _maxHp * (1 + _hpBonus);
-    public float FinalHpRegen => _hpRegen * (1 + _hpRegenBonus);
-    public float FinalMp => _maxMp * (1 + _mpBonus);
-    public float FinalMpRegen => _mpRegen * (1 + _mpRegenBonus);
-    public float FinalAttack => _attack * (1 + _attackBonus);
-    public float FinalAS => _attackSpeed * (1 + _asBonus);
-    public float FinalDefense => _defense * (1 + _defenseBonus);
+    public float FinalHp => _maxHp * (1 + (_hpBonus * 0.01f));
+    public float FinalHpRegen => _hpRegen * (1 + (_hpRegenBonus * 0.01f));
+    public float FinalMp => _maxMp * (1 + (_mpBonus * 0.01f));
+    public float FinalMpRegen => _mpRegen * (1 + (_mpRegenBonus * 0.01f));
+    public float FinalAttack => _attack * (1 + (_attackBonus * 0.01f));
+    public float FinalAS => _attackSpeed * (1 + (_asBonus * 0.01f));
+    public float FinalDefense => _defense * (1 + (_defenseBonus * 0.01f));
     #endregion
 
     #region 플레이어 이동 및 애니메이션

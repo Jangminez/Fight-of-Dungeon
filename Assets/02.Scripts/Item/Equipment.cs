@@ -1,172 +1,177 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Equipment : MonoBehaviour
 {
-    public enum ValueType {Attack, AttackSpeed, Critical, Defense, Hp, HpRegen, Mp, MpRegen}
-    public enum CalType {Plus, Percentage}
-    public ValueType _valueType;
-    public CalType _calType;
     public ScriptableItem _item;
-    public float _value;
+    private Button _myBtn;
+    void Awake()
+    {
+        _myBtn = this.transform.parent.GetComponent<Button>();
+        _myBtn.onClick.AddListener(ClickButton);
+    }
 
 
 // 장비 장착 시
     public void EquipmentItem()
     {
-        if(_calType == CalType.Plus){
-            switch(_valueType)
+        if(_item.calType == ScriptableItem.CalType.Plus){
+            switch(_item.valueType)
             {
-                case ValueType.Attack:
-                    GameManager.Instance.player.Attack += _value;
+                case ScriptableItem.ValueType.Attack:
+                    GameManager.Instance.player.Attack += _item.incValue;
                 break;
 
-                case ValueType.AttackSpeed:
-                    GameManager.Instance.player.AttackSpeed += _value;
+                case ScriptableItem.ValueType.AttackSpeed:
+                    GameManager.Instance.player.AttackSpeed += _item.incValue;
                 break;
 
-                case ValueType.Critical:
-                    GameManager.Instance.player.Critical += _value;
+                case ScriptableItem.ValueType.Critical:
+                    GameManager.Instance.player.Critical += _item.incValue;
                 break;
 
-                case ValueType.Defense:
-                    GameManager.Instance.player.Defense += _value;
+                case ScriptableItem.ValueType.Defense:
+                    GameManager.Instance.player.Defense += _item.incValue;
                 break;
 
-                case ValueType.Hp:
-                    GameManager.Instance.player.MaxHp += _value;
+                case ScriptableItem.ValueType.Hp:
+                    GameManager.Instance.player.MaxHp += _item.incValue;
                 break;
 
-                case ValueType.HpRegen:
-                    GameManager.Instance.player.HpRegen += _value;
+                case ScriptableItem.ValueType.HpRegen:
+                    GameManager.Instance.player.HpRegen += _item.incValue;
                 break;
 
-                case ValueType.Mp:
-                    GameManager.Instance.player.MaxMp += _value;
+                case ScriptableItem.ValueType.Mp:
+                    GameManager.Instance.player.MaxMp += _item.incValue;
                 break;
 
-                case ValueType.MpRegen:
-                    GameManager.Instance.player.MpRegen += _value;
+                case ScriptableItem.ValueType.MpRegen:
+                    GameManager.Instance.player.MpRegen += _item.incValue;
                 break;
             }
         }
 
-        else if(_calType == CalType.Percentage){
-            switch(_valueType)
+        else if(_item.calType == ScriptableItem.CalType.Percentage){
+            switch(_item.valueType)
             {
-                case ValueType.Attack:
-                    GameManager.Instance.player.AttackBonus += _value;
+                case ScriptableItem.ValueType.Attack:
+                    GameManager.Instance.player.AttackBonus += _item.incValue;
                 break;
 
-                case ValueType.AttackSpeed:
-                    GameManager.Instance.player.AsBonus += _value;
+                case ScriptableItem.ValueType.AttackSpeed:
+                    GameManager.Instance.player.AsBonus += _item.incValue;
                 break;
 
-                case ValueType.Critical:
+                case ScriptableItem.ValueType.Critical:
                     Debug.Log("Wrong Setting!!");
                 break;
 
-                case ValueType.Defense:
-                    GameManager.Instance.player.DefenseBonus += _value;
+                case ScriptableItem.ValueType.Defense:
+                    GameManager.Instance.player.DefenseBonus += _item.incValue;
                 break;
 
-                case ValueType.Hp:
-                    GameManager.Instance.player.HpBonus += _value;
+                case ScriptableItem.ValueType.Hp:
+                    GameManager.Instance.player.HpBonus += _item.incValue;
                 break;
 
-                case ValueType.HpRegen:
-                    GameManager.Instance.player.HpRegenBonus += _value;
+                case ScriptableItem.ValueType.HpRegen:
+                    GameManager.Instance.player.HpRegenBonus += _item.incValue;
                 break;
 
-                case ValueType.Mp:
-                    GameManager.Instance.player.MpBonus += _value;
+                case ScriptableItem.ValueType.Mp:
+                    GameManager.Instance.player.MpBonus += _item.incValue;
                  break;
 
-                case ValueType.MpRegen:
-                    GameManager.Instance.player.MpRegenBonus += _value;
+                case ScriptableItem.ValueType.MpRegen:
+                    GameManager.Instance.player.MpRegenBonus += _item.incValue;
                 break;
             }
         }
     }
 
 // 장비 해제 시
-    public void UnEquipmentItem() 
+    public void UnEquipmentItem()
     {
-        if(_calType == CalType.Plus){
-            switch(_valueType)
+        if(_item.calType == ScriptableItem.CalType.Plus){
+            switch(_item.valueType)
             {
-                case ValueType.Attack:
-                    GameManager.Instance.player.Attack -= _value;
+                case ScriptableItem.ValueType.Attack:
+                    GameManager.Instance.player.Attack -= _item.incValue;
                 break;
 
-                case ValueType.AttackSpeed:
-                    GameManager.Instance.player.AttackSpeed -= _value;
+                case ScriptableItem.ValueType.AttackSpeed:
+                    GameManager.Instance.player.AttackSpeed -= _item.incValue;
                 break;
 
-                case ValueType.Critical:
-                    GameManager.Instance.player.Critical -= _value;
+                case ScriptableItem.ValueType.Critical:
+                    GameManager.Instance.player.Critical -= _item.incValue;
                 break;
 
-                case ValueType.Defense:
-                    GameManager.Instance.player.Defense -= _value;
+                case ScriptableItem.ValueType.Defense:
+                    GameManager.Instance.player.Defense -= _item.incValue;
                 break;
 
-                case ValueType.Hp:
-                    GameManager.Instance.player.MaxHp -= _value;
+                case ScriptableItem.ValueType.Hp:
+                    GameManager.Instance.player.MaxHp -= _item.incValue;
                 break;
 
-                case ValueType.HpRegen:
-                    GameManager.Instance.player.HpRegen -= _value;
+                case ScriptableItem.ValueType.HpRegen:
+                    GameManager.Instance.player.HpRegen -= _item.incValue;
                 break;
 
-                case ValueType.Mp:
-                    GameManager.Instance.player.MaxMp -= _value;
+                case ScriptableItem.ValueType.Mp:
+                    GameManager.Instance.player.MaxMp -= _item.incValue;
                 break;
 
-                case ValueType.MpRegen:
-                    GameManager.Instance.player.MpRegen -= _value;
+                case ScriptableItem.ValueType.MpRegen:
+                    GameManager.Instance.player.MpRegen -= _item.incValue;
                 break;
             }
         }
 
-        else if(_calType == CalType.Percentage){
-            switch(_valueType)
+        else if(_item.calType == ScriptableItem.CalType.Percentage){
+            switch(_item.valueType)
             {
-                case ValueType.Attack:
-                    GameManager.Instance.player.AttackBonus -= _value;
+                case ScriptableItem.ValueType.Attack:
+                    GameManager.Instance.player.AttackBonus -= _item.incValue;
                 break;
 
-                case ValueType.AttackSpeed:
-                    GameManager.Instance.player.AsBonus -= _value;
+                case ScriptableItem.ValueType.AttackSpeed:
+                    GameManager.Instance.player.AsBonus -= _item.incValue;
                 break;
 
-                case ValueType.Critical:
+                case ScriptableItem.ValueType.Critical:
                     Debug.Log("Wrong Setting!!");
                 break;
 
-                case ValueType.Defense:
-                    GameManager.Instance.player.DefenseBonus -= _value;
+                case ScriptableItem.ValueType.Defense:
+                    GameManager.Instance.player.DefenseBonus -= _item.incValue;
                 break;
 
-                case ValueType.Hp:
-                    GameManager.Instance.player.HpBonus -= _value;
+                case ScriptableItem.ValueType.Hp:
+                    GameManager.Instance.player.HpBonus -= _item.incValue;
                 break;
 
-                case ValueType.HpRegen:
-                    GameManager.Instance.player.HpRegenBonus -= _value;
+                case ScriptableItem.ValueType.HpRegen:
+                    GameManager.Instance.player.HpRegenBonus -= _item.incValue;
                 break;
 
-                case ValueType.Mp:
-                    GameManager.Instance.player.MpBonus -= _value;
+                case ScriptableItem.ValueType.Mp:
+                    GameManager.Instance.player.MpBonus -= _item.incValue;
                     
                  break;
 
-                case ValueType.MpRegen:
-                    GameManager.Instance.player.MpRegenBonus -= _value;
+                case ScriptableItem.ValueType.MpRegen:
+                    GameManager.Instance.player.MpRegenBonus -= _item.incValue;
                 break;
             }
         }
+
+        Destroy(this.gameObject);
+    }
+
+    protected void ClickButton(){
+
     }
 }
