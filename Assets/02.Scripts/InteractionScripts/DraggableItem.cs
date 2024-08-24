@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 
 public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    public Image _img;
+    private Image _img;
     [HideInInspector] public Transform _preParent;
     public void OnBeginDrag(PointerEventData eventData)
     {
@@ -27,6 +27,16 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     public void OnEndDrag(PointerEventData eventData)
     {
         transform.SetParent(_preParent);
+        SetButton();
+
         _img.raycastTarget = true;
+    }
+
+    void SetButton() {
+        Equipment equipment = GetComponent<Equipment>();
+
+        equipment._slotBtn.onClick.RemoveAllListeners();
+        equipment._slotBtn = _preParent.GetComponent<Button>();
+        equipment._slotBtn.onClick.AddListener(GetComponent<Equipment>().ClickSlot);
     }
 }

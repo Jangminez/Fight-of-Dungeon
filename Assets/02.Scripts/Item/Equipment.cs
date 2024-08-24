@@ -1,18 +1,25 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Equipment : MonoBehaviour
 {
     public ScriptableItem _item;
-    private Button _myBtn;
+    [HideInInspector] public Button _slotBtn;
+    private Button _sellBtn;
     void Awake()
     {
-        _myBtn = this.transform.parent.GetComponent<Button>();
-        _myBtn.onClick.AddListener(ClickButton);
+        _slotBtn = this.transform.parent.GetComponent<Button>();
+        _sellBtn = this.transform.GetChild(0).GetComponent<Button>();
+
+        if(_slotBtn != null && _sellBtn != null){
+            _slotBtn.onClick.AddListener(ClickSlot);
+            _sellBtn.onClick.AddListener(SellItem);
+        }
     }
 
 
-// 장비 장착 시
+    // 장비 장착 시
     public void EquipmentItem()
     {
         if(_item.calType == ScriptableItem.CalType.Plus){
@@ -90,7 +97,7 @@ public class Equipment : MonoBehaviour
         }
     }
 
-// 장비 해제 시
+    // 장비 해제 시
     public void UnEquipmentItem()
     {
         if(_item.calType == ScriptableItem.CalType.Plus){
@@ -171,7 +178,13 @@ public class Equipment : MonoBehaviour
         Destroy(this.gameObject);
     }
 
-    protected void ClickButton(){
+    // 슬롯 버튼 클릭시
+    public void ClickSlot(){
+        _sellBtn.gameObject.SetActive(true);
+    }
 
+    void SellItem() {
+        UnEquipmentItem();
+        GameManager.Instance.player.Gold += Mathf.RoundToInt(Int32.Parse(_item.itemCost) * 0.8f);
     }
 }
