@@ -14,6 +14,8 @@ public abstract class Enemy : MonoBehaviour
 
     public Rigidbody2D _target;
 
+    public GameObject FloatingDamagePrefab;
+    public GameObject FloatingGoldExpPrefab;
     private float timer;
 
     [Serializable]
@@ -155,6 +157,10 @@ public abstract class Enemy : MonoBehaviour
 
         Hp -= finalDamage;
 
+        if(FloatingDamagePrefab != null && stat.hp > 0){
+            ShowFloatingDamage(finalDamage);
+        }
+
         StartCoroutine("HitEffect");
         anim.SetTrigger("Hit");
 
@@ -186,6 +192,7 @@ public abstract class Enemy : MonoBehaviour
 
 
         GiveExpGold(GameManager.Instance.player);
+        ShowGoldExp();
 
         Invoke("InitMonster", 10f);
 
@@ -204,4 +211,15 @@ public abstract class Enemy : MonoBehaviour
         state = States.Return;
     }
 
+    void ShowFloatingDamage(float damage) 
+    {
+        var dmg = Instantiate(FloatingDamagePrefab, transform.position, Quaternion.identity, transform);
+        dmg.GetComponent<TextMesh>().text = $"-{damage.ToString()}";
+    }
+
+    void ShowGoldExp()
+    {
+        var floating = Instantiate(FloatingGoldExpPrefab, transform.position, Quaternion.identity, transform);
+        floating.GetComponent<TextMesh>().text = $"+{stat.exp}Exp\n+{stat.gold}Gold";
+    }
 }

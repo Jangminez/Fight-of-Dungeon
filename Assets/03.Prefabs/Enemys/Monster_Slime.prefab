@@ -129,6 +129,10 @@ MonoBehaviour:
   _initTransform: {x: 0, y: 0, z: 0}
   state: 0
   _target: {fileID: 0}
+  FloatingDamagePrefab: {fileID: 7107079607422933807, guid: 21182ee54ba58c647ba5d2063400e63f,
+    type: 3}
+  FloatingGoldExpPrefab: {fileID: 7145864357256277105, guid: 9b61fc9b659b53a49a0c824b9f943c04,
+    type: 3}
   stat:
     maxHp: 0
     hp: 0
@@ -215,6 +219,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _canvas: {fileID: 1112964344474512224}
   _currentLayer: 
+  _sortY: 0
 --- !u!114 &6938824989959619591
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -6,8 +6,7 @@ using UnityEngine.UI;
 public class Equipment : MonoBehaviour
 {
     public ScriptableItem _item;
-    //[HideInInspector] 
-    public Button _slotBtn;
+    [HideInInspector] public Button _slotBtn;
     [SerializeField] private Button _sellBtn;
     public Button SellBtn => _sellBtn;
     void Awake()
@@ -20,7 +19,7 @@ public class Equipment : MonoBehaviour
             _sellBtn.onClick.AddListener(SellItem);
         }
     }
-    void Update()
+    void FixedUpdate()
     {
         //다른 버튼 클릭 시 판매 버튼 비활성화
         GameObject selectOb = EventSystem.current.currentSelectedGameObject;
@@ -200,7 +199,4 @@ public class Equipment : MonoBehaviour
         // 구매 가격의 80% 반환
         GameManager.Instance.player.Gold += Mathf.RoundToInt(Int32.Parse(_item.itemCost) * 0.8f);
     }
-
-    
-
 }
