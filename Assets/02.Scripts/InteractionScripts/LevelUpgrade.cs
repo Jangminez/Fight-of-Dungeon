@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class LevelUpgrade : MonoBehaviour
 {
-    float _myValue;
+    [SerializeField] float _myValue;
 
     [Serializable]
     public struct HUD // UI 변수
@@ -99,53 +99,47 @@ public class LevelUpgrade : MonoBehaviour
 
        else return;
 
+        _myValue += upgradeInfo.incValue;
+
         switch (upgradeInfo.type)
         {
             case UpgradeInfo.upgradeType.Attack:
                 _player.Attack += upgradeInfo.incValue;
-                _myValue += upgradeInfo.incValue;
                 SetUI(myUI.level, myUI.value, upgradeInfo.level, _myValue, upgradeInfo.incValue, "공격력");
                 break;
 
             case UpgradeInfo.upgradeType.AttackSpeed:
                 _player.AttackSpeed += upgradeInfo.incValue;
-                _myValue += upgradeInfo.incValue;
                 SetUI(myUI.level, myUI.value, upgradeInfo.level, _myValue, upgradeInfo.incValue, "공격속도");
                 break;
 
             case UpgradeInfo.upgradeType.Critical:
                 _player.Critical += upgradeInfo.incValue;
-                _myValue += upgradeInfo.incValue;
                 SetUI(myUI.level, myUI.value, upgradeInfo.level, _myValue, upgradeInfo.incValue, "크리티컬 확률");
                 break;
 
             case UpgradeInfo.upgradeType.MaxHp:
                 _player.MaxHp += upgradeInfo.incValue;
-                _myValue += upgradeInfo.incValue;
                 SetUI(myUI.level, myUI.value, upgradeInfo.level, _myValue, upgradeInfo.incValue, "체력");
                 break;
 
             case UpgradeInfo.upgradeType.HpRegen:
                 _player.HpRegen += upgradeInfo.incValue;
-                _myValue += upgradeInfo.incValue;
                 SetUI(myUI.level, myUI.value, upgradeInfo.level, _myValue, upgradeInfo.incValue, "체력 재생속도");
                 break;
 
             case UpgradeInfo.upgradeType.Defense:
                 _player.Defense += upgradeInfo.incValue;
-                _myValue += upgradeInfo.incValue;
                 SetUI(myUI.level, myUI.value, upgradeInfo.level, _myValue, upgradeInfo.incValue, "방어력");
                 break;
 
             case UpgradeInfo.upgradeType.MaxMp:
                 _player.MaxMp += upgradeInfo.incValue;
-                _myValue += upgradeInfo.incValue;
                 SetUI(myUI.level, myUI.value, upgradeInfo.level, _myValue, upgradeInfo.incValue, "마나");
                 break;
 
             case UpgradeInfo.upgradeType.MpRegen: 
                 _player.MpRegen += upgradeInfo.incValue;
-                _myValue += upgradeInfo.incValue;
                 SetUI(myUI.level, myUI.value, upgradeInfo.level, _myValue, upgradeInfo.incValue, "마나 재생속도");
                 break;
         }
@@ -176,55 +170,75 @@ public class LevelUpgrade : MonoBehaviour
 
     void ResetStat() 
     {
+
         switch (upgradeInfo.type)
         {
             case UpgradeInfo.upgradeType.Attack:
                 _player.Attack -= _myValue;
-                _myValue = 0f;
-                SetUI(myUI.level, myUI.value, upgradeInfo.level, _myValue, upgradeInfo.incValue, "공격력");
+                ResetUI(myUI.level, myUI.value, 0f, upgradeInfo.incValue, "공격력");
                 break;
 
             case UpgradeInfo.upgradeType.AttackSpeed:
                 _player.AttackSpeed -= _myValue;
-                _myValue = 0f;
-                SetUI(myUI.level, myUI.value, upgradeInfo.level, _myValue, upgradeInfo.incValue, "공격속도");
+                ResetUI(myUI.level, myUI.value, 0f, upgradeInfo.incValue, "공격속도");
                 break;
 
             case UpgradeInfo.upgradeType.Critical:
                 _player.Critical -= _myValue;
-                _myValue = 0f;
-                SetUI(myUI.level, myUI.value, upgradeInfo.level, _myValue, upgradeInfo.incValue, "크리티컬 확률");
+                ResetUI(myUI.level, myUI.value, 0f, upgradeInfo.incValue, "크리티컬 확률");
                 break;
 
             case UpgradeInfo.upgradeType.MaxHp:
                 _player.MaxHp -= _myValue;
-                _myValue = 0f;
-                SetUI(myUI.level, myUI.value, upgradeInfo.level, _myValue, upgradeInfo.incValue, "체력");
+                ResetUI(myUI.level, myUI.value, 0f, upgradeInfo.incValue, "체력");
                 break;
 
             case UpgradeInfo.upgradeType.HpRegen:
                 _player.HpRegen -= _myValue;
-                _myValue = 0f;
-                SetUI(myUI.level, myUI.value, upgradeInfo.level, _myValue, upgradeInfo.incValue, "체력 재생속도");
+                ResetUI(myUI.level, myUI.value, 0f, upgradeInfo.incValue, "체력 재생속도");
                 break;
 
             case UpgradeInfo.upgradeType.Defense:
                 _player.Defense -= _myValue;
-                _myValue = 0f;
-                SetUI(myUI.level, myUI.value, upgradeInfo.level, _myValue, upgradeInfo.incValue, "방어력");
+                ResetUI(myUI.level, myUI.value, 0f, upgradeInfo.incValue, "방어력");
                 break;
 
             case UpgradeInfo.upgradeType.MaxMp:
                 _player.MaxMp -= _myValue;
-                _myValue = 0f;
-                SetUI(myUI.level, myUI.value, upgradeInfo.level, _myValue, upgradeInfo.incValue, "마나");
+                ResetUI(myUI.level, myUI.value, 0f, upgradeInfo.incValue, "마나");
                 break;
 
             case UpgradeInfo.upgradeType.MpRegen: 
                 _player.MpRegen -= _myValue;
-                _myValue = 0f;
-                SetUI(myUI.level, myUI.value, upgradeInfo.level, _myValue, upgradeInfo.incValue, "마나 재생속도");
+                ResetUI(myUI.level, myUI.value, 0f, upgradeInfo.incValue, "마나 재생속도");
                 break;
         }
+
+        if(upgradeInfo.level > 0){
+            _player.LvPoint += upgradeInfo.level;
+            _myValue = 0f;
+            upgradeInfo.level = 0;
+        }
+    }
+
+    void ResetUI(Text level, Text value ,float initValue ,float increase, string name)
+    {
+                //UI 세팅
+        if (name == "크리티컬 확률")
+        {
+            level.text = $"Lv1 {name}";
+            value.text = initValue.ToString() + "%" + " -> " + (initValue + increase).ToString() + "%";
+            return;
+        }
+
+        else if(name == "체력 재생속도" || name =="마나 재생속도")
+        {
+            level.text = $"Lv1 {name}";;
+            value.text = "초당 " + Math.Round(initValue, 1).ToString() + " -> " + Math.Round((initValue + increase), 1).ToString();
+            return;
+        }
+
+        level.text = $"Lv1 {name}";
+        value.text = Math.Round(initValue, 1).ToString() + " -> " + Math.Round(initValue + increase, 1).ToString();
     }
 }
