@@ -1,5 +1,4 @@
 using System;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -170,6 +169,12 @@ public class LevelUpgrade : MonoBehaviour
 
     void ResetStat() 
     {
+        // 플레이어의 골드가 충분하면 초기화 진행
+        if(_player.Gold >= 3000) {
+            _player.Gold -= 3000;
+        }
+
+        else return;
 
         switch (upgradeInfo.type)
         {
