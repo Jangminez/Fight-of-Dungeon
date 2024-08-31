@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class TabBtn : MonoBehaviour
 {
-    private enum Tabs { Weapon, Armor, Potion};
+    private enum Tabs { Weapon, Armor, Potion, Gold, Level};
     [SerializeField] Tabs _tab;
 
     private Button _myBtn;
@@ -29,7 +29,7 @@ public class TabBtn : MonoBehaviour
         _onColor = new Color32(152, 178, 221, 255);
         _offColor = new Color32(152, 152, 152, 255);
 
-        if (_tab == Tabs.Weapon)
+        if (_tab == Tabs.Weapon || _tab == Tabs.Gold)
         {
             _cb.normalColor = _onColor;
             _myBtn.colors = _cb;

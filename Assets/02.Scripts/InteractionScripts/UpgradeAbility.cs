@@ -1,10 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics.Tracing;
-using Unity.VisualScripting;
-using UnityEditor;
-using UnityEditor.Tilemaps;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -150,7 +144,7 @@ public class UpgradeAbility : MonoBehaviour
 
     private void SetUI(Text level, Text value, Text cost, int Lv ,float initValue ,float increase, float costInc, string name)
     {
-        //UI ����
+        //UI 세팅
         if (name == "크리티컬 확률")
         {
             level.text = "Lv" + (Lv + 1).ToString() + " " + name;

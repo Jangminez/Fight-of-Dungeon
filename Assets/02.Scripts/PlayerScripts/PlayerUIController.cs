@@ -14,6 +14,7 @@ public class PlayerUIController : MonoBehaviour
     [Header("Level & EXP")]
     [SerializeField] private Slider _expBar;
     [SerializeField] private Text _levelText;
+    [SerializeField] private Text _lvPoint;
     [Space(10f)]
     [Header("Gold")]
     [SerializeField] private Text _goldText;
@@ -65,5 +66,12 @@ public class PlayerUIController : MonoBehaviour
     {
         if (_player != null)
             _RespawnUI.gameObject.SetActive(true);
+    }
+
+    // 레벨 포인트 값이 변경되면 UI 값 변경
+    public void LvPointChange() 
+    {
+        if(_player != null)
+            _lvPoint.text = _player.LvPoint.ToString();
     }
 }

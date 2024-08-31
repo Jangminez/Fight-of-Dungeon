@@ -54,6 +54,7 @@ public abstract class Player : MonoBehaviour
 
     [SerializeField] private float _exp;
     [SerializeField] private float _nextExp;
+    [SerializeField] private int _lvPoint;
 
     [Space(10f)]
     [SerializeField] private int _gold;
@@ -236,6 +237,19 @@ public abstract class Player : MonoBehaviour
         get => _exp;
     }
 
+    public int LvPoint
+    {
+        set 
+        {
+            if(LvPoint != value)
+            {
+                _lvPoint = Mathf.Max(0, value);
+                GetComponent<PlayerUIController>().LvPointChange();
+            }
+        }
+        get => _lvPoint;
+    }
+
     public int Level
     {
         set
@@ -410,6 +424,7 @@ public abstract class Player : MonoBehaviour
         NextExp *= 1.5f;
 
         Level += 1;
+        LvPoint += 5;
 
         GetComponent<PlayerUIController>().ExpChanged();
 
@@ -417,7 +432,6 @@ public abstract class Player : MonoBehaviour
         {
             LevelUp();
         }
-
     }
 
     IEnumerator Regen()
