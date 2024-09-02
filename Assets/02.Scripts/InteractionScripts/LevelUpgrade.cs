@@ -170,11 +170,13 @@ public class LevelUpgrade : MonoBehaviour
     void ResetStat() 
     {
         // 플레이어의 골드가 충분하면 초기화 진행
-        if(_player.Gold >= 3000) {
+        if(_player.Gold >= 3000 && upgradeInfo.type == UpgradeInfo.upgradeType.Attack) {
             _player.Gold -= 3000;
         }
 
-        else return;
+        else if(_player.Gold < 3000){
+            return;
+        }
 
         switch (upgradeInfo.type)
         {
