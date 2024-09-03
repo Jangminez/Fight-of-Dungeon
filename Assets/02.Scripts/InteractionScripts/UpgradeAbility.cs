@@ -143,7 +143,7 @@ public class UpgradeAbility : MonoBehaviour
 
     private void SetUI(Text level, Text value, Text cost, int Lv ,float initValue ,float increase, float costInc, string name)
     {
-        //UI 세팅
+        //현재 값과 다음에 증가된 값을 UI에 표시
         if (name == "크리티컬 확률")
         {
             level.text = $"Lv{Lv + 1} {name}";
