@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class Equipment : MonoBehaviour
@@ -32,160 +33,92 @@ public class Equipment : MonoBehaviour
     // 장비 장착 시
     public void EquipmentItem()
     {
-        if(_item.calType == ScriptableItem.CalType.Plus){
-            switch(_item.valueType)
-            {
-                case ScriptableItem.ValueType.Attack:
-                    GameManager.Instance.player.Attack += _item.incValue;
-                break;
-
-                case ScriptableItem.ValueType.AttackSpeed:
-                    GameManager.Instance.player.AttackSpeed += _item.incValue;
-                break;
-
-                case ScriptableItem.ValueType.Critical:
-                    GameManager.Instance.player.Critical += _item.incValue;
-                break;
-
-                case ScriptableItem.ValueType.Defense:
-                    GameManager.Instance.player.Defense += _item.incValue;
-                break;
-
-                case ScriptableItem.ValueType.Hp:
-                    GameManager.Instance.player.MaxHp += _item.incValue;
-                break;
-
-                case ScriptableItem.ValueType.HpRegen:
-                    GameManager.Instance.player.HpRegen += _item.incValue;
-                break;
-
-                case ScriptableItem.ValueType.Mp:
-                    GameManager.Instance.player.MaxMp += _item.incValue;
-                break;
-
-                case ScriptableItem.ValueType.MpRegen:
-                    GameManager.Instance.player.MpRegen += _item.incValue;
-                break;
-            }
-        }
-
-        else if(_item.calType == ScriptableItem.CalType.Percentage){
-            switch(_item.valueType)
-            {
-                case ScriptableItem.ValueType.Attack:
-                    GameManager.Instance.player.AttackBonus += _item.incValue;
-                break;
-
-                case ScriptableItem.ValueType.AttackSpeed:
-                    GameManager.Instance.player.AsBonus += _item.incValue;
-                break;
-
-                case ScriptableItem.ValueType.Critical:
-                    Debug.Log("Wrong Setting!!");
-                break;
-
-                case ScriptableItem.ValueType.Defense:
-                    GameManager.Instance.player.DefenseBonus += _item.incValue;
-                break;
-
-                case ScriptableItem.ValueType.Hp:
-                    GameManager.Instance.player.HpBonus += _item.incValue;
-                break;
-
-                case ScriptableItem.ValueType.HpRegen:
-                    GameManager.Instance.player.HpRegenBonus += _item.incValue;
-                break;
-
-                case ScriptableItem.ValueType.Mp:
-                    GameManager.Instance.player.MpBonus += _item.incValue;
-                 break;
-
-                case ScriptableItem.ValueType.MpRegen:
-                    GameManager.Instance.player.MpRegenBonus += _item.incValue;
-                break;
-            }
+        // 아이템 장착
+        foreach(var stat in _item.stats)
+        {
+            ApplyStat(stat.Key.Item1,stat.Key.Item2, stat.Value, true);
         }
     }
 
     // 장비 해제 시
     public void UnEquipmentItem()
     {
-        if(_item.calType == ScriptableItem.CalType.Plus){
-            switch(_item.valueType)
-            {
-                case ScriptableItem.ValueType.Attack:
-                    GameManager.Instance.player.Attack -= _item.incValue;
-                break;
-
-                case ScriptableItem.ValueType.AttackSpeed:
-                    GameManager.Instance.player.AttackSpeed -= _item.incValue;
-                break;
-
-                case ScriptableItem.ValueType.Critical:
-                    GameManager.Instance.player.Critical -= _item.incValue;
-                break;
-
-                case ScriptableItem.ValueType.Defense:
-                    GameManager.Instance.player.Defense -= _item.incValue;
-                break;
-
-                case ScriptableItem.ValueType.Hp:
-                    GameManager.Instance.player.MaxHp -= _item.incValue;
-                break;
-
-                case ScriptableItem.ValueType.HpRegen:
-                    GameManager.Instance.player.HpRegen -= _item.incValue;
-                break;
-
-                case ScriptableItem.ValueType.Mp:
-                    GameManager.Instance.player.MaxMp -= _item.incValue;
-                break;
-
-                case ScriptableItem.ValueType.MpRegen:
-                    GameManager.Instance.player.MpRegen -= _item.incValue;
-                break;
-            }
+        // 아이템 해제 후 UI 인벤토리 슬롯에 존재하는 오브젝트 파괴
+        foreach(var stat in _item.stats)
+        {
+            ApplyStat(stat.Key.Item1,stat.Key.Item2, stat.Value, false);
         }
 
-        else if(_item.calType == ScriptableItem.CalType.Percentage){
-            switch(_item.valueType)
+        Destroy(gameObject);
+    }
+
+    // 스탯 적용 값의 타입 & 계산 타입 & 착용 여부 확인 후 적용
+    private void ApplyStat(ScriptableItem.ValueType valueType, ScriptableItem.CalType calType, float value, bool isEquip)
+    {
+        // 장착 시 +, 해제 시 - 로 계산
+        int multiplier = isEquip ? 1 : -1; 
+
+        // 각 타입 확인 후 플레이어에게 적용
+        if (calType == ScriptableItem.CalType.Plus)
+        {
+            switch (valueType)
             {
                 case ScriptableItem.ValueType.Attack:
-                    GameManager.Instance.player.AttackBonus -= _item.incValue;
-                break;
-
+                    GameManager.Instance.player.Attack += multiplier * value;
+                    break;
                 case ScriptableItem.ValueType.AttackSpeed:
-                    GameManager.Instance.player.AsBonus -= _item.incValue;
-                break;
-
+                    GameManager.Instance.player.AttackSpeed += multiplier * value;
+                    break;
+                case ScriptableItem.ValueType.Critical:
+                    GameManager.Instance.player.Critical += multiplier * value;
+                    break;
+                case ScriptableItem.ValueType.Defense:
+                    GameManager.Instance.player.Defense += multiplier * value;
+                    break;
+                case ScriptableItem.ValueType.Hp:
+                    GameManager.Instance.player.MaxHp += multiplier * value;
+                    break;
+                case ScriptableItem.ValueType.HpRegen:
+                    GameManager.Instance.player.HpRegen += multiplier * value;
+                    break;
+                case ScriptableItem.ValueType.Mp:
+                    GameManager.Instance.player.MaxMp += multiplier * value;
+                    break;
+                case ScriptableItem.ValueType.MpRegen:
+                    GameManager.Instance.player.MpRegen += multiplier * value;
+                    break;
+            }
+        }
+        else if (calType == ScriptableItem.CalType.Percentage)
+        {
+            switch (valueType)
+            {
+                case ScriptableItem.ValueType.Attack:
+                    GameManager.Instance.player.AttackBonus += multiplier * value;
+                    break;
+                case ScriptableItem.ValueType.AttackSpeed:
+                    GameManager.Instance.player.AsBonus += multiplier * value;
+                    break;
                 case ScriptableItem.ValueType.Critical:
                     Debug.Log("Wrong Setting!!");
-                break;
-
+                    break;
                 case ScriptableItem.ValueType.Defense:
-                    GameManager.Instance.player.DefenseBonus -= _item.incValue;
-                break;
-
+                    GameManager.Instance.player.DefenseBonus += multiplier * value;
+                    break;
                 case ScriptableItem.ValueType.Hp:
-                    GameManager.Instance.player.HpBonus -= _item.incValue;
-                break;
-
+                    GameManager.Instance.player.HpBonus += multiplier * value;
+                    break;
                 case ScriptableItem.ValueType.HpRegen:
-                    GameManager.Instance.player.HpRegenBonus -= _item.incValue;
-                break;
-
+                    GameManager.Instance.player.HpRegenBonus += multiplier * value;
+                    break;
                 case ScriptableItem.ValueType.Mp:
-                    GameManager.Instance.player.MpBonus -= _item.incValue;
-                    
-                 break;
-
+                    GameManager.Instance.player.MpBonus += multiplier * value;
+                    break;
                 case ScriptableItem.ValueType.MpRegen:
-                    GameManager.Instance.player.MpRegenBonus -= _item.incValue;
-                break;
+                    GameManager.Instance.player.MpRegenBonus += multiplier * value;
+                    break;
             }
         }
-
-        Destroy(this.gameObject);
     }
 
     // 슬롯 버튼 클릭시

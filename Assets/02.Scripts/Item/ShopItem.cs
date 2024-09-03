@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -51,47 +53,63 @@ public class ShopItem : MonoBehaviour
             _information.GetChild(5).GetComponent<Text>().text = "";
         }
 
-        // 아이템 능력치 UI
-        switch(_myItem.valueType)
+        List<string> itemStats = new List<string>();
+
+        foreach(var stat in _myItem.stats)
         {
-            case ScriptableItem.ValueType.Attack:
-                _information.GetChild(2).GetComponent<Text>().text = $"공격력 +{_myItem.incValue}";
-                break;
-
-            case ScriptableItem.ValueType.AttackSpeed:
-                _information.GetChild(2).GetComponent<Text>().text = $"공격속도 +{_myItem.incValue}";
-                break;
-
-            case ScriptableItem.ValueType.Critical:
-                _information.GetChild(2).GetComponent<Text>().text = $"크리티컬 확률 +{_myItem.incValue}";
-                break;
-
-            case ScriptableItem.ValueType.Defense:
-                _information.GetChild(2).GetComponent<Text>().text = $"방어력 +{_myItem.incValue}";
-                break;
-
-            case ScriptableItem.ValueType.Hp:
-                _information.GetChild(2).GetComponent<Text>().text = $"체력 +{_myItem.incValue}";
-                break;
-
-            case ScriptableItem.ValueType.HpRegen:
-                _information.GetChild(2).GetComponent<Text>().text = $"체력 재생속도 +{_myItem.incValue}";
-                break;
-
-            case ScriptableItem.ValueType.Mp:
-                _information.GetChild(2).GetComponent<Text>().text = $"마나 +{_myItem.incValue}";
-                break;
-
-            case ScriptableItem.ValueType.MpRegen:
-                _information.GetChild(2).GetComponent<Text>().text = $"마나 재생속도 +{_myItem.incValue}";
-                break;
+            itemStats.Add(StatText(stat.Key.Item1, stat.Key.Item2, stat.Value));
         }
 
-        if(_myItem.calType == ScriptableItem.CalType.Percentage)
-        {
-            _information.GetChild(2).GetComponent<Text>().text += "%";
-        }
+        _information.GetChild(2).GetComponent<Text>().text = string.Join("\n", itemStats);
     }
+    
+    string StatText(ScriptableItem.ValueType valueType, ScriptableItem.CalType calType, float value)
+    {
+        string statText = "";
+
+            switch (valueType)
+            {
+                case ScriptableItem.ValueType.Attack:
+                statText = $"공격력 +{value}";
+                break;
+
+                case ScriptableItem.ValueType.AttackSpeed:
+                statText = $"공격속도 +{value}";
+                break;
+
+                case ScriptableItem.ValueType.Critical:
+                statText = $"크리티컬 확률 +{value}%";
+                break;
+
+                case ScriptableItem.ValueType.Defense:
+                statText = $"방어력 +{value}";
+                break;
+
+                case ScriptableItem.ValueType.Hp:
+                statText = $"체력 +{value}";
+                break;
+
+                case ScriptableItem.ValueType.HpRegen:
+                statText = $"체력 재생 +{value}";
+                break;
+
+                case ScriptableItem.ValueType.Mp:
+                statText = $"마나 +{value}";
+                break;
+
+                case ScriptableItem.ValueType.MpRegen:
+                statText = $"마나 재생 +{value}";
+                break;
+            }
+
+    if (calType == ScriptableItem.CalType.Percentage)
+    {
+        statText += "%";
+    }
+
+    return statText;
+    }
+
     void BuyItem()
     {
         // 플레이어의 골드가 충분하다면 구매
