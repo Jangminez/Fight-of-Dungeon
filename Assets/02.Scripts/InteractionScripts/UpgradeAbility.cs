@@ -60,7 +60,6 @@ public class UpgradeAbility : MonoBehaviour
                 break;
 
             case UpgradeInfo.upgradeType.Critical:
-                _player.Critical += upgradeInfo.incValue;
                 SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.Critical, upgradeInfo.incValue, 1, "크리티컬 확률");
                 break;
 

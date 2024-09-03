@@ -63,7 +63,6 @@ public class LevelUpgrade : MonoBehaviour
                 break;
 
             case UpgradeInfo.upgradeType.Critical:
-                _player.Critical += upgradeInfo.incValue;
                 SetUI(myUI.level, myUI.value, upgradeInfo.level, _myValue, upgradeInfo.incValue, "크리티컬 확률");
                 break;
 
