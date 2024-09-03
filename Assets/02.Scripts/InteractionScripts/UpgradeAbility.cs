@@ -146,22 +146,22 @@ public class UpgradeAbility : MonoBehaviour
         //UI 세팅
         if (name == "크리티컬 확률")
         {
-            level.text = "Lv" + (Lv + 1).ToString() + " " + name;
-            value.text = initValue.ToString() + "%" + " -> " + (initValue + increase).ToString() + "%";
-            cost.text = Mathf.Round((float.Parse(cost.text) * costInc)).ToString();
+            level.text = $"Lv{Lv + 1} {name}";
+            value.text = $"{initValue}% -> {initValue + increase}%";
+            cost.text = $"{Mathf.Round(float.Parse(cost.text) * costInc)}";
             return;
         }
 
         else if(name == "체력 재생속도" || name =="마나 재생속도")
         {
-            level.text = "Lv" + (Lv + 1).ToString() + " " + name;
-            value.text = "초당 " + Math.Round(initValue, 1).ToString() + " -> " + Math.Round((initValue + increase), 1).ToString();
-            cost.text = Mathf.Round((float.Parse(cost.text) * costInc)).ToString();
+            level.text = $"Lv{Lv + 1} {name}";
+            value.text = $"초당 {Math.Round(initValue, 1)} -> {Math.Round(initValue + increase, 1)}";
+            cost.text = $"{Mathf.Round(float.Parse(cost.text) * costInc)}";
             return;
         }
 
-        level.text = "Lv" + (Lv + 1 ).ToString() + " " + name;
-        value.text = Math.Round(initValue, 1).ToString() + " -> " + Math.Round(initValue + increase,1).ToString();
-        cost.text = Mathf.Round((float.Parse(cost.text) * costInc)).ToString();
+        level.text = $"Lv{Lv + 1} {name}";
+        value.text = $"{Math.Round(initValue, 1)} -> {Math.Round(initValue + increase,1)}";
+        cost.text = $"{Mathf.Round(float.Parse(cost.text) * costInc)}";
     }
 }
