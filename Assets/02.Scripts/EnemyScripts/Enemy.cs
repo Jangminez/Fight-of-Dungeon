@@ -58,7 +58,7 @@ public abstract class Enemy : MonoBehaviour
 
     private void Awake()
     {
-        spr = GetComponent<SpriteRenderer>();
+        //spr = GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();    
         _target = GameObject.FindWithTag("Player").GetComponent<Rigidbody2D>();
@@ -175,9 +175,9 @@ public abstract class Enemy : MonoBehaviour
 
     IEnumerator HitEffect()
     {
-        spr.color = Color.red;
+        //spr.color = Color.red;
         yield return new WaitForSeconds(0.1f);
-        spr.color = Color.white;
+        //spr.color = Color.white;
     }
 
     public virtual void Die()
