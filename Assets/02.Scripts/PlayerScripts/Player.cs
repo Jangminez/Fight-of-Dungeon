@@ -1,6 +1,9 @@
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 
 public abstract class Player : MonoBehaviour
 {
@@ -8,7 +11,7 @@ public abstract class Player : MonoBehaviour
     protected Rigidbody2D _playerRig;
 
     protected Animator _animator;
-
+    #region 플레이어 스탯 변수
     [Header("Player Stats")]
     [SerializeField] private float _maxHp;
     [SerializeField] private float _hp;
@@ -57,10 +60,12 @@ public abstract class Player : MonoBehaviour
     public Transform _target;
     [Space(10f)]
     public Transform _spawnPoint;
+
+    #endregion
     // 플레이어 초기화 함수
     abstract protected void SetCharater();
 
-    #region 플레이어 스탯
+    #region 플레이어 스탯 프로퍼티
     public float MaxHp
     {
         set
@@ -380,9 +385,45 @@ public abstract class Player : MonoBehaviour
 
     IEnumerator HitEffect()
     {
-        //this.GetComponent<SpriteRenderer>().color = Color.red;
+        SPUM_SpriteList spumList = transform.GetChild(0).GetComponent<SPUM_SpriteList>();
+        List<SpriteRenderer> itemList = spumList._itemList;
+        List<SpriteRenderer> armorList = spumList._armorList;
+        List<SpriteRenderer> bodyList = spumList._bodyList;
+
+        // 캐릭터의 Hair 색은 변경하지않음
+        var filterItemList = itemList.Skip(2).ToList();
+
+        foreach(var item in filterItemList)
+        {
+            item.color = Color.red;
+        }
+
+        foreach(var armor in armorList)
+        {
+            armor.color = Color.red;
+        }
+
+        foreach(var body in bodyList)
+        {
+            body.color = Color.red;
+        }
+
         yield return new WaitForSeconds(0.2f);
-        //this.GetComponent<SpriteRenderer>().color = Color.white;
+
+        foreach(var item in filterItemList)
+        {
+            item.color = Color.white;
+        } 
+
+        foreach(var armor in armorList)
+        {
+            armor.color = Color.white;
+        }
+
+        foreach(var body in bodyList)
+        {
+            body.color = Color.white;
+        }
     }
 
     [ContextMenu("Die")]
@@ -393,12 +434,12 @@ public abstract class Player : MonoBehaviour
         _target = null;
 
         _animator.SetTrigger("Die");
-        // ���� X, �浹 X
+        // 사망시 이동 입력, 충돌, 공격 정지
         this.GetComponent<PlayerInput>().enabled = false;
         this.GetComponent<Collider2D>().enabled = false;
         this.GetComponent<PlayerFindTarget>().enabled = false;
-        // ĳ���� ȿ��
 
+        // 체력, 마나 재생 정지 & 리스폰 기능 활성화
         StopCoroutine("Regen");
         StartCoroutine("Respawn");
     }

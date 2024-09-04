@@ -41,6 +41,7 @@ public class PlayerAttackController : MonoBehaviour
                 _isAttack= false;
                 yield break;
             }
+            // 공격 애니메이션
             _anim.SetFloat("AttackState", 0f);
             _anim.SetFloat("NormalState", 0f);
             _anim.SetTrigger("Attack");
