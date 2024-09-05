@@ -6,13 +6,14 @@ using UnityEngine;
 public abstract class Enemy : MonoBehaviour
 {
     protected SpriteRenderer spr;
-    private Rigidbody2D rb;
+    protected Rigidbody2D rb;
     protected Animator anim;
     public Vector3 _initTransform;
     public enum States { Idle, Chase, Attack, Return, Die}
     public States state;
 
     public Rigidbody2D _target;
+    protected bool _isAttack;
 
     public GameObject FloatingDamagePrefab;
     public GameObject FloatingGoldExpPrefab;
@@ -27,6 +28,8 @@ public abstract class Enemy : MonoBehaviour
         public float attackSpeed;
         public float defense;
         public float speed;
+        public float attackRange;
+        public float chaseRange;
         public float exp;
         public int gold;
         public bool isDie;
@@ -64,6 +67,18 @@ public abstract class Enemy : MonoBehaviour
         _target = GameObject.FindWithTag("Player").GetComponent<Rigidbody2D>();
     }
 
+    void LateUpdate()
+    {
+        Movement_Anim();
+
+        if(!_isAttack && state == States.Attack)
+        {
+            _isAttack = true;
+            anim.SetFloat("AttackSpeed", stat.attackSpeed);
+            StartCoroutine("EnemyAttack");
+        }    
+    }
+
     IEnumerator MonsterState()
     {
         while (!stat.isDie)
@@ -76,7 +91,7 @@ public abstract class Enemy : MonoBehaviour
 
                 rb.velocity = Vector2.zero;
 
-                if (Vector2.Distance(_target.position, rb.position) < 5f && !stat.isDie)
+                if (Vector2.Distance(_target.position, rb.position) < stat.chaseRange && !stat.isDie)
                 {
                     timer = 0f;
                     state = States.Chase;
@@ -94,17 +109,15 @@ public abstract class Enemy : MonoBehaviour
             else if (state == States.Chase)
             {
                 // 타겟의 위치 확인 후 이동
-                Vector2 dirVec = _target.position - rb.position;
-                Vector2 nextVec = dirVec.normalized * stat.speed * Time.fixedDeltaTime;
+                Movement();
+                SetDirection();
 
-                rb.MovePosition(rb.position + nextVec);
-
-                if (Vector2.Distance(_target.position, rb.position) < 2f && !stat.isDie)
+                if (Vector2.Distance(_target.position, rb.position) < stat.attackRange && !stat.isDie)
                 {
                     state = States.Attack;
                 }
 
-                else if (Vector2.Distance(_target.position, rb.position) > 5f && !stat.isDie)
+                else if (Vector2.Distance(_target.position, rb.position) > stat.chaseRange && !stat.isDie)
                 {
                     state = States.Idle;
                 }
@@ -113,14 +126,13 @@ public abstract class Enemy : MonoBehaviour
 
             else if (state == States.Attack)
             {
-                anim.SetTrigger("Attack");
-
-                if (Vector2.Distance(_target.position, rb.position) > 2f && !stat.isDie)
+                if (Vector2.Distance(_target.position, rb.position) > stat.attackRange && !stat.isDie)
                 {
                     state = States.Chase;
                 }
             }
 
+            // 초기위치로 돌아감
             else if (state == States.Return)
             {
                 Vector3 dirVec = _initTransform - this.transform.position;
@@ -139,64 +151,26 @@ public abstract class Enemy : MonoBehaviour
                 state = States.Return;
             }
         }
-        Die();
-
     }
     // 몬스터 초기화 함수
     public abstract void InitMonster();
+    public abstract void Hit(float damage);
+    public abstract IEnumerator HitEffect();
+    public abstract void Die();
+
+    public virtual void Movement()
+    {
+        Vector2 dirVec = _target.position - rb.position;
+        Vector2 nextVec = dirVec.normalized * stat.speed * Time.fixedDeltaTime;
+
+        rb.MovePosition(rb.position + nextVec);
+    }
+    public abstract void Movement_Anim();
+
+    public abstract IEnumerator EnemyAttack();
 
 
     #region 몬스터 피격 및 사망 이벤트
-    public virtual void Hit(float damage)
-    {
-        float finalDamage = damage - stat.defense;
-        if (finalDamage < 0f)
-        {
-            finalDamage = 1f;
-        }
-
-        Hp -= finalDamage;
-
-        if(FloatingDamagePrefab != null && stat.hp > 0){
-            ShowFloatingDamage(finalDamage);
-        }
-
-        StartCoroutine("HitEffect");
-        anim.SetTrigger("Hit");
-
-        if (stat.hp <= 0)
-        {
-            StopAllCoroutines();
-
-            anim.SetTrigger("Die");
-            Die();
-        }
-    }
-
-    IEnumerator HitEffect()
-    {
-        //spr.color = Color.red;
-        yield return new WaitForSeconds(0.1f);
-        //spr.color = Color.white;
-    }
-
-    public virtual void Die()
-    {
-        Hp = 0f;
-        stat.isDie = true;
-
-        state = States.Die;
-        GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-        GetComponent<Collider2D>().enabled = false;
-        spr.color = Color.gray;
-
-
-        GiveExpGold(GameManager.Instance.player);
-        ShowGoldExp();
-
-        Invoke("InitMonster", 10f);
-
-    }
 
     public virtual void GiveExpGold(Player player)
     {
@@ -206,20 +180,36 @@ public abstract class Enemy : MonoBehaviour
 
     #endregion
 
+        void SetDirection()
+    {
+        if(_target.position.x - rb.position.x > 0)
+        {
+            anim.transform.localScale = new Vector3(-1f, 1f, 1);
+        }
+
+        else if (_target.position.x - rb.position.x < 0)
+        {
+            anim.transform.localScale = new Vector3(1f, 1f, 1);
+        }
+    }
     virtual public void OutofArea()
     {
         state = States.Return;
     }
 
-    void ShowFloatingDamage(float damage) 
+    public virtual void ShowFloatingDamage(float damage) 
     {
-        var dmg = Instantiate(FloatingDamagePrefab, transform.position, Quaternion.identity, transform);
-        dmg.GetComponent<TextMesh>().text = $"-{damage.ToString()}";
+        var dmg = Instantiate(FloatingDamagePrefab, transform.position, Quaternion.identity);
+        dmg.transform.position = transform.position;
+        dmg.GetComponent<TextMesh>().text = $"-{damage}";
     }
 
-    void ShowGoldExp()
+    public virtual void ShowGoldExp()
     {
-        var floating = Instantiate(FloatingGoldExpPrefab, transform.position, Quaternion.identity, transform);
+        var floating = Instantiate(FloatingGoldExpPrefab, transform.position, Quaternion.identity);
+        floating.transform.localPosition = transform.position;
         floating.GetComponent<TextMesh>().text = $"+{stat.exp}Exp\n+{stat.gold}Gold";
     }
 }
+
+

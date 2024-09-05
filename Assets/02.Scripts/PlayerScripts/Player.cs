@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UIElements;
 
 public abstract class Player : MonoBehaviour
 {
@@ -89,9 +88,15 @@ public abstract class Player : MonoBehaviour
     {
         set
         {
-            if (value >= 0 && value <= FinalHp && _hp != value)
+            if (_hp != value)
             {
                 _hp = Mathf.Max(0, value);
+                GetComponent<PlayerUIController>().HpChanged();
+            }
+
+            else if(value >= FinalHp)
+            {
+                _hp = FinalHp;
                 GetComponent<PlayerUIController>().HpChanged();
             }
 
@@ -139,10 +144,15 @@ public abstract class Player : MonoBehaviour
     {
         set
         {
-            if (value >= 0 && value <= FinalMp && _mp != value)
+            if (_mp != value)
             {
                 _mp = Mathf.Max(0, value);
                 GetComponent<PlayerUIController>().MpChanged();
+            }
+
+            else if (value > FinalMp)
+            {
+                _mp = FinalMp;
             }
         }
         get => _mp;
@@ -366,11 +376,11 @@ public abstract class Player : MonoBehaviour
         if (Die)
             return;
 
-        float finalDm = damage - FinalDefense;
-        if(finalDm <= 0)
-            finalDm = 1;
+        float finalDamage = damage - FinalDefense;
+        if(finalDamage <= 0)
+            finalDamage = 1;
 
-        Hp -= finalDm;
+        Hp -= finalDamage;
 
         if (Hp == 0f)
         {

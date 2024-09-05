@@ -1,12 +1,13 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Slime : Enemy
 {
+
     private void Start()
     {
         InitMonster();
+        spr = GetComponent<SpriteRenderer>();
     }
 
     public override void InitMonster()
@@ -17,6 +18,7 @@ public class Slime : Enemy
         else
         {
             transform.position = _initTransform;
+            _isAttack = false;
             GetComponent<Rigidbody2D>().velocity = Vector2.zero;
             GetComponent<Collider2D>().enabled = true;
             spr.color = Color.white;
@@ -28,10 +30,12 @@ public class Slime : Enemy
         Hp = stat.maxHp;
 
         stat.attack = 5f;
+        stat.attackRange = 2f;
         stat.attackSpeed = 1.5f;
 
         stat.defense = 1f;
 
+        stat.chaseRange = 5f;
         stat.speed = 1f;
 
         stat.exp = 10f;
@@ -41,4 +45,77 @@ public class Slime : Enemy
 
         StartCoroutine("MonsterState");
     }
+
+    public override IEnumerator EnemyAttack()
+    {
+        while(_isAttack)
+        {
+            anim.SetTrigger("Attack");
+            yield return new WaitForSeconds(1 / stat.attackSpeed);
+
+            if (state != States.Attack) 
+            {
+                _isAttack = false;
+                yield break;
+            }
+            
+            GameManager.Instance.player.Hit(damage: stat.attack);
+        }
+    }
+
+    public override void Hit(float damage)
+    {
+        float finalDamage = damage - stat.defense;
+        if (finalDamage < 0f)
+        {
+            finalDamage = 1f;
+        }
+
+        Hp -= finalDamage;
+
+        if(FloatingDamagePrefab != null && stat.hp > 0){
+            ShowFloatingDamage(finalDamage);
+        }
+
+        StartCoroutine("HitEffect");
+        anim.SetTrigger("Hit");
+
+        if (stat.hp <= 0)
+        {
+            StopAllCoroutines();
+
+            anim.SetTrigger("Die");
+            Die();
+        }
+    }
+
+    public override IEnumerator HitEffect()
+    {
+        spr.color = Color.gray;
+        yield return new WaitForSeconds(0.2f);
+        spr.color = Color.white;
+    }
+
+    public override void Die()
+    {
+        Hp = 0f;
+        stat.isDie = true;
+
+        state = States.Die;
+        GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+        GetComponent<Collider2D>().enabled = false;
+        spr.color = Color.gray;
+
+
+        GiveExpGold(GameManager.Instance.player);
+        ShowGoldExp();
+
+        Invoke("InitMonster", 10f);
+    }
+
+    public override void Movement_Anim()
+    {
+        
+    }
 }
+
