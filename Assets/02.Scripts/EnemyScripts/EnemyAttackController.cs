@@ -27,6 +27,8 @@ public class EnemyAttackController : MonoBehaviour
         }        
     }
 
+    
+
     IEnumerator EnemyAttack()
     {
         while(_isAttack)
@@ -44,3 +46,5 @@ public class EnemyAttackController : MonoBehaviour
 
     }
 }
+
+

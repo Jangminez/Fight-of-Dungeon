@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
@@ -26,7 +27,7 @@ public class ShopItem : MonoBehaviour
 
         // 기존 리스너 제거 후 새로 할당
         _buyBtn.onClick.RemoveAllListeners();
-        _buyBtn.onClick.AddListener(BuyItem);
+        _buyBtn.onClick.AddListener(ClickBuyButton);
     }
 
     void SetUI() 
@@ -53,6 +54,7 @@ public class ShopItem : MonoBehaviour
             _information.GetChild(5).GetComponent<Text>().text = "";
         }
 
+        // 아이템 적용 능력치 UI
         List<string> itemStats = new List<string>();
 
         foreach(var stat in _myItem.stats)
@@ -63,6 +65,7 @@ public class ShopItem : MonoBehaviour
         _information.GetChild(2).GetComponent<Text>().text = string.Join("\n", itemStats);
     }
     
+    // 아이템 효과 UI 설정
     string StatText(ScriptableItem.ValueType valueType, ScriptableItem.CalType calType, float value)
     {
         string statText = "";
@@ -110,7 +113,12 @@ public class ShopItem : MonoBehaviour
     return statText;
     }
 
-    void BuyItem()
+    void ClickBuyButton()
+    {
+        StartCoroutine(BuyItem());
+    }
+
+    IEnumerator BuyItem()
     {
         // 플레이어의 골드가 충분하다면 구매
         if(GameManager.Instance.player.Gold >= Int32.Parse(_myItem.itemCost) && _myItem.needItem.Count == 0)
@@ -142,6 +150,7 @@ public class ShopItem : MonoBehaviour
                 foreach (var item in items){
                     item.GetComponent<Equipment>().UnEquipmentItem();
                 }
+                yield return null;
                 Inventory.Instance.AddInventory(_myItem);
             }
         }
