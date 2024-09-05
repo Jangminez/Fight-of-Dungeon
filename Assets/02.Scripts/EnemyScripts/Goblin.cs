@@ -5,10 +5,14 @@ using UnityEngine;
 
 public class Goblin : Enemy
 {
+    public GameObject _arrow;
+    public Transform _tip;
     void Start()
     {
         InitMonster();
     }
+
+    // 몬스터 초기화
     public override void InitMonster()
     {
         if (!stat.isDie)
@@ -47,6 +51,8 @@ public class Goblin : Enemy
 
         StartCoroutine("MonsterState");
     }
+
+    #region 피격 및 사망 처리
 
     public override void Hit(float damage)
     {
@@ -130,10 +136,11 @@ public class Goblin : Enemy
 
         Invoke("InitMonster", 10f);
     }
-
+    #endregion
+    // 이동 애니메이션
     public override void Movement_Anim()
     {
-        if(state == States.Chase)
+        if(state == States.Chase || state == States.Return)
         {
             anim.SetFloat("RunState", 0.5f);
         }
@@ -146,19 +153,29 @@ public class Goblin : Enemy
 
     public override IEnumerator EnemyAttack()
     {
-
         while(_isAttack)
         {
             anim.SetTrigger("Attack");
             yield return new WaitForSeconds(1 / stat.attackSpeed);
 
-            if (state != States.Attack) 
+            GameObject arrow = Instantiate(_arrow, _tip.transform.position, Quaternion.identity);
+            arrow.GetComponent<EnemyArrow>()._enemy = this;
+            Vector3 direction = (_target.position - rb.position).normalized;
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            arrow.transform.rotation = Quaternion.Euler(0, 0, angle);
+            //arrow.transform.rotation = Quaternion.LookRotation(-Vector3.forward, direction);
+            
+            
+            arrow.GetComponent<Rigidbody2D>().velocity = direction * 10f;
+            Destroy(arrow, 2f);
+
+            if(state != States.Attack) 
             {
                 _isAttack = false;
                 yield break;
             }
             
-            GameManager.Instance.player.Hit(damage: stat.attack);
+            //GameManager.Instance.player.Hit(damage: stat.attack);
         }
     }
 }

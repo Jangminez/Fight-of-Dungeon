@@ -135,12 +135,12 @@ public abstract class Enemy : MonoBehaviour
             // 초기위치로 돌아감
             else if (state == States.Return)
             {
-                Vector3 dirVec = _initTransform - this.transform.position;
-                Vector3 nextVec = dirVec.normalized * stat.speed * Time.fixedDeltaTime;
+                Vector2 dirVec = _initTransform - this.transform.position;
+                Vector2 nextVec = dirVec.normalized * stat.speed * Time.fixedDeltaTime;
 
-                rb.MovePosition(rb.position + new Vector2(nextVec.x, nextVec.y));
+                rb.MovePosition(rb.position + nextVec);
 
-                if (Vector3.Distance(_initTransform, this.transform.position) < 0.01f)
+                if (Vector3.Distance(_initTransform, this.transform.position) < 0.1f)
                 {
                     state = States.Idle;
                 }
