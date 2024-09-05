@@ -13,5 +13,10 @@ public class EnemyArrow : MonoBehaviour
             GameManager.Instance.player.Hit(damage: _enemy.stat.attack);
             Destroy(gameObject);
         }
+
+        else if(other.gameObject.layer == 22)
+        {
+            Destroy(gameObject);
+        }
     }
 }

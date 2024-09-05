@@ -140,7 +140,7 @@ public class Goblin : Enemy
     // 이동 애니메이션
     public override void Movement_Anim()
     {
-        if(state == States.Chase || state == States.Return)
+        if(state == States.Chase || state == States.Return && !GameManager.Instance.player.Die)
         {
             anim.SetFloat("RunState", 0.5f);
         }
