@@ -29,14 +29,14 @@ public class Goblin : Enemy
             anim.SetTrigger("Respawn");
         }
 
-        stat.maxHp = 3500f;
+        stat.maxHp = 500f;
         Hp = stat.maxHp;
 
-        stat.attack = 500f;
+        stat.attack = 0f;
         stat.attackRange = 8f;
         stat.attackSpeed = 1f;
 
-        stat.defense = 500f;
+        stat.defense = 10f;
 
         stat.speed = 1.3f;
         stat.chaseRange = 10f;
@@ -132,7 +132,6 @@ public class Goblin : Enemy
         GetComponent<Collider2D>().enabled = false;
 
         GiveExpGold(GameManager.Instance.player);
-        ShowGoldExp();
 
         Invoke("InitMonster", 10f);
     }

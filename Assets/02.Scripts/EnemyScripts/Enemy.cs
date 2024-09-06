@@ -70,7 +70,8 @@ public abstract class Enemy : MonoBehaviour
     void LateUpdate()
     {
         Movement_Anim();
-
+        
+        // 공격 여부 판정
         if(!_isAttack && state == States.Attack)
         {
             _isAttack = true;
@@ -169,16 +170,12 @@ public abstract class Enemy : MonoBehaviour
 
     public abstract IEnumerator EnemyAttack();
 
-
-    #region 몬스터 피격 및 사망 이벤트
-
     public virtual void GiveExpGold(Player player)
     {
         player.Exp += stat.exp;
         player.Gold += stat.gold;
+        ShowGoldExp();
     }
-
-    #endregion
 
         void SetDirection()
     {
@@ -200,14 +197,12 @@ public abstract class Enemy : MonoBehaviour
     public virtual void ShowFloatingDamage(float damage) 
     {
         var dmg = Instantiate(FloatingDamagePrefab, transform.position, Quaternion.identity);
-        dmg.transform.position = transform.position;
         dmg.GetComponent<TextMesh>().text = $"-{damage}";
     }
 
     public virtual void ShowGoldExp()
     {
         var floating = Instantiate(FloatingGoldExpPrefab, transform.position, Quaternion.identity);
-        floating.transform.localPosition = transform.position;
         floating.GetComponent<TextMesh>().text = $"+{stat.exp}Exp\n+{stat.gold}Gold";
     }
 }

@@ -150,6 +150,7 @@ public class ShopItem : MonoBehaviour
                 foreach (var item in items){
                     item.GetComponent<Equipment>().UnEquipmentItem();
                 }
+                // 한 프레임 쉬고 아이템 추가 장비 사라짐 방지
                 yield return null;
                 Inventory.Instance.AddInventory(_myItem);
             }

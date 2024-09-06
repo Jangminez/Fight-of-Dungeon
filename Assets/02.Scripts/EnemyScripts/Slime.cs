@@ -106,9 +106,7 @@ public class Slime : Enemy
         GetComponent<Collider2D>().enabled = false;
         spr.color = Color.gray;
 
-
         GiveExpGold(GameManager.Instance.player);
-        ShowGoldExp();
 
         Invoke("InitMonster", 10f);
     }
