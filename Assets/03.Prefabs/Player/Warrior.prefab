@@ -695,7 +695,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 11
-  m_Sprite: {fileID: 21300000, guid: 5038af1f3c850c44fa939721e7e2c3ab, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 84a6ccb39ca60eb49b6155a33d611b1d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1170,7 +1170,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 19
-  m_Sprite: {fileID: 21300000, guid: 18f705822fe215a4188840e797e8226d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: bb0a166c7f79509438d672c6043c69d5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -2411,7 +2411,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: -21
-  m_Sprite: {fileID: 21300000, guid: 649771e0fcd449c4e8c6a8bb028a2647, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e03eed09328f2413d8a7cf2a8e5d1b94, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -3578,20 +3578,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxHp: 0
   _hp: 0
-  _hpGeneration: 0
+  _hpBonus: 0
+  _hpRegen: 0
+  _hpRegenBonus: 0
   _maxMp: 0
   _mp: 0
-  _mpGeneration: 0
+  _mpBonus: 0
+  _mpRegen: 0
+  _mpRegenBonus: 0
   _attack: 0
+  _attackBonus: 0
   _attackSpeed: 0
+  _asBonus: 0
+  _finalAs: 0
   _critical: 0
   _defense: 0
+  _defenseBonus: 0
   _speed: 0
   _attackRange: 0
   _isDie: 0
   _level: 0
   _exp: 0
   _nextExp: 0
+  _lvPoint: 0
   _gold: 0
   _target: {fileID: 0}
   _spawnPoint: {fileID: 0}
@@ -3627,6 +3636,7 @@ MonoBehaviour:
   _mpBar: {fileID: 2576999626216704276}
   _expBar: {fileID: 0}
   _levelText: {fileID: 0}
+  _lvPoint: {fileID: 0}
   _goldText: {fileID: 0}
   _RespawnUI: {fileID: 0}
 --- !u!114 &6844090491976370226

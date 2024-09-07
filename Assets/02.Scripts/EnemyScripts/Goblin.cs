@@ -29,14 +29,14 @@ public class Goblin : Enemy
             anim.SetTrigger("Respawn");
         }
 
-        stat.maxHp = 500f;
+        stat.maxHp = 1000f;
         Hp = stat.maxHp;
 
-        stat.attack = 0f;
-        stat.attackRange = 8f;
+        stat.attack = 300f;
+        stat.attackRange = 7f;
         stat.attackSpeed = 1f;
 
-        stat.defense = 10f;
+        stat.defense = 100f;
 
         stat.speed = 1.3f;
         stat.chaseRange = 10f;

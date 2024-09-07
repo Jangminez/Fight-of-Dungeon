@@ -203,7 +203,7 @@ public abstract class Enemy : MonoBehaviour
     public virtual void ShowGoldExp()
     {
         var floating = Instantiate(FloatingGoldExpPrefab, transform.position, Quaternion.identity);
-        floating.GetComponent<TextMesh>().text = $"+{stat.exp}Exp\n+{stat.gold}Gold";
+        floating.GetComponent<TextMesh>().text = $"\n+{stat.gold}Gold";
     }
 }
 
