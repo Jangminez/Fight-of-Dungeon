@@ -396,6 +396,9 @@ public abstract class Player : MonoBehaviour
     IEnumerator HitEffect()
     {
         SPUM_SpriteList spumList = transform.GetChild(0).GetComponent<SPUM_SpriteList>();
+        if(spumList == null)
+            yield break;
+        
         List<SpriteRenderer> itemList = spumList._itemList;
         List<SpriteRenderer> armorList = spumList._armorList;
         List<SpriteRenderer> bodyList = spumList._bodyList;

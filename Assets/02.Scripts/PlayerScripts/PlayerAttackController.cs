@@ -52,6 +52,5 @@ public class PlayerAttackController : MonoBehaviour
             attack.GetComponent<SpriteRenderer>().sortingLayerName = GetComponent<SortingGroup>().sortingLayerName;
             Destroy(attack, 0.5f);
         }
-
     }
 }

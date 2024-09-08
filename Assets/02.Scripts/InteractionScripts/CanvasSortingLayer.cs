@@ -28,6 +28,5 @@ public class CanvasSortingLayer : MonoBehaviour
         }
 
         _canvas.transform.position = transform.position + new Vector3(0f, _sortY, 0f);
-
     }
 }
