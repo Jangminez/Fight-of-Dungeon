@@ -1,17 +1,16 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class Skill : MonoBehaviour
 {
-    public enum SkillType {Attack, Buff};
-    public SkillType _skillType;
+    //protected enum SkillType {Attack, Buff};
+    protected bool _isCoolDown;
 
     public void UseSkill()
     {
-        StartCoroutine(SkillProcess());
+        if(!_isCoolDown)
+            StartCoroutine(SkillProcess());
     }
 
     public abstract IEnumerator SkillProcess();
-
 }
