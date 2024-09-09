@@ -14,6 +14,7 @@ public abstract class Skill : MonoBehaviour
 
     void Start()
     {
+        // 스킬 애니메이션을 위해 스킬의 애니메이터 추가
         _anims.Add(this.GetComponent<Animator>());
 
         if(transform.childCount != 0)
@@ -24,9 +25,11 @@ public abstract class Skill : MonoBehaviour
             }
         }
 
+        // 쿨타임 텍스트로 표시하기 위한 UI
         _cdText = _CD.transform.GetChild(0).GetComponent<Text>();
     }
 
+    // 스킬 버튼과 연결된 함수로 버튼에 해당하는 스킬 작동
     public void UseSkill()
     {
         if(!_isCoolDown)
@@ -40,8 +43,10 @@ public abstract class Skill : MonoBehaviour
         }
     }
 
+    // 각각의 스킬내용 작성
     public abstract IEnumerator SkillProcess();
 
+    // 쿨타임 관리
     public virtual IEnumerator CoolDown(float cd)
     {
         _isCoolDown = true;
