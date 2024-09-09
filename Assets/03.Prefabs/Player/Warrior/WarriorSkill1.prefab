@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6445982461950872598}
   - component: {fileID: 8202304409055263998}
   - component: {fileID: 9008551253332997224}
+  - component: {fileID: 4789118008541321779}
   m_Layer: 0
   m_Name: WarriorSkill1
   m_TagString: Untagged
@@ -106,3 +107,22 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &4789118008541321779
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8611964984053046606}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fab870b2cfc52647b90796ffd6337c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _icon: {fileID: -627944568, guid: 87f235b93ba79374eb1afdc1d344b393, type: 3}
+  _info:
+    attackUp: 0
+    asUp: 0
+    criUp: 0
+    coolDown: 0
+    duration: 0

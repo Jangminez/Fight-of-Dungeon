@@ -1,9 +1,9 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Warrior_Skill1 : Skill
 {
+    [System.Serializable]
     struct SkillInfo
     {
         public float attackUp;
@@ -12,7 +12,7 @@ public class Warrior_Skill1 : Skill
         public float coolDown;
         public float duration;
     }
-    SkillInfo _info;
+    [SerializeField]SkillInfo _info;
     void Awake()
     {
         _isCoolDown = false;
@@ -25,24 +25,17 @@ public class Warrior_Skill1 : Skill
 
     public override IEnumerator SkillProcess()
     {
-        _isCoolDown = true;
-
+        StartCoroutine(CoolDown(_info.coolDown));
         GameManager.Instance.player.AttackBonus += _info.attackUp;
         GameManager.Instance.player.AsBonus += _info.asUp;
         GameManager.Instance.player.Critical += _info.criUp;
 
-        float timer = 0;
-
-        while(timer <= _info.duration)
-        {
-            timer += 1;
-        }
+        yield return new WaitForSeconds(_info.duration);
 
         GameManager.Instance.player.AttackBonus -= _info.attackUp;
         GameManager.Instance.player.AsBonus -= _info.asUp;
         GameManager.Instance.player.Critical -= _info.criUp;
-
-        yield return new WaitForSeconds(_info.coolDown - _info.duration);
-        _isCoolDown = false;
     }
+
+
 }
