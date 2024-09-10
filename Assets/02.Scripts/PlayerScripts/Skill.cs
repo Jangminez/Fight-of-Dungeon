@@ -58,7 +58,7 @@ public abstract class Skill : MonoBehaviour
         {
             timer += 0.1f;
             _CD.fillAmount = (cd - timer) / cd;
-            _cdText.text = (cd - timer).ToString();
+            _cdText.text = (cd - timer).ToString("F1");
             yield return new WaitForSeconds(0.1f);
         }
 

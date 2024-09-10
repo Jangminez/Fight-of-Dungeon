@@ -24,7 +24,7 @@ public class PlayerAttackController : MonoBehaviour
         if(GameManager.Instance.player._target != null & !_isAttack)
         {
             _isAttack = true;
-            _anim.SetFloat("AttackSpeed", GameManager.Instance.player.AttackSpeed);
+            _anim.SetFloat("AttackSpeed", GameManager.Instance.player.FinalAS);
             StartCoroutine("BasicAttack");
         }
 
@@ -34,7 +34,7 @@ public class PlayerAttackController : MonoBehaviour
     {
         while (_isAttack)
         {
-            yield return new WaitForSeconds(1 / GameManager.Instance.player.AttackSpeed);
+            yield return new WaitForSeconds(1 / GameManager.Instance.player.FinalAS);
 
             if (GameManager.Instance.player._target == null) // 플레이어의 타겟이 없으면 공격 중지
             {

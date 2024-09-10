@@ -9,7 +9,7 @@ public class InteractionObject : MonoBehaviour
     public Transform _interactionCanvas;
     public Transform _interactionButton;
 
-    public Transform _myUI;
+    public Transform[] _myUI;
 
     private void Awake()
     {
@@ -40,6 +40,10 @@ public class InteractionObject : MonoBehaviour
 
     private void OpenUI()
     {
-        _myUI.gameObject.SetActive(true);
+        foreach(var ui in _myUI)
+        {
+            ui.gameObject.SetActive(true);
+        }
+
     }
 }
