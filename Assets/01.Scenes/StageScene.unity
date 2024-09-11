@@ -56884,6 +56884,7 @@ GameObject:
   - component: {fileID: 1903690356}
   - component: {fileID: 1903690358}
   - component: {fileID: 1903690357}
+  - component: {fileID: 1903690359}
   m_Layer: 5
   m_Name: JoyStick
   m_TagString: Untagged
@@ -56948,6 +56949,41 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1903690355}
   m_CullTransparentMesh: 1
+--- !u!114 &1903690359
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1903690355}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9d677f1681015749b15c436eec6d880, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_MovementRange: 50
+  m_DynamicOriginRange: 100
+  m_ControlPath: <Joystick>/stick
+  m_Behaviour: 0
+  m_UseIsolatedInputActions: 0
+  m_PointerDownAction:
+    m_Name: Pointer Down
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 51aab766-3e8f-4126-a5aa-3f3c07927453
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  m_PointerMoveAction:
+    m_Name: Pointer Move
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: a84bff21-37f0-41ef-9521-4b7389bc9d63
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
 --- !u!4 &1906467370 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2055102311959635375, guid: f681a54372d73d74785b9c9d4ac477e8,
@@ -60726,6 +60762,11 @@ PrefabInstance:
       propertyPath: _levelText
       value: 
       objectReference: {fileID: 235231821}
+    - target: {fileID: 6607560143909937660, guid: efdcca61afabbdb4fb32ad67814bcfef,
+        type: 3}
+      propertyPath: m_UIInputModule
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 8624863897070732051, guid: efdcca61afabbdb4fb32ad67814bcfef, type: 3}
     m_RemovedGameObjects: []

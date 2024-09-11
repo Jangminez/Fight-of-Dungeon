@@ -327,15 +327,22 @@ public abstract class Player : MonoBehaviour
     void OnMove(InputValue value)
     {
         _inputVec = value.Get<Vector2>();
+
+        if(_inputVec.magnitude < 0.1f)
+        {
+            _inputVec = Vector2.zero;
+        }
     }
 
     // 플레이어 이동 구현
     public virtual void Movement()
     {
-        Vector2 nextVec = _inputVec * _speed * Time.fixedDeltaTime;
-        _playerRig.MovePosition(_playerRig.position + nextVec);
+        Vector2 nextVec = _inputVec * _speed; //* Time.fixedDeltaTime;
+        _playerRig.velocity = nextVec;
+        //_playerRig.MovePosition(_playerRig.position + nextVec);
 
         SetDirection();
+
         if(nextVec ==  Vector2.zero)
         {
             _animator.SetFloat("RunState", 0f);
@@ -520,7 +527,7 @@ public abstract class Player : MonoBehaviour
     #endregion
 
     #region 테스트용 함수
-        private void Update()
+    private void Update()
     {
         if(Input.GetKeyDown(KeyCode.G))
         {
