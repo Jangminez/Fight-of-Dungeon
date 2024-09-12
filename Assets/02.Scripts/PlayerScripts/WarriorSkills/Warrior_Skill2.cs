@@ -8,7 +8,6 @@ public class Warrior_Skill2 : Skill
     {
         public float damage;
         public float coolDown;
-        public Collider2D collider;
     }
     [SerializeField]SkillInfo _info;
 
@@ -16,7 +15,6 @@ public class Warrior_Skill2 : Skill
     {
         _info.damage = 2f;
         _info.coolDown = 10f;
-        _info.collider = GetComponent<Collider2D>();
     }
     public override IEnumerator SkillProcess()
     {
