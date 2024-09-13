@@ -493,10 +493,22 @@ public abstract class Player : MonoBehaviour
 
         GetComponent<PlayerUIController>().ExpChanged();
 
+        if(Level == 5)
+        {
+            Destroy(GetComponent<SkillController>()._locked[0]);
+        }
+
+        else if(Level == 10)
+        {
+            Destroy(GetComponent<SkillController>()._locked[1]);
+        } 
+          
         if (_exp >= _nextExp)
         {
             LevelUp();
         }
+
+
     }
 
     IEnumerator Regen()
