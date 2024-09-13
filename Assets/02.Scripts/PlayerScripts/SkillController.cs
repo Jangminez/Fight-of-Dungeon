@@ -5,6 +5,7 @@ public class SkillController : MonoBehaviour
 {
     public Skill[] _skills;
     public Button[] _buttons;
+    public GameObject[] _locked;
 
     void Awake()
     {
@@ -15,4 +16,5 @@ public class SkillController : MonoBehaviour
             _skills[i]._CD = _buttons[i].transform.parent.GetChild(1).GetComponent<Image>();
         }
     }
+
 }
