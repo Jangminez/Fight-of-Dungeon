@@ -6,11 +6,11 @@ using System.Collections.Generic;
 public abstract class Skill : MonoBehaviour
 {
     //protected enum SkillType {Attack, Buff};
-    protected List<Animator> _anims = new List<Animator>();
-    protected bool _isCoolDown;
-    public Sprite _icon;
-    public Image _CD;
-    Text _cdText;
+    protected List<Animator> _anims = new List<Animator>(); // 스킬 애니메이터 관리
+    protected bool _isCoolDown; // 현재 쿨타임인지 확인용
+    public Sprite _icon; // 스킬 아이콘
+    public Image _CD; // 쿨타임 UI
+    Text _cdText; // 쿨타임 숫자 표시 UI
 
     void Start()
     {
@@ -46,7 +46,7 @@ public abstract class Skill : MonoBehaviour
     // 각각의 스킬내용 작성
     public abstract IEnumerator SkillProcess();
 
-    // 쿨타임 관리
+    // 쿨타임 UI 표시
     public virtual IEnumerator CoolDown(float cd)
     {
         _isCoolDown = true;
@@ -58,7 +58,7 @@ public abstract class Skill : MonoBehaviour
         {
             timer += 0.1f;
             _CD.fillAmount = (cd - timer) / cd;
-            _cdText.text = (cd - timer).ToString("F1");
+            _cdText.text = (cd - timer).ToString("F1"); // 소수 첫째짜리까지 표시
             yield return new WaitForSeconds(0.1f);
         }
 
