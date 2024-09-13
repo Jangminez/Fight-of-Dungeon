@@ -20,7 +20,7 @@ public class Warrior_Skill3 : Skill
 
     void Awake()
     {
-        _info.damage = 0.8f;
+        _info.damage = 0.5f;
         _info.coolDown = 30f;
         _info.duration = 10f;
         _info.collider = GetComponent<Collider2D>();
@@ -62,7 +62,7 @@ public class Warrior_Skill3 : Skill
     IEnumerator SkillDamage(Collider2D other)
     {
         var monster = other.GetComponent<Enemy>();
-        while(_info.montsterInRage.Contains(other))
+        while(_info.montsterInRage.Contains(other) && !GameManager.Instance.player.Die)
         {
             if(monster != null)
                 monster.Hit(damage: GameManager.Instance.player.FinalAttack * _info.damage);
