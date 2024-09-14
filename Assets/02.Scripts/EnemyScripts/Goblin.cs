@@ -154,6 +154,7 @@ public class Goblin : Enemy
     {
         while(_isAttack)
         {
+            SetDirection();
             anim.SetTrigger("Attack");
             yield return new WaitForSeconds(1 / stat.attackSpeed);
 
@@ -162,8 +163,6 @@ public class Goblin : Enemy
             Vector3 direction = (_target.position - rb.position).normalized;
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
             arrow.transform.rotation = Quaternion.Euler(0, 0, angle);
-            //arrow.transform.rotation = Quaternion.LookRotation(-Vector3.forward, direction);
-            
             
             arrow.GetComponent<Rigidbody2D>().velocity = direction * 10f;
             Destroy(arrow, 2f);

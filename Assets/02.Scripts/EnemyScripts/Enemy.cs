@@ -177,7 +177,7 @@ public abstract class Enemy : MonoBehaviour
         ShowGoldExp();
     }
 
-        void SetDirection()
+    public virtual void SetDirection()
     {
         if(_target.position.x - rb.position.x > 0)
         {
@@ -197,7 +197,7 @@ public abstract class Enemy : MonoBehaviour
     public virtual void ShowFloatingDamage(float damage) 
     {
         var dmg = Instantiate(FloatingDamagePrefab, transform.position, Quaternion.identity);
-        dmg.GetComponent<TextMesh>().text = $"-{damage}";
+        dmg.GetComponent<TextMesh>().text = $"-" + damage.ToString("F1");
     }
 
     public virtual void ShowGoldExp()
