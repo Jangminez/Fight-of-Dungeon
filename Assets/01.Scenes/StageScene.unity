@@ -64870,6 +64870,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2121407858}
   - component: {fileID: 2121407857}
+  - component: {fileID: 2121407859}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -64890,6 +64891,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1804361017}
+  isDragItem: 0
 --- !u!4 &2121407858
 Transform:
   m_ObjectHideFlags: 0
@@ -64905,6 +64907,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 850084334}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2121407859
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2121407856}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ab680146ae040445b395ff136f9c7a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DropZones:
+  - {fileID: 210205291}
+  - {fileID: 1926580100}
 --- !u!1001 &2134221557
 PrefabInstance:
   m_ObjectHideFlags: 0

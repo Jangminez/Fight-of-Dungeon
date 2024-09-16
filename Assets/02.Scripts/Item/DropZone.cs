@@ -24,6 +24,8 @@ public class DropZone : MonoBehaviour, IDropHandler
                     Debug.Log("아이템 판매");
                     break;
             }
+
+            GameManager.Instance.isDragItem = false;
         }
     }
 }

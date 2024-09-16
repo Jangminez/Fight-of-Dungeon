@@ -16,11 +16,14 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         if(_equipment.isComsumable){
             _equipment.UseBtn.gameObject.SetActive(false);
         }
-        
+        GameManager.Instance.isDragItem = true;
+
         _img = GetComponent<Image>();
+        
         _preParent = transform.parent;
-        transform.SetParent(transform.root.GetChild(0));
+
         // 드래그하는 아이템이 UI 최상단에 보이기 위함
+        transform.SetParent(transform.root.GetChild(0));
         transform.SetAsLastSibling();
         _img.raycastTarget = false;
     }
@@ -35,6 +38,7 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         transform.SetParent(_preParent);
         SetButton();
 
+        GameManager.Instance.isDragItem = false;
         _img.raycastTarget = true;
     }
 
