@@ -73,9 +73,7 @@ public abstract class Player : MonoBehaviour
             {
                 _maxHp = Mathf.Max(0, value);
 
-                if(_hp > _maxHp){
-                    _hp = _maxHp;
-                }
+
 
                 GetComponent<PlayerUIController>().HpChanged();
             }
@@ -94,7 +92,7 @@ public abstract class Player : MonoBehaviour
                 GetComponent<PlayerUIController>().HpChanged();
             }
 
-            else if(value >= FinalHp)
+            if(value >= FinalHp)
             {
                 _hp = FinalHp;
                 GetComponent<PlayerUIController>().HpChanged();
@@ -150,7 +148,7 @@ public abstract class Player : MonoBehaviour
                 GetComponent<PlayerUIController>().MpChanged();
             }
 
-            else if (value > FinalMp)
+            if (value > FinalMp)
             {
                 _mp = FinalMp;
             }

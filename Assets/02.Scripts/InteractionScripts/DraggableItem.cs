@@ -1,26 +1,28 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using Unity.VisualScripting;
 
 public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
+    private Equipment _equipment;
     private Image _img;
     [HideInInspector] public Transform _preParent;
+    void Awake()
+    {
+        _equipment = GetComponent<Equipment>();
+    }
     public void OnBeginDrag(PointerEventData eventData)
     {
-        // 드래그 시작될 때
-        GetComponent<Equipment>().SellBtn.gameObject.SetActive(false);
+        if(_equipment.isComsumable){
+            _equipment.UseBtn.gameObject.SetActive(false);
+        }
+        
         _img = GetComponent<Image>();
         _preParent = transform.parent;
-        transform.SetParent(transform.root);
-        // 드래그하는 아이템에 UI 최상단에 보이기 위함
+        transform.SetParent(transform.root.GetChild(0));
+        // 드래그하는 아이템이 UI 최상단에 보이기 위함
         transform.SetAsLastSibling();
         _img.raycastTarget = false;
-
-
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -36,11 +38,10 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         _img.raycastTarget = true;
     }
 
-    void SetButton() {
-        Equipment equipment = GetComponent<Equipment>();
-
-        equipment._slotBtn.onClick.RemoveAllListeners();
-        equipment._slotBtn = _preParent.GetComponent<Button>();
-        equipment._slotBtn.onClick.AddListener(GetComponent<Equipment>().ClickSlot);
+    void SetButton() 
+    {
+        _equipment._slotBtn.onClick.RemoveAllListeners();
+        _equipment._slotBtn = _preParent.GetComponent<Button>();
+        _equipment._slotBtn.onClick.AddListener(GetComponent<Equipment>().ClickSlot);
     }
 }
