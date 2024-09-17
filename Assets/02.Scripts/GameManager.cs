@@ -3,9 +3,6 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     private static GameManager _instance;
-
-    public Player player;
-    public bool isDragItem = false;
     public static GameManager Instance
     {
         get
@@ -21,6 +18,8 @@ public class GameManager : MonoBehaviour
             return _instance;
         }
     }
+    public Player player;
+    public bool isDragItem = false;
 
     private void Awake()
     {

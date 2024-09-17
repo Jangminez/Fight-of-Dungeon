@@ -319,62 +319,6 @@ public abstract class Player : MonoBehaviour
     public float FinalDefense => _defense * (1 + (_defenseBonus * 0.01f));
     #endregion
 
-    #region 플레이어 이동 및 애니메이션
-
-    // InputSystem 값 받아오기
-    void OnMove(InputValue value)
-    {
-        _inputVec = value.Get<Vector2>();
-
-        if(_inputVec.magnitude < 0.1f)
-        {
-            _inputVec = Vector2.zero;
-        }
-    }
-
-    // 플레이어 이동 구현
-    public virtual void Movement()
-    {
-        Vector2 nextVec = _inputVec * _speed; //* Time.fixedDeltaTime;
-        _playerRig.velocity = nextVec;
-        //_playerRig.MovePosition(_playerRig.position + nextVec);
-
-        SetDirection();
-
-        if(nextVec ==  Vector2.zero)
-        {
-            _animator.SetFloat("RunState", 0f);
-        }
-    }
-
-    // 플레이어 이동 애니메이션
-    public virtual void Movement_Anim()
-    {
-        if(_inputVec.x !=0  || _inputVec.y !=0)
-        {
-            _animator.SetFloat("RunState", 0.5f);
-        }
-
-        else
-        {
-            _animator.SetFloat("RunState", 0f);
-        }
-    }
-
-    void SetDirection()
-    {
-        if(_inputVec.x > 0)
-        {
-            _animator.transform.localScale = new Vector3(-1, 1, 1);
-        }
-
-        else if (_inputVec.x < 0)
-        {
-            _animator.transform.localScale = new Vector3(1, 1, 1);
-        }
-    }
-    #endregion
-
     #region 플레이어 이벤트 처리
     public void Hit(float damage)
     {
