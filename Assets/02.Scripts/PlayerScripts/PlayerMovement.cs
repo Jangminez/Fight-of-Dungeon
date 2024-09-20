@@ -9,6 +9,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Start()
     {
+        _joystickMovement = GameObject.FindWithTag("JoyStick").GetComponent<Joystick>();
         _playerRb = GetComponent<Rigidbody2D>();
         _anim = GetComponent<Animator>();
         _speed = GameManager.Instance.player.Speed;

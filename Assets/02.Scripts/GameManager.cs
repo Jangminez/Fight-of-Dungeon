@@ -67,6 +67,6 @@ public class GameManager : MonoBehaviour
         }
 
         player._spawnPoint = GameObject.FindWithTag("BlueSpawn").transform;
-        GameObject GamePlayer = Instantiate(playerPrefab, player._spawnPoint.position, Quaternion.identity); 
+        Instantiate(player.gameObject, player._spawnPoint.position, Quaternion.identity); 
     }
 }
