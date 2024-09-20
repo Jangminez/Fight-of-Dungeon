@@ -6,7 +6,6 @@ public class PlayerFindTarget : MonoBehaviour
     [SerializeField] private Collider2D[] enemys;
     [SerializeField] private Collider2D _target;
 
-
     private void Update()
     {
         enemys = Physics2D.OverlapCircleAll(transform.position, GameManager.Instance.player.AttackRange, layer);
@@ -31,12 +30,6 @@ public class PlayerFindTarget : MonoBehaviour
         {
             GameManager.Instance.player._target = null;
         }
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawSphere(transform.position, GameManager.Instance.player.AttackRange);
     }
 }
 

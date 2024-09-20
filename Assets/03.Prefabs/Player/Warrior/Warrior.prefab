@@ -3555,6 +3555,7 @@ GameObject:
   - component: {fileID: 6844090491976370226}
   - component: {fileID: 3334990662849807547}
   - component: {fileID: 5508781661035189227}
+  - component: {fileID: 5654654640991799435}
   m_Layer: 17
   m_Name: UnitRoot
   m_TagString: Player
@@ -3718,6 +3719,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ab5149cfe0f39543be60f978c4f419b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerRig: {fileID: 0}
+  _animator: {fileID: 0}
   _maxHp: 0
   _hp: 0
   _hpBonus: 0
@@ -3828,11 +3831,19 @@ MonoBehaviour:
   - {fileID: 1736647391007937639}
   - {fileID: 5623250945350597266}
   - {fileID: 2451313738346558065}
-  _buttons:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  _locked: {fileID: 0}
+--- !u!114 &5654654640991799435
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8111513410137401459}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc6db48c0a73a59419cc978acfc47069, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _joystickMovement: {fileID: 0}
 --- !u!1 &8143284743070598105
 GameObject:
   m_ObjectHideFlags: 0
@@ -4465,6 +4476,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1983002237913932280}
     m_Modifications:
+    - target: {fileID: 874171567503157964, guid: 4834aee727b2b3f4bbf54adde0c5d72e,
+        type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1719580446342444148, guid: 4834aee727b2b3f4bbf54adde0c5d72e,
         type: 3}
       propertyPath: m_Pivot.x

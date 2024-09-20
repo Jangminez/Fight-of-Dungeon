@@ -14,6 +14,10 @@ namespace Cainos.PixelArtTopDown_Basic
 
         private Vector3 targetPos;
 
+        void Awake()
+        {
+            target = GameManager.Instance.player.transform;
+        }
         private void Start()
         {
             if (target == null) return;

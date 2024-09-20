@@ -63,8 +63,8 @@ public abstract class Enemy : MonoBehaviour
     {
         //spr = GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
-        anim = GetComponent<Animator>();    
-        _target = GameObject.FindWithTag("Player").GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
+        _target = GameManager.Instance.player.GetComponent<Rigidbody2D>();
     }
 
     void LateUpdate()

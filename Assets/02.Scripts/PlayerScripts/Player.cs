@@ -1,15 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public abstract class Player : MonoBehaviour
 {
     protected Vector2 _inputVec;
-    protected Rigidbody2D _playerRig;
+    [SerializeField] protected Rigidbody2D _playerRig;
 
-    protected Animator _animator;
+    [SerializeField] protected Animator _animator;
     #region 플레이어 스탯 변수
     [Header("Player Stats")]
     [SerializeField] private float _maxHp;
@@ -151,6 +152,7 @@ public abstract class Player : MonoBehaviour
             if (value > FinalMp)
             {
                 _mp = FinalMp;
+                GetComponent<PlayerUIController>().MpChanged();
             }
         }
         get => _mp;
@@ -223,7 +225,7 @@ public abstract class Player : MonoBehaviour
             if (_gold != value)
             {
                 _gold = Mathf.Max(0, value);
-                GetComponent<PlayerUIController>().GoldChanged();
+                UIManager.Instance.GoldChanged();
             }
         }
         get => _gold;
@@ -242,7 +244,7 @@ public abstract class Player : MonoBehaviour
                 if (_exp != value)
                 {
                     _exp = Mathf.Round(Mathf.Max(0, value));
-                    GetComponent<PlayerUIController>().ExpChanged();
+                    UIManager.Instance.ExpChanged();
 
                     if(_exp >= _nextExp)
                     {
@@ -261,7 +263,7 @@ public abstract class Player : MonoBehaviour
             if(LvPoint != value)
             {
                 _lvPoint = Mathf.Max(0, value);
-                GetComponent<PlayerUIController>().LvPointChange();
+                UIManager.Instance.LvPointChange();
             }
         }
         get => _lvPoint;
@@ -274,7 +276,7 @@ public abstract class Player : MonoBehaviour
             if (_level != value)
             {
                 _level = Mathf.Max(0, value);
-                GetComponent<PlayerUIController>().LevelChanged();
+                UIManager.Instance.LevelChanged();
             }
         }
 
@@ -295,7 +297,7 @@ public abstract class Player : MonoBehaviour
 
             if (_isDie)
             {
-                GetComponent<PlayerUIController>().OnRespawn();
+                UIManager.Instance.OnRespawn();
             }
         }
         get => _isDie;
@@ -433,16 +435,16 @@ public abstract class Player : MonoBehaviour
         Level += 1;
         LvPoint += 5;
 
-        GetComponent<PlayerUIController>().ExpChanged();
+        UIManager.Instance.ExpChanged();
 
         if(Level == 5)
         {
-            Destroy(GetComponent<SkillController>()._locked[0]);
+            Destroy(UIManager.Instance._locked[0]);
         }
 
         else if(Level == 10)
         {
-            Destroy(GetComponent<SkillController>()._locked[1]);
+            Destroy(UIManager.Instance._locked[1]);
         } 
           
         if (_exp >= _nextExp)
