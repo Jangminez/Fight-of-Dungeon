@@ -53,6 +53,10 @@ public class GameManager : MonoBehaviour
     {
         player = playerPrefab.transform.GetChild(1).GetComponent<Player>();
         StartCoroutine(StartGameScene());
+
+        GameObject GamePlayer = Instantiate(playerPrefab);
+        player = GamePlayer.transform.GetChild(1).GetComponent<Player>();
+        DontDestroyOnLoad(GamePlayer);
     }
 
     IEnumerator StartGameScene()
@@ -65,8 +69,10 @@ public class GameManager : MonoBehaviour
         {
             yield return null;
         }
-
+        
+        player.gameObject.SetActive(true);
         player._spawnPoint = GameObject.FindWithTag("BlueSpawn").transform;
-        Instantiate(player.gameObject, player._spawnPoint.position, Quaternion.identity); 
+        player.transform.position = player._spawnPoint.position;
+
     }
 }
