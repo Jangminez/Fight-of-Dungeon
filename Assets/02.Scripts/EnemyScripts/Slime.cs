@@ -17,13 +17,13 @@ public class Slime : Enemy
 
         else
         {
+            anim.SetTrigger("Respawn");
             transform.position = _initTransform;
             _isAttack = false;
             GetComponent<Rigidbody2D>().velocity = Vector2.zero;
             GetComponent<Collider2D>().enabled = true;
             spr.color = Color.white;
             state = States.Idle;
-            anim.SetTrigger("Respawn");
         }
 
         stat.maxHp = 30f;
@@ -48,19 +48,19 @@ public class Slime : Enemy
 
     public override IEnumerator EnemyAttack()
     {
-        while(_isAttack)
+        while (_isAttack)
         {
             anim.SetTrigger("Attack");
             yield return new WaitForSeconds(1 / stat.attackSpeed);
 
-            if (state != States.Attack) 
+            if (state != States.Attack)
             {
                 _isAttack = false;
                 _target = null;
                 yield break;
             }
 
-            if(_target != null)
+            if (_target != null)
                 _target.GetComponent<Player>().Hit(damage: stat.attack);
         }
     }
@@ -75,7 +75,8 @@ public class Slime : Enemy
 
         Hp -= finalDamage;
 
-        if(FloatingDamagePrefab != null && stat.hp > 0){
+        if (FloatingDamagePrefab != null && stat.hp > 0)
+        {
             ShowFloatingDamage(finalDamage);
         }
 
@@ -104,6 +105,7 @@ public class Slime : Enemy
         stat.isDie = true;
 
         state = States.Die;
+        anim.SetFloat("RunState", 0f);
         GetComponent<Rigidbody2D>().velocity = Vector2.zero;
         GetComponent<Collider2D>().enabled = false;
         spr.color = Color.gray;
@@ -115,7 +117,15 @@ public class Slime : Enemy
 
     public override void Movement_Anim()
     {
-        
+        if (state == States.Chase || state == States.Return)
+        {
+            anim.SetFloat("RunState", 1f);
+        }
+
+        else
+        {
+            anim.SetFloat("RunState", 0f);
+        }
     }
 }
 

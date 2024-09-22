@@ -11,6 +11,8 @@ public abstract class Skill : MonoBehaviour
     public Sprite _icon; // 스킬 아이콘
     public Image _CD; // 쿨타임 UI
     Text _cdText; // 쿨타임 숫자 표시 UI
+    protected float useMp; // 스킬 사용 마나
+    protected float cri;
 
     void Start()
     {
@@ -32,8 +34,10 @@ public abstract class Skill : MonoBehaviour
     // 스킬 버튼과 연결된 함수로 버튼에 해당하는 스킬 작동
     public void UseSkill()
     {
-        if(!_isCoolDown)
+        if(!_isCoolDown && GameManager.Instance.player.Mp > useMp)
         {
+            GameManager.Instance.player.Mp -= useMp;
+            
             foreach(var anim in _anims)
             {
                 anim.SetTrigger("UseSkill");
