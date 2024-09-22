@@ -1,7 +1,6 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -24,9 +23,10 @@ public class GameManager : MonoBehaviour
 
     public GameObject playerPrefab;
     public Player player;
+    GameObject GamePlayer;
     [HideInInspector] public bool isDragItem = false;
 
-    public Button startButton;
+
 
     private void Awake()
     {
@@ -42,19 +42,13 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    void Start()
-    {
-        if(startButton != null)
-            startButton.onClick.AddListener(StartGame);
-    }
-
-
-    void StartGame()
+    // 게임 시작
+    public void StartGame()
     {
         player = playerPrefab.transform.GetChild(1).GetComponent<Player>();
         StartCoroutine(StartGameScene());
 
-        GameObject GamePlayer = Instantiate(playerPrefab);
+        GamePlayer = Instantiate(playerPrefab);
         player = GamePlayer.transform.GetChild(1).GetComponent<Player>();
         DontDestroyOnLoad(GamePlayer);
     }
@@ -70,9 +64,17 @@ public class GameManager : MonoBehaviour
             yield return null;
         }
         
+        // 씬이 로딩된 후 오브젝트 활성화 및 스폰
         player.gameObject.SetActive(true);
         player._spawnPoint = GameObject.FindWithTag("BlueSpawn").transform;
-        player.transform.position = player._spawnPoint.position;
+        player.transform.position = player._spawnPoint.position + new Vector3(0f, 1f, 0f);;
 
+        UIManager.Instance.goToMain.onClick.AddListener(BackToScene);
+    }
+
+    public void BackToScene()
+    {
+        Destroy(GamePlayer);
+        SceneManager.LoadScene("MainScene");
     }
 }

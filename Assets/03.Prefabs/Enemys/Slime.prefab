@@ -303,6 +303,7 @@ GameObject:
   - component: {fileID: 5136775426759615366}
   - component: {fileID: 8614852041871756171}
   - component: {fileID: 7522436581837677806}
+  - component: {fileID: 2922905058800757527}
   m_Layer: 18
   m_Name: Monster_Slime
   m_TagString: Enemy
@@ -533,3 +534,18 @@ SortingGroup:
   m_SortingLayer: 2
   m_SortingOrder: 2
   m_SortAtRoot: 0
+--- !u!114 &2922905058800757527
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8803332974002134786}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7d0ed6c5b4917644ae35a590248cfca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  layer:
+    serializedVersion: 2
+    m_Bits: 131072

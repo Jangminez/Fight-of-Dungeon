@@ -4,7 +4,6 @@ public class PlayerFindTarget : MonoBehaviour
 {
     [SerializeField] private LayerMask layer;
     [SerializeField] private Collider2D[] enemys;
-    [SerializeField] private Collider2D _target;
 
     private void Update()
     {

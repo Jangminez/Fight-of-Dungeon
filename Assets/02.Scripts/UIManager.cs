@@ -22,17 +22,19 @@ public class UIManager : MonoBehaviour
     Player player;
 
     [Header("Level & EXP")]
-    [SerializeField] private Slider _expBar;
-    [SerializeField] private Text _levelText;
-    [SerializeField] private Text _lvPoint;
+    [SerializeField] private Slider expBar;
+    [SerializeField] private Text levelText;
+    [SerializeField] private Text lvPoint;
     [Space(10f)]
     [Header("Gold")]
-    [SerializeField] private Text _goldText;
+    [SerializeField] private Text goldText;
 
-    [SerializeField] private Transform _RespawnUI;
+    [SerializeField] private Transform RespawnUI;
 
-    public Button[] _buttons;
-    public GameObject[] _locked;
+    public Button[] buttons;
+    public GameObject[] locked;
+
+    public Button goToMain;
 
     private void Awake()
     {
@@ -54,34 +56,34 @@ public class UIManager : MonoBehaviour
     public void ExpChanged()
     {
         if(player != null)
-            _expBar.value = player.Exp / player.NextExp;
+            expBar.value = player.Exp / player.NextExp;
     }
 
     // Level 값이 변경될 때 UI 변경
     public void LevelChanged()
     {
         if (player != null)
-            _levelText.text = player.Level.ToString();
+            levelText.text = player.Level.ToString();
     }
 
     // Gold 골드의 값이 변경될 때 UI 값 변경
     public void GoldChanged()
     {
         if (player != null)
-            _goldText.text = player.Gold.ToString();
+            goldText.text = player.Gold.ToString();
     }
 
     // Die의 값이 true가 되면 Respawn UI 실행
     public void OnRespawn()
     {
         if (player != null)
-            _RespawnUI.gameObject.SetActive(true);
+            RespawnUI.gameObject.SetActive(true);
     }
 
     // 레벨 포인트 값이 변경되면 UI 값 변경
     public void LvPointChange() 
     {
         if(player != null)
-            _lvPoint.text = player.LvPoint.ToString();
+            lvPoint.text = player.LvPoint.ToString();
     }
 }

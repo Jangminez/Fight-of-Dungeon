@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class Enemy : MonoBehaviour
@@ -12,7 +11,7 @@ public abstract class Enemy : MonoBehaviour
     public enum States { Idle, Chase, Attack, Return, Die}
     public States state;
 
-    public Rigidbody2D _target;
+    public Transform _target;
     protected bool _isAttack;
 
     public GameObject FloatingDamagePrefab;
@@ -61,10 +60,8 @@ public abstract class Enemy : MonoBehaviour
 
     private void Awake()
     {
-        //spr = GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
-        _target = GameManager.Instance.player.GetComponent<Rigidbody2D>();
     }
 
     void LateUpdate()
@@ -85,14 +82,14 @@ public abstract class Enemy : MonoBehaviour
         while (!stat.isDie)
         {
             yield return null;
-
+            
             if (state == States.Idle)
             {
                 timer += Time.deltaTime;
 
                 rb.velocity = Vector2.zero;
 
-                if (Vector2.Distance(_target.position, rb.position) < stat.chaseRange && !stat.isDie)
+                if (_target != null && Vector2.Distance(_target.position, transform.position) < stat.chaseRange && !stat.isDie)
                 {
                     timer = 0f;
                     state = States.Chase;
@@ -113,12 +110,12 @@ public abstract class Enemy : MonoBehaviour
                 Movement();
                 SetDirection();
 
-                if (Vector2.Distance(_target.position, rb.position) < stat.attackRange && !stat.isDie)
+                if (Vector2.Distance(_target.position, transform.position) < stat.attackRange && !stat.isDie)
                 {
                     state = States.Attack;
                 }
 
-                else if (Vector2.Distance(_target.position, rb.position) > stat.chaseRange && !stat.isDie)
+                else if (Vector2.Distance(_target.position, transform.position) > stat.chaseRange && !stat.isDie)
                 {
                     state = States.Idle;
                 }
@@ -127,7 +124,7 @@ public abstract class Enemy : MonoBehaviour
 
             else if (state == States.Attack)
             {
-                if (Vector2.Distance(_target.position, rb.position) > stat.attackRange && !stat.isDie)
+                if (Vector2.Distance(_target.position, transform.position) > stat.attackRange && !stat.isDie)
                 {
                     state = States.Chase;
                 }
@@ -161,7 +158,7 @@ public abstract class Enemy : MonoBehaviour
 
     public virtual void Movement()
     {
-        Vector2 dirVec = _target.position - rb.position;
+        Vector2 dirVec = _target.position - transform.position;
         Vector2 nextVec = dirVec.normalized * stat.speed * Time.fixedDeltaTime;
 
         rb.MovePosition(rb.position + nextVec);
@@ -179,12 +176,12 @@ public abstract class Enemy : MonoBehaviour
 
     public virtual void SetDirection()
     {
-        if(_target.position.x - rb.position.x > 0)
+        if(_target != null && _target.position.x - transform.position.x > 0)
         {
             anim.transform.localScale = new Vector3(-1f, 1f, 1);
         }
 
-        else if (_target.position.x - rb.position.x < 0)
+        else if (_target != null && _target.position.x - transform.position.x < 0)
         {
             anim.transform.localScale = new Vector3(1f, 1f, 1);
         }

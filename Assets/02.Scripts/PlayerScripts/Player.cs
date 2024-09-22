@@ -439,12 +439,12 @@ public abstract class Player : MonoBehaviour
 
         if(Level == 5)
         {
-            Destroy(UIManager.Instance._locked[0]);
+            Destroy(UIManager.Instance.locked[0]);
         }
 
         else if(Level == 10)
         {
-            Destroy(UIManager.Instance._locked[1]);
+            Destroy(UIManager.Instance.locked[1]);
         } 
           
         if (_exp >= _nextExp)

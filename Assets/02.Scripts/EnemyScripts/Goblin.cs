@@ -160,7 +160,7 @@ public class Goblin : Enemy
 
             GameObject arrow = Instantiate(_arrow, _tip.transform.position, Quaternion.identity);
             arrow.GetComponent<EnemyArrow>()._enemy = this;
-            Vector3 direction = (_target.position - rb.position).normalized;
+            Vector3 direction = (_target.position - transform.position).normalized;
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
             arrow.transform.rotation = Quaternion.Euler(0, 0, angle);
             
