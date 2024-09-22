@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class Warrior : Player
 {
@@ -42,18 +38,5 @@ public class Warrior : Player
         NextExp = 100;
 
         StartCoroutine("Regen");
-    }
-
-    // Update is called once per frame
-    void FixedUpdate()
-    {
-        // 플레이어 이동
-        Movement();
-    }
-
-    private void LateUpdate()
-    {
-        // 플레이어 이동 애니메이션
-        Movement_Anim(); 
     }
 }

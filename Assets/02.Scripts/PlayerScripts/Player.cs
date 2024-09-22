@@ -1,15 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public abstract class Player : MonoBehaviour
 {
     protected Vector2 _inputVec;
-    protected Rigidbody2D _playerRig;
+    [SerializeField] protected Rigidbody2D _playerRig;
 
-    protected Animator _animator;
+    [SerializeField] protected Animator _animator;
     #region 플레이어 스탯 변수
     [Header("Player Stats")]
     [SerializeField] private float _maxHp;
@@ -73,9 +74,7 @@ public abstract class Player : MonoBehaviour
             {
                 _maxHp = Mathf.Max(0, value);
 
-                if(_hp > _maxHp){
-                    _hp = _maxHp;
-                }
+
 
                 GetComponent<PlayerUIController>().HpChanged();
             }
@@ -94,7 +93,7 @@ public abstract class Player : MonoBehaviour
                 GetComponent<PlayerUIController>().HpChanged();
             }
 
-            else if(value >= FinalHp)
+            if(value >= FinalHp)
             {
                 _hp = FinalHp;
                 GetComponent<PlayerUIController>().HpChanged();
@@ -150,9 +149,10 @@ public abstract class Player : MonoBehaviour
                 GetComponent<PlayerUIController>().MpChanged();
             }
 
-            else if (value > FinalMp)
+            if (value > FinalMp)
             {
                 _mp = FinalMp;
+                GetComponent<PlayerUIController>().MpChanged();
             }
         }
         get => _mp;
@@ -225,7 +225,7 @@ public abstract class Player : MonoBehaviour
             if (_gold != value)
             {
                 _gold = Mathf.Max(0, value);
-                GetComponent<PlayerUIController>().GoldChanged();
+                UIManager.Instance.GoldChanged();
             }
         }
         get => _gold;
@@ -244,7 +244,7 @@ public abstract class Player : MonoBehaviour
                 if (_exp != value)
                 {
                     _exp = Mathf.Round(Mathf.Max(0, value));
-                    GetComponent<PlayerUIController>().ExpChanged();
+                    UIManager.Instance.ExpChanged();
 
                     if(_exp >= _nextExp)
                     {
@@ -263,7 +263,7 @@ public abstract class Player : MonoBehaviour
             if(LvPoint != value)
             {
                 _lvPoint = Mathf.Max(0, value);
-                GetComponent<PlayerUIController>().LvPointChange();
+                UIManager.Instance.LvPointChange();
             }
         }
         get => _lvPoint;
@@ -276,7 +276,7 @@ public abstract class Player : MonoBehaviour
             if (_level != value)
             {
                 _level = Mathf.Max(0, value);
-                GetComponent<PlayerUIController>().LevelChanged();
+                UIManager.Instance.LevelChanged();
             }
         }
 
@@ -297,7 +297,7 @@ public abstract class Player : MonoBehaviour
 
             if (_isDie)
             {
-                GetComponent<PlayerUIController>().OnRespawn();
+                UIManager.Instance.OnRespawn();
             }
         }
         get => _isDie;
@@ -319,62 +319,6 @@ public abstract class Player : MonoBehaviour
     public float FinalAttack => _attack * (1 + (_attackBonus * 0.01f));
     public float FinalAS => _attackSpeed * (1 + (_asBonus * 0.01f));
     public float FinalDefense => _defense * (1 + (_defenseBonus * 0.01f));
-    #endregion
-
-    #region 플레이어 이동 및 애니메이션
-
-    // InputSystem 값 받아오기
-    void OnMove(InputValue value)
-    {
-        _inputVec = value.Get<Vector2>();
-
-        if(_inputVec.magnitude < 0.1f)
-        {
-            _inputVec = Vector2.zero;
-        }
-    }
-
-    // 플레이어 이동 구현
-    public virtual void Movement()
-    {
-        Vector2 nextVec = _inputVec * _speed; //* Time.fixedDeltaTime;
-        _playerRig.velocity = nextVec;
-        //_playerRig.MovePosition(_playerRig.position + nextVec);
-
-        SetDirection();
-
-        if(nextVec ==  Vector2.zero)
-        {
-            _animator.SetFloat("RunState", 0f);
-        }
-    }
-
-    // 플레이어 이동 애니메이션
-    public virtual void Movement_Anim()
-    {
-        if(_inputVec.x !=0  || _inputVec.y !=0)
-        {
-            _animator.SetFloat("RunState", 0.5f);
-        }
-
-        else
-        {
-            _animator.SetFloat("RunState", 0f);
-        }
-    }
-
-    void SetDirection()
-    {
-        if(_inputVec.x > 0)
-        {
-            _animator.transform.localScale = new Vector3(-1, 1, 1);
-        }
-
-        else if (_inputVec.x < 0)
-        {
-            _animator.transform.localScale = new Vector3(1, 1, 1);
-        }
-    }
     #endregion
 
     #region 플레이어 이벤트 처리
@@ -491,16 +435,16 @@ public abstract class Player : MonoBehaviour
         Level += 1;
         LvPoint += 5;
 
-        GetComponent<PlayerUIController>().ExpChanged();
+        UIManager.Instance.ExpChanged();
 
         if(Level == 5)
         {
-            Destroy(GetComponent<SkillController>()._locked[0]);
+            Destroy(UIManager.Instance.locked[0]);
         }
 
         else if(Level == 10)
         {
-            Destroy(GetComponent<SkillController>()._locked[1]);
+            Destroy(UIManager.Instance.locked[1]);
         } 
           
         if (_exp >= _nextExp)

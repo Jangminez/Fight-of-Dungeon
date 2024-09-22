@@ -14,10 +14,14 @@ namespace Cainos.PixelArtTopDown_Basic
 
         private Vector3 targetPos;
 
+        void Awake()
+        {
+            target = GameManager.Instance.player.transform;
+        }
         private void Start()
         {
             if (target == null) return;
-
+            transform.position = new Vector3(target.position.x, target.position.y, transform.position.z);
             offset = transform.position - target.position;
         }
 
