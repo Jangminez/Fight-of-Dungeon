@@ -8,7 +8,7 @@ public abstract class Enemy : MonoBehaviour
     protected Rigidbody2D rb;
     protected Animator anim;
     public Vector3 _initTransform;
-    public enum States { Idle, Chase, Attack, Return, Die}
+    public enum States { Idle, Chase, Attack, Return, Die }
     public States state;
 
     public Transform _target;
@@ -67,14 +67,14 @@ public abstract class Enemy : MonoBehaviour
     void LateUpdate()
     {
         Movement_Anim();
-        
+
         // 공격 여부 판정
-        if(!_isAttack && state == States.Attack)
+        if (!_isAttack && state == States.Attack)
         {
             _isAttack = true;
             anim.SetFloat("AttackSpeed", stat.attackSpeed);
             StartCoroutine("EnemyAttack");
-        }    
+        }
     }
 
     IEnumerator MonsterState()
@@ -82,7 +82,12 @@ public abstract class Enemy : MonoBehaviour
         while (!stat.isDie)
         {
             yield return null;
-            
+
+            if(_target == null && state != States.Idle && state != States.Return)
+            {
+                state = States.Idle;
+            }
+
             if (state == States.Idle)
             {
                 timer += Time.deltaTime;
@@ -106,6 +111,9 @@ public abstract class Enemy : MonoBehaviour
 
             else if (state == States.Chase)
             {
+                if (_target == null)
+                    state = States.Idle;
+
                 // 타겟의 위치 확인 후 이동
                 Movement();
                 SetDirection();
@@ -118,13 +126,20 @@ public abstract class Enemy : MonoBehaviour
                 else if (Vector2.Distance(_target.position, transform.position) > stat.chaseRange && !stat.isDie)
                 {
                     state = States.Idle;
+                    timer = 0f;
                 }
 
             }
 
             else if (state == States.Attack)
             {
-                if (Vector2.Distance(_target.position, transform.position) > stat.attackRange && !stat.isDie)
+                if (_target == null)
+                {
+                    state = States.Idle;
+                    timer = 0f;
+                }
+
+                if (_target != null && Vector2.Distance(_target.position, transform.position) > stat.attackRange && !stat.isDie)
                 {
                     state = States.Chase;
                 }
@@ -141,12 +156,8 @@ public abstract class Enemy : MonoBehaviour
                 if (Vector3.Distance(_initTransform, this.transform.position) < 0.1f)
                 {
                     state = States.Idle;
+                    timer = 0f;
                 }
-            }
-
-            if (GameManager.Instance.player.Die)
-            {
-                state = States.Return;
             }
         }
     }
@@ -158,6 +169,13 @@ public abstract class Enemy : MonoBehaviour
 
     public virtual void Movement()
     {
+        if (_target == null)
+        {
+            state = States.Idle;
+            timer = 0f;
+            return;
+        }
+
         Vector2 dirVec = _target.position - transform.position;
         Vector2 nextVec = dirVec.normalized * stat.speed * Time.fixedDeltaTime;
 
@@ -176,7 +194,7 @@ public abstract class Enemy : MonoBehaviour
 
     public virtual void SetDirection()
     {
-        if(_target != null && _target.position.x - transform.position.x > 0)
+        if (_target != null && _target.position.x - transform.position.x > 0)
         {
             anim.transform.localScale = new Vector3(-1f, 1f, 1);
         }
@@ -191,7 +209,7 @@ public abstract class Enemy : MonoBehaviour
         state = States.Return;
     }
 
-    public virtual void ShowFloatingDamage(float damage) 
+    public virtual void ShowFloatingDamage(float damage)
     {
         var dmg = Instantiate(FloatingDamagePrefab, transform.position, Quaternion.identity);
         dmg.GetComponent<TextMesh>().text = $"-" + damage.ToString("F1");

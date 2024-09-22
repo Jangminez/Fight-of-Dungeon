@@ -25,8 +25,13 @@ public class PlayerMovement : MonoBehaviour
         Movement_Anim();
     }
     
-    public virtual void Movement()
+    public void Movement()
     {
+        if(GameManager.Instance.player.Die){
+            _playerRb.velocity = Vector2.zero;
+            return;
+        }
+
         if(_joystickMovement.Direction.y != 0)
         {
             Vector2 nextVec = new Vector2(_joystickMovement.Direction.x * _speed, _joystickMovement.Direction.y * _speed); 
@@ -47,7 +52,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
     // 플레이어 이동 애니메이션
-    public virtual void Movement_Anim()
+    public void Movement_Anim()
     {
         if(_joystickMovement.Direction.x !=0  || _joystickMovement.Direction.y !=0)
         {

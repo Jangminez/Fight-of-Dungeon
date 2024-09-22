@@ -139,7 +139,7 @@ public class Goblin : Enemy
     // 이동 애니메이션
     public override void Movement_Anim()
     {
-        if(state == States.Chase || state == States.Return && !GameManager.Instance.player.Die)
+        if(state == States.Chase || state == States.Return)
         {
             anim.SetFloat("RunState", 0.5f);
         }
@@ -154,10 +154,21 @@ public class Goblin : Enemy
     {
         while(_isAttack)
         {
+            // 공격시 방향 전환 및 애니메이션 실행
             SetDirection();
             anim.SetTrigger("Attack");
+
+            // 공격속도 지연
             yield return new WaitForSeconds(1 / stat.attackSpeed);
 
+            if(state != States.Attack) 
+            {
+                _isAttack = false;
+                _target = null;
+                yield break;
+            }
+
+            // 화살 생성 후 타겟 방향으로 회전 및 발사
             GameObject arrow = Instantiate(_arrow, _tip.transform.position, Quaternion.identity);
             arrow.GetComponent<EnemyArrow>()._enemy = this;
             Vector3 direction = (_target.position - transform.position).normalized;
@@ -165,15 +176,9 @@ public class Goblin : Enemy
             arrow.transform.rotation = Quaternion.Euler(0, 0, angle);
             
             arrow.GetComponent<Rigidbody2D>().velocity = direction * 10f;
-            Destroy(arrow, 2f);
+            Destroy(arrow, 1f);
 
-            if(state != States.Attack) 
-            {
-                _isAttack = false;
-                yield break;
-            }
-            
-            //GameManager.Instance.player.Hit(damage: stat.attack);
+
         }
     }
 }

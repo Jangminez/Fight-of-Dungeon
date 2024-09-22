@@ -56,10 +56,12 @@ public class Slime : Enemy
             if (state != States.Attack) 
             {
                 _isAttack = false;
+                _target = null;
                 yield break;
             }
-            
-            GameManager.Instance.player.Hit(damage: stat.attack);
+
+            if(_target != null)
+                _target.GetComponent<Player>().Hit(damage: stat.attack);
         }
     }
 
