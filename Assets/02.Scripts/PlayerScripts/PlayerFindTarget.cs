@@ -1,14 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Xml.Serialization;
 using UnityEngine;
 
 public class PlayerFindTarget : MonoBehaviour
 {
     [SerializeField] private LayerMask layer;
     [SerializeField] private Collider2D[] enemys;
-    [SerializeField] private Collider2D _target;
-
 
     private void Update()
     {
@@ -34,12 +29,6 @@ public class PlayerFindTarget : MonoBehaviour
         {
             GameManager.Instance.player._target = null;
         }
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawSphere(transform.position, GameManager.Instance.player.AttackRange);
     }
 }
 

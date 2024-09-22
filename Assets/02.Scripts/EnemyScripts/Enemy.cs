@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class Enemy : MonoBehaviour
@@ -9,10 +8,10 @@ public abstract class Enemy : MonoBehaviour
     protected Rigidbody2D rb;
     protected Animator anim;
     public Vector3 _initTransform;
-    public enum States { Idle, Chase, Attack, Return, Die}
+    public enum States { Idle, Chase, Attack, Return, Die }
     public States state;
 
-    public Rigidbody2D _target;
+    public Transform _target;
     protected bool _isAttack;
 
     public GameObject FloatingDamagePrefab;
@@ -61,23 +60,21 @@ public abstract class Enemy : MonoBehaviour
 
     private void Awake()
     {
-        //spr = GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
-        anim = GetComponent<Animator>();    
-        _target = GameObject.FindWithTag("Player").GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
     }
 
     void LateUpdate()
     {
         Movement_Anim();
-        
+
         // 공격 여부 판정
-        if(!_isAttack && state == States.Attack)
+        if (!_isAttack && state == States.Attack)
         {
             _isAttack = true;
             anim.SetFloat("AttackSpeed", stat.attackSpeed);
             StartCoroutine("EnemyAttack");
-        }    
+        }
     }
 
     IEnumerator MonsterState()
@@ -86,13 +83,18 @@ public abstract class Enemy : MonoBehaviour
         {
             yield return null;
 
+            if(_target == null && state != States.Idle && state != States.Return)
+            {
+                state = States.Idle;
+            }
+
             if (state == States.Idle)
             {
                 timer += Time.deltaTime;
 
                 rb.velocity = Vector2.zero;
 
-                if (Vector2.Distance(_target.position, rb.position) < stat.chaseRange && !stat.isDie)
+                if (_target != null && Vector2.Distance(_target.position, transform.position) < stat.chaseRange && !stat.isDie)
                 {
                     timer = 0f;
                     state = States.Chase;
@@ -109,25 +111,35 @@ public abstract class Enemy : MonoBehaviour
 
             else if (state == States.Chase)
             {
+                if (_target == null)
+                    state = States.Idle;
+
                 // 타겟의 위치 확인 후 이동
                 Movement();
                 SetDirection();
 
-                if (Vector2.Distance(_target.position, rb.position) < stat.attackRange && !stat.isDie)
+                if (Vector2.Distance(_target.position, transform.position) < stat.attackRange && !stat.isDie)
                 {
                     state = States.Attack;
                 }
 
-                else if (Vector2.Distance(_target.position, rb.position) > stat.chaseRange && !stat.isDie)
+                else if (Vector2.Distance(_target.position, transform.position) > stat.chaseRange && !stat.isDie)
                 {
                     state = States.Idle;
+                    timer = 0f;
                 }
 
             }
 
             else if (state == States.Attack)
             {
-                if (Vector2.Distance(_target.position, rb.position) > stat.attackRange && !stat.isDie)
+                if (_target == null)
+                {
+                    state = States.Idle;
+                    timer = 0f;
+                }
+
+                if (_target != null && Vector2.Distance(_target.position, transform.position) > stat.attackRange && !stat.isDie)
                 {
                     state = States.Chase;
                 }
@@ -144,12 +156,8 @@ public abstract class Enemy : MonoBehaviour
                 if (Vector3.Distance(_initTransform, this.transform.position) < 0.1f)
                 {
                     state = States.Idle;
+                    timer = 0f;
                 }
-            }
-
-            if (GameManager.Instance.player.Die)
-            {
-                state = States.Return;
             }
         }
     }
@@ -161,7 +169,14 @@ public abstract class Enemy : MonoBehaviour
 
     public virtual void Movement()
     {
-        Vector2 dirVec = _target.position - rb.position;
+        if (_target == null)
+        {
+            state = States.Idle;
+            timer = 0f;
+            return;
+        }
+
+        Vector2 dirVec = _target.position - transform.position;
         Vector2 nextVec = dirVec.normalized * stat.speed * Time.fixedDeltaTime;
 
         rb.MovePosition(rb.position + nextVec);
@@ -177,14 +192,14 @@ public abstract class Enemy : MonoBehaviour
         ShowGoldExp();
     }
 
-        void SetDirection()
+    public virtual void SetDirection()
     {
-        if(_target.position.x - rb.position.x > 0)
+        if (_target != null && _target.position.x - transform.position.x > 0)
         {
             anim.transform.localScale = new Vector3(-1f, 1f, 1);
         }
 
-        else if (_target.position.x - rb.position.x < 0)
+        else if (_target != null && _target.position.x - transform.position.x < 0)
         {
             anim.transform.localScale = new Vector3(1f, 1f, 1);
         }
@@ -194,10 +209,10 @@ public abstract class Enemy : MonoBehaviour
         state = States.Return;
     }
 
-    public virtual void ShowFloatingDamage(float damage) 
+    public virtual void ShowFloatingDamage(float damage)
     {
         var dmg = Instantiate(FloatingDamagePrefab, transform.position, Quaternion.identity);
-        dmg.GetComponent<TextMesh>().text = $"-{damage}";
+        dmg.GetComponent<TextMesh>().text = $"-" + damage.ToString("F1");
     }
 
     public virtual void ShowGoldExp()
