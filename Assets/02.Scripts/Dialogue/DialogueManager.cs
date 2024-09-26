@@ -45,6 +45,7 @@ public class DialogueManager : MonoBehaviour
         StartCoroutine(TypeMessage(message));
     }
 
+    // 문자 하나하나 출력
     IEnumerator TypeMessage(string message)
     {
         dialogueText.text = "";
@@ -54,6 +55,10 @@ public class DialogueManager : MonoBehaviour
             dialogueText.text += ch;
             yield return new WaitForSeconds(0.05f);
         }
+
+        // 1초 뒤 자동 대화 넘김
+        yield return new WaitForSeconds(1f);
+        DisplayNextSentence();
     }
 
     // 대화 종료
