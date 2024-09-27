@@ -34,7 +34,7 @@ public class Goblin : Enemy
 
         stat.attack = 300f;
         stat.attackRange = 7f;
-        stat.attackSpeed = 1f;
+        stat.attackSpeed = 0.7f;
 
         stat.defense = 100f;
 
