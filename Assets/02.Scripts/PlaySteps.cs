@@ -7,6 +7,7 @@ public class PlaySteps : MonoBehaviour
 {
     PlayableDirector director;
     public List<Step> steps;
+    public Collider2D block;
 
     void Start()
     {

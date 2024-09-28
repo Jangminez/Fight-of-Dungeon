@@ -89,35 +89,35 @@ public class UpgradeAbility : MonoBehaviour
         switch (upgradeInfo.type)
         {
             case UpgradeInfo.upgradeType.Attack:
-                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _myValue, upgradeInfo.incValue, 1, "공격력");
+                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _myValue, upgradeInfo.incValue, 0, "공격력");
                 break;
 
             case UpgradeInfo.upgradeType.AttackSpeed:
-                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _myValue, upgradeInfo.incValue, 1, "공격속도");
+                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _myValue, upgradeInfo.incValue, 0, "공격속도");
                 break;
 
             case UpgradeInfo.upgradeType.Critical:
-                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _myValue, upgradeInfo.incValue, 1, "크리티컬 확률");
+                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _myValue, upgradeInfo.incValue, 0, "크리티컬 확률");
                 break;
 
             case UpgradeInfo.upgradeType.MaxHp:
-                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _myValue, upgradeInfo.incValue, 1, "체력");
+                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _myValue, upgradeInfo.incValue, 0, "체력");
                 break;
 
             case UpgradeInfo.upgradeType.HpRegen:
-                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _myValue, upgradeInfo.incValue, 1, "체력 재생속도");
+                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _myValue, upgradeInfo.incValue, 0, "체력 재생속도");
                 break;
 
             case UpgradeInfo.upgradeType.Defense:
-                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _myValue, upgradeInfo.incValue, 1, "방어력");
+                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _myValue, upgradeInfo.incValue, 0, "방어력");
                 break;
 
             case UpgradeInfo.upgradeType.MaxMp:
-                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _myValue, upgradeInfo.incValue, 1, "마나");
+                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _myValue, upgradeInfo.incValue, 0, "마나");
                 break;
 
             case UpgradeInfo.upgradeType.MpRegen:
-                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _myValue, upgradeInfo.incValue, 1, "마나 재생속도");
+                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _myValue, upgradeInfo.incValue, 0, "마나 재생속도");
                 break;
         }
     }
@@ -187,7 +187,7 @@ public class UpgradeAbility : MonoBehaviour
         {
             level.text = $"Lv{Lv + 1} {name}";
             value.text = $"{initValue}% -> {initValue + increase}%";
-            cost.text = $"{Mathf.Round(float.Parse(cost.text) * costInc)}";
+            cost.text = $"{Mathf.Round(float.Parse(cost.text) + costInc)}";
             return;
         }
 
@@ -195,12 +195,12 @@ public class UpgradeAbility : MonoBehaviour
         {
             level.text = $"Lv{Lv + 1} {name}";
             value.text = $"초당 {Math.Round(initValue, 1)} -> {Math.Round(initValue + increase, 1)}";
-            cost.text = $"{Mathf.Round(float.Parse(cost.text) * costInc)}";
+            cost.text = $"{Mathf.Round(float.Parse(cost.text) + costInc)}";
             return;
         }
 
         level.text = $"Lv{Lv + 1} {name}";
         value.text = $"{Math.Round(initValue, 1)} -> {Math.Round(initValue + increase, 1)}";
-        cost.text = $"{Mathf.Round(float.Parse(cost.text) * costInc)}";
+        cost.text = $"{Mathf.Round(float.Parse(cost.text) + costInc)}";
     }
 }

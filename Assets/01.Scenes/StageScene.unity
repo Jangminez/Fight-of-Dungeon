@@ -16247,7 +16247,10 @@ MonoBehaviour:
   lvPoint: {fileID: 2114980791}
   goldText: {fileID: 1009914967}
   RespawnUI: {fileID: 1160175883}
-  skillButtons: []
+  skillButtons:
+  - {fileID: 4588061418629073284}
+  - {fileID: 4588061418629073283}
+  - {fileID: 4588061418629073282}
   locked:
   - {fileID: 249971363}
   - {fileID: 1547131584}
@@ -59005,6 +59008,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2134860501}
     m_Modifications:
+    - target: {fileID: 57744818170942027, guid: 4a83aae4f49d502439216af76053d953,
+        type: 3}
+      propertyPath: upgradeInfo.incCost
+      value: 150
+      objectReference: {fileID: 0}
+    - target: {fileID: 57744818170942027, guid: 4a83aae4f49d502439216af76053d953,
+        type: 3}
+      propertyPath: upgradeInfo.incValue
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 1379926146294000608, guid: 4a83aae4f49d502439216af76053d953,
         type: 3}
       propertyPath: m_Pivot.x
@@ -59125,6 +59138,16 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2975498718135735929, guid: 4a83aae4f49d502439216af76053d953,
+        type: 3}
+      propertyPath: upgradeInfo.incCost
+      value: 180
+      objectReference: {fileID: 0}
+    - target: {fileID: 2975498718135735929, guid: 4a83aae4f49d502439216af76053d953,
+        type: 3}
+      propertyPath: upgradeInfo.incValue
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 3176189199849427144, guid: 4a83aae4f49d502439216af76053d953,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -59165,6 +59188,26 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4180263441227064699, guid: 4a83aae4f49d502439216af76053d953,
+        type: 3}
+      propertyPath: upgradeInfo.incCost
+      value: 150
+      objectReference: {fileID: 0}
+    - target: {fileID: 4180263441227064699, guid: 4a83aae4f49d502439216af76053d953,
+        type: 3}
+      propertyPath: upgradeInfo.incValue
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4189214915600333134, guid: 4a83aae4f49d502439216af76053d953,
+        type: 3}
+      propertyPath: upgradeInfo.incCost
+      value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 4189214915600333134, guid: 4a83aae4f49d502439216af76053d953,
+        type: 3}
+      propertyPath: upgradeInfo.incValue
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4649134415910949166, guid: 4a83aae4f49d502439216af76053d953,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -59184,22 +59227,93 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4899330749157378047, guid: 4a83aae4f49d502439216af76053d953,
+        type: 3}
+      propertyPath: upgradeInfo.incCost
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 5927121103780422862, guid: 4a83aae4f49d502439216af76053d953,
+        type: 3}
+      propertyPath: upgradeInfo.incCost
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 5927121103780422862, guid: 4a83aae4f49d502439216af76053d953,
+        type: 3}
+      propertyPath: upgradeInfo.incValue
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 7529991874841157409, guid: 4a83aae4f49d502439216af76053d953,
         type: 3}
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 519420031}
+    - target: {fileID: 7546408007648684447, guid: 4a83aae4f49d502439216af76053d953,
+        type: 3}
+      propertyPath: upgradeInfo.incCost
+      value: 150
+      objectReference: {fileID: 0}
+    - target: {fileID: 7546408007648684447, guid: 4a83aae4f49d502439216af76053d953,
+        type: 3}
+      propertyPath: upgradeInfo.incValue
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 8797956854620171243, guid: 4a83aae4f49d502439216af76053d953,
         type: 3}
       propertyPath: m_Name
       value: Game_Canvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 8981469542411497162, guid: 4a83aae4f49d502439216af76053d953,
+        type: 3}
+      propertyPath: upgradeInfo.incCost
+      value: 150
+      objectReference: {fileID: 0}
+    - target: {fileID: 8981469542411497162, guid: 4a83aae4f49d502439216af76053d953,
+        type: 3}
+      propertyPath: upgradeInfo.incValue
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4a83aae4f49d502439216af76053d953, type: 3}
+--- !u!114 &4588061418629073282 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6203942982545315012, guid: 4a83aae4f49d502439216af76053d953,
+    type: 3}
+  m_PrefabInstance: {fileID: 4588061418629073281}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4588061418629073283 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7475968300689776991, guid: 4a83aae4f49d502439216af76053d953,
+    type: 3}
+  m_PrefabInstance: {fileID: 4588061418629073281}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4588061418629073284 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3286020144371503664, guid: 4a83aae4f49d502439216af76053d953,
+    type: 3}
+  m_PrefabInstance: {fileID: 4588061418629073281}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &4613891724977293079
 PrefabInstance:
   m_ObjectHideFlags: 0

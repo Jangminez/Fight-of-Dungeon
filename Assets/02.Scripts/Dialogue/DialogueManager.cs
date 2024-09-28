@@ -57,7 +57,7 @@ public class DialogueManager : MonoBehaviour
         }
 
         // 1초 뒤 자동 대화 넘김
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1.5f);
         DisplayNextSentence();
     }
 
