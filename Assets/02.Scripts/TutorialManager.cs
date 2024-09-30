@@ -1,14 +1,27 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class TutorialManager : MonoBehaviour
 {
     public GameObject _upgradeArrow;
     public GameObject _shopArrow;
+    public Transform _slot1;
+    public UnityEvent CheckItem;
+    bool isFirst = false;
 
     void Awake()
     {
         _upgradeArrow.SetActive(false);
         _shopArrow.SetActive(false);
+    }
+
+    void Update()
+    {
+        if(_slot1.childCount == 1 && !isFirst)
+        {
+            isFirst = true;
+            CheckItem.Invoke();
+        }
     }
 
     public void UpgradeArrow()

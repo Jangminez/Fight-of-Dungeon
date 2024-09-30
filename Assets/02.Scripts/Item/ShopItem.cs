@@ -1,8 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -124,6 +122,7 @@ public class ShopItem : MonoBehaviour
         if(GameManager.Instance.player.Gold >= Int32.Parse(_myItem.itemCost) && _myItem.needItem.Count == 0)
         {
             Inventory.Instance.AddInventory(_myItem);
+            
         }
 
         else if(GameManager.Instance.player.Gold >= Int32.Parse(_myItem.itemCost) && _myItem.needItem.Count > 0)
