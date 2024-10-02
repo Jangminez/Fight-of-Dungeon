@@ -177,8 +177,6 @@ public class Goblin : Enemy
             
             arrow.GetComponent<Rigidbody2D>().velocity = direction * 10f;
             Destroy(arrow, 1f);
-
-
         }
     }
 }
