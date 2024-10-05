@@ -11,13 +11,11 @@ public class CameraFollow : MonoBehaviour
     private Vector3 offset;
 
     private Vector3 targetPos;
-
-    void Awake()
-    {
-        target = GameManager.Instance.player.transform;
-    }
+    
     private void Start()
     {
+        target = GameManager.Instance.player.transform;
+
         if (target == null) return;
         transform.position = new Vector3(target.position.x, target.position.y, transform.position.z);
         offset = transform.position - target.position;

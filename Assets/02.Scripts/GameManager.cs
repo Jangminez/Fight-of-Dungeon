@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -45,12 +46,9 @@ public class GameManager : MonoBehaviour
     // 게임 시작
     public void StartGame()
     {
-        player = playerPrefab.transform.GetChild(1).GetComponent<Player>();
-        StartCoroutine(StartGameScene());
+        //StartCoroutine(StartGameScene());
 
-        GamePlayer = Instantiate(playerPrefab);
-        player = GamePlayer.transform.GetChild(1).GetComponent<Player>();
-        DontDestroyOnLoad(GamePlayer);
+        SetPlayer();
     }
 
     IEnumerator StartGameScene()
@@ -64,7 +62,26 @@ public class GameManager : MonoBehaviour
             yield return null;
         }
         
+        if(NetworkManager.Singleton.IsHost)
+            NetworkManager.Singleton.SceneManager.LoadScene("StageScene", LoadSceneMode.Single);
+
         // 씬이 로딩된 후 오브젝트 활성화 및 스폰
+        player.gameObject.SetActive(true);
+        player._spawnPoint = GameObject.FindWithTag("BlueSpawn").transform;
+        player.transform.position = player._spawnPoint.position + new Vector3(0f, 1f, 0f);;
+
+        UIManager.Instance.goToMain.onClick.AddListener(BackToScene);
+
+    }
+
+    public void SetPlayer()
+    {
+
+        // GamePlayer = Instantiate(playerPrefab);
+        // player = GamePlayer.transform.GetChild(1).GetComponent<Player>();
+        // player.transform.parent.GetComponent<NetworkObject>().Spawn();
+        // //DontDestroyOnLoad(GamePlayer);
+
         player.gameObject.SetActive(true);
         player._spawnPoint = GameObject.FindWithTag("BlueSpawn").transform;
         player.transform.position = player._spawnPoint.position + new Vector3(0f, 1f, 0f);;

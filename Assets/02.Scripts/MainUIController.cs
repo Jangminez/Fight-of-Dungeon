@@ -7,6 +7,6 @@ public class MainUIController : MonoBehaviour
 
     void Start()
     {
-        startButton.onClick.AddListener(GameManager.Instance.StartGame);
+        startButton.onClick.AddListener(GameLobby.Instance.QuickJoinLobby);
     }
 }

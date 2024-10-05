@@ -1,16 +1,18 @@
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using Unity.Netcode;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
 using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
-using Unity.VisualScripting;
+using UnityEditor.Rendering;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameLobby : MonoBehaviour
 {
+    public static GameLobby Instance {get; private set;}
     Lobby hostLobby;
     Lobby joinedLobby;
     float heartbeatTimer;
@@ -18,12 +20,19 @@ public class GameLobby : MonoBehaviour
     string playerName;
     public const string KEY_START_GAME = "Relay Code";
     public event EventHandler<EventArgs> OnGameStarted;
+    private List<Unity.Services.Lobbies.Models.Player> previousPlayerList;
+    private bool isGameStart = false;
 
 
     [Header("MyUI")]
     public Button joinButton;
     public Text roomCode;
     public InputField inputField;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     private async void Start()
     {
@@ -38,12 +47,22 @@ public class GameLobby : MonoBehaviour
         await AuthenticationService.Instance.SignInAnonymouslyAsync();
 
         joinButton.onClick.AddListener(JoinLobbyByCode);
+
+        playerName = "Hero" + UnityEngine.Random.Range(0, 100);
     }
 
     void Update()
     {
-        HandleLobbyHeartBeat();
-        HandleLobbyPollForUpdates();
+        if (joinedLobby != null)
+        {
+            HandleLobbyHeartBeat();
+            HandleLobbyPollForUpdates();
+        }
+    }
+
+    private void OnClientConnected(ulong clientId)
+    {
+        StartGame();
     }
 
     // 이 신호를 통해 로비가 활성화 되어있는지 확인
@@ -75,14 +94,30 @@ public class GameLobby : MonoBehaviour
 
                 joinedLobby = await LobbyService.Instance.GetLobbyAsync(joinedLobby.Id);
 
+                CheckPlayerCount();
+
+                // 릴레이 코드가 추가 된다면 게임 시작
                 if (joinedLobby.Data[KEY_START_GAME].Value != "0")
                 {
                     ConnectRelay.Instance.JoinRelay(joinedLobby.Data[KEY_START_GAME].Value);
-
                     joinedLobby = null;
                     OnGameStarted?.Invoke(this, EventArgs.Empty);
                 }
             }
+        }
+    }
+
+    private void CheckPlayerCount()
+    {
+        if (previousPlayerList == null)
+        {
+            previousPlayerList = new List<Unity.Services.Lobbies.Models.Player>(joinedLobby.Players);
+            return;
+        }
+
+        if (joinedLobby.Players.Count > previousPlayerList.Count)
+        {
+            StartGame();
         }
     }
 
@@ -95,6 +130,7 @@ public class GameLobby : MonoBehaviour
 
             CreateLobbyOptions createLobbyOptions = new CreateLobbyOptions
             {
+                IsPrivate = false,
                 Player = GetPlayer(),
                 Data = new Dictionary<string, DataObject> {
                     { KEY_START_GAME, new DataObject(DataObject.VisibilityOptions.Member, "0")}
@@ -105,8 +141,6 @@ public class GameLobby : MonoBehaviour
 
             hostLobby = lobby;
             joinedLobby = hostLobby;
-
-            PrintPlayers(hostLobby);
 
             roomCode.text = lobby.LobbyCode;
 
@@ -162,10 +196,6 @@ public class GameLobby : MonoBehaviour
 
             Lobby lobby = await LobbyService.Instance.QuickJoinLobbyAsync();
             joinedLobby = lobby;
-
-            Debug.Log("Joined Lobby with code " + inputField.text);
-
-            PrintPlayers(joinedLobby);
         }
 
         catch (LobbyServiceException e)
@@ -187,8 +217,6 @@ public class GameLobby : MonoBehaviour
             joinedLobby = lobby;
 
             Debug.Log("Joined Lobby with code " + inputField.text);
-
-            PrintPlayers(joinedLobby);
         }
 
         catch (LobbyServiceException e)
@@ -209,10 +237,11 @@ public class GameLobby : MonoBehaviour
     }
 
     // 로비에 존재하는 플레이어 출력
-    public void PrintPlayers(Lobby lobby)
+    [ContextMenu("PrintPlayer")]
+    public void PrintPlayers()
     {
-        Debug.Log("Players in Lobby " + lobby.LobbyCode);
-        foreach (var player in lobby.Players)
+        Debug.Log("Players in Lobby " + joinedLobby.LobbyCode);
+        foreach (var player in joinedLobby.Players)
         {
             Debug.Log(player.Id + " " + player.Data["PlayerName"].Value);
         }
@@ -256,10 +285,11 @@ public class GameLobby : MonoBehaviour
 
     public async void StartGame()
     {
-        if (IsLobbyHost())
+        if (IsLobbyHost() && !isGameStart)
         {
             try
             {
+                isGameStart = true;
                 Debug.Log("StartGame");
 
                 string relayCode = await ConnectRelay.Instance.CreateRelay();
@@ -272,6 +302,8 @@ public class GameLobby : MonoBehaviour
                 });
 
                 joinedLobby = lobby;
+
+                NetworkManager.Singleton.SceneManager.LoadScene("StageScene", LoadSceneMode.Single);
             }
             catch (LobbyServiceException e)
             {
