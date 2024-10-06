@@ -8,18 +8,8 @@ public class CameraFollow : MonoBehaviour
     public Transform target;
     public float lerpSpeed = 1.0f;
 
-    private Vector3 offset;
-
+    public Vector3 offset;
     private Vector3 targetPos;
-    
-    private void Start()
-    {
-        target = GameManager.Instance.player.transform;
-
-        if (target == null) return;
-        transform.position = new Vector3(target.position.x, target.position.y, transform.position.z);
-        offset = transform.position - target.position;
-    }
 
     private void Update()
     {

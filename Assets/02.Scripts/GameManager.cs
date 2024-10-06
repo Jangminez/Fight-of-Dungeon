@@ -43,52 +43,6 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    // 게임 시작
-    public void StartGame()
-    {
-        //StartCoroutine(StartGameScene());
-
-        SetPlayer();
-    }
-
-    IEnumerator StartGameScene()
-    {
-        // 씬 비동기 로딩
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync("StageScene");
-
-        // 씬이 로드될 때까지 대기
-        while (!asyncLoad.isDone)
-        {
-            yield return null;
-        }
-        
-        if(NetworkManager.Singleton.IsHost)
-            NetworkManager.Singleton.SceneManager.LoadScene("StageScene", LoadSceneMode.Single);
-
-        // 씬이 로딩된 후 오브젝트 활성화 및 스폰
-        player.gameObject.SetActive(true);
-        player._spawnPoint = GameObject.FindWithTag("BlueSpawn").transform;
-        player.transform.position = player._spawnPoint.position + new Vector3(0f, 1f, 0f);;
-
-        UIManager.Instance.goToMain.onClick.AddListener(BackToScene);
-
-    }
-
-    public void SetPlayer()
-    {
-
-        // GamePlayer = Instantiate(playerPrefab);
-        // player = GamePlayer.transform.GetChild(1).GetComponent<Player>();
-        // player.transform.parent.GetComponent<NetworkObject>().Spawn();
-        // //DontDestroyOnLoad(GamePlayer);
-
-        player.gameObject.SetActive(true);
-        player._spawnPoint = GameObject.FindWithTag("BlueSpawn").transform;
-        player.transform.position = player._spawnPoint.position + new Vector3(0f, 1f, 0f);;
-
-        UIManager.Instance.goToMain.onClick.AddListener(BackToScene);
-    }
-
     public void BackToScene()
     {
         Destroy(GamePlayer);

@@ -5,7 +5,6 @@ using Unity.Services.Authentication;
 using Unity.Services.Core;
 using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
-using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -97,7 +96,7 @@ public class GameLobby : MonoBehaviour
                 CheckPlayerCount();
 
                 // 릴레이 코드가 추가 된다면 게임 시작
-                if (joinedLobby.Data[KEY_START_GAME].Value != "0")
+                if (joinedLobby.Data[KEY_START_GAME].Value != "0" && !isGameStart)
                 {
                     ConnectRelay.Instance.JoinRelay(joinedLobby.Data[KEY_START_GAME].Value);
                     joinedLobby = null;
@@ -117,7 +116,8 @@ public class GameLobby : MonoBehaviour
 
         if (joinedLobby.Players.Count > previousPlayerList.Count)
         {
-            StartGame();
+            if(IsLobbyHost())
+                StartGame();
         }
     }
 

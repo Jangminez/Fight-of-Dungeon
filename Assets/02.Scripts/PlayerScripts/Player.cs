@@ -1,12 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public abstract class Player : MonoBehaviour
 {
-    protected Vector2 _inputVec;
     [SerializeField] protected Rigidbody2D _playerRig;
 
     [SerializeField] protected Animator _animator;
