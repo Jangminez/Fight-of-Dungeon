@@ -1,17 +1,22 @@
 using System.Collections;
+using Unity.Netcode;
 using UnityEngine;
 
 public class Slime : Enemy
 {
 
-    private void Start()
+    public override void OnNetworkSpawn()
     {
+        if(!IsServer) return;
+
         InitMonster();
         spr = GetComponent<SpriteRenderer>();
     }
 
     public override void InitMonster()
     {
+        if(!IsServer) return;
+
         if (!stat.isDie)
             _initTransform = this.transform.position;
 
@@ -26,8 +31,8 @@ public class Slime : Enemy
             state = States.Idle;
         }
 
-        stat.maxHp = 30f;
-        Hp = stat.maxHp;
+        MaxHp = 30f;
+        Hp = MaxHp;
 
         stat.attack = 5f;
         stat.attackRange = 2f;
@@ -48,6 +53,8 @@ public class Slime : Enemy
 
     public override IEnumerator EnemyAttack()
     {
+        if(!IsServer) yield break;
+
         while (_isAttack)
         {
             anim.SetTrigger("Attack");
@@ -64,32 +71,9 @@ public class Slime : Enemy
                 _target.GetComponent<Player>().Hit(damage: stat.attack);
         }
     }
-
     public override void Hit(float damage)
     {
-        float finalDamage = damage - stat.defense;
-        if (finalDamage < 0f)
-        {
-            finalDamage = 1f;
-        }
-
-        Hp -= finalDamage;
-
-        if (FloatingDamagePrefab != null && stat.hp > 0)
-        {
-            ShowFloatingDamage(finalDamage);
-        }
-
-        StartCoroutine("HitEffect");
-        anim.SetTrigger("Hit");
-
-        if (stat.hp <= 0)
-        {
-            StopAllCoroutines();
-
-            anim.SetTrigger("Die");
-            Die();
-        }
+        TakeDamageServerRpc(damage);
     }
 
     public override IEnumerator HitEffect()

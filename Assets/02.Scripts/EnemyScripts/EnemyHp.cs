@@ -1,7 +1,8 @@
 using UnityEngine;
 using UnityEngine.UI;
+using Unity.Netcode;
 
-public class MonsterHp : MonoBehaviour
+public class EnemyHp : NetworkBehaviour
 {
     private Enemy _enemy;
 
@@ -9,7 +10,7 @@ public class MonsterHp : MonoBehaviour
     [SerializeField] private Transform _canvas;
     [SerializeField] private Image _hpBar;
     // Start is called before the first frame update
-    void Start()
+    public override void OnNetworkSpawn()
     {
         _enemy = GetComponent<Enemy>();
     }

@@ -1,8 +1,9 @@
 using System;
 using System.Collections;
+using Unity.Netcode;
 using UnityEngine;
 
-public abstract class Enemy : MonoBehaviour
+public abstract class Enemy : NetworkBehaviour
 {
     protected SpriteRenderer spr;
     protected Rigidbody2D rb;
@@ -21,8 +22,6 @@ public abstract class Enemy : MonoBehaviour
     [Serializable]
     public struct Stats
     {
-        public float maxHp;
-        public float hp;
         public float attack;
         public float attackSpeed;
         public float defense;
@@ -36,27 +35,29 @@ public abstract class Enemy : MonoBehaviour
 
     public Stats stat;
 
+    // 몬스터의 체력에 대한 NetworkVariable
+    private NetworkVariable<float> _maxHp = new NetworkVariable<float>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+    private NetworkVariable<float> _hp = new NetworkVariable<float>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+
     public float MaxHp
     {
-        set => stat.maxHp = Mathf.Max(0, value);
-        get => stat.maxHp;
+        set => _maxHp.Value = Mathf.Max(0, value);
+        get => _maxHp.Value;
     }
 
     public float Hp
     {
         set
         {
-            if (stat.hp >= 0 && stat.hp != value)
+            if (_hp.Value >= 0 && _hp.Value != value)
             {
-                stat.hp = Mathf.Max(0, value);
-                GetComponent<MonsterHp>().ChangeHp();
+                _hp.Value = Mathf.Max(0, value);
+                GetComponent<EnemyHp>().ChangeHp();
             }
 
         }
-        get => stat.hp;
+        get => _hp.Value;
     }
-
-
 
     private void Awake()
     {
@@ -66,6 +67,8 @@ public abstract class Enemy : MonoBehaviour
 
     void LateUpdate()
     {
+        if (!IsServer) return;
+
         Movement_Anim();
 
         // 공격 여부 판정
@@ -79,11 +82,13 @@ public abstract class Enemy : MonoBehaviour
 
     IEnumerator MonsterState()
     {
+        if (!IsServer) yield break;
+
         while (!stat.isDie)
         {
             yield return null;
 
-            if(_target == null && state != States.Idle && state != States.Return)
+            if (_target == null && state != States.Idle && state != States.Return)
             {
                 state = States.Idle;
             }
@@ -164,11 +169,14 @@ public abstract class Enemy : MonoBehaviour
     // 몬스터 초기화 함수
     public abstract void InitMonster();
     public abstract void Hit(float damage);
+
     public abstract IEnumerator HitEffect();
     public abstract void Die();
 
     public virtual void Movement()
     {
+        if (!IsServer) return;
+
         if (_target == null)
         {
             state = States.Idle;
@@ -219,6 +227,35 @@ public abstract class Enemy : MonoBehaviour
     {
         var floating = Instantiate(FloatingGoldExpPrefab, transform.position, Quaternion.identity);
         floating.GetComponent<TextMesh>().text = $"\n+{stat.gold}Gold";
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    protected void TakeDamageServerRpc(float damage)
+    {
+        float finalDamage = damage - stat.defense;
+
+        if (finalDamage < 0f)
+        {
+            finalDamage = 1f;
+        }
+
+        Hp -= finalDamage;
+
+        if (FloatingDamagePrefab != null && Hp > 0)
+        {
+            ShowFloatingDamage(finalDamage);
+        }
+
+        StartCoroutine("HitEffect");
+        anim.SetTrigger("Hit");
+
+        if (Hp <= 0)
+        {
+            StopAllCoroutines();
+
+            anim.SetTrigger("Die");
+            Die();
+        }
     }
 }
 

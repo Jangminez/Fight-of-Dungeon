@@ -1,14 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Netcode;
 using UnityEngine;
 
 public class Goblin : Enemy
 {
     public GameObject _arrow;
     public Transform _tip;
-    void Start()
+    public override void OnNetworkSpawn()
     {
+        if(!IsHost) return;
+
         InitMonster();
     }
 
@@ -29,8 +32,8 @@ public class Goblin : Enemy
             anim.SetTrigger("Respawn");
         }
 
-        stat.maxHp = 1000f;
-        Hp = stat.maxHp;
+        MaxHp = 1000f;
+        Hp = MaxHp;
 
         stat.attack = 300f;
         stat.attackRange = 7f;
@@ -53,30 +56,9 @@ public class Goblin : Enemy
     }
 
     #region 피격 및 사망 처리
-
     public override void Hit(float damage)
     {
-        float finalDamage = damage - stat.defense;
-        if (finalDamage < 0f)
-        {
-            finalDamage = 1f;
-        }
-
-        Hp -= finalDamage;
-
-        if(FloatingDamagePrefab != null && stat.hp > 0){
-            ShowFloatingDamage(finalDamage);
-        }
-
-        StartCoroutine("HitEffect");
-
-        if (stat.hp <= 0)
-        {
-            StopAllCoroutines();
-
-            anim.SetTrigger("Die");
-            Die();
-        }
+        TakeDamageServerRpc(damage);
     }
 
     public override IEnumerator HitEffect()
@@ -124,6 +106,8 @@ public class Goblin : Enemy
 
     public override void Die()
     {
+        if(!IsHost) return;
+
         Hp = 0f;
         stat.isDie = true;
 

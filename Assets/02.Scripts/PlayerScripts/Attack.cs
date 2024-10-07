@@ -1,6 +1,7 @@
+using Unity.Netcode;
 using UnityEngine;
 
-public class Attack : MonoBehaviour
+public class Attack : NetworkBehaviour
 {
     float cri;
     bool isAttack = false;
@@ -12,6 +13,7 @@ public class Attack : MonoBehaviour
             cri = Random.Range(1f, 101f); // 1 ~ 100 확률 지정
 
             // cri의 값이 크리티컬 범위 안에 존재한다면 크리티컬 공격
+
             collision.GetComponent<Enemy>().Hit(damage:
             cri <= GameManager.Instance.player.Critical ?
             GameManager.Instance.player.FinalAttack * 1.5f :

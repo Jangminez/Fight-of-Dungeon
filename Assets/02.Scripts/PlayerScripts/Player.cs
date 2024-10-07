@@ -301,7 +301,7 @@ public abstract class Player : NetworkBehaviour
         {
             _isDie = value;
 
-            if (_isDie)
+            if (_isDie && IsOwner)
             {
                 UIManager.Instance.OnRespawn();
             }
@@ -399,9 +399,12 @@ public abstract class Player : NetworkBehaviour
     [ContextMenu("Die")]
     protected void OnDie() 
     {
+        if(!IsOwner) return;
+
         Die = true;
         Hp = 0f;
         _target = null;
+        _playerRig.velocity = Vector2.zero;
 
         _animator.SetTrigger("Die");
         // 사망시 이동 입력, 충돌, 공격 정지
@@ -416,6 +419,8 @@ public abstract class Player : NetworkBehaviour
 
     IEnumerator Respawn()
     {
+        if(!IsOwner) yield break;
+
         yield return new WaitForSeconds(10f);
 
         this.GetComponent<PlayerMovement>().enabled = true;
