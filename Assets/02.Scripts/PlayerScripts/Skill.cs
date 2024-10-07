@@ -2,8 +2,9 @@ using System.Collections;
 using UnityEngine.UI;
 using UnityEngine;
 using System.Collections.Generic;
+using Unity.Netcode;
 
-public abstract class Skill : MonoBehaviour
+public abstract class Skill : NetworkBehaviour
 {
     //protected enum SkillType {Attack, Buff};
     protected List<Animator> _anims = new List<Animator>(); // 스킬 애니메이터 관리
@@ -14,8 +15,13 @@ public abstract class Skill : MonoBehaviour
     protected float useMp; // 스킬 사용 마나
     protected float cri;
 
-    void Start()
+    public override void OnNetworkSpawn()
     {
+        if(!IsOwner){
+            this.enabled = false;
+            return;
+        }
+        
         // 스킬 애니메이션을 위해 스킬의 애니메이터 추가
         _anims.Add(this.GetComponent<Animator>());
 

@@ -1,12 +1,18 @@
-using UnityEngine;
+using Unity.Netcode;
 using UnityEngine.UI;
 
-public class SkillController : MonoBehaviour
+public class SkillController : NetworkBehaviour
 {
     public Skill[] _skills;
 
-    void Awake()
+    public override void OnNetworkSpawn()
     {
+        if (!IsOwner)
+        {
+            this.enabled = false;
+            return;
+        }
+
         for (int i = 0; i < _skills.Length; i++)
         {
             UIManager.Instance.skillButtons[i].onClick.AddListener(_skills[i].UseSkill);

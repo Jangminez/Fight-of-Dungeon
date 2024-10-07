@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
-public abstract class Player : MonoBehaviour
+public abstract class Player : NetworkBehaviour
 {
     [SerializeField] protected Rigidbody2D _playerRig;
 
@@ -61,6 +60,14 @@ public abstract class Player : MonoBehaviour
     public Transform _spawnPoint;
 
     #endregion
+    public override void OnNetworkSpawn()
+    {
+        if(!IsOwner)
+        {
+            this.enabled = false;
+            return;
+        }
+    }
     // 플레이어 초기화 함수
     abstract protected void SetCharater();
 
@@ -398,7 +405,7 @@ public abstract class Player : MonoBehaviour
 
         _animator.SetTrigger("Die");
         // 사망시 이동 입력, 충돌, 공격 정지
-        this.GetComponent<PlayerInput>().enabled = false;
+        this.GetComponent<PlayerMovement>().enabled = false;
         this.GetComponent<Collider2D>().enabled = false;
         this.GetComponent<PlayerFindTarget>().enabled = false;
 
@@ -411,7 +418,7 @@ public abstract class Player : MonoBehaviour
     {
         yield return new WaitForSeconds(10f);
 
-        this.GetComponent<PlayerInput>().enabled = true;
+        this.GetComponent<PlayerMovement>().enabled = true;
         this.GetComponent<Collider2D>().enabled = true;
         this.GetComponent<PlayerFindTarget>().enabled = true;
 

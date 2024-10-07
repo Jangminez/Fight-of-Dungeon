@@ -1,18 +1,28 @@
+using Unity.Netcode;
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : NetworkBehaviour
 {
     public Joystick _joystickMovement;
     float _speed;
     Rigidbody2D _playerRb;
     Animator _anim;
+    Transform _canvas;
+    Player player;
 
-    void Start()
+    public override void OnNetworkSpawn()
     {
+        if(!IsOwner){
+            this.enabled = false;
+            return;
+        }
+        
+        player = GetComponent<Player>();
         _joystickMovement = GameObject.FindWithTag("JoyStick").GetComponent<Joystick>();
         _playerRb = GetComponent<Rigidbody2D>();
         _anim = GetComponent<Animator>();
-        _speed = GameManager.Instance.player.Speed;
+        _speed = GetComponent<Player>().Speed;
+        _canvas = transform.GetChild(3);
     }
 
     void FixedUpdate()
@@ -27,7 +37,7 @@ public class PlayerMovement : MonoBehaviour
     
     public void Movement()
     {
-        if(GameManager.Instance.player.Die){
+        if(player.Die){
             _playerRb.velocity = Vector2.zero;
             return;
         }
@@ -69,12 +79,14 @@ public class PlayerMovement : MonoBehaviour
     {
         if(_joystickMovement.Direction.x > 0)
         {
-            _anim.transform.localScale = new Vector3(-1, 1, 1);
+            _anim.transform.localScale = new Vector3(-1.7f, 1.7f, 1.7f);
+            _canvas.localScale = new Vector3(-0.5f, 0.5f, 0.5f);
         }
 
         else if (_joystickMovement.Direction.x < 0)
         {
-            _anim.transform.localScale = new Vector3(1, 1, 1);
+            _anim.transform.localScale = new Vector3(1.7f, 1.7f, 1.7f);
+            _canvas.localScale = new Vector3(0.5f, 0.5f, 0.5f);
         }
     }
 

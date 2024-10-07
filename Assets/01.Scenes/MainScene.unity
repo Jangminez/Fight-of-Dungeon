@@ -533,6 +533,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e0556c8cfa1dac40a260a6b42316f3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _cam: {fileID: 0}
 --- !u!4 &182750048
 Transform:
   m_ObjectHideFlags: 0
@@ -2580,8 +2581,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78f1e6b2407a6cb41af814926fd2a7d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 2404298458483589204, guid: efdcca61afabbdb4fb32ad67814bcfef,
-    type: 3}
+  playerPrefabName: Warrior_Network
   player: {fileID: 0}
   isDragItem: 0
 --- !u!4 &1582872074

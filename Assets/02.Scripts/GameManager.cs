@@ -1,5 +1,3 @@
-using System.Collections;
-using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -22,7 +20,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public GameObject playerPrefab;
+    public string playerPrefabName;
     public Player player;
     GameObject GamePlayer;
     [HideInInspector] public bool isDragItem = false;

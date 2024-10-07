@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -22,34 +23,51 @@ public class PlayerSpawner : NetworkBehaviour
         {
             if (IsHost)
             {
-                GameObject player = Instantiate(GameManager.Instance.playerPrefab);
-                player.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientId);
-                SetPlayerClientRpc(clientId);
+                PlayerSpawnClientRpc(clientId);
             }
+
         }
     }
 
     [ClientRpc]
-    public void SetPlayerClientRpc(ulong clientId)
+    public void PlayerSpawnClientRpc(ulong clientId)
     {
         if (clientId == NetworkManager.Singleton.LocalClientId)
         {
-            // 각 매니저에 클라이언트의 플레이어 설정
-            GameManager.Instance.player = NetworkManager.Singleton.SpawnManager.GetLocalPlayerObject().transform.GetChild(1).GetComponent<Player>();
-            UIManager.Instance.player = GameManager.Instance.player;
-
-            GameManager.Instance.player.gameObject.SetActive(true);
-            GameManager.Instance.player._spawnPoint = GameObject.FindWithTag("BlueSpawn").transform;
-            GameManager.Instance.player.transform.position = GameManager.Instance.player._spawnPoint.position + new Vector3(0f, 1f, 0f); ;
-
-            UIManager.Instance.goToMain.onClick.AddListener(GameManager.Instance.BackToScene);
-
-
-            // 플레이어 카메라 설정
-            _cam = GameObject.FindWithTag("MainCamera").GetComponent<CameraFollow>();
-            _cam.target = GameManager.Instance.player.transform;
-            _cam.transform.position = new Vector3(_cam.target.position.x, _cam.target.position.y, _cam.transform.position.z);
-            _cam.offset = _cam.transform.position - _cam.target.position;
+            NetworkSpawnPlayerServerRpc(clientId, GameManager.Instance.playerPrefabName);
+            Invoke("SpawnPlayer", 1f);
         }
+    }
+
+    private void SpawnPlayer()
+    {
+        // 각 매니저에 해당 클라이언트의 플레이어 설정
+        GameManager.Instance.player = NetworkManager.Singleton.SpawnManager.GetLocalPlayerObject().GetComponent<Player>();
+        UIManager.Instance.player = GameManager.Instance.player;
+
+        //플레이어 위치 설정
+        GameManager.Instance.player.gameObject.SetActive(true);
+        GameManager.Instance.player._spawnPoint = GameObject.FindWithTag("BlueSpawn").transform;
+        GameManager.Instance.player.transform.position = GameManager.Instance.player._spawnPoint.position + new Vector3(0f, 1f, 0f); ;
+
+        UIManager.Instance.goToMain.onClick.AddListener(GameManager.Instance.BackToScene);
+
+        SetUpCamera(GameManager.Instance.player.transform);
+    }
+
+    private void SetUpCamera(Transform playerTransform)
+    {
+        // 플레이어 카메라 설정
+        _cam = GameObject.FindWithTag("MainCamera").GetComponent<CameraFollow>();
+        _cam.target = playerTransform;
+        _cam.transform.position = new Vector3(playerTransform.position.x, playerTransform.position.y, _cam.transform.position.z);
+        _cam.offset = _cam.transform.position - _cam.target.position;
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void NetworkSpawnPlayerServerRpc(ulong clientId, string name)
+    {
+        GameObject playerObject = Instantiate(Resources.Load<GameObject>($"PlayerCharactors/{name}"));
+        playerObject.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientId);
     }
 }
