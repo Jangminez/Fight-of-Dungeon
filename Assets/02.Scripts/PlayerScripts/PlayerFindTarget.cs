@@ -1,18 +1,28 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Xml.Serialization;
+using Unity.Netcode;
 using UnityEngine;
 
-public class PlayerFindTarget : MonoBehaviour
+public class PlayerFindTarget : NetworkBehaviour
 {
     [SerializeField] private LayerMask layer;
     [SerializeField] private Collider2D[] enemys;
-    [SerializeField] private Collider2D _target;
+    Player player;
 
+    public override void OnNetworkSpawn()
+    {
+        if(!IsOwner){
+            this.enabled = false;
+            return;
+        }
+
+        player = GetComponent<Player>();
+    }
 
     private void Update()
     {
-        enemys = Physics2D.OverlapCircleAll(transform.position, GameManager.Instance.player.AttackRange, layer);
+        if(!IsOwner)
+            return;
+
+        enemys = Physics2D.OverlapCircleAll(transform.position, player.AttackRange, layer);
 
         if (enemys.Length > 0)
         {
@@ -25,21 +35,15 @@ public class PlayerFindTarget : MonoBehaviour
                 if (closeEnemy1 >= closeEnemy2)
                 {
                     closeEnemy1 = closeEnemy2;
-                    GameManager.Instance.player._target = coll.transform;
+                    player._target = coll.transform;
                 }
             }
         }
 
         else
         {
-            GameManager.Instance.player._target = null;
+            player._target = null;
         }
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawSphere(transform.position, GameManager.Instance.player.AttackRange);
     }
 }
 

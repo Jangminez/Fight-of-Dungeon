@@ -1,24 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class OutOfArea : MonoBehaviour
 {
-    [SerializeField] private LayerMask layer;
-
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D col)
     {
-        if (collision.gameObject.layer == layer)
-        {
-            collision.gameObject.GetComponent<Enemy>().OutofArea();
-        }
-    }
+        var enemy = col.transform.GetComponent<Enemy>();
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if(collision.gameObject.layer == layer)
+        if (enemy != null)
         {
-            collision.transform.GetComponent<Enemy>().state = Enemy.States.Return;
+            enemy.state = Enemy.States.Return;
         }
     }
 }

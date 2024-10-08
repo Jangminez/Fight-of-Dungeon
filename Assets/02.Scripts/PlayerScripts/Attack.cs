@@ -1,28 +1,23 @@
-using System.Collections;
-using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
-public class Attack : MonoBehaviour
+public class Attack : NetworkBehaviour
 {
     float cri;
+    bool isAttack = false;
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.GetComponent<Enemy>() != null)
+        if (collision.GetComponent<Enemy>() != null && !isAttack)
         {
+            isAttack = true;
             cri = Random.Range(1f, 101f); // 1 ~ 100 확률 지정
 
-            if (cri <= GameManager.Instance.player.Critical) // 공격이 크리티컬 일 때
-            {
-                collision.GetComponent<Enemy>().Hit(damage: GameManager.Instance.player.FinalAttack * 1.5f);
+            // cri의 값이 크리티컬 범위 안에 존재한다면 크리티컬 공격
 
-                Debug.Log("크리티컬!");
-            }
-
-            else // 일반 공격
-            {
-                collision.GetComponent<Enemy>().Hit(damage: GameManager.Instance.player.FinalAttack);
-                Debug.Log("일반 공격");
-            }
+            collision.GetComponent<Enemy>().Hit(damage:
+            cri <= GameManager.Instance.player.Critical ?
+            GameManager.Instance.player.FinalAttack * 1.5f :
+            GameManager.Instance.player.FinalAttack);
         }
     }
 }

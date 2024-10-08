@@ -1,13 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditorInternal;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     private static GameManager _instance;
-
-    public Player player;
     public static GameManager Instance
     {
         get
@@ -24,6 +20,13 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public string playerPrefabName;
+    public Player player;
+    GameObject GamePlayer;
+    [HideInInspector] public bool isDragItem = false;
+
+
+
     private void Awake()
     {
         // 인스턴스가 없을 때 해당 오브젝트로 설정
@@ -36,5 +39,11 @@ public class GameManager : MonoBehaviour
 
         // 씬 로드시에도 파괴되지않음 
         DontDestroyOnLoad(gameObject);
+    }
+
+    public void BackToScene()
+    {
+        Destroy(GamePlayer);
+        SceneManager.LoadScene("MainScene");
     }
 }

@@ -1,14 +1,22 @@
 using System.Collections;
+using Unity.Netcode;
 using UnityEngine;
 
-public abstract class PlayerAttackController : MonoBehaviour
+public abstract class PlayerAttackController : NetworkBehaviour
 {
     protected bool _isAttack;
     protected Animator _anim;
     public Transform _basicAttack;
+    Player player;
 
-    private void Start()
+    public override void OnNetworkSpawn()
     {
+        if(!IsOwner){
+            this.enabled = false;
+            return;
+        }
+        
+        player = GetComponent<Player>();
         _anim = GetComponent<Animator>();
 
         _isAttack = false;
@@ -16,13 +24,14 @@ public abstract class PlayerAttackController : MonoBehaviour
 
     public virtual void Attack()
     {
-        if(GameManager.Instance.player._target != null & !_isAttack)
+        if(player._target != null & !_isAttack)
         {
             _isAttack = true;
-            _anim.SetFloat("AttackSpeed", GameManager.Instance.player.FinalAS);
+            _anim.SetFloat("AttackSpeed", player.FinalAS);
             StartCoroutine("BasicAttack");
         }
     }
 
     public abstract IEnumerator BasicAttack();
 }
+

@@ -1,14 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Netcode;
 using UnityEngine;
 
 public class Goblin : Enemy
 {
     public GameObject _arrow;
     public Transform _tip;
-    void Start()
+    public override void OnNetworkSpawn()
     {
+        if(!IsHost) return;
+
         InitMonster();
     }
 
@@ -22,19 +25,18 @@ public class Goblin : Enemy
         {
             _isAttack = false;
             transform.position = _initTransform;
-            GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-            GetComponent<Collider2D>().enabled = true;
+            RespawnClientRpc();
             state = States.Idle;
             StartCoroutine("HitEffect");
             anim.SetTrigger("Respawn");
         }
 
-        stat.maxHp = 1000f;
-        Hp = stat.maxHp;
+        MaxHp = 1000f;
+        Hp = MaxHp;
 
         stat.attack = 300f;
         stat.attackRange = 7f;
-        stat.attackSpeed = 1f;
+        stat.attackSpeed = 0.7f;
 
         stat.defense = 100f;
 
@@ -53,30 +55,9 @@ public class Goblin : Enemy
     }
 
     #region 피격 및 사망 처리
-
     public override void Hit(float damage)
     {
-        float finalDamage = damage - stat.defense;
-        if (finalDamage < 0f)
-        {
-            finalDamage = 1f;
-        }
-
-        Hp -= finalDamage;
-
-        if(FloatingDamagePrefab != null && stat.hp > 0){
-            ShowFloatingDamage(finalDamage);
-        }
-
-        StartCoroutine("HitEffect");
-
-        if (stat.hp <= 0)
-        {
-            StopAllCoroutines();
-
-            anim.SetTrigger("Die");
-            Die();
-        }
+        TakeDamageServerRpc(damage);
     }
 
     public override IEnumerator HitEffect()
@@ -124,14 +105,13 @@ public class Goblin : Enemy
 
     public override void Die()
     {
+        if(!IsHost) return;
+
         Hp = 0f;
         stat.isDie = true;
 
         state = States.Die;
-        GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-        GetComponent<Collider2D>().enabled = false;
-
-        GiveExpGold(GameManager.Instance.player);
+        DieClientRpc();
 
         Invoke("InitMonster", 10f);
     }
@@ -139,7 +119,7 @@ public class Goblin : Enemy
     // 이동 애니메이션
     public override void Movement_Anim()
     {
-        if(state == States.Chase || state == States.Return && !GameManager.Instance.player.Die)
+        if(state == States.Chase || state == States.Return)
         {
             anim.SetFloat("RunState", 0.5f);
         }
@@ -154,27 +134,29 @@ public class Goblin : Enemy
     {
         while(_isAttack)
         {
+            // 공격시 방향 전환 및 애니메이션 실행
+            SetDirection();
             anim.SetTrigger("Attack");
-            yield return new WaitForSeconds(1 / stat.attackSpeed);
 
-            GameObject arrow = Instantiate(_arrow, _tip.transform.position, Quaternion.identity);
-            arrow.GetComponent<EnemyArrow>()._enemy = this;
-            Vector3 direction = (_target.position - rb.position).normalized;
-            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-            arrow.transform.rotation = Quaternion.Euler(0, 0, angle);
-            //arrow.transform.rotation = Quaternion.LookRotation(-Vector3.forward, direction);
-            
-            
-            arrow.GetComponent<Rigidbody2D>().velocity = direction * 10f;
-            Destroy(arrow, 2f);
+            // 공격속도 지연
+            yield return new WaitForSeconds(1 / stat.attackSpeed);
 
             if(state != States.Attack) 
             {
                 _isAttack = false;
+                _target = null;
                 yield break;
             }
+
+            // 화살 생성 후 타겟 방향으로 회전 및 발사
+            GameObject arrow = Instantiate(_arrow, _tip.transform.position, Quaternion.identity);
+            arrow.GetComponent<EnemyArrow>()._enemy = this;
+            Vector3 direction = (_target.position - transform.position).normalized;
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            arrow.transform.rotation = Quaternion.Euler(0, 0, angle);
             
-            //GameManager.Instance.player.Hit(damage: stat.attack);
+            arrow.GetComponent<Rigidbody2D>().velocity = direction * 10f;
+            Destroy(arrow, 1f);
         }
     }
 }

@@ -16,12 +16,13 @@ public class UpgradeAbility : MonoBehaviour
     [Serializable]
     public struct UpgradeInfo   // 업그레이드 정보 
     {
-        public enum upgradeType { Attack, AttackSpeed, Critical, MaxHp, HpRegen, Defense ,MaxMp, MpRegen };
+        public enum upgradeType { Attack, AttackSpeed, Critical, MaxHp, HpRegen, Defense, MaxMp, MpRegen };
         public upgradeType type;
         public float incValue;
         public float incCost;
         public int level;
     }
+    float _myValue;
 
     public HUD myUI;
     public UpgradeInfo upgradeInfo;
@@ -38,6 +39,42 @@ public class UpgradeAbility : MonoBehaviour
 
         // 업그레이드 레벨
         upgradeInfo.level = 0;
+
+        // 초기값 세팅
+        switch (upgradeInfo.type)
+        {
+            case UpgradeInfo.upgradeType.Attack:
+                _myValue = _player.Attack;
+                break;
+
+            case UpgradeInfo.upgradeType.AttackSpeed:
+                _myValue = _player.AttackSpeed;
+                break;
+
+            case UpgradeInfo.upgradeType.Critical:
+                _myValue = _player.Critical;
+                break;
+
+            case UpgradeInfo.upgradeType.MaxHp:
+                _myValue = _player.MaxHp;
+                break;
+
+            case UpgradeInfo.upgradeType.HpRegen:
+                _myValue = _player.HpRegen;
+                break;
+
+            case UpgradeInfo.upgradeType.Defense:
+                _myValue = _player.Defense;
+                break;
+
+            case UpgradeInfo.upgradeType.MaxMp:
+                _myValue = _player.MaxMp;
+                break;
+
+            case UpgradeInfo.upgradeType.MpRegen:
+                _myValue = _player.MpRegen;
+                break;
+        }
     }
 
     private void Start()
@@ -52,35 +89,35 @@ public class UpgradeAbility : MonoBehaviour
         switch (upgradeInfo.type)
         {
             case UpgradeInfo.upgradeType.Attack:
-                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.Attack, upgradeInfo.incValue, 1, "공격력");
+                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _myValue, upgradeInfo.incValue, 0, "공격력");
                 break;
 
             case UpgradeInfo.upgradeType.AttackSpeed:
-                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.AttackSpeed, upgradeInfo.incValue, 1, "공격속도");
+                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _myValue, upgradeInfo.incValue, 0, "공격속도");
                 break;
 
             case UpgradeInfo.upgradeType.Critical:
-                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.Critical, upgradeInfo.incValue, 1, "크리티컬 확률");
+                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _myValue, upgradeInfo.incValue, 0, "크리티컬 확률");
                 break;
 
             case UpgradeInfo.upgradeType.MaxHp:
-                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.MaxHp, upgradeInfo.incValue, 1, "체력");
+                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _myValue, upgradeInfo.incValue, 0, "체력");
                 break;
 
             case UpgradeInfo.upgradeType.HpRegen:
-                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.HpRegen, upgradeInfo.incValue, 1, "체력 재생속도");
+                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _myValue, upgradeInfo.incValue, 0, "체력 재생속도");
                 break;
 
             case UpgradeInfo.upgradeType.Defense:
-                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.Defense, upgradeInfo.incValue, 1, "방어력");
+                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _myValue, upgradeInfo.incValue, 0, "방어력");
                 break;
 
             case UpgradeInfo.upgradeType.MaxMp:
-                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.MaxMp, upgradeInfo.incValue, 1, "마나");
+                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _myValue, upgradeInfo.incValue, 0, "마나");
                 break;
 
             case UpgradeInfo.upgradeType.MpRegen:
-                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.MpRegen, upgradeInfo.incValue, 1, "마나 재생속도");
+                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _myValue, upgradeInfo.incValue, 0, "마나 재생속도");
                 break;
         }
     }
@@ -95,73 +132,75 @@ public class UpgradeAbility : MonoBehaviour
 
         else return;
 
+        _myValue += upgradeInfo.incValue;
+        
         switch (upgradeInfo.type)
         {
             case UpgradeInfo.upgradeType.Attack:
                 _player.Attack += upgradeInfo.incValue;
-                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.Attack, upgradeInfo.incValue, upgradeInfo.incCost, "공격력");
+                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _myValue, upgradeInfo.incValue, upgradeInfo.incCost, "공격력");
                 break;
 
             case UpgradeInfo.upgradeType.AttackSpeed:
                 _player.AttackSpeed += upgradeInfo.incValue;
-                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.AttackSpeed, upgradeInfo.incValue, upgradeInfo.incCost, "공격속도");
+                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _myValue, upgradeInfo.incValue, upgradeInfo.incCost, "공격속도");
                 break;
 
             case UpgradeInfo.upgradeType.Critical:
                 _player.Critical += upgradeInfo.incValue;
-                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.Critical, upgradeInfo.incValue, upgradeInfo.incCost, "크리티컬 확률");
+                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _myValue, upgradeInfo.incValue, upgradeInfo.incCost, "크리티컬 확률");
                 break;
 
             case UpgradeInfo.upgradeType.MaxHp:
                 _player.MaxHp += upgradeInfo.incValue;
-                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.MaxHp, upgradeInfo.incValue, upgradeInfo.incCost, "체력");
+                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _myValue, upgradeInfo.incValue, upgradeInfo.incCost, "체력");
                 break;
 
             case UpgradeInfo.upgradeType.HpRegen:
                 _player.HpRegen += upgradeInfo.incValue;
-                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.HpRegen, upgradeInfo.incValue, upgradeInfo.incCost, "체력 재생속도");
+                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _myValue, upgradeInfo.incValue, upgradeInfo.incCost, "체력 재생속도");
                 break;
 
             case UpgradeInfo.upgradeType.Defense:
                 _player.Defense += upgradeInfo.incValue;
-                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.Defense, upgradeInfo.incValue, upgradeInfo.incCost, "방어력");
+                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _myValue, upgradeInfo.incValue, upgradeInfo.incCost, "방어력");
                 break;
 
             case UpgradeInfo.upgradeType.MaxMp:
                 _player.MaxMp += upgradeInfo.incValue;
-                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.MaxMp, upgradeInfo.incValue, upgradeInfo.incCost, "마나");
+                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _myValue, upgradeInfo.incValue, upgradeInfo.incCost, "마나");
                 break;
 
-            case UpgradeInfo.upgradeType.MpRegen: 
+            case UpgradeInfo.upgradeType.MpRegen:
                 _player.MpRegen += upgradeInfo.incValue;
-                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _player.MpRegen, upgradeInfo.incValue, upgradeInfo.incCost, "마나 재생속도");
+                SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _myValue, upgradeInfo.incValue, upgradeInfo.incCost, "마나 재생속도");
                 break;
         }
 
         upgradeInfo.level += 1;
     }
 
-    private void SetUI(Text level, Text value, Text cost, int Lv ,float initValue ,float increase, float costInc, string name)
+    private void SetUI(Text level, Text value, Text cost, int Lv, float initValue, float increase, float costInc, string name)
     {
         //현재 값과 다음에 증가된 값을 UI에 표시
         if (name == "크리티컬 확률")
         {
             level.text = $"Lv{Lv + 1} {name}";
             value.text = $"{initValue}% -> {initValue + increase}%";
-            cost.text = $"{Mathf.Round(float.Parse(cost.text) * costInc)}";
+            cost.text = $"{Mathf.Round(float.Parse(cost.text) + costInc)}";
             return;
         }
 
-        else if(name == "체력 재생속도" || name =="마나 재생속도")
+        else if (name == "체력 재생속도" || name == "마나 재생속도")
         {
             level.text = $"Lv{Lv + 1} {name}";
             value.text = $"초당 {Math.Round(initValue, 1)} -> {Math.Round(initValue + increase, 1)}";
-            cost.text = $"{Mathf.Round(float.Parse(cost.text) * costInc)}";
+            cost.text = $"{Mathf.Round(float.Parse(cost.text) + costInc)}";
             return;
         }
 
         level.text = $"Lv{Lv + 1} {name}";
-        value.text = $"{Math.Round(initValue, 1)} -> {Math.Round(initValue + increase,1)}";
-        cost.text = $"{Mathf.Round(float.Parse(cost.text) * costInc)}";
+        value.text = $"{Math.Round(initValue, 1)} -> {Math.Round(initValue + increase, 1)}";
+        cost.text = $"{Mathf.Round(float.Parse(cost.text) + costInc)}";
     }
 }

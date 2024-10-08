@@ -1,18 +1,18 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
-public abstract class Enemy : MonoBehaviour
+public abstract class Enemy : NetworkBehaviour
 {
     protected SpriteRenderer spr;
     protected Rigidbody2D rb;
     protected Animator anim;
     public Vector3 _initTransform;
-    public enum States { Idle, Chase, Attack, Return, Die}
+    public enum States { Idle, Chase, Attack, Return, Die }
     public States state;
 
-    public Rigidbody2D _target;
+    public Transform _target;
     protected bool _isAttack;
 
     public GameObject FloatingDamagePrefab;
@@ -22,8 +22,6 @@ public abstract class Enemy : MonoBehaviour
     [Serializable]
     public struct Stats
     {
-        public float maxHp;
-        public float hp;
         public float attack;
         public float attackSpeed;
         public float defense;
@@ -37,54 +35,70 @@ public abstract class Enemy : MonoBehaviour
 
     public Stats stat;
 
+    // 몬스터의 체력에 대한 NetworkVariable
+    private NetworkVariable<float> _maxHp = new NetworkVariable<float>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+    private NetworkVariable<float> _hp = new NetworkVariable<float>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+    private NetworkVariable<ulong> _lastAttackClientId = new NetworkVariable<ulong>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+
     public float MaxHp
     {
-        set => stat.maxHp = Mathf.Max(0, value);
-        get => stat.maxHp;
+        set => _maxHp.Value = Mathf.Max(0, value);
+        get => _maxHp.Value;
     }
 
     public float Hp
     {
         set
         {
-            if (stat.hp >= 0 && stat.hp != value)
+            if (_hp.Value >= 0 && _hp.Value != value)
             {
-                stat.hp = Mathf.Max(0, value);
-                GetComponent<MonsterHp>().ChangeHp();
+                _hp.Value = Mathf.Max(0, value);
             }
 
         }
-        get => stat.hp;
+        get => _hp.Value;
     }
-
-
 
     private void Awake()
     {
-        //spr = GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
-        anim = GetComponent<Animator>();    
-        _target = GameObject.FindWithTag("Player").GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
+    }
+
+    private void Start()
+    {
+        // hp 값이 변경될 때마다 UI 동기화를 위한 이벤트 연결
+        if (IsClient)
+            _hp.OnValueChanged += GetComponent<EnemyHp>().ChangeHp;
     }
 
     void LateUpdate()
     {
+        if (!IsServer) return;
+
         Movement_Anim();
-        
+
         // 공격 여부 판정
-        if(!_isAttack && state == States.Attack)
+        if (!_isAttack && state == States.Attack)
         {
             _isAttack = true;
             anim.SetFloat("AttackSpeed", stat.attackSpeed);
             StartCoroutine("EnemyAttack");
-        }    
+        }
     }
 
     IEnumerator MonsterState()
     {
+        if (!IsServer) yield break;
+
         while (!stat.isDie)
         {
             yield return null;
+
+            if (_target == null && state != States.Idle && state != States.Return)
+            {
+                state = States.Idle;
+            }
 
             if (state == States.Idle)
             {
@@ -92,7 +106,7 @@ public abstract class Enemy : MonoBehaviour
 
                 rb.velocity = Vector2.zero;
 
-                if (Vector2.Distance(_target.position, rb.position) < stat.chaseRange && !stat.isDie)
+                if (_target != null && Vector2.Distance(_target.position, transform.position) < stat.chaseRange && !stat.isDie)
                 {
                     timer = 0f;
                     state = States.Chase;
@@ -109,25 +123,35 @@ public abstract class Enemy : MonoBehaviour
 
             else if (state == States.Chase)
             {
+                if (_target == null)
+                    state = States.Idle;
+
                 // 타겟의 위치 확인 후 이동
                 Movement();
                 SetDirection();
 
-                if (Vector2.Distance(_target.position, rb.position) < stat.attackRange && !stat.isDie)
+                if (Vector2.Distance(_target.position, transform.position) < stat.attackRange && !stat.isDie)
                 {
                     state = States.Attack;
                 }
 
-                else if (Vector2.Distance(_target.position, rb.position) > stat.chaseRange && !stat.isDie)
+                else if (Vector2.Distance(_target.position, transform.position) > stat.chaseRange && !stat.isDie)
                 {
                     state = States.Idle;
+                    timer = 0f;
                 }
 
             }
 
             else if (state == States.Attack)
             {
-                if (Vector2.Distance(_target.position, rb.position) > stat.attackRange && !stat.isDie)
+                if (_target == null)
+                {
+                    state = States.Idle;
+                    timer = 0f;
+                }
+
+                if (_target != null && Vector2.Distance(_target.position, transform.position) > stat.attackRange && !stat.isDie)
                 {
                     state = States.Chase;
                 }
@@ -144,24 +168,30 @@ public abstract class Enemy : MonoBehaviour
                 if (Vector3.Distance(_initTransform, this.transform.position) < 0.1f)
                 {
                     state = States.Idle;
+                    timer = 0f;
                 }
-            }
-
-            if (GameManager.Instance.player.Die)
-            {
-                state = States.Return;
             }
         }
     }
     // 몬스터 초기화 함수
     public abstract void InitMonster();
     public abstract void Hit(float damage);
+
     public abstract IEnumerator HitEffect();
     public abstract void Die();
 
     public virtual void Movement()
     {
-        Vector2 dirVec = _target.position - rb.position;
+        if (!IsServer) return;
+
+        if (_target == null)
+        {
+            state = States.Idle;
+            timer = 0f;
+            return;
+        }
+
+        Vector2 dirVec = _target.position - transform.position;
         Vector2 nextVec = dirVec.normalized * stat.speed * Time.fixedDeltaTime;
 
         rb.MovePosition(rb.position + nextVec);
@@ -170,21 +200,20 @@ public abstract class Enemy : MonoBehaviour
 
     public abstract IEnumerator EnemyAttack();
 
-    public virtual void GiveExpGold(Player player)
+    [ServerRpc(RequireOwnership = false)]
+    public void GiveExpGoldServerRpc(ulong lastClientId)
     {
-        player.Exp += stat.exp;
-        player.Gold += stat.gold;
-        ShowGoldExp();
+        ShowGoldClientRpc(lastClientId, stat.gold, stat.exp);
     }
 
-        void SetDirection()
+    public virtual void SetDirection()
     {
-        if(_target.position.x - rb.position.x > 0)
+        if (_target != null && _target.position.x - transform.position.x > 0)
         {
             anim.transform.localScale = new Vector3(-1f, 1f, 1);
         }
 
-        else if (_target.position.x - rb.position.x < 0)
+        else if (_target != null && _target.position.x - transform.position.x < 0)
         {
             anim.transform.localScale = new Vector3(1f, 1f, 1);
         }
@@ -194,16 +223,81 @@ public abstract class Enemy : MonoBehaviour
         state = States.Return;
     }
 
-    public virtual void ShowFloatingDamage(float damage) 
+    [ClientRpc]
+    public void ShowFloatingDamageClientRpc(float damage)
     {
         var dmg = Instantiate(FloatingDamagePrefab, transform.position, Quaternion.identity);
-        dmg.GetComponent<TextMesh>().text = $"-{damage}";
+        dmg.GetComponent<TextMesh>().text = $"-" + damage.ToString("F1");
     }
 
-    public virtual void ShowGoldExp()
+    [ClientRpc]
+    public virtual void ShowGoldClientRpc(ulong clientId, int gold, float exp)
     {
-        var floating = Instantiate(FloatingGoldExpPrefab, transform.position, Quaternion.identity);
-        floating.GetComponent<TextMesh>().text = $"\n+{stat.gold}Gold";
+        if (clientId == NetworkManager.Singleton.LocalClientId)
+        {
+            GameManager.Instance.player.Gold += gold;
+            GameManager.Instance.player.Exp += exp;
+            var floating = Instantiate(FloatingGoldExpPrefab, transform.position, Quaternion.identity);
+            floating.GetComponent<TextMesh>().text = $"\n+{gold}Gold";
+        }
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    protected void TakeDamageServerRpc(float damage, ServerRpcParams rpcParams = default)
+    {
+        // 마지막으로 공격한 클라이언트 Id 저장
+        _lastAttackClientId.Value = rpcParams.Receive.SenderClientId;
+
+        // 받은 데미지 - 방어력 으로 최종데미지 계산
+        float finalDamage = damage - stat.defense;
+
+        if (finalDamage < 0f)
+        {
+            finalDamage = 1f;
+        }
+
+        Hp -= finalDamage;
+
+        if (FloatingDamagePrefab != null && Hp > 0)
+        {
+            // 데미지 표시 동기화
+            ShowFloatingDamageClientRpc(finalDamage);
+        }
+
+        anim.SetTrigger("Hit");
+
+        if (Hp <= 0)
+        {
+            // 체력이 0 이하라면 Die
+            StopAllCoroutines();
+
+            anim.SetTrigger("Die");
+            Die();
+        }
+        else
+        {
+            // 죽는게 아니라면 HitEffect 실행
+            StartCoroutine("HitEffect");
+        }
+    }
+
+    [ClientRpc]
+    protected void DieClientRpc()
+    {
+        // 속도 0, 콜라이더 비활성화를 통한 플레이어의 공격 금지        
+        GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+        GetComponent<Collider2D>().enabled = false;
+
+        // 경험치랑 골드 지급
+        if (NetworkManager.Singleton.LocalClientId == _lastAttackClientId.Value)
+            GiveExpGoldServerRpc(_lastAttackClientId.Value);
+    }
+
+    [ClientRpc]
+    protected void RespawnClientRpc()
+    {
+        GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+        GetComponent<Collider2D>().enabled = true;
     }
 }
 
