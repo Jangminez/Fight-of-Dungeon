@@ -7,10 +7,12 @@ public class Slime : Enemy
 
     public override void OnNetworkSpawn()
     {
+        spr = GetComponent<SpriteRenderer>();
+        
         if(!IsServer) return;
 
         InitMonster();
-        spr = GetComponent<SpriteRenderer>();
+
     }
 
     public override void InitMonster()
@@ -25,9 +27,7 @@ public class Slime : Enemy
             anim.SetTrigger("Respawn");
             transform.position = _initTransform;
             _isAttack = false;
-            GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-            GetComponent<Collider2D>().enabled = true;
-            spr.color = Color.white;
+            RespawnClientRpc();
             state = States.Idle;
         }
 
@@ -78,9 +78,9 @@ public class Slime : Enemy
 
     public override IEnumerator HitEffect()
     {
-        spr.color = Color.gray;
+        HitEffectClientRpc();
         yield return new WaitForSeconds(0.2f);
-        spr.color = Color.white;
+        HitEffectClientRpc();
     }
 
     public override void Die()
@@ -88,14 +88,12 @@ public class Slime : Enemy
         Hp = 0f;
         stat.isDie = true;
 
+        // 몬스터 상태 Die로 설정 후 애니메이션 실행
         state = States.Die;
         anim.SetFloat("RunState", 0f);
-        GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-        GetComponent<Collider2D>().enabled = false;
-        spr.color = Color.gray;
+        DieClientRpc();
 
-        GiveExpGold(GameManager.Instance.player);
-
+        // 10초 뒤 부활
         Invoke("InitMonster", 10f);
     }
 
@@ -110,6 +108,12 @@ public class Slime : Enemy
         {
             anim.SetFloat("RunState", 0f);
         }
+    }
+
+    [ClientRpc]
+    private void HitEffectClientRpc()
+    {
+        spr.color = spr.color == Color.white ? Color.gray : Color.white;
     }
 }
 

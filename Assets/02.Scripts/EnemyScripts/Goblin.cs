@@ -25,8 +25,7 @@ public class Goblin : Enemy
         {
             _isAttack = false;
             transform.position = _initTransform;
-            GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-            GetComponent<Collider2D>().enabled = true;
+            RespawnClientRpc();
             state = States.Idle;
             StartCoroutine("HitEffect");
             anim.SetTrigger("Respawn");
@@ -112,10 +111,7 @@ public class Goblin : Enemy
         stat.isDie = true;
 
         state = States.Die;
-        GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-        GetComponent<Collider2D>().enabled = false;
-
-        GiveExpGold(GameManager.Instance.player);
+        DieClientRpc();
 
         Invoke("InitMonster", 10f);
     }

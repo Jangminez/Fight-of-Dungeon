@@ -15,11 +15,12 @@ public class EnemyHp : NetworkBehaviour
         _enemy = GetComponent<Enemy>();
     }
 
-    public void ChangeHp()
+    public void ChangeHp(float oldValue, float newValue)
     {
+        //if(!IsServer) return;
         if (_enemy != null)
         {
-            if (_enemy.Hp == 0)
+            if (newValue == 0)
             {
                 _canvas.gameObject.SetActive(false);
             }
@@ -31,7 +32,7 @@ public class EnemyHp : NetworkBehaviour
 
             if (_hpBar != null)
             {
-                _hpBar.fillAmount = _enemy.Hp / _enemy.MaxHp;
+                _hpBar.fillAmount = newValue / _enemy.MaxHp;
             }
         }
     }
