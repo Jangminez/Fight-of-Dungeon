@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class PlayerUIController : NetworkBehaviour
 {
-    [SerializeField]private Player _player;
+    [SerializeField] private Player _player;
 
     [Header("HP & MP")]
     [SerializeField] private Image _hpBar;
@@ -15,18 +15,13 @@ public class PlayerUIController : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         _player = GetComponent<Player>();
-
-        if(!IsOwner){
-            return;
-        }
-
         _canvas = _hpBar.transform.parent;
         _initScale = _canvas.localScale;
     }
 
     void Update()
     {
-        if(_canvas == null) return;
+        if (_canvas == null) return;
 
         _canvas.localScale = _initScale;
     }

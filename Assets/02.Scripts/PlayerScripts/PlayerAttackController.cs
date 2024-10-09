@@ -7,7 +7,7 @@ public abstract class PlayerAttackController : NetworkBehaviour
     protected bool _isAttack;
     protected Animator _anim;
     public Transform _basicAttack;
-    Player player;
+    protected Player player;
 
     public override void OnNetworkSpawn()
     {

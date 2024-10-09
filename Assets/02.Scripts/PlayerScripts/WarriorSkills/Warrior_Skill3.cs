@@ -31,6 +31,8 @@ public class Warrior_Skill3 : Skill
     }
     public override IEnumerator SkillProcess()
     {
+        if(!IsOwner) yield break;
+
         // 쿨다운 시작
         StartCoroutine(CoolDown(_info.coolDown));
 
@@ -48,6 +50,8 @@ public class Warrior_Skill3 : Skill
 
     void OnTriggerEnter2D(Collider2D other)
     {
+        if(!IsOwner) return;
+
         // 몬스터가 처음 스킬범위에 들어왔다면 추가 후 데미지 코루틴 시작
         if (!_info.montsterInRage.Contains(other))
         {
@@ -58,12 +62,16 @@ public class Warrior_Skill3 : Skill
 
     void OnTriggerExit2D(Collider2D other)
     {
+        if(!IsOwner) return;
+
         // 범위에서 벗어나면 해당 몬스터 리스트에서 제거
         _info.montsterInRage.Remove(other);
     }
 
     IEnumerator SkillDamage(Collider2D other)
     {
+        if(!IsOwner) yield break;
+
         var monster = other.GetComponent<Enemy>();
 
         cri = Random.Range(1, 101);

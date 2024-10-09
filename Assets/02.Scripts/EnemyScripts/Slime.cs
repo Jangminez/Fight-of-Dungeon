@@ -24,7 +24,7 @@ public class Slime : Enemy
 
         else
         {
-            spr.color = Color.white;
+            ColorToWhiteClientRpc();
             anim.SetTrigger("Respawn");
             transform.position = _initTransform;
             _isAttack = false;
@@ -114,6 +114,12 @@ public class Slime : Enemy
     private void HitEffectClientRpc()
     {
         spr.color = spr.color == Color.white ? Color.gray : Color.white;
+    }
+
+    [ClientRpc]
+    private void ColorToWhiteClientRpc()
+    {
+        spr.color = Color.white;
     }
 }
 

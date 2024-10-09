@@ -18,7 +18,6 @@ public abstract class Skill : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         if(!IsOwner){
-            this.enabled = false;
             return;
         }
         
@@ -76,5 +75,10 @@ public abstract class Skill : NetworkBehaviour
 
         _isCoolDown = false;
         _cdText.gameObject.SetActive(false);
+
+            foreach(var anim in _anims)
+            {
+                anim.ResetTrigger("UseSkill");
+            }
     }
 }
