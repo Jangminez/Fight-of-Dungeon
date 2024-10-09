@@ -8,7 +8,7 @@ public class EnemyArrow : MonoBehaviour
     {
         if(other.GetComponent<Player>() != null )
         {  
-            GameManager.Instance.player.Hit(damage: _enemy.stat.attack);
+            other.GetComponent<Player>().Hit(damage: _enemy.stat.attack);
             Destroy(gameObject);
         }
 

@@ -221,10 +221,19 @@ public abstract class Enemy : NetworkBehaviour
     {
         state = States.Return;
     }
+    
+    [ClientRpc]
+    protected void AttackClientRpc(ulong clientId, float damage)
+    {
+        // 공격 받은 클라이언트라면 Hit() 처리
+        if(clientId == NetworkManager.Singleton.LocalClientId)
+            GameManager.Instance.player.Hit(damage: damage);
+    }
 
     [ClientRpc]
     public void ShowFloatingDamageClientRpc(float damage)
     {
+        // 몬스터 피격 데미지 표시
         var dmg = Instantiate(FloatingDamagePrefab, transform.position, Quaternion.identity);
         dmg.GetComponent<TextMesh>().text = $"-" + damage.ToString("F1");
     }
@@ -232,6 +241,7 @@ public abstract class Enemy : NetworkBehaviour
     [ClientRpc]
     public virtual void ShowGoldClientRpc(ulong clientId, int gold, float exp)
     {
+        // 마지막으로 처치한 클라이언트라면 골드와 경험치 지급
         if (clientId == NetworkManager.Singleton.LocalClientId)
         {
             GameManager.Instance.player.Gold += gold;

@@ -14,11 +14,12 @@ public class PlayerUIController : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
+        _player = GetComponent<Player>();
+
         if(!IsOwner){
-            this.enabled = false;
             return;
         }
-        _player = GetComponent<Player>();
+
         _canvas = _hpBar.transform.parent;
         _initScale = _canvas.localScale;
     }
@@ -31,14 +32,26 @@ public class PlayerUIController : NetworkBehaviour
     }
 
     // HP의 값이 변경될 때  UI 변경
-    public void HpChanged()
+    public void HpChanged(float preValue, float newValue)
+    {
+        if (_player != null)
+            _hpBar.fillAmount = newValue / _player.FinalHp;
+    }
+
+    public void MaxHpChanged(float preValue, float newValue)
     {
         if (_player != null)
             _hpBar.fillAmount = _player.Hp / _player.FinalHp;
     }
 
     // MP의 값이 변경될 때 UI 변경
-    public void MpChanged()
+    public void MpChanged(float preValue, float newValue)
+    {
+        if (_player != null)
+            _mpBar.fillAmount = newValue / _player.FinalMp;
+    }
+
+    public void MaxMpChanged(float preValue, float newValue)
     {
         if (_player != null)
             _mpBar.fillAmount = _player.Mp / _player.FinalMp;

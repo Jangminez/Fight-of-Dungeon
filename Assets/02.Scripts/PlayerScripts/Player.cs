@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Netcode;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public abstract class Player : NetworkBehaviour
@@ -11,15 +12,15 @@ public abstract class Player : NetworkBehaviour
     [SerializeField] protected Animator _animator;
     #region 플레이어 스탯 변수
     [Header("Player Stats")]
-    [SerializeField] private float _maxHp;
-    [SerializeField] private float _hp;
+    [SerializeField] NetworkVariable<float> _maxHp = new NetworkVariable<float>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    [SerializeField] NetworkVariable<float> _hp = new NetworkVariable<float>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     [SerializeField] private float _hpBonus;
     [SerializeField] private float _hpRegen;
     [SerializeField] private float _hpRegenBonus;
 
     [Space(10f)]
-    [SerializeField] private float _maxMp;
-    [SerializeField] private float _mp;
+    [SerializeField] NetworkVariable<float> _maxMp = new NetworkVariable<float>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    [SerializeField] NetworkVariable<float> _mp =new NetworkVariable<float>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     [SerializeField] private float _mpBonus;
     [SerializeField] private float _mpRegen;
     [SerializeField] private float _mpRegenBonus;
@@ -60,6 +61,14 @@ public abstract class Player : NetworkBehaviour
     public Transform _spawnPoint;
 
     #endregion
+    private void Start()
+    {
+        // 체력과 마나 이벤트 연결
+        _hp.OnValueChanged += GetComponent<PlayerUIController>().HpChanged;
+        _maxHp.OnValueChanged += GetComponent<PlayerUIController>().MaxHpChanged;
+        _mp.OnValueChanged += GetComponent<PlayerUIController>().MpChanged;
+        _maxMp.OnValueChanged += GetComponent<PlayerUIController>().MaxHpChanged;
+    }
     // 플레이어 초기화 함수
     abstract protected void SetCharater();
 
@@ -68,37 +77,31 @@ public abstract class Player : NetworkBehaviour
     {
         set
         {
-            if (_maxHp != value)
+            if (_maxHp.Value != value)
             {
-                _maxHp = Mathf.Max(0, value);
-
-
-
-                GetComponent<PlayerUIController>().HpChanged();
+                _maxHp.Value = Mathf.Max(0, value);
             }
 
         }
-        get => _maxHp;
+        get => _maxHp.Value;
     }
 
     public float Hp
     {
         set
         {
-            if (_hp != value)
+            if (_hp.Value != value)
             {
-                _hp = Mathf.Max(0, value);
-                GetComponent<PlayerUIController>().HpChanged();
+                _hp.Value = Mathf.Max(0, value);
             }
 
             if(value >= FinalHp)
             {
-                _hp = FinalHp;
-                GetComponent<PlayerUIController>().HpChanged();
+                _hp.Value = FinalHp;
             }
 
         }
-        get => _hp;
+        get => _hp.Value;
     }
 
     public float HpBonus   
@@ -123,37 +126,29 @@ public abstract class Player : NetworkBehaviour
     {
         set
         {
-            if (_maxMp != value)
+            if (_maxMp.Value != value)
             {
-                _maxMp = Mathf.Max(0, value);
-
-                if(_mp > _maxMp){
-                    _mp = _maxMp;
-                }
-
-                GetComponent<PlayerUIController>().MpChanged();
+                _maxMp.Value = Mathf.Max(0, value);
             }
         }
-        get => _maxMp;
+        get => _maxMp.Value;
     }
 
     public float Mp
     {
         set
         {
-            if (_mp != value)
+            if (_mp.Value != value)
             {
-                _mp = Mathf.Max(0, value);
-                GetComponent<PlayerUIController>().MpChanged();
+                _mp.Value = Mathf.Max(0, value);
             }
 
             if (value > FinalMp)
             {
-                _mp = FinalMp;
-                GetComponent<PlayerUIController>().MpChanged();
+                _mp.Value = FinalMp;
             }
         }
-        get => _mp;
+        get => _mp.Value;
     }
 
         public float MpBonus   
@@ -310,9 +305,9 @@ public abstract class Player : NetworkBehaviour
     #endregion
 
     #region 플레이어 최종 스탯
-    public float FinalHp => _maxHp * (1 + (_hpBonus * 0.01f));
+    public float FinalHp => _maxHp.Value * (1 + (_hpBonus * 0.01f));
     public float FinalHpRegen => _hpRegen * (1 + (_hpRegenBonus * 0.01f));
-    public float FinalMp => _maxMp * (1 + (_mpBonus * 0.01f));
+    public float FinalMp => _maxMp.Value * (1 + (_mpBonus * 0.01f));
     public float FinalMpRegen => _mpRegen * (1 + (_mpRegenBonus * 0.01f));
     public float FinalAttack => _attack * (1 + (_attackBonus * 0.01f));
     public float FinalAS => _attackSpeed * (1 + (_asBonus * 0.01f));
@@ -497,7 +492,7 @@ public abstract class Player : NetworkBehaviour
     private void Update()
     {
         if(!IsOwner) return;
-        
+
         if(Input.GetKeyDown(KeyCode.G))
         {
             GetGold();

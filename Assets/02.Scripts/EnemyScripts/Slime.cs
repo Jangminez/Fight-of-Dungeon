@@ -69,7 +69,7 @@ public class Slime : Enemy
             }
 
             if (_target != null)
-                _target.GetComponent<Player>().Hit(damage: stat.attack);
+                AttackClientRpc(_target.GetComponent<NetworkObject>().OwnerClientId, stat.attack);
         }
     }
     public override void Hit(float damage)
