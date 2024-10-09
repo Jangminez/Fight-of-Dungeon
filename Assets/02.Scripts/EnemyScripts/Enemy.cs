@@ -38,7 +38,6 @@ public abstract class Enemy : NetworkBehaviour
     // 몬스터의 체력에 대한 NetworkVariable
     private NetworkVariable<float> _maxHp = new NetworkVariable<float>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
     private NetworkVariable<float> _hp = new NetworkVariable<float>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
-    private NetworkVariable<ulong> _lastAttackClientId = new NetworkVariable<ulong>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
 
     public float MaxHp
     {
@@ -245,9 +244,6 @@ public abstract class Enemy : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     protected void TakeDamageServerRpc(float damage, ServerRpcParams rpcParams = default)
     {
-        // 마지막으로 공격한 클라이언트 Id 저장
-        _lastAttackClientId.Value = rpcParams.Receive.SenderClientId;
-
         // 받은 데미지 - 방어력 으로 최종데미지 계산
         float finalDamage = damage - stat.defense;
 
@@ -272,7 +268,9 @@ public abstract class Enemy : NetworkBehaviour
             StopAllCoroutines();
 
             anim.SetTrigger("Die");
+
             Die();
+            DieClientRpc(rpcParams.Receive.SenderClientId);
         }
         else
         {
@@ -282,15 +280,15 @@ public abstract class Enemy : NetworkBehaviour
     }
 
     [ClientRpc]
-    protected void DieClientRpc()
+    protected void DieClientRpc(ulong lastAttackClient)
     {
         // 속도 0, 콜라이더 비활성화를 통한 플레이어의 공격 금지        
         GetComponent<Rigidbody2D>().velocity = Vector2.zero;
         GetComponent<Collider2D>().enabled = false;
 
         // 경험치랑 골드 지급
-        if (NetworkManager.Singleton.LocalClientId == _lastAttackClientId.Value)
-            GiveExpGoldServerRpc(_lastAttackClientId.Value);
+        if (NetworkManager.Singleton.LocalClientId == lastAttackClient)
+            GiveExpGoldServerRpc(lastAttackClient);
     }
 
     [ClientRpc]

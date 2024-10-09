@@ -10,7 +10,7 @@ public class Goblin : Enemy
     public Transform _tip;
     public override void OnNetworkSpawn()
     {
-        if(!IsHost) return;
+        if(!IsServer) return;
 
         InitMonster();
     }
@@ -18,6 +18,8 @@ public class Goblin : Enemy
     // 몬스터 초기화
     public override void InitMonster()
     {
+        if(!IsServer) return;
+
         if (!stat.isDie)
             _initTransform = this.transform.position;
 
@@ -105,13 +107,12 @@ public class Goblin : Enemy
 
     public override void Die()
     {
-        if(!IsHost) return;
+        if(!IsServer) return;
 
         Hp = 0f;
         stat.isDie = true;
 
         state = States.Die;
-        DieClientRpc();
 
         Invoke("InitMonster", 10f);
     }
@@ -119,6 +120,8 @@ public class Goblin : Enemy
     // 이동 애니메이션
     public override void Movement_Anim()
     {
+        if(!IsServer) return;
+
         if(state == States.Chase || state == States.Return)
         {
             anim.SetFloat("RunState", 0.5f);
@@ -132,6 +135,8 @@ public class Goblin : Enemy
 
     public override IEnumerator EnemyAttack()
     {
+        if(!IsServer) yield break;
+
         while(_isAttack)
         {
             // 공격시 방향 전환 및 애니메이션 실행

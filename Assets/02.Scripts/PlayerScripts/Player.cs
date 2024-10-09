@@ -60,14 +60,6 @@ public abstract class Player : NetworkBehaviour
     public Transform _spawnPoint;
 
     #endregion
-    public override void OnNetworkSpawn()
-    {
-        if(!IsOwner)
-        {
-            this.enabled = false;
-            return;
-        }
-    }
     // 플레이어 초기화 함수
     abstract protected void SetCharater();
 
@@ -330,6 +322,8 @@ public abstract class Player : NetworkBehaviour
     #region 플레이어 이벤트 처리
     public void Hit(float damage)
     {
+        if(!IsOwner) return;
+
         if (Die)
             return;
 
@@ -352,6 +346,8 @@ public abstract class Player : NetworkBehaviour
 
     IEnumerator HitEffect()
     {
+        if(!IsOwner) yield break;
+
         SPUM_SpriteList spumList = transform.GetChild(0).GetComponent<SPUM_SpriteList>();
         if(spumList == null)
             yield break;
@@ -440,6 +436,8 @@ public abstract class Player : NetworkBehaviour
 
     virtual protected void LevelUp()
     {
+        if(!IsOwner) return;
+
         _exp -= _nextExp;
         NextExp *= 1.5f;
 
@@ -468,6 +466,8 @@ public abstract class Player : NetworkBehaviour
 
     IEnumerator Regen()
     {
+        if(!IsOwner) yield break;
+
         if (!_isDie)
         {
             if (Hp < FinalHp)
@@ -496,6 +496,8 @@ public abstract class Player : NetworkBehaviour
     #region 테스트용 함수
     private void Update()
     {
+        if(!IsOwner) return;
+        
         if(Input.GetKeyDown(KeyCode.G))
         {
             GetGold();

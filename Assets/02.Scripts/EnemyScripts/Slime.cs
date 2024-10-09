@@ -24,6 +24,7 @@ public class Slime : Enemy
 
         else
         {
+            spr.color = Color.white;
             anim.SetTrigger("Respawn");
             transform.position = _initTransform;
             _isAttack = false;
@@ -91,7 +92,6 @@ public class Slime : Enemy
         // 몬스터 상태 Die로 설정 후 애니메이션 실행
         state = States.Die;
         anim.SetFloat("RunState", 0f);
-        DieClientRpc();
 
         // 10초 뒤 부활
         Invoke("InitMonster", 10f);
