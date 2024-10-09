@@ -402,10 +402,21 @@ public abstract class Player : NetworkBehaviour
         this.GetComponent<PlayerMovement>().enabled = false;
         this.GetComponent<Collider2D>().enabled = false;
         this.GetComponent<PlayerFindTarget>().enabled = false;
+        this.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+        
+        if(!IsServer)
+            DiePlayerServerRpc();
 
         // 체력, 마나 재생 정지 & 리스폰 기능 활성화
         StopCoroutine("Regen");
         StartCoroutine("Respawn");
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void DiePlayerServerRpc()
+    {
+        this.GetComponent<Collider2D>().enabled = false;
+        this.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
     }
 
     IEnumerator Respawn()
@@ -418,6 +429,9 @@ public abstract class Player : NetworkBehaviour
         this.GetComponent<Collider2D>().enabled = true;
         this.GetComponent<PlayerFindTarget>().enabled = true;
 
+        if(!IsServer)
+            RespawnPlayerServerRpc();
+
 
         _isDie = false;
         Hp = FinalHp;
@@ -427,6 +441,13 @@ public abstract class Player : NetworkBehaviour
 
         this.transform.position = _spawnPoint.transform.position + new Vector3(0f, 1f, 0f);
         _animator.SetTrigger("Respawn");
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void RespawnPlayerServerRpc()
+    {
+        this.GetComponent<Collider2D>().enabled = true;
+        this.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
     }
 
     virtual protected void LevelUp()
