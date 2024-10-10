@@ -37,6 +37,7 @@ public class GameManager : MonoBehaviour
         else if (_instance != null)
             Destroy(gameObject);
 
+        Application.targetFrameRate = 60;
         // 씬 로드시에도 파괴되지않음 
         DontDestroyOnLoad(gameObject);
     }

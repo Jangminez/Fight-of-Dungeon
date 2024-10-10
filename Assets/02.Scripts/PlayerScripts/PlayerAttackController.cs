@@ -11,11 +11,6 @@ public abstract class PlayerAttackController : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-        if(!IsOwner){
-            this.enabled = false;
-            return;
-        }
-        
         player = GetComponent<Player>();
         _anim = GetComponent<Animator>();
 
@@ -24,6 +19,10 @@ public abstract class PlayerAttackController : NetworkBehaviour
 
     public virtual void Attack()
     {
+        if(!IsOwner){
+            return;
+        }
+
         if(player._target != null & !_isAttack)
         {
             _isAttack = true;

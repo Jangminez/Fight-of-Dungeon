@@ -22,7 +22,7 @@ public class PlayerMovement : NetworkBehaviour
         _playerRb = GetComponent<Rigidbody2D>();
         _anim = GetComponent<Animator>();
         _speed = GetComponent<Player>().Speed;
-        _canvas = transform.GetChild(3);
+        _canvas = transform.GetChild(1);
     }
 
     void FixedUpdate()

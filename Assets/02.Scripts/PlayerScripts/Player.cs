@@ -398,13 +398,10 @@ public abstract class Player : NetworkBehaviour
 
         _animator.SetTrigger("Die");
         // 사망시 이동 입력, 충돌, 공격 정지
+        DiePlayerServerRpc();
         this.GetComponent<PlayerMovement>().enabled = false;
-        this.GetComponent<Collider2D>().enabled = false;
         this.GetComponent<PlayerFindTarget>().enabled = false;
-        this.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-        
-        if(!IsServer)
-            DiePlayerServerRpc();
+
 
         // 체력, 마나 재생 정지 & 리스폰 기능 활성화
         StopCoroutine("Regen");
@@ -414,6 +411,11 @@ public abstract class Player : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     private void DiePlayerServerRpc()
     {
+        DiePlayerClientRpc();
+    }
+    [ClientRpc]
+    private void DiePlayerClientRpc()
+    {
         this.GetComponent<Collider2D>().enabled = false;
         this.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
     }
@@ -422,15 +424,14 @@ public abstract class Player : NetworkBehaviour
     {
         if(!IsOwner) yield break;
 
-        yield return new WaitForSeconds(10f);
+        yield return new WaitForSeconds(5f);
+        ActiveFalseServerRpc();
 
-        this.GetComponent<PlayerMovement>().enabled = true;
-        this.GetComponent<Collider2D>().enabled = true;
+        yield return new WaitForSeconds(5f);
+        this.transform.position = _spawnPoint.transform.position + new Vector3(0f, 1f, 0f);
+        RespawnPlayerServerRpc();
         this.GetComponent<PlayerFindTarget>().enabled = true;
-
-        if(!IsServer)
-            RespawnPlayerServerRpc();
-
+        this.GetComponent<PlayerMovement>().enabled = true;
 
         _isDie = false;
         Hp = FinalHp;
@@ -438,15 +439,33 @@ public abstract class Player : NetworkBehaviour
 
         StartCoroutine("Regen");
 
-        this.transform.position = _spawnPoint.transform.position + new Vector3(0f, 1f, 0f);
+        
         _animator.SetTrigger("Respawn");
     }
 
     [ServerRpc(RequireOwnership = false)]
     private void RespawnPlayerServerRpc()
     {
+        RespawnPlayerClientRpc();
+    }
+    [ClientRpc]
+    private void RespawnPlayerClientRpc()
+    {
+        this.transform.GetChild(0).gameObject.SetActive(true);
+        this.transform.GetChild(1).gameObject.SetActive(true);
         this.GetComponent<Collider2D>().enabled = true;
         this.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+    }
+    [ServerRpc(RequireOwnership = false)]
+    private void ActiveFalseServerRpc()
+    {
+        ActiveFalseClientRpc();
+    }
+    [ClientRpc]
+    private void ActiveFalseClientRpc()
+    {   
+        this.transform.GetChild(0).gameObject.SetActive(false);
+        this.transform.GetChild(1).gameObject.SetActive(false);
     }
 
     virtual protected void LevelUp()
