@@ -25,7 +25,6 @@ public class PlayerSpawner : NetworkBehaviour
             {
                 PlayerSpawnClientRpc(clientId);
             }
-
         }
     }
 

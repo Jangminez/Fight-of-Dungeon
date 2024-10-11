@@ -1,3 +1,6 @@
+using System.Collections;
+using System.Threading.Tasks;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -46,5 +49,24 @@ public class GameManager : MonoBehaviour
     {
         Destroy(GamePlayer);
         SceneManager.LoadScene("MainScene");
+    }
+
+    public void StartTutorial()
+    {
+        Task<string> code = ConnectRelay.Instance.CreateRelay();
+        Debug.Log(code);
+        StartCoroutine("LoadTutorial");
+    }
+
+    IEnumerator LoadTutorial()
+    {
+        AsyncOperation asyncOperation = SceneManager.LoadSceneAsync("TutorialScene");
+
+        while(!asyncOperation.isDone){
+            yield return null;
+        }
+        yield return new WaitForSeconds(21.9f);
+        player = GameObject.FindWithTag("Player").GetComponent<Player>();
+        player.GetComponent<NetworkObject>().SpawnAsPlayerObject(NetworkManager.Singleton.LocalClientId);
     }
 }

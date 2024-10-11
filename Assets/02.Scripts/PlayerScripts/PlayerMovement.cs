@@ -12,11 +12,12 @@ public class PlayerMovement : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-        if(!IsOwner){
+        if (!IsOwner)
+        {
             this.enabled = false;
             return;
         }
-        
+
         player = GetComponent<Player>();
         _joystickMovement = GameObject.FindWithTag("JoyStick").GetComponent<Joystick>();
         _playerRb = GetComponent<Rigidbody2D>();
@@ -24,7 +25,7 @@ public class PlayerMovement : NetworkBehaviour
         _speed = GetComponent<Player>().Speed;
         _canvas = transform.GetChild(1);
     }
-
+    
     void FixedUpdate()
     {
         Movement();
@@ -34,22 +35,23 @@ public class PlayerMovement : NetworkBehaviour
     {
         Movement_Anim();
     }
-    
+
     public void Movement()
     {
-        if(player.Die){
+        if (player.Die)
+        {
             _playerRb.velocity = Vector2.zero;
             return;
         }
 
-        if(_joystickMovement.Direction.y != 0)
+        if (_joystickMovement.Direction.y != 0)
         {
-            Vector2 nextVec = new Vector2(_joystickMovement.Direction.x * _speed, _joystickMovement.Direction.y * _speed); 
+            Vector2 nextVec = new Vector2(_joystickMovement.Direction.x * _speed, _joystickMovement.Direction.y * _speed);
             _playerRb.velocity = nextVec;
 
             SetDirection();
 
-            if(nextVec ==  Vector2.zero)
+            if (nextVec == Vector2.zero)
             {
                 _anim.SetFloat("RunState", 0f);
             }
@@ -64,7 +66,7 @@ public class PlayerMovement : NetworkBehaviour
     // 플레이어 이동 애니메이션
     public void Movement_Anim()
     {
-        if(_joystickMovement.Direction.x !=0  || _joystickMovement.Direction.y !=0)
+        if (_joystickMovement.Direction.x != 0 || _joystickMovement.Direction.y != 0)
         {
             _anim.SetFloat("RunState", 0.5f);
         }
@@ -77,7 +79,7 @@ public class PlayerMovement : NetworkBehaviour
 
     void SetDirection()
     {
-        if(_joystickMovement.Direction.x > 0)
+        if (_joystickMovement.Direction.x > 0)
         {
             _anim.transform.localScale = new Vector3(-1.7f, 1.7f, 1.7f);
             _canvas.localScale = new Vector3(-0.5f, 0.5f, 0.5f);

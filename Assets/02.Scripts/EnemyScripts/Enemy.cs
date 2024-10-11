@@ -66,9 +66,7 @@ public abstract class Enemy : NetworkBehaviour
 
     private void Start()
     {
-        // hp 값이 변경될 때마다 UI 동기화를 위한 이벤트 연결
-        if (IsClient)
-            _hp.OnValueChanged += GetComponent<EnemyHp>().ChangeHp;
+        _hp.OnValueChanged += GetComponent<EnemyHp>().ChangeHp;
     }
 
     void LateUpdate()

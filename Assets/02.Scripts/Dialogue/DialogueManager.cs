@@ -1,14 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Playables;
 using UnityEngine.UI;
 
 public class DialogueManager : MonoBehaviour
 {
     Queue<string> messages;
     public Text dialogueText;
-
+    public PlayableDirector director;
+    public float nextTime;
     void Awake()
     {
         messages = new Queue<string>();
@@ -21,7 +22,7 @@ public class DialogueManager : MonoBehaviour
 
         messages.Clear();
 
-        foreach(var message in dialogue.messages)
+        foreach (var message in dialogue.messages)
         {
             // 출력할 내용들 큐에 추가
             messages.Enqueue(message);
@@ -33,12 +34,12 @@ public class DialogueManager : MonoBehaviour
     // 다음 대화 출력을 위함 Queue가 비어있다면 대화 종료
     public void DisplayNextSentence()
     {
-        if(messages.Count == 0)
+        if (messages.Count == 0)
         {
             EndDialogue();
             return;
         }
-        
+
         // 출력할 내용 큐에서 꺼내기
         var message = messages.Dequeue();
         StopAllCoroutines();
@@ -50,20 +51,24 @@ public class DialogueManager : MonoBehaviour
     {
         dialogueText.text = "";
 
-        foreach(var ch in message.ToCharArray())
+        foreach (var ch in message.ToCharArray())
         {
             dialogueText.text += ch;
             yield return new WaitForSeconds(0.05f);
         }
 
         // 1초 뒤 자동 대화 넘김
-        yield return new WaitForSeconds(1.5f);
-        DisplayNextSentence();
+        //yield return new WaitForSeconds(1.5f);
+        //DisplayNextSentence();
     }
 
     // 대화 종료
     void EndDialogue()
     {
-        Debug.Log("출력 종료");
+        if (nextTime != 0)
+        {
+            director.time = nextTime;
+            director.Stop();
+        }
     }
 }
