@@ -8,7 +8,7 @@ public class CameraFollow : MonoBehaviour
 
     public Vector3 offset;
     private Vector3 targetPos;
-
+    
     private void Update()
     {
         if (target == null) return;

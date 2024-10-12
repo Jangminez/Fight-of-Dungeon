@@ -19,11 +19,14 @@ public class PlayerMovement : NetworkBehaviour
         }
 
         player = GetComponent<Player>();
-        _joystickMovement = GameObject.FindWithTag("JoyStick").GetComponent<Joystick>();
         _playerRb = GetComponent<Rigidbody2D>();
         _anim = GetComponent<Animator>();
-        _speed = GetComponent<Player>().Speed;
+        _speed = player.Speed;
         _canvas = transform.GetChild(1);
+
+        
+        if(_joystickMovement == null)
+            _joystickMovement = GameObject.FindWithTag("JoyStick").GetComponent<Joystick>();
     }
     
     void FixedUpdate()

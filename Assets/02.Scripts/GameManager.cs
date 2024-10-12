@@ -65,8 +65,10 @@ public class GameManager : MonoBehaviour
         while(!asyncOperation.isDone){
             yield return null;
         }
-        yield return new WaitForSeconds(21.9f);
+
+        yield return new WaitForSeconds(2f);
+
         player = GameObject.FindWithTag("Player").GetComponent<Player>();
-        player.GetComponent<NetworkObject>().SpawnAsPlayerObject(NetworkManager.Singleton.LocalClientId);
+        player.GetComponent<PlayerMovement>().enabled = true;
     }
 }
