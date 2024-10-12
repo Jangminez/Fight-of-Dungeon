@@ -2,8 +2,9 @@ using System.Collections;
 using UnityEngine.UI;
 using UnityEngine;
 using System.Collections.Generic;
+using Unity.Netcode;
 
-public abstract class Skill : MonoBehaviour
+public abstract class Skill : NetworkBehaviour
 {
     //protected enum SkillType {Attack, Buff};
     protected List<Animator> _anims = new List<Animator>(); // 스킬 애니메이터 관리
@@ -11,9 +12,15 @@ public abstract class Skill : MonoBehaviour
     public Sprite _icon; // 스킬 아이콘
     public Image _CD; // 쿨타임 UI
     Text _cdText; // 쿨타임 숫자 표시 UI
+    protected float useMp; // 스킬 사용 마나
+    protected float cri;
 
-    void Start()
+    public override void OnNetworkSpawn()
     {
+        if(!IsOwner){
+            return;
+        }
+        
         // 스킬 애니메이션을 위해 스킬의 애니메이터 추가
         _anims.Add(this.GetComponent<Animator>());
 
@@ -32,8 +39,10 @@ public abstract class Skill : MonoBehaviour
     // 스킬 버튼과 연결된 함수로 버튼에 해당하는 스킬 작동
     public void UseSkill()
     {
-        if(!_isCoolDown)
+        if(IsOwner && !_isCoolDown && GameManager.Instance.player.Mp > useMp)
         {
+            GameManager.Instance.player.Mp -= useMp;
+            
             foreach(var anim in _anims)
             {
                 anim.SetTrigger("UseSkill");
@@ -49,6 +58,8 @@ public abstract class Skill : MonoBehaviour
     // 쿨타임 UI 표시
     public virtual IEnumerator CoolDown(float cd)
     {
+        if(!IsOwner) yield break;
+
         _isCoolDown = true;
         _cdText.gameObject.SetActive(true);
         
@@ -64,5 +75,10 @@ public abstract class Skill : MonoBehaviour
 
         _isCoolDown = false;
         _cdText.gameObject.SetActive(false);
+
+            foreach(var anim in _anims)
+            {
+                anim.ResetTrigger("UseSkill");
+            }
     }
 }

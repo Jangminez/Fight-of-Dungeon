@@ -22,10 +22,13 @@ public class Warrior_Skill1 : Skill
         _info.criUp = 10;
         _info.coolDown = 30f;
         _info.duration = 20f;
+        useMp = 5f;
     }
 
     public override IEnumerator SkillProcess()
     {
+        if(!IsOwner) yield break;
+
         // 쿨타임 시작
         StartCoroutine(CoolDown(_info.coolDown));
         

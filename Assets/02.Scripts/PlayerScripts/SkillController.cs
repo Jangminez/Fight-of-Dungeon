@@ -1,17 +1,23 @@
-using UnityEngine;
+using Unity.Netcode;
 using UnityEngine.UI;
 
-public class SkillController : MonoBehaviour
+public class SkillController : NetworkBehaviour
 {
     public Skill[] _skills;
 
-    void Awake()
+    public override void OnNetworkSpawn()
     {
+        if (!IsOwner)
+        {
+            this.enabled = false;
+            return;
+        }
+
         for (int i = 0; i < _skills.Length; i++)
         {
-            UIManager.Instance.buttons[i].onClick.AddListener(_skills[i].UseSkill);
-            UIManager.Instance.buttons[i].image.sprite = _skills[i]._icon;
-            _skills[i]._CD = UIManager.Instance.buttons[i].transform.parent.GetChild(1).GetComponent<Image>();
+            UIManager.Instance.skillButtons[i].onClick.AddListener(_skills[i].UseSkill);
+            UIManager.Instance.skillButtons[i].image.sprite = _skills[i]._icon;
+            _skills[i]._CD = UIManager.Instance.skillButtons[i].transform.parent.GetChild(1).GetComponent<Image>();
         }
     }
 }

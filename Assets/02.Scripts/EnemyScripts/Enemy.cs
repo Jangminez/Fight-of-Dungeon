@@ -1,8 +1,9 @@
 using System;
 using System.Collections;
+using Unity.Netcode;
 using UnityEngine;
 
-public abstract class Enemy : MonoBehaviour
+public abstract class Enemy : NetworkBehaviour
 {
     protected SpriteRenderer spr;
     protected Rigidbody2D rb;
@@ -21,8 +22,6 @@ public abstract class Enemy : MonoBehaviour
     [Serializable]
     public struct Stats
     {
-        public float maxHp;
-        public float hp;
         public float attack;
         public float attackSpeed;
         public float defense;
@@ -36,27 +35,28 @@ public abstract class Enemy : MonoBehaviour
 
     public Stats stat;
 
+    // 몬스터의 체력에 대한 NetworkVariable
+    private NetworkVariable<float> _maxHp = new NetworkVariable<float>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+    private NetworkVariable<float> _hp = new NetworkVariable<float>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+
     public float MaxHp
     {
-        set => stat.maxHp = Mathf.Max(0, value);
-        get => stat.maxHp;
+        set => _maxHp.Value = Mathf.Max(0, value);
+        get => _maxHp.Value;
     }
 
     public float Hp
     {
         set
         {
-            if (stat.hp >= 0 && stat.hp != value)
+            if (_hp.Value >= 0 && _hp.Value != value)
             {
-                stat.hp = Mathf.Max(0, value);
-                GetComponent<MonsterHp>().ChangeHp();
+                _hp.Value = Mathf.Max(0, value);
             }
 
         }
-        get => stat.hp;
+        get => _hp.Value;
     }
-
-
 
     private void Awake()
     {
@@ -64,8 +64,15 @@ public abstract class Enemy : MonoBehaviour
         anim = GetComponent<Animator>();
     }
 
+    private void Start()
+    {
+        _hp.OnValueChanged += GetComponent<EnemyHp>().ChangeHp;
+    }
+
     void LateUpdate()
     {
+        if (!IsServer) return;
+
         Movement_Anim();
 
         // 공격 여부 판정
@@ -79,11 +86,13 @@ public abstract class Enemy : MonoBehaviour
 
     IEnumerator MonsterState()
     {
+        if (!IsServer) yield break;
+
         while (!stat.isDie)
         {
             yield return null;
 
-            if(_target == null && state != States.Idle && state != States.Return)
+            if (_target == null && state != States.Idle && state != States.Return)
             {
                 state = States.Idle;
             }
@@ -164,11 +173,14 @@ public abstract class Enemy : MonoBehaviour
     // 몬스터 초기화 함수
     public abstract void InitMonster();
     public abstract void Hit(float damage);
+
     public abstract IEnumerator HitEffect();
     public abstract void Die();
 
     public virtual void Movement()
     {
+        if (!IsServer) return;
+
         if (_target == null)
         {
             state = States.Idle;
@@ -185,11 +197,10 @@ public abstract class Enemy : MonoBehaviour
 
     public abstract IEnumerator EnemyAttack();
 
-    public virtual void GiveExpGold(Player player)
+    [ServerRpc(RequireOwnership = false)]
+    public void GiveExpGoldServerRpc(ulong lastClientId)
     {
-        player.Exp += stat.exp;
-        player.Gold += stat.gold;
-        ShowGoldExp();
+        ShowGoldClientRpc(lastClientId, stat.gold, stat.exp);
     }
 
     public virtual void SetDirection()
@@ -208,17 +219,91 @@ public abstract class Enemy : MonoBehaviour
     {
         state = States.Return;
     }
-
-    public virtual void ShowFloatingDamage(float damage)
+    
+    [ClientRpc]
+    protected void AttackClientRpc(ulong clientId, float damage)
     {
+        // 공격 받은 클라이언트라면 Hit() 처리
+        if(clientId == NetworkManager.Singleton.LocalClientId)
+            GameManager.Instance.player.Hit(damage: damage);
+    }
+
+    [ClientRpc]
+    public void ShowFloatingDamageClientRpc(float damage)
+    {
+        // 몬스터 피격 데미지 표시
         var dmg = Instantiate(FloatingDamagePrefab, transform.position, Quaternion.identity);
         dmg.GetComponent<TextMesh>().text = $"-" + damage.ToString("F1");
     }
 
-    public virtual void ShowGoldExp()
+    [ClientRpc]
+    public virtual void ShowGoldClientRpc(ulong clientId, int gold, float exp)
     {
-        var floating = Instantiate(FloatingGoldExpPrefab, transform.position, Quaternion.identity);
-        floating.GetComponent<TextMesh>().text = $"\n+{stat.gold}Gold";
+        // 마지막으로 처치한 클라이언트라면 골드와 경험치 지급
+        if (clientId == NetworkManager.Singleton.LocalClientId)
+        {
+            GameManager.Instance.player.Gold += gold;
+            GameManager.Instance.player.Exp += exp;
+            var floating = Instantiate(FloatingGoldExpPrefab, transform.position, Quaternion.identity);
+            floating.GetComponent<TextMesh>().text = $"\n+{gold}Gold";
+        }
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    protected void TakeDamageServerRpc(float damage, ServerRpcParams rpcParams = default)
+    {
+        // 받은 데미지 - 방어력 으로 최종데미지 계산
+        float finalDamage = damage - stat.defense;
+
+        if (finalDamage < 0f)
+        {
+            finalDamage = 1f;
+        }
+
+        Hp -= finalDamage;
+
+        if (FloatingDamagePrefab != null && Hp > 0)
+        {
+            // 데미지 표시 동기화
+            ShowFloatingDamageClientRpc(finalDamage);
+        }
+
+        anim.SetTrigger("Hit");
+
+        if (Hp <= 0)
+        {
+            // 체력이 0 이하라면 Die
+            StopAllCoroutines();
+
+            anim.SetTrigger("Die");
+
+            Die();
+            DieClientRpc(rpcParams.Receive.SenderClientId);
+        }
+        else
+        {
+            // 죽는게 아니라면 HitEffect 실행
+            StartCoroutine("HitEffect");
+        }
+    }
+
+    [ClientRpc]
+    protected void DieClientRpc(ulong lastAttackClient)
+    {
+        // 속도 0, 콜라이더 비활성화를 통한 플레이어의 공격 금지        
+        GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+        GetComponent<Collider2D>().enabled = false;
+
+        // 경험치랑 골드 지급
+        if (NetworkManager.Singleton.LocalClientId == lastAttackClient)
+            GiveExpGoldServerRpc(lastAttackClient);
+    }
+
+    [ClientRpc]
+    protected void RespawnClientRpc()
+    {
+        GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+        GetComponent<Collider2D>().enabled = true;
     }
 }
 

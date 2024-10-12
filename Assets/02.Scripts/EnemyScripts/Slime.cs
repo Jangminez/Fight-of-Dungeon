@@ -1,33 +1,39 @@
 using System.Collections;
+using Unity.Netcode;
 using UnityEngine;
 
 public class Slime : Enemy
 {
 
-    private void Start()
+    public override void OnNetworkSpawn()
     {
-        InitMonster();
         spr = GetComponent<SpriteRenderer>();
+        
+        if(!IsServer) return;
+
+        InitMonster();
+
     }
 
     public override void InitMonster()
     {
+        if(!IsServer) return;
+
         if (!stat.isDie)
             _initTransform = this.transform.position;
 
         else
         {
+            ColorToWhiteClientRpc();
+            anim.SetTrigger("Respawn");
             transform.position = _initTransform;
             _isAttack = false;
-            GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-            GetComponent<Collider2D>().enabled = true;
-            spr.color = Color.white;
+            RespawnClientRpc();
             state = States.Idle;
-            anim.SetTrigger("Respawn");
         }
 
-        stat.maxHp = 30f;
-        Hp = stat.maxHp;
+        MaxHp = 30f;
+        Hp = MaxHp;
 
         stat.attack = 5f;
         stat.attackRange = 2f;
@@ -48,54 +54,34 @@ public class Slime : Enemy
 
     public override IEnumerator EnemyAttack()
     {
-        while(_isAttack)
+        if(!IsServer) yield break;
+
+        while (_isAttack)
         {
             anim.SetTrigger("Attack");
             yield return new WaitForSeconds(1 / stat.attackSpeed);
 
-            if (state != States.Attack) 
+            if (state != States.Attack)
             {
                 _isAttack = false;
                 _target = null;
                 yield break;
             }
 
-            if(_target != null)
-                _target.GetComponent<Player>().Hit(damage: stat.attack);
+            if (_target != null)
+                AttackClientRpc(_target.GetComponent<NetworkObject>().OwnerClientId, stat.attack);
         }
     }
-
     public override void Hit(float damage)
     {
-        float finalDamage = damage - stat.defense;
-        if (finalDamage < 0f)
-        {
-            finalDamage = 1f;
-        }
-
-        Hp -= finalDamage;
-
-        if(FloatingDamagePrefab != null && stat.hp > 0){
-            ShowFloatingDamage(finalDamage);
-        }
-
-        StartCoroutine("HitEffect");
-        anim.SetTrigger("Hit");
-
-        if (stat.hp <= 0)
-        {
-            StopAllCoroutines();
-
-            anim.SetTrigger("Die");
-            Die();
-        }
+        TakeDamageServerRpc(damage);
     }
 
     public override IEnumerator HitEffect()
     {
-        spr.color = Color.gray;
+        HitEffectClientRpc();
         yield return new WaitForSeconds(0.2f);
-        spr.color = Color.white;
+        HitEffectClientRpc();
     }
 
     public override void Die()
@@ -103,19 +89,37 @@ public class Slime : Enemy
         Hp = 0f;
         stat.isDie = true;
 
+        // 몬스터 상태 Die로 설정 후 애니메이션 실행
         state = States.Die;
-        GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-        GetComponent<Collider2D>().enabled = false;
-        spr.color = Color.gray;
+        anim.SetFloat("RunState", 0f);
 
-        GiveExpGold(GameManager.Instance.player);
-
+        // 10초 뒤 부활
         Invoke("InitMonster", 10f);
     }
 
     public override void Movement_Anim()
     {
-        
+        if (state == States.Chase || state == States.Return)
+        {
+            anim.SetFloat("RunState", 1f);
+        }
+
+        else
+        {
+            anim.SetFloat("RunState", 0f);
+        }
+    }
+
+    [ClientRpc]
+    private void HitEffectClientRpc()
+    {
+        spr.color = spr.color == Color.white ? Color.gray : Color.white;
+    }
+
+    [ClientRpc]
+    private void ColorToWhiteClientRpc()
+    {
+        spr.color = Color.white;
     }
 }
 

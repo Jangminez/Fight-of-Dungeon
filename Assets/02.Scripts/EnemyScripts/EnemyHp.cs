@@ -1,7 +1,8 @@
 using UnityEngine;
 using UnityEngine.UI;
+using Unity.Netcode;
 
-public class MonsterHp : MonoBehaviour
+public class EnemyHp : NetworkBehaviour
 {
     private Enemy _enemy;
 
@@ -9,16 +10,17 @@ public class MonsterHp : MonoBehaviour
     [SerializeField] private Transform _canvas;
     [SerializeField] private Image _hpBar;
     // Start is called before the first frame update
-    void Start()
+    public override void OnNetworkSpawn()
     {
         _enemy = GetComponent<Enemy>();
     }
 
-    public void ChangeHp()
+    public void ChangeHp(float oldValue, float newValue)
     {
+        //if(!IsServer) return;
         if (_enemy != null)
         {
-            if (_enemy.Hp == 0)
+            if (newValue == 0)
             {
                 _canvas.gameObject.SetActive(false);
             }
@@ -30,7 +32,7 @@ public class MonsterHp : MonoBehaviour
 
             if (_hpBar != null)
             {
-                _hpBar.fillAmount = _enemy.Hp / _enemy.MaxHp;
+                _hpBar.fillAmount = newValue / _enemy.MaxHp;
             }
         }
     }

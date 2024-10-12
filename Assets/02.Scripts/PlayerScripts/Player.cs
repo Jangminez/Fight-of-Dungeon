@@ -1,27 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
+using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
-public abstract class Player : MonoBehaviour
+public abstract class Player : NetworkBehaviour
 {
-    protected Vector2 _inputVec;
     [SerializeField] protected Rigidbody2D _playerRig;
 
     [SerializeField] protected Animator _animator;
     #region 플레이어 스탯 변수
     [Header("Player Stats")]
-    [SerializeField] private float _maxHp;
-    [SerializeField] private float _hp;
+    [SerializeField] NetworkVariable<float> _maxHp = new NetworkVariable<float>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    [SerializeField] NetworkVariable<float> _hp = new NetworkVariable<float>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     [SerializeField] private float _hpBonus;
     [SerializeField] private float _hpRegen;
     [SerializeField] private float _hpRegenBonus;
 
     [Space(10f)]
-    [SerializeField] private float _maxMp;
-    [SerializeField] private float _mp;
+    [SerializeField] NetworkVariable<float> _maxMp = new NetworkVariable<float>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    [SerializeField] NetworkVariable<float> _mp =new NetworkVariable<float>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     [SerializeField] private float _mpBonus;
     [SerializeField] private float _mpRegen;
     [SerializeField] private float _mpRegenBonus;
@@ -62,6 +60,14 @@ public abstract class Player : MonoBehaviour
     public Transform _spawnPoint;
 
     #endregion
+    private void Start()
+    {
+        // 체력과 마나 이벤트 연결
+        _hp.OnValueChanged += GetComponent<PlayerUIController>().HpChanged;
+        _maxHp.OnValueChanged += GetComponent<PlayerUIController>().MaxHpChanged;
+        _mp.OnValueChanged += GetComponent<PlayerUIController>().MpChanged;
+        _maxMp.OnValueChanged += GetComponent<PlayerUIController>().MaxHpChanged;
+    }
     // 플레이어 초기화 함수
     abstract protected void SetCharater();
 
@@ -70,37 +76,31 @@ public abstract class Player : MonoBehaviour
     {
         set
         {
-            if (_maxHp != value)
+            if (_maxHp.Value != value)
             {
-                _maxHp = Mathf.Max(0, value);
-
-
-
-                GetComponent<PlayerUIController>().HpChanged();
+                _maxHp.Value = Mathf.Max(0, value);
             }
 
         }
-        get => _maxHp;
+        get => _maxHp.Value;
     }
 
     public float Hp
     {
         set
         {
-            if (_hp != value)
+            if (_hp.Value != value)
             {
-                _hp = Mathf.Max(0, value);
-                GetComponent<PlayerUIController>().HpChanged();
+                _hp.Value = Mathf.Max(0, value);
             }
 
             if(value >= FinalHp)
             {
-                _hp = FinalHp;
-                GetComponent<PlayerUIController>().HpChanged();
+                _hp.Value = FinalHp;
             }
 
         }
-        get => _hp;
+        get => _hp.Value;
     }
 
     public float HpBonus   
@@ -125,37 +125,29 @@ public abstract class Player : MonoBehaviour
     {
         set
         {
-            if (_maxMp != value)
+            if (_maxMp.Value != value)
             {
-                _maxMp = Mathf.Max(0, value);
-
-                if(_mp > _maxMp){
-                    _mp = _maxMp;
-                }
-
-                GetComponent<PlayerUIController>().MpChanged();
+                _maxMp.Value = Mathf.Max(0, value);
             }
         }
-        get => _maxMp;
+        get => _maxMp.Value;
     }
 
     public float Mp
     {
         set
         {
-            if (_mp != value)
+            if (_mp.Value != value)
             {
-                _mp = Mathf.Max(0, value);
-                GetComponent<PlayerUIController>().MpChanged();
+                _mp.Value = Mathf.Max(0, value);
             }
 
             if (value > FinalMp)
             {
-                _mp = FinalMp;
-                GetComponent<PlayerUIController>().MpChanged();
+                _mp.Value = FinalMp;
             }
         }
-        get => _mp;
+        get => _mp.Value;
     }
 
         public float MpBonus   
@@ -295,7 +287,7 @@ public abstract class Player : MonoBehaviour
         {
             _isDie = value;
 
-            if (_isDie)
+            if (_isDie && IsOwner)
             {
                 UIManager.Instance.OnRespawn();
             }
@@ -312,9 +304,9 @@ public abstract class Player : MonoBehaviour
     #endregion
 
     #region 플레이어 최종 스탯
-    public float FinalHp => _maxHp * (1 + (_hpBonus * 0.01f));
+    public float FinalHp => _maxHp.Value * (1 + (_hpBonus * 0.01f));
     public float FinalHpRegen => _hpRegen * (1 + (_hpRegenBonus * 0.01f));
-    public float FinalMp => _maxMp * (1 + (_mpBonus * 0.01f));
+    public float FinalMp => _maxMp.Value * (1 + (_mpBonus * 0.01f));
     public float FinalMpRegen => _mpRegen * (1 + (_mpRegenBonus * 0.01f));
     public float FinalAttack => _attack * (1 + (_attackBonus * 0.01f));
     public float FinalAS => _attackSpeed * (1 + (_asBonus * 0.01f));
@@ -324,6 +316,8 @@ public abstract class Player : MonoBehaviour
     #region 플레이어 이벤트 처리
     public void Hit(float damage)
     {
+        if(!IsOwner) return;
+
         if (Die)
             return;
 
@@ -346,6 +340,8 @@ public abstract class Player : MonoBehaviour
 
     IEnumerator HitEffect()
     {
+        if(!IsOwner) yield break;
+
         SPUM_SpriteList spumList = transform.GetChild(0).GetComponent<SPUM_SpriteList>();
         if(spumList == null)
             yield break;
@@ -393,29 +389,49 @@ public abstract class Player : MonoBehaviour
     [ContextMenu("Die")]
     protected void OnDie() 
     {
+        if(!IsOwner) return;
+
         Die = true;
         Hp = 0f;
         _target = null;
+        _playerRig.velocity = Vector2.zero;
 
         _animator.SetTrigger("Die");
         // 사망시 이동 입력, 충돌, 공격 정지
-        this.GetComponent<PlayerInput>().enabled = false;
-        this.GetComponent<Collider2D>().enabled = false;
+        DiePlayerServerRpc();
+        this.GetComponent<PlayerMovement>().enabled = false;
         this.GetComponent<PlayerFindTarget>().enabled = false;
+
 
         // 체력, 마나 재생 정지 & 리스폰 기능 활성화
         StopCoroutine("Regen");
         StartCoroutine("Respawn");
     }
 
+    [ServerRpc(RequireOwnership = false)]
+    private void DiePlayerServerRpc()
+    {
+        DiePlayerClientRpc();
+    }
+    [ClientRpc]
+    private void DiePlayerClientRpc()
+    {
+        this.GetComponent<Collider2D>().enabled = false;
+        this.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+    }
+
     IEnumerator Respawn()
     {
-        yield return new WaitForSeconds(10f);
+        if(!IsOwner) yield break;
 
-        this.GetComponent<PlayerInput>().enabled = true;
-        this.GetComponent<Collider2D>().enabled = true;
+        yield return new WaitForSeconds(5f);
+        ActiveFalseServerRpc();
+
+        yield return new WaitForSeconds(5f);
+        this.transform.position = _spawnPoint.transform.position + new Vector3(0f, 1f, 0f);
+        RespawnPlayerServerRpc();
         this.GetComponent<PlayerFindTarget>().enabled = true;
-
+        this.GetComponent<PlayerMovement>().enabled = true;
 
         _isDie = false;
         Hp = FinalHp;
@@ -423,12 +439,39 @@ public abstract class Player : MonoBehaviour
 
         StartCoroutine("Regen");
 
-        this.transform.position = _spawnPoint.transform.position + new Vector3(0f, 1f, 0f);
+        
         _animator.SetTrigger("Respawn");
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void RespawnPlayerServerRpc()
+    {
+        RespawnPlayerClientRpc();
+    }
+    [ClientRpc]
+    private void RespawnPlayerClientRpc()
+    {
+        this.transform.GetChild(0).gameObject.SetActive(true);
+        this.transform.GetChild(1).gameObject.SetActive(true);
+        this.GetComponent<Collider2D>().enabled = true;
+        this.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+    }
+    [ServerRpc(RequireOwnership = false)]
+    private void ActiveFalseServerRpc()
+    {
+        ActiveFalseClientRpc();
+    }
+    [ClientRpc]
+    private void ActiveFalseClientRpc()
+    {   
+        this.transform.GetChild(0).gameObject.SetActive(false);
+        this.transform.GetChild(1).gameObject.SetActive(false);
     }
 
     virtual protected void LevelUp()
     {
+        if(!IsOwner) return;
+
         _exp -= _nextExp;
         NextExp *= 1.5f;
 
@@ -457,6 +500,8 @@ public abstract class Player : MonoBehaviour
 
     IEnumerator Regen()
     {
+        if(!IsOwner) yield break;
+
         if (!_isDie)
         {
             if (Hp < FinalHp)
@@ -485,6 +530,8 @@ public abstract class Player : MonoBehaviour
     #region 테스트용 함수
     private void Update()
     {
+        if(!IsOwner) return;
+
         if(Input.GetKeyDown(KeyCode.G))
         {
             GetGold();

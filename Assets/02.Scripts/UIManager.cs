@@ -19,7 +19,7 @@ public class UIManager : MonoBehaviour
             return _instance;
         }
     }
-    Player player;
+    public Player player;
 
     [Header("Level & EXP")]
     [SerializeField] private Slider expBar;
@@ -31,7 +31,7 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] private Transform RespawnUI;
 
-    public Button[] buttons;
+    public Button[] skillButtons;
     public GameObject[] locked;
 
     public Button goToMain;
@@ -48,7 +48,6 @@ public class UIManager : MonoBehaviour
 
         // 씬 로드시에도 파괴되지않음 
         DontDestroyOnLoad(gameObject);
-        player = GameManager.Instance.player;
     }
     
 

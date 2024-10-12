@@ -1,20 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Netcode;
 using UnityEngine;
 
 public class Goblin : Enemy
 {
     public GameObject _arrow;
     public Transform _tip;
-    void Start()
+    public override void OnNetworkSpawn()
     {
+        if(!IsServer) return;
+
         InitMonster();
     }
 
     // 몬스터 초기화
     public override void InitMonster()
     {
+        if(!IsServer) return;
+
         if (!stat.isDie)
             _initTransform = this.transform.position;
 
@@ -22,19 +27,18 @@ public class Goblin : Enemy
         {
             _isAttack = false;
             transform.position = _initTransform;
-            GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-            GetComponent<Collider2D>().enabled = true;
+            RespawnClientRpc();
             state = States.Idle;
             StartCoroutine("HitEffect");
             anim.SetTrigger("Respawn");
         }
 
-        stat.maxHp = 1000f;
-        Hp = stat.maxHp;
+        MaxHp = 1000f;
+        Hp = MaxHp;
 
         stat.attack = 300f;
         stat.attackRange = 7f;
-        stat.attackSpeed = 1f;
+        stat.attackSpeed = 0.7f;
 
         stat.defense = 100f;
 
@@ -53,30 +57,9 @@ public class Goblin : Enemy
     }
 
     #region 피격 및 사망 처리
-
     public override void Hit(float damage)
     {
-        float finalDamage = damage - stat.defense;
-        if (finalDamage < 0f)
-        {
-            finalDamage = 1f;
-        }
-
-        Hp -= finalDamage;
-
-        if(FloatingDamagePrefab != null && stat.hp > 0){
-            ShowFloatingDamage(finalDamage);
-        }
-
-        StartCoroutine("HitEffect");
-
-        if (stat.hp <= 0)
-        {
-            StopAllCoroutines();
-
-            anim.SetTrigger("Die");
-            Die();
-        }
+        TakeDamageServerRpc(damage);
     }
 
     public override IEnumerator HitEffect()
@@ -124,14 +107,12 @@ public class Goblin : Enemy
 
     public override void Die()
     {
+        if(!IsServer) return;
+
         Hp = 0f;
         stat.isDie = true;
 
         state = States.Die;
-        GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-        GetComponent<Collider2D>().enabled = false;
-
-        GiveExpGold(GameManager.Instance.player);
 
         Invoke("InitMonster", 10f);
     }
@@ -139,6 +120,8 @@ public class Goblin : Enemy
     // 이동 애니메이션
     public override void Movement_Anim()
     {
+        if(!IsServer) return;
+
         if(state == States.Chase || state == States.Return)
         {
             anim.SetFloat("RunState", 0.5f);
@@ -152,6 +135,8 @@ public class Goblin : Enemy
 
     public override IEnumerator EnemyAttack()
     {
+        if(!IsServer) yield break;
+
         while(_isAttack)
         {
             // 공격시 방향 전환 및 애니메이션 실행
@@ -177,8 +162,6 @@ public class Goblin : Enemy
             
             arrow.GetComponent<Rigidbody2D>().velocity = direction * 10f;
             Destroy(arrow, 1f);
-
-
         }
     }
 }
