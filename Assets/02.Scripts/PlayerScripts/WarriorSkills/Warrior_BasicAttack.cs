@@ -42,9 +42,12 @@ public class Warrior_BasicAttack : PlayerAttackController
     private void SpawnAttackServerRpc(ServerRpcParams rpcParams = default)
     {
         GameObject attack = Instantiate(_basicAttack.gameObject);
+        attack.GetComponent<SpriteRenderer>().enabled = false;
         attack.GetComponent<NetworkObject>().SpawnWithOwnership(rpcParams.Receive.SenderClientId);
         SetAttackClientRpc(attack.GetComponent<NetworkObject>().NetworkObjectId);
         Destroy(attack, 0.5f);
+
+        
     }
 
     [ClientRpc]
@@ -55,11 +58,12 @@ public class Warrior_BasicAttack : PlayerAttackController
             if (attackObject.OwnerClientId == NetworkManager.Singleton.LocalClientId)
             {
                 Attack attack = attackObject.GetComponent<Attack>();
+                attack.transform.position = player._target.transform.position;
+                attack.GetComponent<SpriteRenderer>().enabled = true;
                 attack.player = GameManager.Instance.player;
                 attack.GetComponent<Animator>().SetFloat("Attack", Random.Range(0, 2)); // 공격 이펙트 랜덤 설정
                 attack.GetComponent<SpriteRenderer>().sortingLayerName = GetComponent<SortingGroup>().sortingLayerName;
                 Destroy(attack, 0.5f);
-                attack.transform.position = player._target.transform.position;
             }
         }
     }

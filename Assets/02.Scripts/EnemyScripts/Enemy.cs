@@ -207,12 +207,20 @@ public abstract class Enemy : NetworkBehaviour
     {
         if (_target != null && _target.position.x - transform.position.x > 0)
         {
-            anim.transform.localScale = new Vector3(-1f, 1f, 1);
+            if(anim.transform.localScale.x < 0)
+                return;
+
+            else
+                anim.transform.localScale = new Vector3(-anim.transform.localScale.x, anim.transform.localScale.y, 1f);
         }
 
         else if (_target != null && _target.position.x - transform.position.x < 0)
         {
-            anim.transform.localScale = new Vector3(1f, 1f, 1);
+            if(anim.transform.localScale.x < 0)
+                anim.transform.localScale = new Vector3(-anim.transform.localScale.x, anim.transform.localScale.y, 1f);
+                
+            else
+                return;
         }
     }
     virtual public void OutofArea()

@@ -196,6 +196,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7947911505737750450, guid: f826bf48ad5bedc4ab6cabe6c4e498e8,
+        type: 3}
+      propertyPath: m_SortingOrder
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7947911505737750455, guid: f826bf48ad5bedc4ab6cabe6c4e498e8,
         type: 3}
       propertyPath: m_Name
@@ -15573,6 +15578,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2114625764}
     m_Modifications:
+    - target: {fileID: 2055102311959635368, guid: b823debd04fd63f4d8e579210fe0ff20,
+        type: 3}
+      propertyPath: m_SortingOrder
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 2055102311959635369, guid: b823debd04fd63f4d8e579210fe0ff20,
         type: 3}
       propertyPath: m_Name
@@ -59046,6 +59056,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2018952583}
     m_Modifications:
+    - target: {fileID: 1335875029243418440, guid: 8138210b95f7e914f800a59f9648b67b,
+        type: 3}
+      propertyPath: SyncScaleY
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1335875029243418440, guid: 8138210b95f7e914f800a59f9648b67b,
+        type: 3}
+      propertyPath: SyncPositionZ
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5735309389054165501, guid: 8138210b95f7e914f800a59f9648b67b,
         type: 3}
       propertyPath: GlobalObjectIdHash
