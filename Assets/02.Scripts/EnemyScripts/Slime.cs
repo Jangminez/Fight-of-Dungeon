@@ -74,6 +74,7 @@ public class Slime : Enemy
     }
     public override void Hit(float damage)
     {
+        _isAttack = false;
         TakeDamageServerRpc(damage);
     }
 

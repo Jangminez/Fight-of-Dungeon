@@ -59,6 +59,7 @@ public class Goblin : Enemy
     #region 피격 및 사망 처리
     public override void Hit(float damage)
     {
+        _isAttack = false;
         TakeDamageServerRpc(damage);
     }
 
