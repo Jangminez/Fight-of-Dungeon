@@ -268,7 +268,7 @@ public abstract class Enemy : NetworkBehaviour
             ShowFloatingDamageClientRpc(finalDamage);
         }
 
-        anim.SetTrigger("Hit");
+        anim.SetFloat("RunState", 1f);
 
         if (Hp <= 0)
         {
