@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class Pumkin : Enemy
 {
+    public GameObject _attackIndicator;
+    public GameObject _attackEffect;
     public override void OnNetworkSpawn()
     {
         if(!IsServer) return;
@@ -30,25 +32,22 @@ public class Pumkin : Enemy
             anim.SetTrigger("Respawn");
         }
 
-        MaxHp = 1000f;
+        MaxHp = 3500f;
         Hp = MaxHp;
 
-        stat.attack = 300f;
-        stat.attackRange = 7f;
-        stat.attackSpeed = 0.7f;
+        stat.attack = 500f;
+        stat.attackRange = 5f;
+        stat.attackSpeed = 0.5f;
 
-        stat.defense = 100f;
+        stat.defense = 300f;
 
         stat.speed = 1.3f;
-        stat.chaseRange = 10f;
+        stat.chaseRange = 7f;
 
-        stat.exp = 1000f;
-        stat.gold = 1300;
+        stat.exp = 2500f;
+        stat.gold = 3000;
 
         stat.isDie = false;
-
-        // 원거리 애니메이션
-        anim.SetFloat("NormalState", 0.5f);
 
         StartCoroutine("MonsterState");
     }
@@ -56,7 +55,7 @@ public class Pumkin : Enemy
     #region 피격 및 사망 처리
     public override void Hit(float damage)
     {
-        _isAttack = false;
+        anim.SetTrigger("Hit");
         TakeDamageServerRpc(damage);
     }
 
@@ -138,7 +137,16 @@ public class Pumkin : Enemy
 
         while(_isAttack)
         {
+            yield return new WaitForSeconds(1 / stat.attackSpeed);
+            SetDirection();
+            anim.SetTrigger("Attack");
 
+            if (state != States.Attack)
+            {
+                _isAttack = false;
+                _target = null;
+                yield break;
+            }
         }
     }
 }

@@ -142,6 +142,8 @@ public abstract class Enemy : NetworkBehaviour
 
             else if (state == States.Attack)
             {
+                rb.velocity = Vector2.zero;
+
                 if (_target == null)
                 {
                     state = States.Idle;
@@ -276,8 +278,6 @@ public abstract class Enemy : NetworkBehaviour
             ShowFloatingDamageClientRpc(finalDamage);
         }
 
-        anim.SetFloat("RunState", 1f);
-
         if (Hp <= 0)
         {
             // 체력이 0 이하라면 Die
@@ -291,7 +291,7 @@ public abstract class Enemy : NetworkBehaviour
         else
         {
             // 죽는게 아니라면 HitEffect 실행
-            StartCoroutine("HitEffect");
+            //StartCoroutine("HitEffect");
         }
     }
 
@@ -312,6 +312,7 @@ public abstract class Enemy : NetworkBehaviour
     {
         GetComponent<Rigidbody2D>().velocity = Vector2.zero;
         GetComponent<Collider2D>().enabled = true;
+        anim.SetTrigger("Respawn");
     }
 }
 

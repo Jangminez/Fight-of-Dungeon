@@ -326,7 +326,7 @@ public abstract class Player : NetworkBehaviour
             finalDamage = 1;
 
         Hp -= finalDamage;
-
+        
         if (Hp == 0f)
         {
             OnDie();
@@ -334,7 +334,7 @@ public abstract class Player : NetworkBehaviour
 
         else
         {
-            StartCoroutine(HitEffect());
+            //StartCoroutine(HitEffect());
         }
     }
 

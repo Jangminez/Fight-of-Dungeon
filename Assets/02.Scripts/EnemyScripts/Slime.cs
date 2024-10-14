@@ -24,7 +24,6 @@ public class Slime : Enemy
 
         else
         {
-            ColorToWhiteClientRpc();
             anim.SetTrigger("Respawn");
             transform.position = _initTransform;
             _isAttack = false;
@@ -74,15 +73,15 @@ public class Slime : Enemy
     }
     public override void Hit(float damage)
     {
+        StopCoroutine("EnemyAttack");
         _isAttack = false;
+        anim.SetTrigger("Hit");
         TakeDamageServerRpc(damage);
     }
 
     public override IEnumerator HitEffect()
     {
-        HitEffectClientRpc();
-        yield return new WaitForSeconds(0.2f);
-        HitEffectClientRpc();
+       yield return null;
     }
 
     public override void Die()
@@ -102,7 +101,7 @@ public class Slime : Enemy
     {
         if (state == States.Chase || state == States.Return)
         {
-            anim.SetFloat("RunState", 1f);
+            anim.SetFloat("RunState", 0.5f);
         }
 
         else
@@ -111,16 +110,5 @@ public class Slime : Enemy
         }
     }
 
-    [ClientRpc]
-    private void HitEffectClientRpc()
-    {
-        spr.color = spr.color == Color.white ? Color.gray : Color.white;
-    }
-
-    [ClientRpc]
-    private void ColorToWhiteClientRpc()
-    {
-        spr.color = Color.white;
-    }
 }
 
