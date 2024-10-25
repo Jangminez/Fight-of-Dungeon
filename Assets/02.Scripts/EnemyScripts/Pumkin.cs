@@ -9,7 +9,7 @@ public class Pumkin : Enemy
     public GameObject _attackEffect;
     public override void OnNetworkSpawn()
     {
-        if(!IsServer) return;
+        if (!IsServer) return;
 
         InitMonster();
     }
@@ -17,7 +17,7 @@ public class Pumkin : Enemy
     // 몬스터 초기화
     public override void InitMonster()
     {
-        if(!IsServer) return;
+        if (!IsServer) return;
 
         if (!stat.isDie)
             _initTransform = this.transform.position;
@@ -49,13 +49,14 @@ public class Pumkin : Enemy
 
         stat.isDie = false;
 
+        _attackIndicator.transform.GetChild(0).GetComponent<Animator>().SetFloat("AttackSpeed", stat.attackSpeed);
         StartCoroutine("MonsterState");
     }
 
     #region 피격 및 사망 처리
     public override void Hit(float damage)
     {
-        anim.SetTrigger("Hit");
+        //anim.SetTrigger("Hit");
         TakeDamageServerRpc(damage);
     }
 
@@ -69,34 +70,34 @@ public class Pumkin : Enemy
         // 캐릭터의 Hair 색은 변경하지않음
         var filterItemList = itemList.Skip(2).ToList();
 
-        foreach(var item in filterItemList)
+        foreach (var item in filterItemList)
         {
             item.color = Color.gray;
         }
 
-        foreach(var armor in armorList)
+        foreach (var armor in armorList)
         {
             armor.color = Color.gray;
         }
 
-        foreach(var body in bodyList)
+        foreach (var body in bodyList)
         {
             body.color = Color.gray;
         }
 
         yield return new WaitForSeconds(0.2f);
 
-        foreach(var item in filterItemList)
+        foreach (var item in filterItemList)
         {
             item.color = Color.white;
-        } 
+        }
 
-        foreach(var armor in armorList)
+        foreach (var armor in armorList)
         {
             armor.color = Color.white;
         }
 
-        foreach(var body in bodyList)
+        foreach (var body in bodyList)
         {
             body.color = Color.white;
         }
@@ -104,7 +105,7 @@ public class Pumkin : Enemy
 
     public override void Die()
     {
-        if(!IsServer) return;
+        if (!IsServer) return;
 
         Hp = 0f;
         stat.isDie = true;
@@ -114,13 +115,13 @@ public class Pumkin : Enemy
         Invoke("InitMonster", 10f);
     }
     #endregion
-    
+
     // 이동 애니메이션
     public override void Movement_Anim()
     {
-        if(!IsServer) return;
+        if (!IsServer) return;
 
-        if(state == States.Chase || state == States.Return)
+        if (state == States.Chase || state == States.Return)
         {
             anim.SetFloat("RunState", 0.5f);
         }
@@ -133,20 +134,36 @@ public class Pumkin : Enemy
 
     public override IEnumerator EnemyAttack()
     {
-        if(!IsServer) yield break;
+        if (!IsServer) yield break;
 
-        while(_isAttack)
+        while (_isAttack)
         {
-            yield return new WaitForSeconds(1 / stat.attackSpeed);
-            SetDirection();
-            anim.SetTrigger("Attack");
-
             if (state != States.Attack)
             {
                 _isAttack = false;
                 _target = null;
+                _attackIndicator.SetActive(false);
+                anim.ResetTrigger("Attack");
                 yield break;
             }
+
+            SetDirection();
+            SetIndicator(_target);
+            yield return new WaitForSeconds(1 / stat.attackSpeed);
+            _attackIndicator.SetActive(false);
+            anim.SetTrigger("Attack");
         }
+    }
+
+    private void SetIndicator(Transform target)
+    {
+        if(target == null) return;
+
+        Vector3 direction = (target.position - transform.position).normalized;
+
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        _attackIndicator.transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
+
+        _attackIndicator.SetActive(true);
     }
 }
