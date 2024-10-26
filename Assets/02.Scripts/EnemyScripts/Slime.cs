@@ -8,8 +8,8 @@ public class Slime : Enemy
     public override void OnNetworkSpawn()
     {
         spr = GetComponent<SpriteRenderer>();
-        
-        if(!IsServer) return;
+
+        if (!IsServer) return;
 
         InitMonster();
 
@@ -17,7 +17,7 @@ public class Slime : Enemy
 
     public override void InitMonster()
     {
-        if(!IsServer) return;
+        if (!IsServer) return;
 
         if (!stat.isDie)
             _initTransform = this.transform.position;
@@ -53,7 +53,7 @@ public class Slime : Enemy
 
     public override IEnumerator EnemyAttack()
     {
-        if(!IsServer) yield break;
+        if (!IsServer) yield break;
 
         while (_isAttack)
         {
@@ -67,7 +67,7 @@ public class Slime : Enemy
                 yield break;
             }
 
-            if (_target != null)
+            if (_target != null && Vector2.Distance(_target.position , transform.position) < stat.attackRange)
                 AttackClientRpc(_target.GetComponent<NetworkObject>().OwnerClientId, stat.attack);
         }
     }
@@ -81,7 +81,7 @@ public class Slime : Enemy
 
     public override IEnumerator HitEffect()
     {
-       yield return null;
+        yield return null;
     }
 
     public override void Die()

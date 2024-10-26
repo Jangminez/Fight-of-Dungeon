@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Pumkin : Enemy
 {
     public GameObject _attackIndicator;
+    Transform _attackFill;
     public GameObject _attackEffect;
     public override void OnNetworkSpawn()
     {
@@ -36,20 +38,20 @@ public class Pumkin : Enemy
         Hp = MaxHp;
 
         stat.attack = 500f;
-        stat.attackRange = 5f;
+        stat.attackRange = 4f;
         stat.attackSpeed = 0.5f;
 
         stat.defense = 300f;
 
         stat.speed = 1.3f;
-        stat.chaseRange = 7f;
+        stat.chaseRange = 6f;
 
         stat.exp = 2500f;
         stat.gold = 3000;
 
         stat.isDie = false;
+        _attackFill = _attackIndicator.transform.GetChild(0);
 
-        _attackIndicator.transform.GetChild(0).GetComponent<Animator>().SetFloat("AttackSpeed", stat.attackSpeed);
         StartCoroutine("MonsterState");
     }
 
@@ -138,32 +140,139 @@ public class Pumkin : Enemy
 
         while (_isAttack)
         {
+            SetDirection();
+
+            while (anim.GetCurrentAnimatorStateInfo(2).IsName("2_Attack_Normal_pum"))
+            {
+                yield return null;
+            }
+
+            _attackFill.localScale = Vector3.zero;
+            StartCoroutine(SetIndicator(_target));
+            yield return new WaitForSeconds(1 / stat.attackSpeed);
+
+            _attackIndicator.SetActive(false);
+            anim.SetTrigger("Attack");
+
             if (state != States.Attack)
             {
                 _isAttack = false;
                 _target = null;
-                _attackIndicator.SetActive(false);
-                anim.ResetTrigger("Attack");
                 yield break;
             }
-
-            SetDirection();
-            SetIndicator(_target);
-            yield return new WaitForSeconds(1 / stat.attackSpeed);
-            _attackIndicator.SetActive(false);
-            anim.SetTrigger("Attack");
         }
     }
 
-    private void SetIndicator(Transform target)
+    public override IEnumerator MonsterState()
     {
-        if(target == null) return;
+        if (!IsServer) yield break;
 
-        Vector3 direction = (target.position - transform.position).normalized;
+        while (!stat.isDie)
+        {
+            yield return null;
+
+            if (_target == null && state != States.Idle && state != States.Return)
+            {
+                state = States.Idle;
+            }
+
+            if (state == States.Idle)
+            {
+                timer += Time.deltaTime;
+
+                rb.velocity = Vector2.zero;
+
+                if (_target != null && Vector2.Distance(_target.position, transform.position) < stat.chaseRange && !stat.isDie)
+                {
+                    timer = 0f;
+                    state = States.Chase;
+                }
+
+                if (timer > 5f)
+                {
+                    timer = 0f;
+                    state = States.Return;
+
+                    Hp = MaxHp;
+                }
+            }
+
+            else if (state == States.Chase)
+            {
+                if (_target == null)
+                    state = States.Idle;
+
+                // 타겟의 위치 확인 후 이동
+                Movement();
+                SetDirection();
+
+                if (Vector2.Distance(_target.position, transform.position) < stat.attackRange && !stat.isDie)
+                {
+                    state = States.Attack;
+                }
+
+                else if (Vector2.Distance(_target.position, transform.position) > stat.chaseRange && !stat.isDie)
+                {
+                    state = States.Idle;
+                    timer = 0f;
+                }
+
+            }
+
+            else if (state == States.Attack)
+            {
+                rb.velocity = Vector2.zero;
+
+                if (_target == null)
+                {
+                    state = States.Idle;
+                    timer = 0f;
+                }
+
+                if (_target != null && Vector2.Distance(_target.position, transform.position) > stat.attackRange && !_isAttack && !stat.isDie)
+                {
+                    state = States.Chase;
+                }
+            }
+
+            // 초기위치로 돌아감
+            else if (state == States.Return)
+            {
+                Vector2 dirVec = _initTransform - this.transform.position;
+                Vector2 nextVec = dirVec.normalized * stat.speed * Time.fixedDeltaTime;
+
+                rb.MovePosition(rb.position + nextVec);
+
+                if (Vector3.Distance(_initTransform, this.transform.position) < 0.1f)
+                {
+                    state = States.Idle;
+                    timer = 0f;
+                }
+            }
+        }
+    }
+
+
+    private IEnumerator SetIndicator(Transform target)
+    {
+        if (target == null) yield break;
+
+        Vector3 direction = (target.position - _attackIndicator.transform.position).normalized;
 
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        _attackIndicator.transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
+        _attackIndicator.transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle - 90f));
 
         _attackIndicator.SetActive(true);
+
+        float elapsedTime = 0f;
+        float duration = 1 / stat.attackSpeed;
+
+        while(_attackIndicator.activeSelf)
+        {
+            _attackFill.localScale = Vector3.Lerp(Vector3.zero, Vector3.one, elapsedTime / duration);
+            elapsedTime += Time.deltaTime;
+
+            yield return null;
+        }
     }
 }

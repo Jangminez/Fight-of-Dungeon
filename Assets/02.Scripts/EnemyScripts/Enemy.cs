@@ -17,7 +17,7 @@ public abstract class Enemy : NetworkBehaviour
 
     public GameObject FloatingDamagePrefab;
     public GameObject FloatingGoldExpPrefab;
-    private float timer;
+    protected float timer;
 
     [Serializable]
     public struct Stats
@@ -84,7 +84,7 @@ public abstract class Enemy : NetworkBehaviour
         }
     }
 
-    IEnumerator MonsterState()
+    virtual public IEnumerator MonsterState()
     {
         if (!IsServer) yield break;
 
