@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Pumkin : Enemy
@@ -9,6 +8,7 @@ public class Pumkin : Enemy
     public GameObject _attackIndicator;
     Transform _attackFill;
     public GameObject _attackEffect;
+    bool _indiOn = false;
     public override void OnNetworkSpawn()
     {
         if (!IsServer) return;
@@ -147,12 +147,14 @@ public class Pumkin : Enemy
                 yield return null;
             }
 
-            _attackFill.localScale = Vector3.zero;
-            StartCoroutine(SetIndicator(_target));
-            yield return new WaitForSeconds(1 / stat.attackSpeed);
+            if (!_indiOn)
+            {
+                _indiOn = true;
+                _attackFill.localScale = Vector3.zero;
+                StartCoroutine(SetIndicator(_target));
+            }
 
-            _attackIndicator.SetActive(false);
-            anim.SetTrigger("Attack");
+            yield return new WaitForSeconds(1 / stat.attackSpeed);
 
             if (state != States.Attack)
             {
@@ -255,24 +257,41 @@ public class Pumkin : Enemy
 
     private IEnumerator SetIndicator(Transform target)
     {
+        // 인디케이터 방향 설정
         if (target == null) yield break;
 
         Vector3 direction = (target.position - _attackIndicator.transform.position).normalized;
 
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         _attackIndicator.transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle - 90f));
+        
 
         _attackIndicator.SetActive(true);
 
+
+        StartCoroutine(FillIndicator(angle));
+    }
+
+    private IEnumerator FillIndicator(float angle)
+    {
+        // 인디케이터 게이지 채우기
         float elapsedTime = 0f;
         float duration = 1 / stat.attackSpeed;
 
-        while(_attackIndicator.activeSelf)
+        while (elapsedTime < duration)
         {
             _attackFill.localScale = Vector3.Lerp(Vector3.zero, Vector3.one, elapsedTime / duration);
             elapsedTime += Time.deltaTime;
 
             yield return null;
         }
+        _indiOn = false;
+
+        _attackIndicator.SetActive(false);
+        _attackEffect.transform.position = _attackIndicator.transform.position;
+        _attackEffect.transform.rotation = Quaternion.Euler(new Vector3(0,0, angle - 180f));
+
+        anim.SetTrigger("Attack");
+        _attackEffect.GetComponent<Animator>().SetTrigger("UseSkill");
     }
 }
