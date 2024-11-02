@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Netcode;
+using Unity.Services.Lobbies.Models;
 using UnityEngine;
 
 public class Pumkin : Enemy
 {
+    public GameObject _batPrefab;
     public GameObject _attackIndicator;
     Transform _attackFill;
     public GameObject _attackEffect;
@@ -115,6 +118,17 @@ public class Pumkin : Enemy
         state = States.Die;
 
         Invoke("InitMonster", 10f);
+
+        OffAttackIndicatorClientRpc();
+
+        int random_count = Random.Range(1, 4);
+
+        for(int i = 0; i < random_count; i++){
+            GameObject Bat = Instantiate(_batPrefab, transform.position, Quaternion.identity);
+
+            if(!Bat.transform.GetChild(0).GetComponent<NetworkObject>().IsSpawned)
+                Bat.transform.GetChild(0).GetComponent<NetworkObject>().Spawn(true);
+        }
     }
     #endregion
 
@@ -140,7 +154,7 @@ public class Pumkin : Enemy
 
         while (_isAttack)
         {
-            SetDirection();
+            
 
             while (anim.GetCurrentAnimatorStateInfo(2).IsName("2_Attack_Normal_pum"))
             {
@@ -149,6 +163,7 @@ public class Pumkin : Enemy
 
             if (!_indiOn)
             {
+                SetDirection();
                 _indiOn = true;
                 _attackFill.localScale = Vector3.zero;
                 StartCoroutine(SetIndicator(_target));
@@ -266,13 +281,12 @@ public class Pumkin : Enemy
         _attackIndicator.transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle - 90f));
         
 
-        _attackIndicator.SetActive(true);
+        OnAttackIndicatorClientRpc();
 
-
-        StartCoroutine(FillIndicator(angle));
+        StartCoroutine(FillIndicator(angle, direction));
     }
 
-    private IEnumerator FillIndicator(float angle)
+    private IEnumerator FillIndicator(float angle, Vector3 direction)
     {
         // 인디케이터 게이지 채우기
         float elapsedTime = 0f;
@@ -280,18 +294,32 @@ public class Pumkin : Enemy
 
         while (elapsedTime < duration)
         {
-            _attackFill.localScale = Vector3.Lerp(Vector3.zero, Vector3.one, elapsedTime / duration);
+            _attackFill.localScale = Vector3.Lerp(new Vector3(1f, 0f, 0f), new Vector3(1f, 1f, 0f), elapsedTime / duration);
             elapsedTime += Time.deltaTime;
 
             yield return null;
         }
-        _indiOn = false;
+        OffAttackIndicatorClientRpc();
+        GameObject slash = Instantiate(_attackEffect, transform.position, Quaternion.identity);
+        slash.transform.rotation = Quaternion.Euler(new Vector3(0,0, angle));
 
-        _attackIndicator.SetActive(false);
-        _attackEffect.transform.position = _attackIndicator.transform.position;
-        _attackEffect.transform.rotation = Quaternion.Euler(new Vector3(0,0, angle - 180f));
-
+        slash.GetComponent<Rigidbody2D>().velocity = direction * 3f;
+        Destroy(slash, 1f);
         anim.SetTrigger("Attack");
-        _attackEffect.GetComponent<Animator>().SetTrigger("UseSkill");
+
+        yield return new WaitForSeconds(1f);
+        _indiOn = false;
+    }
+
+    [ClientRpc]
+    private void OnAttackIndicatorClientRpc()
+    {
+        _attackIndicator.SetActive(true);
+    }
+
+    [ClientRpc]
+    private void OffAttackIndicatorClientRpc()
+    {
+        _attackIndicator.SetActive(false);
     }
 }

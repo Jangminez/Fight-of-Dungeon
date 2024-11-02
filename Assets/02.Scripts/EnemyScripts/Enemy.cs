@@ -288,11 +288,6 @@ public abstract class Enemy : NetworkBehaviour
             Die();
             DieClientRpc(rpcParams.Receive.SenderClientId);
         }
-        else
-        {
-            // 죽는게 아니라면 HitEffect 실행
-            //StartCoroutine("HitEffect");
-        }
     }
 
     [ClientRpc]

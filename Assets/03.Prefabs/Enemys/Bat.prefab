@@ -926,9 +926,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 425398007087041694}
-  - component: {fileID: 6165570864661767545}
   m_Layer: 18
-  m_Name: Bet
+  m_Name: Bat
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -955,28 +954,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &6165570864661767545
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2198024414384283899}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 28ac21711b0ec40a0812d33a586eb7ec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _version: 160
-  _spriteOBj: {fileID: 8234263778042063366}
-  EditChk: 1
-  _code: Unit000
-  _anim: {fileID: 124123783831180990}
-  _horse: 0
-  _horseString: 
-  UnitTypeChanged:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &2323500724737200563
 GameObject:
   m_ObjectHideFlags: 0
@@ -1227,7 +1204,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -0.06, y: 0.1}
+  m_AnchoredPosition: {x: -0.06, y: -0.461}
   m_SizeDelta: {x: 3, y: 3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &8722276868302794612
@@ -1275,7 +1252,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &2056466494618756427
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2597,7 +2574,7 @@ Transform:
   m_GameObject: {fileID: 5302387052438535444}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.595, z: 0}
+  m_LocalPosition: {x: 0, y: 0.123, z: 0}
   m_LocalScale: {x: 0.8, y: 0.8, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3258,8 +3235,8 @@ GameObject:
   - component: {fileID: 6019429262191114855}
   - component: {fileID: 587523969990552708}
   - component: {fileID: 124123783831180990}
-  - component: {fileID: 5764307701220217071}
   - component: {fileID: 2113883702527739321}
+  - component: {fileID: 7272419434772285950}
   - component: {fileID: 2998179861176816006}
   - component: {fileID: 8315846662027660066}
   - component: {fileID: 8801538352130968815}
@@ -3325,33 +3302,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &5764307701220217071
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7186650734716972967}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5e7f63a18cad07147808884e766061d6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _initTransform: {x: 0, y: 0, z: 0}
-  state: 0
-  _target: {fileID: 0}
-  FloatingDamagePrefab: {fileID: 0}
-  FloatingGoldExpPrefab: {fileID: 0}
-  stat:
-    attack: 0
-    attackSpeed: 0
-    defense: 0
-    speed: 0
-    attackRange: 0
-    chaseRange: 0
-    exp: 0
-    gold: 0
-    isDie: 0
 --- !u!114 &2113883702527739321
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3372,6 +3322,35 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
+--- !u!114 &7272419434772285950
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7186650734716972967}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df27796936dbfc749946e79f3e15ba86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _initTransform: {x: 0, y: 0, z: 0}
+  state: 0
+  _target: {fileID: 0}
+  FloatingDamagePrefab: {fileID: 7107079607422933807, guid: 21182ee54ba58c647ba5d2063400e63f,
+    type: 3}
+  FloatingGoldExpPrefab: {fileID: 7145864357256277105, guid: 9b61fc9b659b53a49a0c824b9f943c04,
+    type: 3}
+  stat:
+    attack: 0
+    attackSpeed: 0
+    defense: 0
+    speed: 0
+    attackRange: 0
+    chaseRange: 0
+    exp: 0
+    gold: 0
+    isDie: 0
 --- !u!114 &2998179861176816006
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3400,7 +3379,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _canvas: {fileID: 6588751584125955388}
-  _hpBar: {fileID: 5098838847791457289}
+  _hpBar: {fileID: 3892675006514204820}
 --- !u!114 &8801538352130968815
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3520,7 +3499,7 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.01188269, y: 0.96827507}
+  m_Offset: {x: -0.01188269, y: 0.52}
   m_Size: {x: 1.0358044, y: 0.51289374}
   m_Direction: 1
 --- !u!50 &3195798176443218328
@@ -3970,7 +3949,7 @@ Transform:
   m_GameObject: {fileID: 8318843674418811491}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.435, z: 0}
   m_LocalScale: {x: 1.0013468, y: 1.0013468, z: 1.0013468}
   m_ConstrainProportionsScale: 0
   m_Children:

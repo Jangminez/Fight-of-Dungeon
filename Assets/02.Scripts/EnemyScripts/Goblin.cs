@@ -67,45 +67,7 @@ public class Goblin : Enemy
 
     public override IEnumerator HitEffect()
     {
-        SPUM_SpriteList spumList = transform.GetChild(0).GetComponent<SPUM_SpriteList>();
-        List<SpriteRenderer> itemList = spumList._itemList;
-        List<SpriteRenderer> armorList = spumList._armorList;
-        List<SpriteRenderer> bodyList = spumList._bodyList;
-
-        // 캐릭터의 Hair 색은 변경하지않음
-        var filterItemList = itemList.Skip(2).ToList();
-
-        foreach(var item in filterItemList)
-        {
-            item.color = Color.gray;
-        }
-
-        foreach(var armor in armorList)
-        {
-            armor.color = Color.gray;
-        }
-
-        foreach(var body in bodyList)
-        {
-            body.color = Color.gray;
-        }
-
-        yield return new WaitForSeconds(0.2f);
-
-        foreach(var item in filterItemList)
-        {
-            item.color = Color.white;
-        } 
-
-        foreach(var armor in armorList)
-        {
-            armor.color = Color.white;
-        }
-
-        foreach(var body in bodyList)
-        {
-            body.color = Color.white;
-        }
+        yield return null;
     }
 
     public override void Die()

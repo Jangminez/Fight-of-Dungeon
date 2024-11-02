@@ -4,7 +4,7 @@ using UnityEngine;
 public class PlayerMovement : NetworkBehaviour
 {
     public Joystick _joystickMovement;
-    float _speed;
+    public float _speed;
     Rigidbody2D _playerRb;
     Animator _anim;
     Transform _canvas;
