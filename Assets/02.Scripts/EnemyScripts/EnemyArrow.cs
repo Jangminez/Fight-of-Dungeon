@@ -1,6 +1,7 @@
+using Unity.Netcode;
 using UnityEngine;
 
-public class EnemyArrow : MonoBehaviour
+public class EnemyArrow : NetworkBehaviour
 {
     public Enemy _enemy;
 

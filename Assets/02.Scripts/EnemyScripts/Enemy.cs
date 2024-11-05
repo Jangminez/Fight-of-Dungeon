@@ -14,7 +14,8 @@ public abstract class Enemy : NetworkBehaviour
 
     public Transform _target;
     protected bool _isAttack;
-
+    Transform _canvas;
+    Vector3 _initCanvasScale;
     public GameObject FloatingDamagePrefab;
     public GameObject FloatingGoldExpPrefab;
     protected float timer;
@@ -62,6 +63,8 @@ public abstract class Enemy : NetworkBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        _canvas = transform.GetChild(0);
+        _initCanvasScale = _canvas.transform.localScale;
     }
 
     private void Start()
@@ -209,18 +212,25 @@ public abstract class Enemy : NetworkBehaviour
     {
         if (_target != null && _target.position.x - transform.position.x > 0)
         {
-            if(anim.transform.localScale.x < 0)
+            if (anim.transform.localScale.x < 0)
                 return;
 
             else
+            {
                 anim.transform.localScale = new Vector3(-anim.transform.localScale.x, anim.transform.localScale.y, 1f);
+                _canvas.localScale = _initCanvasScale;
+                
+            }
         }
 
         else if (_target != null && _target.position.x - transform.position.x < 0)
         {
-            if(anim.transform.localScale.x < 0)
+            if (anim.transform.localScale.x < 0)
+            {
                 anim.transform.localScale = new Vector3(-anim.transform.localScale.x, anim.transform.localScale.y, 1f);
-                
+                _canvas.localScale = new Vector3(-_initCanvasScale.x, _initCanvasScale.y, _initCanvasScale.z);
+            }
+
             else
                 return;
         }
@@ -229,12 +239,12 @@ public abstract class Enemy : NetworkBehaviour
     {
         state = States.Return;
     }
-    
+
     [ClientRpc]
     protected void AttackClientRpc(ulong clientId, float damage)
     {
         // 공격 받은 클라이언트라면 Hit() 처리
-        if(clientId == NetworkManager.Singleton.LocalClientId)
+        if (clientId == NetworkManager.Singleton.LocalClientId)
             GameManager.Instance.player.Hit(damage: damage);
     }
 

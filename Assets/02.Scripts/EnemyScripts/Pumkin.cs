@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Netcode;
-using Unity.Services.Lobbies.Models;
 using UnityEngine;
 
 public class Pumkin : Enemy
@@ -30,6 +29,7 @@ public class Pumkin : Enemy
         else
         {
             _isAttack = false;
+            _indiOn = false;
             transform.position = _initTransform;
             RespawnClientRpc();
             state = States.Idle;
@@ -67,45 +67,7 @@ public class Pumkin : Enemy
 
     public override IEnumerator HitEffect()
     {
-        SPUM_SpriteList spumList = transform.GetChild(0).GetComponent<SPUM_SpriteList>();
-        List<SpriteRenderer> itemList = spumList._itemList;
-        List<SpriteRenderer> armorList = spumList._armorList;
-        List<SpriteRenderer> bodyList = spumList._bodyList;
-
-        // 캐릭터의 Hair 색은 변경하지않음
-        var filterItemList = itemList.Skip(2).ToList();
-
-        foreach (var item in filterItemList)
-        {
-            item.color = Color.gray;
-        }
-
-        foreach (var armor in armorList)
-        {
-            armor.color = Color.gray;
-        }
-
-        foreach (var body in bodyList)
-        {
-            body.color = Color.gray;
-        }
-
-        yield return new WaitForSeconds(0.2f);
-
-        foreach (var item in filterItemList)
-        {
-            item.color = Color.white;
-        }
-
-        foreach (var armor in armorList)
-        {
-            armor.color = Color.white;
-        }
-
-        foreach (var body in bodyList)
-        {
-            body.color = Color.white;
-        }
+        return null;
     }
 
     public override void Die()
@@ -126,8 +88,8 @@ public class Pumkin : Enemy
         for(int i = 0; i < random_count; i++){
             GameObject Bat = Instantiate(_batPrefab, transform.position, Quaternion.identity);
 
-            if(!Bat.transform.GetChild(0).GetComponent<NetworkObject>().IsSpawned)
-                Bat.transform.GetChild(0).GetComponent<NetworkObject>().Spawn(true);
+            if(!Bat.GetComponent<NetworkObject>().IsSpawned)
+                Bat.GetComponent<NetworkObject>().Spawn(true);
         }
     }
     #endregion
@@ -154,8 +116,6 @@ public class Pumkin : Enemy
 
         while (_isAttack)
         {
-            
-
             while (anim.GetCurrentAnimatorStateInfo(2).IsName("2_Attack_Normal_pum"))
             {
                 yield return null;
@@ -307,7 +267,7 @@ public class Pumkin : Enemy
         Destroy(slash, 1f);
         anim.SetTrigger("Attack");
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
         _indiOn = false;
     }
 
