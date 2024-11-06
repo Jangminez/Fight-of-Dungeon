@@ -1780,6 +1780,7 @@ GameObject:
   - component: {fileID: 9167756946064120007}
   - component: {fileID: 1039279240809581702}
   - component: {fileID: 4512725702991304877}
+  - component: {fileID: 4847682916353827934}
   m_Layer: 0
   m_Name: Monster_indicator
   m_TagString: Untagged
@@ -1795,13 +1796,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4225823317100063590}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.017, y: -0.21, z: -0}
-  m_LocalScale: {x: 0.806547, y: 4.1098065, z: 1.5593243}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.025075, y: -0.21000001, z: 0}
+  m_LocalScale: {x: 1.1896569, y: 4.109807, z: 1.5593241}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7552156307101633697}
-  m_Father: {fileID: 8799425341032942772}
+  m_Father: {fileID: 8452059814198863006}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1039279240809581702
 SpriteRenderer:
@@ -1867,6 +1868,36 @@ SortingGroup:
   m_SortingLayer: 2
   m_SortingOrder: 1
   m_SortAtRoot: 1
+--- !u!114 &4847682916353827934
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4225823317100063590}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7925a23010d94b649bd99c35a27e0479, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SyncPositionX: 1
+  SyncPositionY: 1
+  SyncPositionZ: 0
+  SyncRotAngleX: 1
+  SyncRotAngleY: 1
+  SyncRotAngleZ: 1
+  SyncScaleX: 0
+  SyncScaleY: 0
+  SyncScaleZ: 0
+  PositionThreshold: 0.001
+  RotAngleThreshold: 0.01
+  ScaleThreshold: 0.01
+  UseQuaternionSynchronization: 0
+  UseQuaternionCompression: 0
+  UseHalfFloatPrecision: 0
+  InLocalSpace: 0
+  Interpolate: 1
+  SlerpPosition: 0
 --- !u!1 &4317240191455714479
 GameObject:
   m_ObjectHideFlags: 0
@@ -3228,58 +3259,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1 &7034211577885774440
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8799425341032942772}
-  - component: {fileID: 8830675573515321486}
-  m_Layer: 18
-  m_Name: Attack
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8799425341032942772
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7034211577885774440}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.475, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 9167756946064120007}
-  m_Father: {fileID: 8452059814198863006}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!119 &8830675573515321486
-Projector:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7034211577885774440}
-  m_Enabled: 1
-  serializedVersion: 2
-  m_NearClipPlane: 0.1
-  m_FarClipPlane: 100
-  m_FieldOfView: 60
-  m_AspectRatio: 1
-  m_Orthographic: 0
-  m_OrthographicSize: 34.7
-  m_Material: {fileID: 2100000, guid: 67ebc447bbf6eda44a17799405195d96, type: 2}
-  m_IgnoreLayers:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!1 &7045638967940882429
 GameObject:
   m_ObjectHideFlags: 0
@@ -3622,7 +3601,7 @@ Transform:
   - {fileID: 2487757768266717327}
   - {fileID: 8517233639477965749}
   - {fileID: 6415349836179716407}
-  - {fileID: 8799425341032942772}
+  - {fileID: 9167756946064120007}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!210 &1897244290330827632
@@ -3724,8 +3703,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.26040864, y: 0.48949432}
-  m_Size: {x: 0.7291595, y: 1.6040548}
+  m_Offset: {x: 0.07504304, y: 0.22188728}
+  m_Size: {x: 0.42939407, y: 1.068841}
   m_Direction: 0
 --- !u!50 &8011548063962419568
 Rigidbody2D:
@@ -3881,11 +3860,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SyncPositionX: 1
   SyncPositionY: 1
-  SyncPositionZ: 1
-  SyncRotAngleX: 0
-  SyncRotAngleY: 0
-  SyncRotAngleZ: 0
-  SyncScaleX: 0
+  SyncPositionZ: 0
+  SyncRotAngleX: 1
+  SyncRotAngleY: 1
+  SyncRotAngleZ: 1
+  SyncScaleX: 1
   SyncScaleY: 0
   SyncScaleZ: 0
   PositionThreshold: 0.001

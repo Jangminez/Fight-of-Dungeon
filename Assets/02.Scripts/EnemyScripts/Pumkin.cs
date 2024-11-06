@@ -1,6 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -232,6 +230,8 @@ public class Pumkin : Enemy
 
     private IEnumerator SetIndicator(Transform target)
     {
+        if(!IsServer) yield break;
+
         // 인디케이터 방향 설정
         if (target == null) yield break;
 
@@ -240,7 +240,6 @@ public class Pumkin : Enemy
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         _attackIndicator.transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle - 90f));
         
-
         OnAttackIndicatorClientRpc();
 
         StartCoroutine(FillIndicator(angle, direction));
@@ -248,6 +247,8 @@ public class Pumkin : Enemy
 
     private IEnumerator FillIndicator(float angle, Vector3 direction)
     {
+        if(!IsServer) yield break;
+
         // 인디케이터 게이지 채우기
         float elapsedTime = 0f;
         float duration = 1 / stat.attackSpeed;
@@ -261,8 +262,11 @@ public class Pumkin : Enemy
         }
         OffAttackIndicatorClientRpc();
         GameObject slash = Instantiate(_attackEffect, transform.position, Quaternion.identity);
+        
+        slash.GetComponent<EnemyAttack>()._enemy = this;
         slash.transform.rotation = Quaternion.Euler(new Vector3(0,0, angle));
 
+        slash.GetComponent<NetworkObject>().Spawn();
         slash.GetComponent<Rigidbody2D>().velocity = direction * 3f;
         Destroy(slash, 1f);
         anim.SetTrigger("Attack");

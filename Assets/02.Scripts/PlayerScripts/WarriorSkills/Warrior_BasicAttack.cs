@@ -57,6 +57,7 @@ public class Warrior_BasicAttack : PlayerAttackController
         {
             if (attackObject.OwnerClientId == NetworkManager.Singleton.LocalClientId)
             {
+                // 공격 생성 및 적용
                 Attack attack = attackObject.GetComponent<Attack>();
                 attack.transform.position = player._target.transform.position;
                 attack.GetComponent<SpriteRenderer>().enabled = true;

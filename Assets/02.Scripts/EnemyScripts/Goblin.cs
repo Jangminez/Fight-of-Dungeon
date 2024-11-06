@@ -120,11 +120,12 @@ public class Goblin : Enemy
 
             // 화살 생성 후 타겟 방향으로 회전 및 발사
             GameObject arrow = Instantiate(_arrow, _tip.transform.position, Quaternion.identity);
-            arrow.GetComponent<EnemyArrow>()._enemy = this;
+            arrow.GetComponent<EnemyAttack>()._enemy = this;
             Vector3 direction = (_target.position - transform.position).normalized;
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
             arrow.transform.rotation = Quaternion.Euler(0, 0, angle);
             
+            arrow.GetComponent<NetworkObject>().Spawn();
             arrow.GetComponent<Rigidbody2D>().velocity = direction * 10f;
             Destroy(arrow, 1f);
         }
