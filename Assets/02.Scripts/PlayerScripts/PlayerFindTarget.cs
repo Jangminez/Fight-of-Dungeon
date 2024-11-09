@@ -9,19 +9,11 @@ public class PlayerFindTarget : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-        if(!IsOwner){
-            this.enabled = false;
-            return;
-        }
-
         player = GetComponent<Player>();
     }
 
     private void Update()
     {
-        if(!IsOwner)
-            return;
-
         enemys = Physics2D.OverlapCircleAll(transform.position, player.AttackRange, layer);
 
         if (enemys.Length > 0)
