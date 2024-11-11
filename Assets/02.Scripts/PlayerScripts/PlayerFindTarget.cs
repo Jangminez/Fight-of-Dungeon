@@ -14,6 +14,8 @@ public class PlayerFindTarget : NetworkBehaviour
 
     private void Update()
     {
+        if(player == null) return;
+        
         enemys = Physics2D.OverlapCircleAll(transform.position, player.AttackRange, layer);
 
         if (enemys.Length > 0)

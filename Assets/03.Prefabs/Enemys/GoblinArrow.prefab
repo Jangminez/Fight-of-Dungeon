@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 6306938399375757895}
   - component: {fileID: 7967336216693373534}
   m_Layer: 0
-  m_Name: Arrow
+  m_Name: GoblinArrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -165,6 +165,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _enemy: {fileID: 0}
+  _arrow: {fileID: 0}
 --- !u!114 &3128059745763371557
 MonoBehaviour:
   m_ObjectHideFlags: 0

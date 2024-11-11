@@ -45,6 +45,7 @@ public class Warrior_BasicAttack : PlayerAttackController
         attack.GetComponent<NetworkObject>().SpawnWithOwnership(rpcParams.Receive.SenderClientId);
     
         SetAttackClientRpc(attack.GetComponent<NetworkObject>().NetworkObjectId);
+        Destroy(attack, 0.5f);
     }
 
     [ClientRpc]
@@ -60,9 +61,9 @@ public class Warrior_BasicAttack : PlayerAttackController
                 attack.GetComponent<SpriteRenderer>().enabled = true;
                 attack.player = GameManager.Instance.player;
                 attack.GetComponent<Animator>().SetFloat("Attack", Random.Range(0, 2)); // 공격 이펙트 랜덤 설정
+                Destroy(attack, 0.5f);
             }
             attackObject.GetComponent<SpriteRenderer>().enabled = true;
-            Destroy(attackObject, 0.5f);
         }
     }
 

@@ -1,7 +1,7 @@
 using Unity.Netcode;
 using UnityEngine;
 
-public class EnemyAttack : NetworkBehaviour
+public class PumkinSlash : NetworkBehaviour
 {
     public Enemy _enemy;
 
@@ -12,11 +12,6 @@ public class EnemyAttack : NetworkBehaviour
         if(other.GetComponent<Player>() != null)
         {  
             AttackClientRpc(other.GetComponent<NetworkObject>().OwnerClientId, _enemy.stat.attack);
-            Destroy(gameObject);
-        }
-        else if (other.gameObject.layer == 22 || other.gameObject.layer == 21)
-        {
-            Destroy(gameObject);
         }
     }
 

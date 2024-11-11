@@ -261,17 +261,21 @@ public class Pumkin : Enemy
             yield return null;
         }
         OffAttackIndicatorClientRpc();
-        GameObject slash = Instantiate(_attackEffect, transform.position, Quaternion.identity);
+        NetworkObject slash = NetworkObjectPool.Instance.GetNetworkObject(_attackEffect, transform.position, Quaternion.identity);
         
-        slash.GetComponent<EnemyAttack>()._enemy = this;
+        slash.GetComponent<PumkinSlash>()._enemy = this;
         slash.transform.rotation = Quaternion.Euler(new Vector3(0,0, angle));
 
-        slash.GetComponent<NetworkObject>().Spawn();
+        if(!slash.IsSpawned)
+        {
+            slash.Spawn();
+        }
+
         slash.GetComponent<Rigidbody2D>().velocity = direction * 3f;
-        Destroy(slash, 1f);
         anim.SetTrigger("Attack");
 
         yield return new WaitForSeconds(0.5f);
+        NetworkObjectPool.Instance.ReturnNetworkObject(slash, _attackEffect);
         _indiOn = false;
     }
 

@@ -119,15 +119,19 @@ public class Goblin : Enemy
             }
 
             // 화살 생성 후 타겟 방향으로 회전 및 발사
-            GameObject arrow = Instantiate(_arrow, _tip.transform.position, Quaternion.identity);
-            arrow.GetComponent<EnemyAttack>()._enemy = this;
+            NetworkObject arrow = NetworkObjectPool.Instance.GetNetworkObject(_arrow, _tip.position, Quaternion.identity);
+            arrow.GetComponent<GoblinArrow>()._enemy = this;
+            arrow.GetComponent<GoblinArrow>()._arrow = _arrow;
             Vector3 direction = (_target.position - transform.position).normalized;
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
             arrow.transform.rotation = Quaternion.Euler(0, 0, angle);
+
+            if(!arrow.IsSpawned)
+            {
+                arrow.Spawn();
+            }
             
-            arrow.GetComponent<NetworkObject>().Spawn();
             arrow.GetComponent<Rigidbody2D>().velocity = direction * 10f;
-            Destroy(arrow, 1f);
         }
     }
 }
