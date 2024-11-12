@@ -77,7 +77,7 @@ public class Pumkin : Enemy
 
         state = States.Die;
 
-        Invoke("InitMonster", 10f);
+        //Invoke("InitMonster", 10f);
 
         OffAttackIndicatorClientRpc();
 

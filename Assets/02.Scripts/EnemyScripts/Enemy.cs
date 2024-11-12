@@ -5,6 +5,7 @@ using UnityEngine;
 
 public abstract class Enemy : NetworkBehaviour
 {
+    public GameObject prefab;
     protected SpriteRenderer spr;
     protected Rigidbody2D rb;
     protected Animator anim;
@@ -296,6 +297,7 @@ public abstract class Enemy : NetworkBehaviour
             anim.SetTrigger("Die");
 
             Die();
+            NetworkMonsterSpawner.Instance.DespawnMonster(GetComponent<NetworkObject>(), prefab);
             DieClientRpc(rpcParams.Receive.SenderClientId);
         }
     }
@@ -303,20 +305,17 @@ public abstract class Enemy : NetworkBehaviour
     [ClientRpc]
     protected void DieClientRpc(ulong lastAttackClient)
     {
-        // 속도 0, 콜라이더 비활성화를 통한 플레이어의 공격 금지        
-        GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-        GetComponent<Collider2D>().enabled = false;
-
         // 경험치랑 골드 지급
         if (NetworkManager.Singleton.LocalClientId == lastAttackClient)
             GiveExpGoldServerRpc(lastAttackClient);
+
+        gameObject.SetActive(false);
     }
 
     [ClientRpc]
     protected void RespawnClientRpc()
     {
-        GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-        GetComponent<Collider2D>().enabled = true;
+        gameObject.SetActive(true);
         anim.SetTrigger("Respawn");
     }
 }

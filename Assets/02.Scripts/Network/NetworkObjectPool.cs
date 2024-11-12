@@ -16,9 +16,12 @@ public class NetworkObjectPool : NetworkBehaviour
     Dictionary<GameObject, Queue<NetworkObject>> pooledObjects = new Dictionary<GameObject, Queue<NetworkObject>>();
 
     bool m_HashIntialized = false;
+    public bool isInitialized {get {return m_HashIntialized;}}
 
-    public void Awake()
+    public override void OnNetworkSpawn()
     {
+        if(!IsServer) return;
+
         if(_instance != null && _instance != this)
         {
             Destroy(this.gameObject);
@@ -27,15 +30,14 @@ public class NetworkObjectPool : NetworkBehaviour
         {
             _instance = this;
         }
-    }
 
-    public override void OnNetworkSpawn()
-    {
         InitializePool();
     }
 
     public override void OnNetworkDespawn()
     {
+        if(!IsServer) return;
+        
         ClearPool();
     }
 
@@ -160,13 +162,13 @@ class PooledPrefabInstanceHandler : INetworkPrefabInstanceHandler
         m_Pool = pool;
     }
 
-    NetworkObject INetworkPrefabInstanceHandler.Instantiate(ulong ownerClientId, UnityEngine.Vector3 position, UnityEngine.Quaternion rotation)
+    NetworkObject INetworkPrefabInstanceHandler.Instantiate(ulong ownerClientId, Vector3 position, Quaternion rotation)
     {
         var networkObject = m_Pool.GetNetworkObject(m_Prefab, position, rotation);
         return networkObject;
     }
 
-    void INetworkPrefabInstanceHandler.Destroy(Unity.Netcode.NetworkObject networkObject)
+    void INetworkPrefabInstanceHandler.Destroy(NetworkObject networkObject)
     {
         m_Pool.ReturnNetworkObject(networkObject, m_Prefab);
     }

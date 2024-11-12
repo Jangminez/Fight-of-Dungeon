@@ -79,7 +79,7 @@ public class Goblin : Enemy
 
         state = States.Die;
 
-        Invoke("InitMonster", 10f);
+        //Invoke("InitMonster", 10f);
     }
     #endregion
     // 이동 애니메이션

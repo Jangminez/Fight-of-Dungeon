@@ -4,12 +4,23 @@ using UnityEngine;
 
 public class NetworkMonsterSpawner : NetworkBehaviour
 {
+    static NetworkMonsterSpawner _instance;
+    public static NetworkMonsterSpawner Instance {get {return _instance;} }
     public List<SpawnArea> spawnAreas;
     private Dictionary<GameObject, List<NetworkObject>> activeMonsters = new Dictionary<GameObject, List<NetworkObject>>();
 
     public override void OnNetworkSpawn()
     {
-        if(!IsServer) return;
+        if (!IsServer) return;
+
+        if(_instance != null && _instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            _instance = this;
+        }
 
         foreach (var area in spawnAreas)
         {
@@ -20,20 +31,29 @@ public class NetworkMonsterSpawner : NetworkBehaviour
 
     private IEnumerator<WaitForSeconds> SpawnMonstersInArea(SpawnArea area)
     {
-        if(!IsServer) yield break;
+        if (!IsServer) yield break;
 
-        while(true)
+        while (true)
         {
-            if(activeMonsters[area.monsterPrefab].Count < area.maxCount)
+            if (NetworkObjectPool.Instance.isInitialized && activeMonsters[area.monsterPrefab].Count < area.maxCount)
             {
                 Vector3 spawnPosition = GetRandomPositionInRange(area.spawnCenter, area.spawnRadius);
                 NetworkObject monster = NetworkObjectPool.Instance.GetNetworkObject(area.monsterPrefab, spawnPosition, Quaternion.identity);
-                monster.Spawn();
-                monster.transform.SetParent(area.spawnCenter.parent);
+                
+                if (!monster.IsSpawned)
+                {
+                    monster.GetComponent<Enemy>().prefab = area.monsterPrefab;
+                    monster.Spawn();
+
+                    yield return null;
+
+                    monster.transform.SetParent(area.spawnCenter.parent);
+                }
+                
                 monster.GetComponent<Enemy>().InitMonster();
                 activeMonsters[area.monsterPrefab].Add(monster);
             }
-            yield return new WaitForSeconds(5f);
+            yield return new WaitForSeconds(1f);
         }
     }
 
@@ -45,11 +65,13 @@ public class NetworkMonsterSpawner : NetworkBehaviour
 
     public void DespawnMonster(NetworkObject monster, GameObject prefab)
     {
+        if(!IsServer) return;
+
         if (activeMonsters.ContainsKey(prefab) && activeMonsters[prefab].Contains(monster))
         {
             activeMonsters[prefab].Remove(monster);
             NetworkObjectPool.Instance.ReturnNetworkObject(monster, prefab);
-            monster.Despawn();
+            //monster.Despawn();
         }
     }
 

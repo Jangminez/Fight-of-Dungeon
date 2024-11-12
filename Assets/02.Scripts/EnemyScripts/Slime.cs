@@ -91,10 +91,13 @@ public class Slime : Enemy
 
         // 몬스터 상태 Die로 설정 후 애니메이션 실행
         state = States.Die;
+        anim.ResetTrigger("Hit");
         anim.SetFloat("RunState", 0f);
+        StopAllCoroutines();
+
 
         // 10초 뒤 부활
-        Invoke("InitMonster", 10f);
+        //Invoke("InitMonster", 10f);
     }
 
     public override void Movement_Anim()
