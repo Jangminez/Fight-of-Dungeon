@@ -83,12 +83,17 @@ public class Pumkin : Enemy
 
         int random_count = Random.Range(1, 4);
 
-        for(int i = 0; i < random_count; i++){
-            GameObject Bat = Instantiate(_batPrefab, transform.position, Quaternion.identity);
+        for(int i = 0; i < random_count; i++)
+        {
+            NetworkObject Bat = NetworkObjectPool.Instance.GetNetworkObject(_batPrefab, transform.position, Quaternion.identity);
 
-            if(!Bat.GetComponent<NetworkObject>().IsSpawned)
-                Bat.GetComponent<NetworkObject>().Spawn(true);
+            if(!Bat.IsSpawned)
+            {
+                Bat.Spawn();
+            }
         }
+
+        StopAllCoroutines();
     }
     #endregion
 

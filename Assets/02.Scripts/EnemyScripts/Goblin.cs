@@ -29,7 +29,6 @@ public class Goblin : Enemy
             transform.position = _initTransform;
             RespawnClientRpc();
             state = States.Idle;
-            StartCoroutine("HitEffect");
             anim.SetTrigger("Respawn");
         }
 
@@ -78,8 +77,7 @@ public class Goblin : Enemy
         stat.isDie = true;
 
         state = States.Die;
-
-        //Invoke("InitMonster", 10f);
+        StopAllCoroutines();
     }
     #endregion
     // 이동 애니메이션

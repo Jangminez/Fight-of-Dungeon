@@ -12,7 +12,6 @@ public class Slime : Enemy
         if (!IsServer) return;
 
         InitMonster();
-
     }
 
     public override void InitMonster()
@@ -94,10 +93,6 @@ public class Slime : Enemy
         anim.ResetTrigger("Hit");
         anim.SetFloat("RunState", 0f);
         StopAllCoroutines();
-
-
-        // 10초 뒤 부활
-        //Invoke("InitMonster", 10f);
     }
 
     public override void Movement_Anim()

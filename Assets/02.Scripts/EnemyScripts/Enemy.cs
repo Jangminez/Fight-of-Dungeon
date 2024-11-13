@@ -113,7 +113,7 @@ public abstract class Enemy : NetworkBehaviour
                     state = States.Chase;
                 }
 
-                if (timer > 5f)
+                if (timer > 5f && Vector3.Distance(_initTransform, this.transform.position) > 0.4f)
                 {
                     timer = 0f;
                     state = States.Return;
@@ -316,7 +316,6 @@ public abstract class Enemy : NetworkBehaviour
     protected void RespawnClientRpc()
     {
         gameObject.SetActive(true);
-        anim.SetTrigger("Respawn");
     }
 }
 

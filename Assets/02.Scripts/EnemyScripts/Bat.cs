@@ -39,6 +39,7 @@ public class Bat : Enemy
 
         stat.isDie = false;
 
+        RespawnClientRpc();
         StartCoroutine("MonsterState");
     }
 
@@ -84,7 +85,7 @@ public class Bat : Enemy
         state = States.Die;
         anim.SetFloat("RunState", 0f);
 
-        Destroy(this.gameObject, 5f);
+        StopAllCoroutines();
     }
 
     public override void Movement_Anim()
