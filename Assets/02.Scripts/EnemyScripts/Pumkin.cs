@@ -9,6 +9,7 @@ public class Pumkin : Enemy
     Transform _attackFill;
     public GameObject _attackEffect;
     bool _indiOn = false;
+
     public override void OnNetworkSpawn()
     {
         if (!IsServer) return;
@@ -22,7 +23,11 @@ public class Pumkin : Enemy
         if (!IsServer) return;
 
         if (!stat.isDie)
+        {
             _initTransform = this.transform.position;
+            _attackFill = _attackIndicator.transform.GetChild(0);
+            OffAttackIndicatorClientRpc();
+        }
 
         else
         {
@@ -51,8 +56,7 @@ public class Pumkin : Enemy
         stat.gold = 3000;
 
         stat.isDie = false;
-        _attackFill = _attackIndicator.transform.GetChild(0);
-
+        
         StartCoroutine("MonsterState");
     }
 
@@ -279,7 +283,7 @@ public class Pumkin : Enemy
         slash.GetComponent<Rigidbody2D>().velocity = direction * 3f;
         anim.SetTrigger("Attack");
 
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1f);
         NetworkObjectPool.Instance.ReturnNetworkObject(slash, _attackEffect);
         _indiOn = false;
     }

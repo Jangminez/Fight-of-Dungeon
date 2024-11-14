@@ -39,21 +39,20 @@ public class NetworkMonsterSpawner : NetworkBehaviour
             {
                 Vector3 spawnPosition = GetRandomPositionInRange(area.spawnCenter, area.spawnRadius);
                 NetworkObject monster = NetworkObjectPool.Instance.GetNetworkObject(area.monsterPrefab, spawnPosition, Quaternion.identity);
-                
+
                 if (!monster.IsSpawned)
                 {
                     monster.GetComponent<Enemy>().prefab = area.monsterPrefab;
                     monster.Spawn();
 
                     yield return null;
-
                     monster.transform.SetParent(area.spawnCenter.parent);
                 }
                 
                 monster.GetComponent<Enemy>().InitMonster();
                 activeMonsters[area.monsterPrefab].Add(monster);
             }
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(2f);
         }
     }
 
