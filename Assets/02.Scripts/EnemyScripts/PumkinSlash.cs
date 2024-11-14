@@ -5,6 +5,11 @@ public class PumkinSlash : NetworkBehaviour
 {
     public Enemy _enemy;
 
+    void OnEnable()
+    {
+        OnSlashClientRpc();
+    }
+
     void OnTriggerEnter2D(Collider2D other) 
     {
         if(!IsServer) return;
@@ -16,10 +21,16 @@ public class PumkinSlash : NetworkBehaviour
     }
 
     [ClientRpc]
-    protected void AttackClientRpc(ulong clientId, float damage)
+    private void AttackClientRpc(ulong clientId, float damage)
     {
         // 공격 받은 클라이언트라면 Hit() 처리
         if (clientId == NetworkManager.Singleton.LocalClientId)
             GameManager.Instance.player.Hit(damage: damage);
+    }
+
+    [ClientRpc]
+    private void OnSlashClientRpc()
+    {
+        this.gameObject.SetActive(true);
     }
 }

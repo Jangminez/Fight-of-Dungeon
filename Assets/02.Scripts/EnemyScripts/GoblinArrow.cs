@@ -6,6 +6,11 @@ public class GoblinArrow : NetworkBehaviour
     public Enemy _enemy;
     public GameObject _arrow;
 
+    void OnEnable()
+    {
+        OnArrowClientRpc();
+    }
+
     void OnTriggerEnter2D(Collider2D other) 
     {
         if(!IsServer) return;
@@ -14,18 +19,32 @@ public class GoblinArrow : NetworkBehaviour
         {  
             AttackClientRpc(other.GetComponent<NetworkObject>().OwnerClientId, _enemy.stat.attack);
             NetworkObjectPool.Instance.ReturnNetworkObject(GetComponent<NetworkObject>(), _arrow);
+            OffArrowClientRpc();
         }
         else if (other.gameObject.layer == 22 || other.gameObject.layer == 21)
         {
             NetworkObjectPool.Instance.ReturnNetworkObject(GetComponent<NetworkObject>(), _arrow);
+            OffArrowClientRpc();
         }
     }
 
     [ClientRpc]
-    protected void AttackClientRpc(ulong clientId, float damage)
+    private void AttackClientRpc(ulong clientId, float damage)
     {
         // 공격 받은 클라이언트라면 Hit() 처리
         if (clientId == NetworkManager.Singleton.LocalClientId)
             GameManager.Instance.player.Hit(damage: damage);
+    }
+
+    [ClientRpc]
+    private void OffArrowClientRpc()
+    {
+        this.gameObject.SetActive(false);
+    }
+
+    [ClientRpc]
+    private void OnArrowClientRpc()
+    {
+        this.gameObject.SetActive(true);
     }
 }
