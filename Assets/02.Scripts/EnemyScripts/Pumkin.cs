@@ -24,6 +24,7 @@ public class Pumkin : Enemy
 
         if (!stat.isDie)
         {
+            // 몬스터가 처음 생성 되었다면 초기 설정
             _initTransform = this.transform.position;
             _attackFill = _attackIndicator.transform.GetChild(0);
             OffAttackIndicatorClientRpc();
@@ -31,15 +32,16 @@ public class Pumkin : Enemy
 
         else
         {
+            // 다시 부활 시 초기 설정
             _isAttack = false;
             _indiOn = false;
-            transform.position = _initTransform;
             RespawnClientRpc();
             state = States.Idle;
             StartCoroutine("HitEffect");
             anim.SetTrigger("Respawn");
         }
 
+        //몬스터의 초기 스탯
         MaxHp = 3500f;
         Hp = MaxHp;
 
@@ -57,13 +59,14 @@ public class Pumkin : Enemy
 
         stat.isDie = false;
         
+        // 몬스터 관리 FSM 실행
         StartCoroutine("MonsterState");
     }
 
     #region 피격 및 사망 처리
     public override void Hit(float damage)
     {
-        //anim.SetTrigger("Hit");
+        // 데미지 처리 ServerRpc 호출
         TakeDamageServerRpc(damage);
     }
 
@@ -74,6 +77,7 @@ public class Pumkin : Enemy
 
     public override void Die()
     {
+        // 몬스터 사망 시 처리 로직
         if (!IsServer) return;
 
         Hp = 0f;
@@ -81,14 +85,13 @@ public class Pumkin : Enemy
 
         state = States.Die;
 
-        //Invoke("InitMonster", 10f);
-
         OffAttackIndicatorClientRpc();
 
         int random_count = Random.Range(1, 4);
 
         for(int i = 0; i < random_count; i++)
         {
+            // 랜덤 개수로 박쥐 소환
             NetworkObject Bat = NetworkObjectPool.Instance.GetNetworkObject(_batPrefab, transform.position, Quaternion.identity);
 
             if(!Bat.IsSpawned)
@@ -270,6 +273,8 @@ public class Pumkin : Enemy
             yield return null;
         }
         OffAttackIndicatorClientRpc();
+        
+        // 인디케이터가 모두 차징되면 공격 소환 
         NetworkObject slash = NetworkObjectPool.Instance.GetNetworkObject(_attackEffect, transform.position, Quaternion.identity);
         
         slash.GetComponent<PumkinSlash>()._enemy = this;

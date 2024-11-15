@@ -24,7 +24,6 @@ public class Slime : Enemy
         else
         {
             anim.SetTrigger("Respawn");
-            transform.position = _initTransform;
             _isAttack = false;
             RespawnClientRpc();
             state = States.Idle;

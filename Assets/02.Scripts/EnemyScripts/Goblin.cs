@@ -26,7 +26,6 @@ public class Goblin : Enemy
         else
         {
             _isAttack = false;
-            transform.position = _initTransform;
             RespawnClientRpc();
             state = States.Idle;
             anim.SetTrigger("Respawn");

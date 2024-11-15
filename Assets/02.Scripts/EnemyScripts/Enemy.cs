@@ -305,7 +305,7 @@ public abstract class Enemy : NetworkBehaviour
     [ClientRpc]
     protected void DieClientRpc(ulong lastAttackClient)
     {
-        // 경험치랑 골드 지급
+        // 처치한 클라이언트에게 경험치랑 골드 지급
         if (NetworkManager.Singleton.LocalClientId == lastAttackClient)
             GiveExpGoldServerRpc(lastAttackClient);
 
