@@ -4,7 +4,7 @@ using UnityEngine;
 public class PlayerMovement : NetworkBehaviour
 {
     public Joystick _joystickMovement;
-    float _speed;
+    public float _speed;
     Rigidbody2D _playerRb;
     Animator _anim;
     Transform _canvas;
@@ -31,16 +31,21 @@ public class PlayerMovement : NetworkBehaviour
     
     void FixedUpdate()
     {
+        if (!IsOwner) return;
+
         Movement();
     }
 
     void LateUpdate()
     {
+        if (!IsOwner) return;
+
         Movement_Anim();
     }
 
     public void Movement()
     {
+
         if (player.Die)
         {
             _playerRb.velocity = Vector2.zero;
@@ -69,6 +74,7 @@ public class PlayerMovement : NetworkBehaviour
     // 플레이어 이동 애니메이션
     public void Movement_Anim()
     {
+
         if (_joystickMovement.Direction.x != 0 || _joystickMovement.Direction.y != 0)
         {
             _anim.SetFloat("RunState", 0.5f);

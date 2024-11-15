@@ -277,7 +277,11 @@ public abstract class Player : NetworkBehaviour
 
     public float Speed
     {
-        set => _speed = Mathf.Max(0, value);
+        set {
+                _speed = Mathf.Max(0, value);
+                GetComponent<PlayerMovement>()._speed = value;
+            }
+
         get => _speed;
     }
 
@@ -326,7 +330,7 @@ public abstract class Player : NetworkBehaviour
             finalDamage = 1;
 
         Hp -= finalDamage;
-
+        
         if (Hp == 0f)
         {
             OnDie();
@@ -334,7 +338,7 @@ public abstract class Player : NetworkBehaviour
 
         else
         {
-            StartCoroutine(HitEffect());
+            //StartCoroutine(HitEffect());
         }
     }
 
@@ -541,6 +545,11 @@ public abstract class Player : NetworkBehaviour
         {
             GetExp();
         }
+
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            GetStrong();
+        }
     }
 
     [ContextMenu("Get Gold")]
@@ -553,6 +562,18 @@ public abstract class Player : NetworkBehaviour
     virtual public void GetExp()
     {
         Exp += 1000;
+    }
+
+    private void GetStrong()
+    {
+        Attack += 800f;
+        Defense += 500f;
+        AttackSpeed += 2f;
+        MaxHp += 1000f;
+        MaxMp += 1000f;
+        HpRegen += 100f;
+        MpRegen += 100f;
+        Speed += 3f;
     }
     #endregion
 }

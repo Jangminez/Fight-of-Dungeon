@@ -5,6 +5,7 @@ using UnityEngine;
 
 public abstract class Enemy : NetworkBehaviour
 {
+    public GameObject prefab;
     protected SpriteRenderer spr;
     protected Rigidbody2D rb;
     protected Animator anim;
@@ -14,10 +15,11 @@ public abstract class Enemy : NetworkBehaviour
 
     public Transform _target;
     protected bool _isAttack;
-
+    Transform _canvas;
+    Vector3 _initCanvasScale;
     public GameObject FloatingDamagePrefab;
     public GameObject FloatingGoldExpPrefab;
-    private float timer;
+    protected float timer;
 
     [Serializable]
     public struct Stats
@@ -62,6 +64,8 @@ public abstract class Enemy : NetworkBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        _canvas = transform.GetChild(0);
+        _initCanvasScale = _canvas.transform.localScale;
     }
 
     private void Start()
@@ -84,7 +88,7 @@ public abstract class Enemy : NetworkBehaviour
         }
     }
 
-    IEnumerator MonsterState()
+    virtual public IEnumerator MonsterState()
     {
         if (!IsServer) yield break;
 
@@ -109,7 +113,7 @@ public abstract class Enemy : NetworkBehaviour
                     state = States.Chase;
                 }
 
-                if (timer > 5f)
+                if (timer > 5f && Vector3.Distance(_initTransform, this.transform.position) > 0.4f)
                 {
                     timer = 0f;
                     state = States.Return;
@@ -142,6 +146,8 @@ public abstract class Enemy : NetworkBehaviour
 
             else if (state == States.Attack)
             {
+                rb.velocity = Vector2.zero;
+
                 if (_target == null)
                 {
                     state = States.Idle;
@@ -207,24 +213,39 @@ public abstract class Enemy : NetworkBehaviour
     {
         if (_target != null && _target.position.x - transform.position.x > 0)
         {
-            anim.transform.localScale = new Vector3(-1f, 1f, 1);
+            if (anim.transform.localScale.x < 0)
+                return;
+
+            else
+            {
+                anim.transform.localScale = new Vector3(-anim.transform.localScale.x, anim.transform.localScale.y, 1f);
+                _canvas.localScale = _initCanvasScale;
+                
+            }
         }
 
         else if (_target != null && _target.position.x - transform.position.x < 0)
         {
-            anim.transform.localScale = new Vector3(1f, 1f, 1);
+            if (anim.transform.localScale.x < 0)
+            {
+                anim.transform.localScale = new Vector3(-anim.transform.localScale.x, anim.transform.localScale.y, 1f);
+                _canvas.localScale = new Vector3(-_initCanvasScale.x, _initCanvasScale.y, _initCanvasScale.z);
+            }
+
+            else
+                return;
         }
     }
     virtual public void OutofArea()
     {
         state = States.Return;
     }
-    
+
     [ClientRpc]
     protected void AttackClientRpc(ulong clientId, float damage)
     {
         // 공격 받은 클라이언트라면 Hit() 처리
-        if(clientId == NetworkManager.Singleton.LocalClientId)
+        if (clientId == NetworkManager.Singleton.LocalClientId)
             GameManager.Instance.player.Hit(damage: damage);
     }
 
@@ -268,8 +289,6 @@ public abstract class Enemy : NetworkBehaviour
             ShowFloatingDamageClientRpc(finalDamage);
         }
 
-        anim.SetTrigger("Hit");
-
         if (Hp <= 0)
         {
             // 체력이 0 이하라면 Die
@@ -278,32 +297,25 @@ public abstract class Enemy : NetworkBehaviour
             anim.SetTrigger("Die");
 
             Die();
+            NetworkMonsterSpawner.Instance.DespawnMonster(GetComponent<NetworkObject>(), prefab);
             DieClientRpc(rpcParams.Receive.SenderClientId);
-        }
-        else
-        {
-            // 죽는게 아니라면 HitEffect 실행
-            StartCoroutine("HitEffect");
         }
     }
 
     [ClientRpc]
     protected void DieClientRpc(ulong lastAttackClient)
     {
-        // 속도 0, 콜라이더 비활성화를 통한 플레이어의 공격 금지        
-        GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-        GetComponent<Collider2D>().enabled = false;
-
         // 경험치랑 골드 지급
         if (NetworkManager.Singleton.LocalClientId == lastAttackClient)
             GiveExpGoldServerRpc(lastAttackClient);
+
+        gameObject.SetActive(false);
     }
 
     [ClientRpc]
     protected void RespawnClientRpc()
     {
-        GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-        GetComponent<Collider2D>().enabled = true;
+        gameObject.SetActive(true);
     }
 }
 
