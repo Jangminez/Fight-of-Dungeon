@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 //let camera follow target
 public class CameraFollow : MonoBehaviour
@@ -8,7 +10,7 @@ public class CameraFollow : MonoBehaviour
 
     public Vector3 offset;
     private Vector3 targetPos;
-    
+
     private void Update()
     {
         if (target == null) return;

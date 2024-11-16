@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Threading.Tasks;
-using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -40,7 +37,6 @@ public class GameManager : MonoBehaviour
         else if (_instance != null)
             Destroy(gameObject);
 
-        Application.targetFrameRate = 60;
         // 씬 로드시에도 파괴되지않음 
         DontDestroyOnLoad(gameObject);
     }
@@ -49,26 +45,5 @@ public class GameManager : MonoBehaviour
     {
         Destroy(GamePlayer);
         SceneManager.LoadScene("MainScene");
-    }
-
-    public void StartTutorial()
-    {
-        Task<string> code = ConnectRelay.Instance.CreateRelay();
-        Debug.Log(code);
-        StartCoroutine("LoadTutorial");
-    }
-
-    IEnumerator LoadTutorial()
-    {
-        AsyncOperation asyncOperation = SceneManager.LoadSceneAsync("TutorialScene");
-
-        while(!asyncOperation.isDone){
-            yield return null;
-        }
-
-        yield return new WaitForSeconds(2f);
-
-        player = GameObject.FindWithTag("Player").GetComponent<Player>();
-        player.GetComponent<PlayerMovement>().enabled = true;
     }
 }
