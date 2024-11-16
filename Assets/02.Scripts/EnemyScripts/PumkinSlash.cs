@@ -4,10 +4,16 @@ using UnityEngine;
 public class PumkinSlash : NetworkBehaviour
 {
     public Enemy _enemy;
+    public GameObject prefab;
+    public Animator anim;
 
     void OnEnable()
     {
+        if(!IsServer) return;
+
         OnSlashClientRpc();
+        anim.SetTrigger("Slash");
+        Invoke("OffSlash", 1.5f);
     }
 
     void OnTriggerEnter2D(Collider2D other) 
@@ -18,6 +24,12 @@ public class PumkinSlash : NetworkBehaviour
         {  
             AttackClientRpc(other.GetComponent<NetworkObject>().OwnerClientId, _enemy.stat.attack);
         }
+    }
+
+    void OffSlash()
+    {
+        NetworkObjectPool.Instance.ReturnNetworkObject(GetComponent<NetworkObject>(), prefab);
+        OffSlashClientRpc();
     }
 
     [ClientRpc]
@@ -32,5 +44,11 @@ public class PumkinSlash : NetworkBehaviour
     private void OnSlashClientRpc()
     {
         this.gameObject.SetActive(true);
+    }
+
+    [ClientRpc]
+    private void OffSlashClientRpc()
+    {
+        this.gameObject.SetActive(false);
     }
 }

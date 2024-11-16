@@ -12,7 +12,6 @@ public class Bat : Enemy
         if (!IsServer) return;
 
         InitMonster();
-
     }
 
     public override void InitMonster()
@@ -86,6 +85,7 @@ public class Bat : Enemy
         anim.SetFloat("RunState", 0f);
 
         StopAllCoroutines();
+        NetworkObjectPool.Instance.ReturnNetworkObject(GetComponent<NetworkObject>(), prefab);
     }
 
     public override void Movement_Anim()
