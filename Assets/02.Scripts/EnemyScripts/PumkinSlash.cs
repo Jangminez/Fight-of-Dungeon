@@ -9,11 +9,10 @@ public class PumkinSlash : NetworkBehaviour
 
     void OnEnable()
     {
-        if(!IsServer) return;
 
-        OnSlashClientRpc();
-        anim.SetTrigger("Slash");
         Invoke("OffSlash", 1.5f);
+        if(!IsServer) return;
+        OnSlashClientRpc();
     }
 
     void OnTriggerEnter2D(Collider2D other) 
@@ -28,8 +27,7 @@ public class PumkinSlash : NetworkBehaviour
 
     void OffSlash()
     {
-        NetworkObjectPool.Instance.ReturnNetworkObject(GetComponent<NetworkObject>(), prefab);
-        OffSlashClientRpc();
+        this.gameObject.SetActive(false);
     }
 
     [ClientRpc]
@@ -44,11 +42,5 @@ public class PumkinSlash : NetworkBehaviour
     private void OnSlashClientRpc()
     {
         this.gameObject.SetActive(true);
-    }
-
-    [ClientRpc]
-    private void OffSlashClientRpc()
-    {
-        this.gameObject.SetActive(false);
     }
 }

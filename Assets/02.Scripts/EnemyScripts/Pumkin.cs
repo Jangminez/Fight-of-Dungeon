@@ -280,6 +280,7 @@ public class Pumkin : Enemy
         
         slash.GetComponent<PumkinSlash>()._enemy = this;
         slash.GetComponent<PumkinSlash>().prefab = _attackEffect;
+        //slash.GetComponent<Animator>().SetTrigger("Slash");
         slash.transform.rotation = Quaternion.Euler(new Vector3(0,0, angle));
 
         if(!slash.IsSpawned)
@@ -291,6 +292,7 @@ public class Pumkin : Enemy
         anim.SetTrigger("Attack");
 
         yield return new WaitForSeconds(1f);
+        NetworkObjectPool.Instance.ReturnNetworkObject(slash, _attackEffect);
         _indiOn = false;
     }
 

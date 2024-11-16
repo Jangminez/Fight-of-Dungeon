@@ -1646,7 +1646,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4785643574606080875}
-  - component: {fileID: 8879682465790252192}
   m_Layer: 17
   m_Name: Root
   m_TagString: Untagged
@@ -1673,97 +1672,6 @@ Transform:
   - {fileID: 8781327592242281485}
   m_Father: {fileID: 3823532714361842770}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8879682465790252192
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2473595801142665280}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: baea2e9758e554909b2367e396d9c5a4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _itemList:
-  - {fileID: 2595868413576673088}
-  - {fileID: 5168918041319357311}
-  - {fileID: 6257872336739233369}
-  - {fileID: 2890182751320761026}
-  - {fileID: 210107834652656127}
-  - {fileID: 4933018206110301973}
-  - {fileID: 953738326166528300}
-  - {fileID: 2439719712327486736}
-  - {fileID: 4674509603666419038}
-  - {fileID: 210107834652656127}
-  - {fileID: 4933018206110301973}
-  - {fileID: 1624555123338856306}
-  - {fileID: 8467208545594488562}
-  - {fileID: 2928525309592339375}
-  - {fileID: 5570167451591942943}
-  - {fileID: 4578507306553502609}
-  _eyeList:
-  - {fileID: 876339849033047679}
-  - {fileID: 7749967476607320335}
-  - {fileID: 2384189943771511340}
-  - {fileID: 2621004597185963348}
-  _hairList:
-  - {fileID: 2595868413576673088}
-  - {fileID: 6257872336739233369}
-  - {fileID: 7441547931582991928}
-  - {fileID: 5168918041319357311}
-  _bodyList:
-  - {fileID: 7331614144100928425}
-  - {fileID: 1835825578888642498}
-  - {fileID: 8488703814443225437}
-  - {fileID: 6602460628710439663}
-  - {fileID: 1259002918418759792}
-  - {fileID: 2439772050701238476}
-  _clothList:
-  - {fileID: 2890182751320761026}
-  - {fileID: 4933018206110301973}
-  - {fileID: 210107834652656127}
-  _armorList:
-  - {fileID: 4674509603666419038}
-  - {fileID: 7849900601756103354}
-  - {fileID: 833437910005678406}
-  _pantList:
-  - {fileID: 2439719712327486736}
-  - {fileID: 953738326166528300}
-  _weaponList:
-  - {fileID: 1624555123338856306}
-  - {fileID: 8467208545594488562}
-  - {fileID: 2928525309592339375}
-  - {fileID: 5570167451591942943}
-  _backList:
-  - {fileID: 4578507306553502609}
-  _spHorseSPList: {fileID: 0}
-  _spHorseString: 
-  _bodyTexture: {fileID: 0}
-  _bodyString: 
-  _hairListString:
-  - 
-  - Assets/Resources/SPUM/SPUM_Sprites/Items/4_Helmet/Helmet_5.png
-  - 
-  - 
-  _clothListString:
-  - Assets/Resources/SPUM/SPUM_Sprites/Packages/Ver300/2_Cloth/New_Cloth_06.png
-  - Assets/Resources/SPUM/SPUM_Sprites/Packages/Ver300/2_Cloth/New_Cloth_06.png
-  - Assets/Resources/SPUM/SPUM_Sprites/Packages/Ver300/2_Cloth/New_Cloth_06.png
-  _armorListString:
-  - Assets/Resources/SPUM/SPUM_Sprites/Items/5_Armor/Armor_4.png
-  - Assets/Resources/SPUM/SPUM_Sprites/Items/5_Armor/Armor_4.png
-  - Assets/Resources/SPUM/SPUM_Sprites/Items/5_Armor/Armor_4.png
-  _pantListString:
-  - Assets/Resources/SPUM/SPUM_Sprites/Packages/Ver300/3_Pant/New_Pant_08.png
-  - Assets/Resources/SPUM/SPUM_Sprites/Packages/Ver300/3_Pant/New_Pant_08.png
-  _weaponListString:
-  - 
-  - Assets/Resources/SPUM/SPUM_Sprites/Items/6_Weapons/Shield_1.png
-  - Assets/Resources/SPUM/SPUM_Sprites/Packages/Ver300/6_Weapons/New_Weapon_01.png
-  - 
-  _backListString:
-  - 
 --- !u!1 &2494429565981081638
 GameObject:
   m_ObjectHideFlags: 0
@@ -3572,6 +3480,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _joystickMovement: {fileID: 0}
+  _speed: 0
 --- !u!114 &7596352804070474375
 MonoBehaviour:
   m_ObjectHideFlags: 0
