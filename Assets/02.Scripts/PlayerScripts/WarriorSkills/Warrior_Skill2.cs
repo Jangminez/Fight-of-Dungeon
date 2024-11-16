@@ -20,6 +20,8 @@ public class Warrior_Skill2 : Skill
     }
     public override IEnumerator SkillProcess()
     {
+        if(!IsOwner) yield break;
+
         // 쿨타임 시작
         StartCoroutine(CoolDown(_info.coolDown));
         yield return null;
@@ -27,6 +29,8 @@ public class Warrior_Skill2 : Skill
 
     void OnTriggerEnter2D(Collider2D other)
     {
+        if(!IsOwner) return;
+
         // 몬스터가 스킬 범위에 들어오면 데미지 적용
         var monster = other.GetComponent<Enemy>();
 

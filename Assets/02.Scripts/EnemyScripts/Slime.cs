@@ -8,16 +8,15 @@ public class Slime : Enemy
     public override void OnNetworkSpawn()
     {
         spr = GetComponent<SpriteRenderer>();
-        
-        if(!IsServer) return;
+
+        if (!IsServer) return;
 
         InitMonster();
-
     }
 
     public override void InitMonster()
     {
-        if(!IsServer) return;
+        if (!IsServer) return;
 
         if (!stat.isDie)
             _initTransform = this.transform.position;
@@ -25,7 +24,6 @@ public class Slime : Enemy
         else
         {
             anim.SetTrigger("Respawn");
-            transform.position = _initTransform;
             _isAttack = false;
             RespawnClientRpc();
             state = States.Idle;
@@ -53,7 +51,7 @@ public class Slime : Enemy
 
     public override IEnumerator EnemyAttack()
     {
-        if(!IsServer) yield break;
+        if (!IsServer) yield break;
 
         while (_isAttack)
         {
@@ -67,20 +65,21 @@ public class Slime : Enemy
                 yield break;
             }
 
-            if (_target != null)
-                _target.GetComponent<Player>().Hit(damage: stat.attack);
+            if (_target != null && Vector2.Distance(_target.position , transform.position) < stat.attackRange)
+                AttackClientRpc(_target.GetComponent<NetworkObject>().OwnerClientId, stat.attack);
         }
     }
     public override void Hit(float damage)
     {
+        StopCoroutine("EnemyAttack");
+        _isAttack = false;
+        anim.SetTrigger("Hit");
         TakeDamageServerRpc(damage);
     }
 
     public override IEnumerator HitEffect()
     {
-        HitEffectClientRpc();
-        yield return new WaitForSeconds(0.2f);
-        HitEffectClientRpc();
+        yield return null;
     }
 
     public override void Die()
@@ -90,18 +89,16 @@ public class Slime : Enemy
 
         // 몬스터 상태 Die로 설정 후 애니메이션 실행
         state = States.Die;
+        anim.ResetTrigger("Hit");
         anim.SetFloat("RunState", 0f);
-        DieClientRpc();
-
-        // 10초 뒤 부활
-        Invoke("InitMonster", 10f);
+        StopAllCoroutines();
     }
 
     public override void Movement_Anim()
     {
         if (state == States.Chase || state == States.Return)
         {
-            anim.SetFloat("RunState", 1f);
+            anim.SetFloat("RunState", 0.5f);
         }
 
         else
@@ -110,10 +107,5 @@ public class Slime : Enemy
         }
     }
 
-    [ClientRpc]
-    private void HitEffectClientRpc()
-    {
-        spr.color = spr.color == Color.white ? Color.gray : Color.white;
-    }
 }
 
