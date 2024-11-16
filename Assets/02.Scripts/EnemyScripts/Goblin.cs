@@ -10,7 +10,7 @@ public class Goblin : Enemy
     public Transform _tip;
     public override void OnNetworkSpawn()
     {
-        if(!IsHost) return;
+        if(!IsServer) return;
 
         InitMonster();
     }
@@ -18,16 +18,16 @@ public class Goblin : Enemy
     // 몬스터 초기화
     public override void InitMonster()
     {
+        if(!IsServer) return;
+
         if (!stat.isDie)
             _initTransform = this.transform.position;
 
         else
         {
             _isAttack = false;
-            transform.position = _initTransform;
             RespawnClientRpc();
             state = States.Idle;
-            StartCoroutine("HitEffect");
             anim.SetTrigger("Respawn");
         }
 
@@ -57,68 +57,33 @@ public class Goblin : Enemy
     #region 피격 및 사망 처리
     public override void Hit(float damage)
     {
+        anim.SetTrigger("Hit");
+        StopCoroutine("EnemyAttack");
+        _isAttack = false;
         TakeDamageServerRpc(damage);
     }
 
     public override IEnumerator HitEffect()
     {
-        SPUM_SpriteList spumList = transform.GetChild(0).GetComponent<SPUM_SpriteList>();
-        List<SpriteRenderer> itemList = spumList._itemList;
-        List<SpriteRenderer> armorList = spumList._armorList;
-        List<SpriteRenderer> bodyList = spumList._bodyList;
-
-        // 캐릭터의 Hair 색은 변경하지않음
-        var filterItemList = itemList.Skip(2).ToList();
-
-        foreach(var item in filterItemList)
-        {
-            item.color = Color.gray;
-        }
-
-        foreach(var armor in armorList)
-        {
-            armor.color = Color.gray;
-        }
-
-        foreach(var body in bodyList)
-        {
-            body.color = Color.gray;
-        }
-
-        yield return new WaitForSeconds(0.2f);
-
-        foreach(var item in filterItemList)
-        {
-            item.color = Color.white;
-        } 
-
-        foreach(var armor in armorList)
-        {
-            armor.color = Color.white;
-        }
-
-        foreach(var body in bodyList)
-        {
-            body.color = Color.white;
-        }
+        yield return null;
     }
 
     public override void Die()
     {
-        if(!IsHost) return;
+        if(!IsServer) return;
 
         Hp = 0f;
         stat.isDie = true;
 
         state = States.Die;
-        DieClientRpc();
-
-        Invoke("InitMonster", 10f);
+        StopAllCoroutines();
     }
     #endregion
     // 이동 애니메이션
     public override void Movement_Anim()
     {
+        if(!IsServer) return;
+
         if(state == States.Chase || state == States.Return)
         {
             anim.SetFloat("RunState", 0.5f);
@@ -132,6 +97,8 @@ public class Goblin : Enemy
 
     public override IEnumerator EnemyAttack()
     {
+        if(!IsServer) yield break;
+
         while(_isAttack)
         {
             // 공격시 방향 전환 및 애니메이션 실행
@@ -149,14 +116,19 @@ public class Goblin : Enemy
             }
 
             // 화살 생성 후 타겟 방향으로 회전 및 발사
-            GameObject arrow = Instantiate(_arrow, _tip.transform.position, Quaternion.identity);
-            arrow.GetComponent<EnemyArrow>()._enemy = this;
+            NetworkObject arrow = NetworkObjectPool.Instance.GetNetworkObject(_arrow, _tip.position, Quaternion.identity);
+            arrow.GetComponent<GoblinArrow>()._enemy = this;
+            arrow.GetComponent<GoblinArrow>()._arrow = _arrow;
             Vector3 direction = (_target.position - transform.position).normalized;
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
             arrow.transform.rotation = Quaternion.Euler(0, 0, angle);
+
+            if(!arrow.IsSpawned)
+            {
+                arrow.Spawn();
+            }
             
             arrow.GetComponent<Rigidbody2D>().velocity = direction * 10f;
-            Destroy(arrow, 1f);
         }
     }
 }

@@ -25,7 +25,6 @@ public class PlayerSpawner : NetworkBehaviour
             {
                 PlayerSpawnClientRpc(clientId);
             }
-
         }
     }
 
@@ -67,7 +66,7 @@ public class PlayerSpawner : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     public void NetworkSpawnPlayerServerRpc(ulong clientId, string name)
     {
-        GameObject playerObject = Instantiate(Resources.Load<GameObject>($"PlayerCharactors/{name}"));
-        playerObject.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientId);
+        NetworkObject playerObject = Instantiate(Resources.Load<GameObject>($"PlayerCharactors/{name}")).GetComponent<NetworkObject>();
+        playerObject.SpawnAsPlayerObject(clientId, true);
     }
 }
