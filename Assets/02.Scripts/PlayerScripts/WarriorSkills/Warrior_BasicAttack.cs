@@ -34,14 +34,14 @@ public class Warrior_BasicAttack : PlayerAttackController
             _anim.SetTrigger("Attack");
 
             // 타겟의 위치에 공격 이펙트 생성
-            SpawnAttackServerRpc();
+            SpawnAttackServerRpc(player._target.position);
         }
     }
 
     [ServerRpc(RequireOwnership = false)]
-    private void SpawnAttackServerRpc(ServerRpcParams rpcParams = default)
+    private void SpawnAttackServerRpc(Vector3 targetPosition, ServerRpcParams rpcParams = default)
     {
-        GameObject attack = Instantiate(_basicAttack.gameObject);
+        GameObject attack = Instantiate(_basicAttack.gameObject, targetPosition, Quaternion.identity);
         attack.GetComponent<NetworkObject>().SpawnWithOwnership(rpcParams.Receive.SenderClientId);
     
         SetAttackClientRpc(attack.GetComponent<NetworkObject>().NetworkObjectId);
@@ -57,13 +57,10 @@ public class Warrior_BasicAttack : PlayerAttackController
             {
                 // 공격 생성 및 적용
                 Attack attack = attackObject.GetComponent<Attack>();
-                attack.transform.position = player._target.transform.position;
-                attack.GetComponent<SpriteRenderer>().enabled = true;
                 attack.player = GameManager.Instance.player;
                 attack.GetComponent<Animator>().SetFloat("Attack", Random.Range(0, 2)); // 공격 이펙트 랜덤 설정
                 Destroy(attack, 0.5f);
             }
-            attackObject.GetComponent<SpriteRenderer>().enabled = true;
         }
     }
 
