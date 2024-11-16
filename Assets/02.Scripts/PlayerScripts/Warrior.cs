@@ -2,21 +2,16 @@ using UnityEngine;
 
 public class Warrior : Player
 {
-    public override void OnNetworkSpawn()
+    void Awake()
     {
         _playerRig = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
 
-        if(!IsOwner) return;
-
         SetCharater();
     }
 
-
     protected override void SetCharater()
     {
-        if(!IsOwner) return;
-
         Die = false;
 
         MaxHp = 50.0f;

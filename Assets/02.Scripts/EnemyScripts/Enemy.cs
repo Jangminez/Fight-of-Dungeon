@@ -5,7 +5,6 @@ using UnityEngine;
 
 public abstract class Enemy : NetworkBehaviour
 {
-    public GameObject prefab;
     protected SpriteRenderer spr;
     protected Rigidbody2D rb;
     protected Animator anim;
@@ -15,11 +14,10 @@ public abstract class Enemy : NetworkBehaviour
 
     public Transform _target;
     protected bool _isAttack;
-    Transform _canvas;
-    Vector3 _initCanvasScale;
+
     public GameObject FloatingDamagePrefab;
     public GameObject FloatingGoldExpPrefab;
-    protected float timer;
+    private float timer;
 
     [Serializable]
     public struct Stats
@@ -40,6 +38,7 @@ public abstract class Enemy : NetworkBehaviour
     // 몬스터의 체력에 대한 NetworkVariable
     private NetworkVariable<float> _maxHp = new NetworkVariable<float>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
     private NetworkVariable<float> _hp = new NetworkVariable<float>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+    private NetworkVariable<ulong> _lastAttackClientId = new NetworkVariable<ulong>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
 
     public float MaxHp
     {
@@ -64,13 +63,13 @@ public abstract class Enemy : NetworkBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
-        _canvas = transform.GetChild(0);
-        _initCanvasScale = _canvas.transform.localScale;
     }
 
     private void Start()
     {
-        _hp.OnValueChanged += GetComponent<EnemyHp>().ChangeHp;
+        // hp 값이 변경될 때마다 UI 동기화를 위한 이벤트 연결
+        if (IsClient)
+            _hp.OnValueChanged += GetComponent<EnemyHp>().ChangeHp;
     }
 
     void LateUpdate()
@@ -88,7 +87,7 @@ public abstract class Enemy : NetworkBehaviour
         }
     }
 
-    virtual public IEnumerator MonsterState()
+    IEnumerator MonsterState()
     {
         if (!IsServer) yield break;
 
@@ -113,7 +112,7 @@ public abstract class Enemy : NetworkBehaviour
                     state = States.Chase;
                 }
 
-                if (timer > 5f && Vector3.Distance(_initTransform, this.transform.position) > 0.4f)
+                if (timer > 5f)
                 {
                     timer = 0f;
                     state = States.Return;
@@ -146,8 +145,6 @@ public abstract class Enemy : NetworkBehaviour
 
             else if (state == States.Attack)
             {
-                rb.velocity = Vector2.zero;
-
                 if (_target == null)
                 {
                     state = States.Idle;
@@ -213,27 +210,12 @@ public abstract class Enemy : NetworkBehaviour
     {
         if (_target != null && _target.position.x - transform.position.x > 0)
         {
-            if (anim.transform.localScale.x < 0)
-                return;
-
-            else
-            {
-                anim.transform.localScale = new Vector3(-anim.transform.localScale.x, anim.transform.localScale.y, 1f);
-                _canvas.localScale = _initCanvasScale;
-                
-            }
+            anim.transform.localScale = new Vector3(-1f, 1f, 1);
         }
 
         else if (_target != null && _target.position.x - transform.position.x < 0)
         {
-            if (anim.transform.localScale.x < 0)
-            {
-                anim.transform.localScale = new Vector3(-anim.transform.localScale.x, anim.transform.localScale.y, 1f);
-                _canvas.localScale = new Vector3(-_initCanvasScale.x, _initCanvasScale.y, _initCanvasScale.z);
-            }
-
-            else
-                return;
+            anim.transform.localScale = new Vector3(1f, 1f, 1);
         }
     }
     virtual public void OutofArea()
@@ -242,17 +224,8 @@ public abstract class Enemy : NetworkBehaviour
     }
 
     [ClientRpc]
-    protected void AttackClientRpc(ulong clientId, float damage)
-    {
-        // 공격 받은 클라이언트라면 Hit() 처리
-        if (clientId == NetworkManager.Singleton.LocalClientId)
-            GameManager.Instance.player.Hit(damage: damage);
-    }
-
-    [ClientRpc]
     public void ShowFloatingDamageClientRpc(float damage)
     {
-        // 몬스터 피격 데미지 표시
         var dmg = Instantiate(FloatingDamagePrefab, transform.position, Quaternion.identity);
         dmg.GetComponent<TextMesh>().text = $"-" + damage.ToString("F1");
     }
@@ -260,7 +233,6 @@ public abstract class Enemy : NetworkBehaviour
     [ClientRpc]
     public virtual void ShowGoldClientRpc(ulong clientId, int gold, float exp)
     {
-        // 마지막으로 처치한 클라이언트라면 골드와 경험치 지급
         if (clientId == NetworkManager.Singleton.LocalClientId)
         {
             GameManager.Instance.player.Gold += gold;
@@ -273,6 +245,9 @@ public abstract class Enemy : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     protected void TakeDamageServerRpc(float damage, ServerRpcParams rpcParams = default)
     {
+        // 마지막으로 공격한 클라이언트 Id 저장
+        _lastAttackClientId.Value = rpcParams.Receive.SenderClientId;
+
         // 받은 데미지 - 방어력 으로 최종데미지 계산
         float finalDamage = damage - stat.defense;
 
@@ -289,33 +264,40 @@ public abstract class Enemy : NetworkBehaviour
             ShowFloatingDamageClientRpc(finalDamage);
         }
 
+        anim.SetTrigger("Hit");
+
         if (Hp <= 0)
         {
             // 체력이 0 이하라면 Die
             StopAllCoroutines();
 
             anim.SetTrigger("Die");
-
             Die();
-            NetworkMonsterSpawner.Instance.DespawnMonster(GetComponent<NetworkObject>(), prefab);
-            DieClientRpc(rpcParams.Receive.SenderClientId);
+        }
+        else
+        {
+            // 죽는게 아니라면 HitEffect 실행
+            StartCoroutine("HitEffect");
         }
     }
 
     [ClientRpc]
-    protected void DieClientRpc(ulong lastAttackClient)
+    protected void DieClientRpc()
     {
-        // 처치한 클라이언트에게 경험치랑 골드 지급
-        if (NetworkManager.Singleton.LocalClientId == lastAttackClient)
-            GiveExpGoldServerRpc(lastAttackClient);
+        // 속도 0, 콜라이더 비활성화를 통한 플레이어의 공격 금지        
+        GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+        GetComponent<Collider2D>().enabled = false;
 
-        gameObject.SetActive(false);
+        // 경험치랑 골드 지급
+        if (NetworkManager.Singleton.LocalClientId == _lastAttackClientId.Value)
+            GiveExpGoldServerRpc(_lastAttackClientId.Value);
     }
 
     [ClientRpc]
     protected void RespawnClientRpc()
     {
-        gameObject.SetActive(true);
+        GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+        GetComponent<Collider2D>().enabled = true;
     }
 }
 
