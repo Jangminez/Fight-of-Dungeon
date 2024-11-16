@@ -18,6 +18,7 @@ public abstract class Skill : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         if(!IsOwner){
+            this.enabled = false;
             return;
         }
         
@@ -39,7 +40,7 @@ public abstract class Skill : NetworkBehaviour
     // 스킬 버튼과 연결된 함수로 버튼에 해당하는 스킬 작동
     public void UseSkill()
     {
-        if(IsOwner && !_isCoolDown && GameManager.Instance.player.Mp > useMp)
+        if(!_isCoolDown && GameManager.Instance.player.Mp > useMp)
         {
             GameManager.Instance.player.Mp -= useMp;
             
@@ -58,8 +59,6 @@ public abstract class Skill : NetworkBehaviour
     // 쿨타임 UI 표시
     public virtual IEnumerator CoolDown(float cd)
     {
-        if(!IsOwner) yield break;
-
         _isCoolDown = true;
         _cdText.gameObject.SetActive(true);
         
@@ -75,10 +74,5 @@ public abstract class Skill : NetworkBehaviour
 
         _isCoolDown = false;
         _cdText.gameObject.SetActive(false);
-
-            foreach(var anim in _anims)
-            {
-                anim.ResetTrigger("UseSkill");
-            }
     }
 }

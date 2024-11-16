@@ -11,10 +11,16 @@ public class TutorialCamera : MonoBehaviour
         _anim = GetComponent<Animator>();
     }
 
+    public void MoveCam()
+    {
+        _cameraFollow.enabled = false;
+        _anim.enabled = true;
+        _anim.SetTrigger("Move");
+    }
+
     public void NormalCam()
     {
-        _anim.enabled = false;
-        _cameraFollow.target = GameManager.Instance.player.transform;
         _cameraFollow.enabled = true;
+        _anim.enabled = false;
     }
 }

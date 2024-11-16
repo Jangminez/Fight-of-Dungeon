@@ -12,7 +12,6 @@ public class Warrior_Skill1 : Skill
         public float coolDown; // 쿨타임
         public float duration; // 스킬 지속시간
     }
-
     [SerializeField]SkillInfo _info;
     void Awake()
     {
@@ -24,12 +23,11 @@ public class Warrior_Skill1 : Skill
         _info.coolDown = 30f;
         _info.duration = 20f;
         useMp = 5f;
+        
     }
 
     public override IEnumerator SkillProcess()
     {
-        if(!IsOwner) yield break;
-
         // 쿨타임 시작
         StartCoroutine(CoolDown(_info.coolDown));
         
@@ -40,10 +38,10 @@ public class Warrior_Skill1 : Skill
 
         yield return new WaitForSeconds(_info.duration);
 
-        _anims[1].SetTrigger("End");
-
         GameManager.Instance.player.AttackBonus -= _info.attackUp;
         GameManager.Instance.player.AsBonus -= _info.asUp;
         GameManager.Instance.player.Critical -= _info.criUp;
     }
+
+
 }

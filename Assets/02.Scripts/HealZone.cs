@@ -1,6 +1,5 @@
 using UnityEngine;
 using System.Collections;
-using Unity.Netcode;
 
 public class HealZone : MonoBehaviour
 {
@@ -24,11 +23,8 @@ public class HealZone : MonoBehaviour
 
     IEnumerator Heal(Player player)
     {
-        ulong clientId = player.GetComponent<NetworkObject>().OwnerClientId;
-        
-        while (stay && clientId == NetworkManager.Singleton.LocalClientId)
+        while (stay)
         {
-
             yield return new WaitForSeconds(1f);
             Debug.Log("체력 회복, 마나 회복");
             player.Hp += player.FinalHp * 0.2f;
