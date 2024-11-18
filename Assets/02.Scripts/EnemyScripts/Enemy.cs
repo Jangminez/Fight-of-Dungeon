@@ -178,7 +178,6 @@ public abstract class Enemy : NetworkBehaviour
     }
     // 몬스터 초기화 함수
     public abstract void InitMonster();
-    public abstract void Hit(float damage);
 
     public abstract IEnumerator HitEffect();
     public abstract void Die();

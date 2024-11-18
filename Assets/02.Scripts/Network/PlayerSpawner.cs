@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System.Threading;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -45,13 +45,20 @@ public class PlayerSpawner : NetworkBehaviour
         UIManager.Instance.player = GameManager.Instance.player;
 
         //플레이어 위치 설정
+        if(IsServer)
+        {
+            GameManager.Instance.player._spawnPoint = GameObject.FindWithTag("BlueSpawn").transform;
+        }
+        else
+        {
+            GameManager.Instance.player._spawnPoint = GameObject.FindWithTag("RedSpawn").transform;
+        }
+
+        GameManager.Instance.player.transform.position = GameManager.Instance.player._spawnPoint.position + new Vector3(0f, 1f, 0f);
+        SetUpCamera(GameManager.Instance.player.transform);
         GameManager.Instance.player.gameObject.SetActive(true);
-        GameManager.Instance.player._spawnPoint = GameObject.FindWithTag("BlueSpawn").transform;
-        GameManager.Instance.player.transform.position = GameManager.Instance.player._spawnPoint.position + new Vector3(0f, 1f, 0f); ;
 
         UIManager.Instance.goToMain.onClick.AddListener(GameManager.Instance.BackToScene);
-
-        SetUpCamera(GameManager.Instance.player.transform);
     }
 
     private void SetUpCamera(Transform playerTransform)

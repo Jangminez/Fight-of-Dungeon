@@ -2,7 +2,7 @@ using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
 
-public class Pumkin : Enemy
+public class Pumkin : Enemy, IDamgeable
 {
     public GameObject _batPrefab;
     public GameObject _attackIndicator;
@@ -65,7 +65,7 @@ public class Pumkin : Enemy
     }
 
     #region 피격 및 사망 처리
-    public override void Hit(float damage)
+    public void Hit(float damage)
     {
         // 데미지 처리 ServerRpc 호출
         TakeDamageServerRpc(damage);

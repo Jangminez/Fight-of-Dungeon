@@ -3225,6 +3225,7 @@ GameObject:
   - component: {fileID: 5392295104493556711}
   - component: {fileID: 5143138813125117457}
   - component: {fileID: 2452477755705979072}
+  - component: {fileID: 7997057478271587318}
   m_Layer: 17
   m_Name: Warrior_Network
   m_TagString: Player
@@ -3435,7 +3436,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   layer:
     serializedVersion: 2
-    m_Bits: 262144
+    m_Bits: 17039360
   enemys: []
 --- !u!114 &4694814571735404842
 MonoBehaviour:
@@ -3585,6 +3586,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80d7c879794dfda4687da0e400131852, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &7997057478271587318
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7038658517558419819}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05a875b8458171d4b99846cd7c2776af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7046389342001341989
 GameObject:
   m_ObjectHideFlags: 0
@@ -3687,6 +3700,7 @@ GameObject:
   - component: {fileID: 8772532050239868083}
   - component: {fileID: 8728814460764019631}
   - component: {fileID: 4021479531362736973}
+  - component: {fileID: 2906869854464865700}
   m_Layer: 5
   m_Name: Hp & MP _Canvas
   m_TagString: Untagged
@@ -3778,6 +3792,36 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &2906869854464865700
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7061303689787230925}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7925a23010d94b649bd99c35a27e0479, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SyncPositionX: 0
+  SyncPositionY: 0
+  SyncPositionZ: 0
+  SyncRotAngleX: 0
+  SyncRotAngleY: 0
+  SyncRotAngleZ: 0
+  SyncScaleX: 1
+  SyncScaleY: 0
+  SyncScaleZ: 0
+  PositionThreshold: 0.001
+  RotAngleThreshold: 0.01
+  ScaleThreshold: 0.01
+  UseQuaternionSynchronization: 0
+  UseQuaternionCompression: 0
+  UseHalfFloatPrecision: 0
+  InLocalSpace: 0
+  Interpolate: 1
+  SlerpPosition: 0
 --- !u!1 &7165494715163982389
 GameObject:
   m_ObjectHideFlags: 0

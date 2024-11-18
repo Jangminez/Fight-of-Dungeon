@@ -4,7 +4,7 @@ using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
 
-public abstract class Player : NetworkBehaviour
+public abstract class Player : NetworkBehaviour, IDamgeable
 {
     [SerializeField] protected Rigidbody2D _playerRig;
 
@@ -326,6 +326,7 @@ public abstract class Player : NetworkBehaviour
             return;
 
         float finalDamage = damage - FinalDefense;
+
         if(finalDamage <= 0)
             finalDamage = 1;
 
@@ -334,11 +335,6 @@ public abstract class Player : NetworkBehaviour
         if (Hp == 0f)
         {
             OnDie();
-        }
-
-        else
-        {
-            //StartCoroutine(HitEffect());
         }
     }
 
@@ -465,11 +461,32 @@ public abstract class Player : NetworkBehaviour
     {
         ActiveFalseClientRpc();
     }
+
     [ClientRpc]
     private void ActiveFalseClientRpc()
     {   
         this.transform.GetChild(0).gameObject.SetActive(false);
         this.transform.GetChild(1).gameObject.SetActive(false);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void AttackPlayerServerRpc(float damage, ServerRpcParams param = default)
+    {
+        foreach(var client in NetworkManager.Singleton.ConnectedClients)
+        {
+            if(param.Receive.SenderClientId != client.Key)
+            {
+                client.Value.PlayerObject.GetComponent<Player>().AttackPlayerClientRpc(client.Key, damage);
+            }
+        }
+    }
+
+    [ClientRpc]
+    public void AttackPlayerClientRpc(ulong clientId, float damage)
+    {
+        // 공격 받은 클라이언트라면 Hit() 처리
+        if (clientId == NetworkManager.Singleton.LocalClientId)
+            GameManager.Instance.player.Hit(damage: damage);
     }
 
     virtual protected void LevelUp()
@@ -498,8 +515,6 @@ public abstract class Player : NetworkBehaviour
         {
             LevelUp();
         }
-
-
     }
 
     IEnumerator Regen()

@@ -17,7 +17,7 @@ public class InteractionObject : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if(collision.tag == "Player")
+        if(collision.gameObject.layer == 17)
         {
             _interactionCanvas.gameObject.SetActive(true);
             _interactionButton.gameObject.SetActive(true);
@@ -27,7 +27,7 @@ public class InteractionObject : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.tag == "Player")
+        if (collision.gameObject.layer == 17)
         {
             _interactionCanvas.gameObject.SetActive(false);
             _interactionButton.gameObject.SetActive(false);

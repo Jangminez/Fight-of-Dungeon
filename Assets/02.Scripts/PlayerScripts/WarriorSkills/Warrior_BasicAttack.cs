@@ -1,7 +1,6 @@
 using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public class Warrior_BasicAttack : PlayerAttackController
 {
@@ -57,11 +56,9 @@ public class Warrior_BasicAttack : PlayerAttackController
             {
                 // 공격 생성 및 적용
                 Attack attack = attackObject.GetComponent<Attack>();
-                attack.player = GameManager.Instance.player;
                 attack.GetComponent<Animator>().SetFloat("Attack", Random.Range(0, 2)); // 공격 이펙트 랜덤 설정
                 Destroy(attack, 0.5f);
             }
         }
     }
-
 }
