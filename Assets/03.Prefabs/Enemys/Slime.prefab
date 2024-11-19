@@ -163,6 +163,7 @@ GameObject:
   - component: {fileID: 1157648683481838544}
   - component: {fileID: 732064679799042824}
   - component: {fileID: 1068586050884005859}
+  - component: {fileID: 6168233567036532819}
   m_Layer: 5
   m_Name: HP Canvas
   m_TagString: Untagged
@@ -253,6 +254,18 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 0
+--- !u!210 &6168233567036532819
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7781114956345579979}
+  m_Enabled: 1
+  m_SortingLayerID: -105541197
+  m_SortingLayer: 3
+  m_SortingOrder: 10
+  m_SortAtRoot: 0
 --- !u!1 &8254298581846526369
 GameObject:
   m_ObjectHideFlags: 0
@@ -540,7 +553,7 @@ MonoBehaviour:
   SyncRotAngleZ: 0
   SyncScaleX: 1
   SyncScaleY: 1
-  SyncScaleZ: 1
+  SyncScaleZ: 0
   PositionThreshold: 0.001
   RotAngleThreshold: 0.01
   ScaleThreshold: 0.01

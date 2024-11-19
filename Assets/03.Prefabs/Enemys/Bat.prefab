@@ -260,9 +260,6 @@ MonoBehaviour:
   player:
     serializedVersion: 2
     m_Bits: 16908288
-  player2:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!114 &7960329646123412619
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1771,6 +1768,7 @@ GameObject:
   - component: {fileID: 7380039061224355961}
   - component: {fileID: 3141966561538779711}
   - component: {fileID: 7182049038785045680}
+  - component: {fileID: 7163388065646626224}
   m_Layer: 5
   m_Name: HP Canvas
   m_TagString: Untagged
@@ -1861,6 +1859,18 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 0
+--- !u!210 &7163388065646626224
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3949536695129297683}
+  m_Enabled: 1
+  m_SortingLayerID: -105541197
+  m_SortingLayer: 3
+  m_SortingOrder: 10
+  m_SortAtRoot: 0
 --- !u!1 &4066623641690353859
 GameObject:
   m_ObjectHideFlags: 0

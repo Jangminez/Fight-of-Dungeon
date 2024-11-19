@@ -113,11 +113,8 @@ public abstract class Enemy : NetworkBehaviour
                     state = States.Chase;
                 }
 
-                if (timer > 5f && Vector3.Distance(_initTransform, this.transform.position) > 0.4f)
+                if (timer > 5f)
                 {
-                    timer = 0f;
-                    state = States.Return;
-
                     Hp = MaxHp;
                 }
             }
