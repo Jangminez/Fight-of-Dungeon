@@ -30,17 +30,17 @@ public class Zombie : Enemy, IDamgeable
         MaxHp = 500f;
         Hp = MaxHp;
 
-        stat.attack = 80f;
+        stat.attack = 30f;
         stat.attackRange = 2f;
         stat.attackSpeed = 0.8f;
 
-        stat.defense = 50f;
+        stat.defense = 20f;
 
         stat.speed = 0.7f;
         stat.chaseRange = 5f;
 
-        stat.exp = 500f;
-        stat.gold = 800;
+        stat.exp = 300f;
+        stat.gold = 500;
 
         stat.isDie = false;
 

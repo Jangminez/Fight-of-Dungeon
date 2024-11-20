@@ -18,6 +18,7 @@ public class Equipment : MonoBehaviour
             _slotBtn.onClick.AddListener(ClickSlot);   
         }
 
+        // 소비 아이템이라면 버튼에 사용 이벤트 추가
         if(isComsumable){
             _useBtn = this.transform.GetChild(0).GetComponent<Button>();
             _useBtn.onClick.AddListener(UseItem);

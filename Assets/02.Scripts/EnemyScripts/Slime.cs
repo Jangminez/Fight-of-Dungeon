@@ -41,8 +41,8 @@ public class Slime : Enemy, IDamgeable
         stat.chaseRange = 5f;
         stat.speed = 1f;
 
-        stat.exp = 10f;
-        stat.gold = 30;
+        stat.exp = 30f;
+        stat.gold = 50;
 
         stat.isDie = false;
 

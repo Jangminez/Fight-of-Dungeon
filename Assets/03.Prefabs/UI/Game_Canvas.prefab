@@ -1621,7 +1621,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 150.00006}
-  m_SizeDelta: {x: 2000, y: 3000}
+  m_SizeDelta: {x: 2000, y: 2200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4323780499271041698
 CanvasRenderer:
@@ -2044,6 +2044,7 @@ GameObject:
   - component: {fileID: 4522393556644591178}
   - component: {fileID: 9186484233946885386}
   - component: {fileID: 3705511967984700673}
+  - component: {fileID: 1552553441602975003}
   m_Layer: 5
   m_Name: Inventory_Btn
   m_TagString: Untagged
@@ -2152,19 +2153,20 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 9186484233946885386}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7607815216056200320}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
+      m_Calls: []
+--- !u!114 &1552553441602975003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3061366916954494919}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9448f0fb077c4f429545e9f3565eefb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _toggleUI: {fileID: 7607815216056200320}
 --- !u!1 &3372277392775623559
 GameObject:
   m_ObjectHideFlags: 0
@@ -7354,6 +7356,31 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1379926146294000608}
     m_Modifications:
+    - target: {fileID: 278357362765975892, guid: 5bd06bb419bc02948970d634412d08a0,
+        type: 3}
+      propertyPath: upgradeInfo.incCost
+      value: 150
+      objectReference: {fileID: 0}
+    - target: {fileID: 287314746796133729, guid: 5bd06bb419bc02948970d634412d08a0,
+        type: 3}
+      propertyPath: upgradeInfo.incCost
+      value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 287314746796133729, guid: 5bd06bb419bc02948970d634412d08a0,
+        type: 3}
+      propertyPath: upgradeInfo.incValue
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1194777343445410390, guid: 5bd06bb419bc02948970d634412d08a0,
+        type: 3}
+      propertyPath: upgradeInfo.incCost
+      value: 180
+      objectReference: {fileID: 0}
+    - target: {fileID: 1194777343445410390, guid: 5bd06bb419bc02948970d634412d08a0,
+        type: 3}
+      propertyPath: upgradeInfo.incValue
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 1241561034621825779, guid: 5bd06bb419bc02948970d634412d08a0,
         type: 3}
       propertyPath: _otherTabs.Array.size
@@ -7468,6 +7495,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4112504868081575524, guid: 5bd06bb419bc02948970d634412d08a0,
+        type: 3}
+      propertyPath: upgradeInfo.incCost
+      value: 150
+      objectReference: {fileID: 0}
+    - target: {fileID: 4112504868081575524, guid: 5bd06bb419bc02948970d634412d08a0,
+        type: 3}
+      propertyPath: upgradeInfo.incValue
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4394190452605266177, guid: 5bd06bb419bc02948970d634412d08a0,
         type: 3}
@@ -7629,6 +7666,16 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 5006662544812579557, guid: 5bd06bb419bc02948970d634412d08a0,
+        type: 3}
+      propertyPath: upgradeInfo.incCost
+      value: 150
+      objectReference: {fileID: 0}
+    - target: {fileID: 5006662544812579557, guid: 5bd06bb419bc02948970d634412d08a0,
+        type: 3}
+      propertyPath: upgradeInfo.incValue
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 5063701721914135768, guid: 5bd06bb419bc02948970d634412d08a0,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -7648,6 +7695,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5865254489228041648, guid: 5bd06bb419bc02948970d634412d08a0,
+        type: 3}
+      propertyPath: upgradeInfo.incCost
+      value: 150
+      objectReference: {fileID: 0}
+    - target: {fileID: 5865254489228041648, guid: 5bd06bb419bc02948970d634412d08a0,
+        type: 3}
+      propertyPath: upgradeInfo.incValue
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 6065940818159332910, guid: 5bd06bb419bc02948970d634412d08a0,
         type: 3}
@@ -7689,6 +7746,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7754906937605378273, guid: 5bd06bb419bc02948970d634412d08a0,
+        type: 3}
+      propertyPath: upgradeInfo.incCost
+      value: 200
+      objectReference: {fileID: 0}
     - target: {fileID: 8790430876579654236, guid: 5bd06bb419bc02948970d634412d08a0,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -7708,6 +7770,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8800667693160035280, guid: 5bd06bb419bc02948970d634412d08a0,
+        type: 3}
+      propertyPath: upgradeInfo.incCost
+      value: 100
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
