@@ -22,9 +22,9 @@ public class Warrior_Skill3 : Skill
     void Awake()
     {
         // 스킬 정보 초기화
-        _info.damage = 0.5f;
+        _info.damage = 0.7f;
         _info.interval = 0.5f;
-        _info.coolDown = 30f;
+        _info.coolDown = 40f;
         _info.duration = 10f;
         useMp = 15f;
         _info.collider = GetComponent<Collider2D>();

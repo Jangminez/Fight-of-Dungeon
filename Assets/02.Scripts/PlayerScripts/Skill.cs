@@ -7,6 +7,10 @@ using Unity.Netcode;
 public abstract class Skill : NetworkBehaviour
 {
     //protected enum SkillType {Attack, Buff};
+    public string skillName; // 스킬 이름
+    [TextArea(3, 10)]
+    public string skillDesc; // 스킬 설명
+    public string skillCD; // 스킬 쿨타임
     protected List<Animator> _anims = new List<Animator>(); // 스킬 애니메이터 관리
     protected bool _isCoolDown; // 현재 쿨타임인지 확인용
     public Sprite _icon; // 스킬 아이콘

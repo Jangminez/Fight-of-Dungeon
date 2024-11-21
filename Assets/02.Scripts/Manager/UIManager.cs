@@ -32,6 +32,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Transform RespawnUI;
 
     public Button[] skillButtons;
+    public GameObject[] Descriptions;
     public GameObject[] locked;
 
     public Button goToMain;
