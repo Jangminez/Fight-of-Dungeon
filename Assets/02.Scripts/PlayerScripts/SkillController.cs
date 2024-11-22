@@ -24,6 +24,7 @@ public class SkillController : NetworkBehaviour
             texts[0].text = _skills[i].skillName;
             texts[1].text = _skills[i].skillDesc;
             texts[2].text = _skills[i].skillCD;
+            texts[3].text += _skills[i].useMp.ToString();
         }
     }
 }

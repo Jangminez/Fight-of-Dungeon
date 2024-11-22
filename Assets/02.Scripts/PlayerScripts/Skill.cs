@@ -16,7 +16,7 @@ public abstract class Skill : NetworkBehaviour
     public Sprite _icon; // 스킬 아이콘
     public Image _CD; // 쿨타임 UI
     Text _cdText; // 쿨타임 숫자 표시 UI
-    protected float useMp; // 스킬 사용 마나
+    public float useMp; // 스킬 사용 마나
     protected float cri;
 
     public override void OnNetworkSpawn()
