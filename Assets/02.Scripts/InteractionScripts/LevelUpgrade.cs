@@ -22,6 +22,7 @@ public class LevelUpgrade : MonoBehaviour
         public upgradeType type;
         public float incValue;
         public int level;
+        public int maxLevel;
     }
 
     public HUD myUI;
@@ -90,6 +91,12 @@ public class LevelUpgrade : MonoBehaviour
 
     private void Upgrade()
     {
+        // 레벨이 최대 레벨이라면 업그레이드 X
+        if(upgradeInfo.level >= upgradeInfo.maxLevel)
+        {
+            return;
+        }
+
         // 레벨 포인트가 있다면 업그레이드 진행
         if(_player.LvPoint > 0){
             _player.LvPoint -= 1;
@@ -158,12 +165,12 @@ public class LevelUpgrade : MonoBehaviour
         else if(name == "체력 재생속도" || name =="마나 재생속도")
         {
             level.text = $"Lv{Lv + 1} {name}";
-            value.text = $"초당 {Math.Round(initValue, 1)} -> {Math.Round(initValue + increase, 1)}";
+            value.text = $"초당 {Math.Round(initValue, 2)} -> {Math.Round(initValue + increase, 2)}";
             return;
         }
 
         level.text = $"Lv{Lv + 1} {name}";
-        value.text = $"{Math.Round(initValue, 1)} -> {Math.Round(initValue + increase,1)}";
+        value.text = $"{Math.Round(initValue, 2)} -> {Math.Round(initValue + increase, 2)}";
     }
 
     void ResetStat() 
@@ -240,11 +247,11 @@ public class LevelUpgrade : MonoBehaviour
         else if(name == "체력 재생속도" || name =="마나 재생속도")
         {
             level.text = $"Lv1 {name}";;
-            value.text = "초당 " + Math.Round(initValue, 1).ToString() + " -> " + Math.Round((initValue + increase), 1).ToString();
+            value.text = "초당 " + Math.Round(initValue, 2).ToString() + " -> " + Math.Round(initValue + increase, 2).ToString();
             return;
         }
 
         level.text = $"Lv1 {name}";
-        value.text = Math.Round(initValue, 1).ToString() + " -> " + Math.Round(initValue + increase, 1).ToString();
+        value.text = Math.Round(initValue, 2).ToString() + " -> " + Math.Round(initValue + increase, 2).ToString();
     }
 }

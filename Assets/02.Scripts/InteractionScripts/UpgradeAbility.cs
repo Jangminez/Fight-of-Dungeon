@@ -21,6 +21,7 @@ public class UpgradeAbility : MonoBehaviour
         public float incValue;
         public float incCost;
         public int level;
+        public int maxLevel;
     }
     float _myValue;
 
@@ -124,6 +125,11 @@ public class UpgradeAbility : MonoBehaviour
 
     private void Upgrade()
     {
+        if(upgradeInfo.level >= upgradeInfo.maxLevel)
+        {
+            return;
+        }
+
         // 골드가 충분하면 업그레이드 진행
         if (_player.Gold >= Int32.Parse(myUI.cost.text))
         {
@@ -131,6 +137,7 @@ public class UpgradeAbility : MonoBehaviour
         }
 
         else return;
+
 
         _myValue += upgradeInfo.incValue;
         
@@ -194,13 +201,13 @@ public class UpgradeAbility : MonoBehaviour
         else if (name == "체력 재생속도" || name == "마나 재생속도")
         {
             level.text = $"Lv{Lv + 1} {name}";
-            value.text = $"초당 {Math.Round(initValue, 1)} -> {Math.Round(initValue + increase, 1)}";
+            value.text = $"초당 {Math.Round(initValue, 2)} -> {Math.Round(initValue + increase, 2)}";
             cost.text = $"{Mathf.Round(float.Parse(cost.text) + costInc)}";
             return;
         }
 
         level.text = $"Lv{Lv + 1} {name}";
-        value.text = $"{Math.Round(initValue, 1)} -> {Math.Round(initValue + increase, 1)}";
+        value.text = $"{Math.Round(initValue, 2)} -> {Math.Round(initValue + increase, 2)}";
         cost.text = $"{Mathf.Round(float.Parse(cost.text) + costInc)}";
     }
 }
