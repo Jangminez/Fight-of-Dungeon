@@ -91,14 +91,8 @@ public class LevelUpgrade : MonoBehaviour
 
     private void Upgrade()
     {
-        // 레벨이 최대 레벨이라면 업그레이드 X
-        if(upgradeInfo.level >= upgradeInfo.maxLevel)
-        {
-            return;
-        }
-
         // 레벨 포인트가 있다면 업그레이드 진행
-        if(_player.LvPoint > 0){
+        if(_player.LvPoint > 0 && upgradeInfo.level < upgradeInfo.maxLevel){
             _player.LvPoint -= 1;
         }
 
@@ -150,6 +144,23 @@ public class LevelUpgrade : MonoBehaviour
         }
 
         upgradeInfo.level += 1;
+
+        // 레벨이 최대 레벨이라면 업그레이드 X
+        if(upgradeInfo.level >= upgradeInfo.maxLevel)
+        {
+            myUI.btn.image.color = Color.gray;
+
+            if(upgradeInfo.type == UpgradeInfo.upgradeType.Critical)
+                myUI.value.text = $"{Math.Round(_myValue, 2)}%";
+
+            else if(upgradeInfo.type == UpgradeInfo.upgradeType.HpRegen || upgradeInfo.type == UpgradeInfo.upgradeType.MpRegen)
+                myUI.value.text = $"초당 {Math.Round(_myValue, 2)}";
+            
+            else
+                myUI.value.text = $"{Math.Round(_myValue, 2)}";
+                
+            return;
+        }
     }
 
     private void SetUI(Text level, Text value, int Lv ,float initValue ,float increase, string name)

@@ -125,13 +125,8 @@ public class UpgradeAbility : MonoBehaviour
 
     private void Upgrade()
     {
-        if(upgradeInfo.level >= upgradeInfo.maxLevel)
-        {
-            return;
-        }
-
         // 골드가 충분하면 업그레이드 진행
-        if (_player.Gold >= Int32.Parse(myUI.cost.text))
+        if (_player.Gold >= Int32.Parse(myUI.cost.text) && upgradeInfo.level < upgradeInfo.maxLevel)
         {
             _player.Gold -= Int32.Parse(myUI.cost.text);
         }
@@ -185,6 +180,23 @@ public class UpgradeAbility : MonoBehaviour
         }
 
         upgradeInfo.level += 1;
+
+        if(upgradeInfo.level >= upgradeInfo.maxLevel)
+        {
+            myUI.btn.image.color = Color.gray;
+            myUI.cost.text = "완료";
+            
+
+            if(upgradeInfo.type == UpgradeInfo.upgradeType.Critical)
+                myUI.value.text = $"{Math.Round(_myValue, 2)}%";
+
+            else if(upgradeInfo.type == UpgradeInfo.upgradeType.HpRegen || upgradeInfo.type == UpgradeInfo.upgradeType.MpRegen)
+                myUI.value.text = $"초당 {Math.Round(_myValue, 2)}";
+            
+            else
+                myUI.value.text = $"{Math.Round(_myValue, 2)}";
+            return;
+        }
     }
 
     private void SetUI(Text level, Text value, Text cost, int Lv, float initValue, float increase, float costInc, string name)
