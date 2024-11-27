@@ -2,8 +2,9 @@ using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
 
-public class Warrior_BasicAttack : PlayerAttackController
+public class Archer_BasicAttack : PlayerAttackController
 {
+    [SerializeField] Transform _tip;
     void Update()
     {
         if (!IsOwner) return;
@@ -29,11 +30,11 @@ public class Warrior_BasicAttack : PlayerAttackController
             }
             // 공격 애니메이션
             _anim.SetFloat("AttackState", 0f);
-            _anim.SetFloat("NormalState", 0f);
+            _anim.SetFloat("NormalState", 0.5f);
             _anim.SetTrigger("Attack");
 
             // 타겟의 위치에 공격 이펙트 생성
-            SpawnAttackServerRpc(player._target.position);
+            SpawnAttackServerRpc(_tip.position);
         }
     }
 
@@ -42,7 +43,7 @@ public class Warrior_BasicAttack : PlayerAttackController
     {
         GameObject attack = Instantiate(_basicAttack, targetPosition, Quaternion.identity);
         attack.GetComponent<NetworkObject>().SpawnWithOwnership(rpcParams.Receive.SenderClientId);
-    
+
         SetAttackClientRpc(attack.GetComponent<NetworkObject>().NetworkObjectId);
         Destroy(attack, 0.5f);
     }
@@ -56,7 +57,12 @@ public class Warrior_BasicAttack : PlayerAttackController
             {
                 // 공격 생성 및 적용
                 Attack attack = attackObject.GetComponent<Attack>();
-                attack.GetComponent<Animator>().SetFloat("Attack", Random.Range(0, 2)); // 공격 이펙트 랜덤 설정
+
+                Vector3 direction = (player._target.position - _tip.position).normalized;
+                float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+                attack.transform.rotation = Quaternion.Euler(0, 0, angle);
+                attack.GetComponent<Rigidbody2D>().velocity = direction * 10f;
+
                 Destroy(attack, 0.5f);
             }
         }
