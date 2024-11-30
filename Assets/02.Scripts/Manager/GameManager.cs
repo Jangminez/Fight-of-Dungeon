@@ -71,4 +71,9 @@ public class GameManager : MonoBehaviour
         player = GameObject.FindWithTag("Player").GetComponent<Player>();
         player.GetComponent<PlayerMovement>().enabled = true;
     }
+
+    public void ChangeCharacter(string name)
+    {
+        playerPrefabName = name;
+    }
 }
