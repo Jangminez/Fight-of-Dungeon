@@ -215,8 +215,7 @@ public abstract class Enemy : NetworkBehaviour
             else
             {
                 anim.transform.localScale = new Vector3(-anim.transform.localScale.x, anim.transform.localScale.y, 1f);
-                _canvas.localScale = _initCanvasScale;
-                
+                _canvas.localScale = new Vector3(-_initCanvasScale.x, _initCanvasScale.y, _initCanvasScale.z);
             }
         }
 
@@ -225,7 +224,7 @@ public abstract class Enemy : NetworkBehaviour
             if (anim.transform.localScale.x < 0)
             {
                 anim.transform.localScale = new Vector3(-anim.transform.localScale.x, anim.transform.localScale.y, 1f);
-                _canvas.localScale = new Vector3(-_initCanvasScale.x, _initCanvasScale.y, _initCanvasScale.z);
+                _canvas.localScale = _initCanvasScale;
             }
 
             else

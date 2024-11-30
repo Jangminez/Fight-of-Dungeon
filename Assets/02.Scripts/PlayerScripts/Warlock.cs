@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Archer : Player
+public class Warlock : Player
 {
     public override void OnNetworkSpawn()
     {
@@ -18,24 +18,24 @@ public class Archer : Player
         if(!IsOwner) return;
         Die = false;
 
-        MaxHp = 40.0f;
+        MaxHp = 35.0f;
         Hp = MaxHp;
-        HpRegen = 1f;
+        HpRegen = 0.5f;
 
-        MaxMp = 20.0f;
+        MaxMp = 30.0f;
         Mp = MaxMp;
-        MpRegen = 0.2f;
+        MpRegen = 1f;
 
-        Speed = 3.5f;
+        Speed = 2.5f;
 
         Gold = 0;
 
-        Attack = 5f;
-        AttackSpeed = 1.0f;
-        Critical = 5f;
-        AttackRange = 7f;
+        Attack = 10f;
+        AttackSpeed = 0.5f;
+        Critical = 3f;
+        AttackRange = 5f;
 
-        Defense = 3.0f;
+        Defense = 2.0f;
 
         Level = 1;
         Exp = 0;

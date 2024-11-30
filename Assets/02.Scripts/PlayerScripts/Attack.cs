@@ -6,6 +6,7 @@ public class Attack : NetworkBehaviour
     private Player player;
     float cri;
     bool isAttack = false;
+    [SerializeField] bool isProjectile;
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(!IsOwner) return;
@@ -31,6 +32,13 @@ public class Attack : NetworkBehaviour
                 player.FinalAttack * 1.5f :
                 player.FinalAttack);
             }
+        }
+
+        if(isProjectile)
+        {
+            GetComponent<Animator>().SetTrigger("Hit");
+            GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+            Destroy(this.gameObject, 1f);
         }
     }
 }
