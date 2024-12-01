@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ToggleButton : MonoBehaviour
+public class ToggleUI : MonoBehaviour
 {
     [SerializeField]
     private GameObject _toggleUI;
@@ -12,10 +12,10 @@ public class ToggleButton : MonoBehaviour
     {
         _isOn = false;
         _toggleButton = GetComponent<Button>();
-        _toggleButton.onClick.AddListener(ToggleUI);
+        _toggleButton.onClick.AddListener(ToggleObject);
     }
 
-    private void ToggleUI()
+    private void ToggleObject()
     {
         // 같은 버튼을 눌렀을 때 UI가 켜지고 꺼짐
         if(!_isOn)
