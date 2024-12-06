@@ -24,6 +24,9 @@ public class Warrior_BasicAttack : PlayerAttackController
             _anim.SetFloat("AttackState", 0f);
             _anim.SetFloat("NormalState", 0f);
             _anim.SetTrigger("Attack");
+            
+            // 타겟의 위치에 공격 이펙트 생성
+            SpawnAttackServerRpc(player._target.position);
 
             yield return new WaitForSeconds(1 / player.FinalAS);
 
@@ -33,8 +36,6 @@ public class Warrior_BasicAttack : PlayerAttackController
                 yield break;
             }
 
-            // 타겟의 위치에 공격 이펙트 생성
-            SpawnAttackServerRpc(player._target.position);
         }
     }
 

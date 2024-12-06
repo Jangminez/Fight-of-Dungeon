@@ -27,6 +27,9 @@ public class Warlock_BasicAttack : PlayerAttackController
             _anim.SetFloat("NormalState",1f);
             _anim.SetTrigger("Attack");
 
+            // 공격 이펙트 생성
+            SpawnAttackServerRpc(_tip.position);
+
             yield return new WaitForSeconds(1 / player.FinalAS);
 
             if (player._target == null) // 플레이어의 타겟이 없으면 공격 중지
@@ -34,9 +37,6 @@ public class Warlock_BasicAttack : PlayerAttackController
                 _isAttack = false;
                 yield break;
             }
-
-            // 공격 이펙트 생성
-            SpawnAttackServerRpc(_tip.position);
         }
     }
 
