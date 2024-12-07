@@ -2,7 +2,7 @@ using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
 
-public class Pumkin : Enemy, IDamgeable
+public class Pumkin : Enemy
 {
     public GameObject _batPrefab;
     public GameObject _attackIndicator;
@@ -12,10 +12,7 @@ public class Pumkin : Enemy, IDamgeable
 
     public override void OnNetworkSpawn()
     {
-        _attackFill = _attackIndicator.transform.GetChild(0);
-        stat.chaseRange = 6f;
-
-        if(!IsServer) return;
+        if (!IsServer) return;
 
         InitMonster();
     }
@@ -28,7 +25,9 @@ public class Pumkin : Enemy, IDamgeable
         if (!stat.isDie)
         {
             // 몬스터가 처음 생성 되었다면 초기 설정
-            _initTransform = this.transform.position;   
+            _initTransform = this.transform.position;
+            _attackFill = _attackIndicator.transform.GetChild(0);
+            OffAttackIndicatorClientRpc();
         }
 
         else
@@ -59,13 +58,13 @@ public class Pumkin : Enemy, IDamgeable
         stat.gold = 3000;
 
         stat.isDie = false;
-
+        
         // 몬스터 관리 FSM 실행
         StartCoroutine("MonsterState");
     }
 
     #region 피격 및 사망 처리
-    public void Hit(float damage)
+    public override void Hit(float damage)
     {
         // 데미지 처리 ServerRpc 호출
         TakeDamageServerRpc(damage);
@@ -94,13 +93,11 @@ public class Pumkin : Enemy, IDamgeable
         {
             // 랜덤 개수로 박쥐 소환
             NetworkObject Bat = NetworkObjectPool.Instance.GetNetworkObject(_batPrefab, transform.position, Quaternion.identity);
-            Bat.GetComponent<Enemy>().prefab = _batPrefab;
 
             if(!Bat.IsSpawned)
             {
                 Bat.Spawn();
             }
-            Bat.GetComponent<Enemy>().InitMonster();
         }
 
         StopAllCoroutines();
@@ -139,7 +136,7 @@ public class Pumkin : Enemy, IDamgeable
                 SetDirection();
                 _indiOn = true;
                 _attackFill.localScale = Vector3.zero;
-                OnAttackIndicatorClientRpc();
+                StartCoroutine(SetIndicator(_target));
             }
 
             yield return new WaitForSeconds(1 / stat.attackSpeed);
@@ -245,6 +242,8 @@ public class Pumkin : Enemy, IDamgeable
 
     private IEnumerator SetIndicator(Transform target)
     {
+        if(!IsServer) yield break;
+
         // 인디케이터 방향 설정
         if (target == null) yield break;
 
@@ -252,6 +251,15 @@ public class Pumkin : Enemy, IDamgeable
 
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         _attackIndicator.transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle - 90f));
+        
+        OnAttackIndicatorClientRpc();
+
+        StartCoroutine(FillIndicator(angle, direction));
+    }
+
+    private IEnumerator FillIndicator(float angle, Vector3 direction)
+    {
+        if(!IsServer) yield break;
 
         // 인디케이터 게이지 채우기
         float elapsedTime = 0f;
@@ -264,23 +272,12 @@ public class Pumkin : Enemy, IDamgeable
 
             yield return null;
         }
-
-        if(!IsServer) yield break;
-
-        StartCoroutine(SlashAttack(angle, direction));
         OffAttackIndicatorClientRpc();
-    }
-
-    private IEnumerator SlashAttack(float angle, Vector3 direction)
-    {
-        if(!IsServer) yield break;  
         
         // 인디케이터가 모두 차징되면 공격 소환 
         NetworkObject slash = NetworkObjectPool.Instance.GetNetworkObject(_attackEffect, transform.position, Quaternion.identity);
         
         slash.GetComponent<PumkinSlash>()._enemy = this;
-        slash.GetComponent<PumkinSlash>().prefab = _attackEffect;
-        //slash.GetComponent<Animator>().SetTrigger("Slash");
         slash.transform.rotation = Quaternion.Euler(new Vector3(0,0, angle));
 
         if(!slash.IsSpawned)
@@ -300,7 +297,6 @@ public class Pumkin : Enemy, IDamgeable
     private void OnAttackIndicatorClientRpc()
     {
         _attackIndicator.SetActive(true);
-        StartCoroutine(SetIndicator(_target));
     }
 
     [ClientRpc]

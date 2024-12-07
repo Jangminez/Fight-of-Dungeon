@@ -163,7 +163,6 @@ GameObject:
   - component: {fileID: 1157648683481838544}
   - component: {fileID: 732064679799042824}
   - component: {fileID: 1068586050884005859}
-  - component: {fileID: 6168233567036532819}
   m_Layer: 5
   m_Name: HP Canvas
   m_TagString: Untagged
@@ -254,18 +253,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 0
---- !u!210 &6168233567036532819
-SortingGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7781114956345579979}
-  m_Enabled: 1
-  m_SortingLayerID: -105541197
-  m_SortingLayer: 3
-  m_SortingOrder: 10
-  m_SortAtRoot: 0
 --- !u!1 &8254298581846526369
 GameObject:
   m_ObjectHideFlags: 0
@@ -397,7 +384,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e7f63a18cad07147808884e766061d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab: {fileID: 0}
   _initTransform: {x: 0, y: 0, z: 0}
   state: 0
   _target: {fileID: 0}
@@ -530,9 +516,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7d0ed6c5b4917644ae35a590248cfca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player:
+  layer:
     serializedVersion: 2
-    m_Bits: 16908288
+    m_Bits: 131072
 --- !u!114 &9096626871834753039
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -553,7 +539,7 @@ MonoBehaviour:
   SyncRotAngleZ: 0
   SyncScaleX: 1
   SyncScaleY: 1
-  SyncScaleZ: 0
+  SyncScaleZ: 1
   PositionThreshold: 0.001
   RotAngleThreshold: 0.01
   ScaleThreshold: 0.01

@@ -52,7 +52,7 @@ public class NetworkMonsterSpawner : NetworkBehaviour
                 monster.GetComponent<Enemy>().InitMonster();
                 activeMonsters[area.monsterPrefab].Add(monster);
             }
-            yield return new WaitForSeconds(2.5f);
+            yield return new WaitForSeconds(2f);
         }
     }
 

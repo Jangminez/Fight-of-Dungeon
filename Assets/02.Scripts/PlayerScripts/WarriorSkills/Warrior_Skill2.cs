@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class Warrior_Skill2 : Skill
 {
-    private Player player;
     [System.Serializable]
     struct SkillInfo
     {
@@ -32,29 +31,18 @@ public class Warrior_Skill2 : Skill
     {
         if(!IsOwner) return;
 
-        player = GameManager.Instance.player;
-
         // 몬스터가 스킬 범위에 들어오면 데미지 적용
-        var enemy = other.GetComponent<IDamgeable>();
+        var monster = other.GetComponent<Enemy>();
 
         cri = Random.Range(1f, 101f); // 1 ~ 100 확률 지정
 
-        if (enemy != null)
+        if (monster != null)
         {
-            if(other.tag == "Player")
-            {
-                player.AttackPlayerServerRpc(damage:
-                cri <= player.Critical ?
-                player.FinalAttack * _info.damage * 1.5f :
-                player.FinalAttack * _info.damage);
-            }
-            else
-            {
-                other.GetComponent<IDamgeable>().Hit(damage:
-                cri <= player.Critical ?
-                player.FinalAttack * _info.damage * 1.5f :
-                player.FinalAttack * _info.damage);
-            }
+            monster.Hit(damage:
+            cri <= GameManager.Instance.player.Critical ?
+            GameManager.Instance.player.FinalAttack * _info.damage * 1.5f :
+            GameManager.Instance.player.FinalAttack * _info.damage);
         }
     }
+
 }

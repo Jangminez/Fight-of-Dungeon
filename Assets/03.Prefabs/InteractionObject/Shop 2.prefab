@@ -263,6 +263,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4144857790774135251}
+  - component: {fileID: 4041240287294276368}
   m_Layer: 0
   m_Name: Root
   m_TagString: Untagged
@@ -288,6 +289,97 @@ Transform:
   - {fileID: 1921747440552674832}
   m_Father: {fileID: 5060969608367988719}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4041240287294276368
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 544689187678980984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: baea2e9758e554909b2367e396d9c5a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _itemList:
+  - {fileID: 875105368324853033}
+  - {fileID: 1931023184111322633}
+  - {fileID: 5141106439695751306}
+  - {fileID: 1817752238982142397}
+  - {fileID: 138083335451316681}
+  - {fileID: 68804971956134335}
+  - {fileID: 2359115050508527929}
+  - {fileID: 7277090023268346435}
+  - {fileID: 5510613542128396084}
+  - {fileID: 138083335451316681}
+  - {fileID: 68804971956134335}
+  - {fileID: 1820676175007773187}
+  - {fileID: 4817150446430166290}
+  - {fileID: 5365049162334847683}
+  - {fileID: 3071266979991600124}
+  - {fileID: 696995752490878385}
+  _eyeList:
+  - {fileID: 445806614154642549}
+  - {fileID: 297579491705447324}
+  - {fileID: 1553380730995905667}
+  - {fileID: 450489538015479492}
+  _hairList:
+  - {fileID: 875105368324853033}
+  - {fileID: 5141106439695751306}
+  - {fileID: 1268881207513408838}
+  - {fileID: 1931023184111322633}
+  _bodyList:
+  - {fileID: 5328060229742268886}
+  - {fileID: 2479669363078116640}
+  - {fileID: 5406882121595511217}
+  - {fileID: 1503842512765918293}
+  - {fileID: 2400148730545189662}
+  - {fileID: 8397440765264681177}
+  _clothList:
+  - {fileID: 1817752238982142397}
+  - {fileID: 68804971956134335}
+  - {fileID: 138083335451316681}
+  _armorList:
+  - {fileID: 5510613542128396084}
+  - {fileID: 5411006201501567530}
+  - {fileID: 6462438924396567709}
+  _pantList:
+  - {fileID: 7277090023268346435}
+  - {fileID: 2359115050508527929}
+  _weaponList:
+  - {fileID: 1820676175007773187}
+  - {fileID: 4817150446430166290}
+  - {fileID: 5365049162334847683}
+  - {fileID: 3071266979991600124}
+  _backList:
+  - {fileID: 696995752490878385}
+  _spHorseSPList: {fileID: 0}
+  _spHorseString: 
+  _bodyTexture: {fileID: 0}
+  _bodyString: 
+  _hairListString:
+  - Assets/Resources/SPUM/SPUM_Sprites/Packages/Ver121/0_Hair/Normal_Hair9.png
+  - 
+  - 
+  - Assets/Resources/SPUM/SPUM_Sprites/Items/1_FaceHair/FaceHair_5.png
+  _clothListString:
+  - Assets/Resources/SPUM/SPUM_Sprites/Items/2_Cloth/Cloth_8.png
+  - Assets/Resources/SPUM/SPUM_Sprites/Items/2_Cloth/Cloth_8.png
+  - Assets/Resources/SPUM/SPUM_Sprites/Items/2_Cloth/Cloth_8.png
+  _armorListString:
+  - Assets/Resources/SPUM/SPUM_Sprites/Packages/Ver300/5_Armor/New_Armor_10.png
+  - Assets/Resources/SPUM/SPUM_Sprites/Packages/Ver300/5_Armor/New_Armor_10.png
+  - Assets/Resources/SPUM/SPUM_Sprites/Packages/Ver300/5_Armor/New_Armor_10.png
+  _pantListString:
+  - Assets/Resources/SPUM/SPUM_Sprites/Packages/Ver300/3_Pant/New_Pant_02.png
+  - Assets/Resources/SPUM/SPUM_Sprites/Packages/Ver300/3_Pant/New_Pant_02.png
+  _weaponListString:
+  - Assets/Resources/SPUM/SPUM_Sprites/Packages/Ver121/6_Weapons/AxeLong1.png
+  - 
+  - Assets/Resources/SPUM/SPUM_Sprites/Items/6_Weapons/Ward_1.png
+  - 
+  _backListString:
+  - 
 --- !u!1 &810528665068052065
 GameObject:
   m_ObjectHideFlags: 0
@@ -3322,6 +3414,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9024584683880402536}
+  - component: {fileID: 5030629761072582412}
   m_Layer: 5
   m_Name: NPC
   m_TagString: Untagged
@@ -3349,6 +3442,28 @@ RectTransform:
   m_AnchoredPosition: {x: 0.029999971, y: -0.6199999}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &5030629761072582412
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7417844665849937254}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28ac21711b0ec40a0812d33a586eb7ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _version: 166
+  _spriteOBj: {fileID: 4041240287294276368}
+  EditChk: 0
+  _code: Unit001
+  _anim: {fileID: 7745995809563171201}
+  _horse: 0
+  _horseString: 
+  UnitTypeChanged:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &7447463570203444502
 GameObject:
   m_ObjectHideFlags: 0

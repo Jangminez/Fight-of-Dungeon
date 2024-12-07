@@ -4,14 +4,9 @@ using UnityEngine;
 public class PumkinSlash : NetworkBehaviour
 {
     public Enemy _enemy;
-    public GameObject prefab;
-    public Animator anim;
 
     void OnEnable()
     {
-
-        Invoke("OffSlash", 1.5f);
-        if(!IsServer) return;
         OnSlashClientRpc();
     }
 
@@ -23,11 +18,6 @@ public class PumkinSlash : NetworkBehaviour
         {  
             AttackClientRpc(other.GetComponent<NetworkObject>().OwnerClientId, _enemy.stat.attack);
         }
-    }
-
-    void OffSlash()
-    {
-        this.gameObject.SetActive(false);
     }
 
     [ClientRpc]

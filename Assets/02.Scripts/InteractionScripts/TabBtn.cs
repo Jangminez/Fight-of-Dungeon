@@ -23,6 +23,9 @@ public class TabBtn : MonoBehaviour
 
         _cb = _myBtn.colors;
 
+        _onColor = new Color32(152, 178, 221, 255);
+        _offColor = new Color32(152, 152, 152, 255);
+
         if (_tab == Tabs.Weapon || _tab == Tabs.Gold)
         {
             _cb.normalColor = _onColor;

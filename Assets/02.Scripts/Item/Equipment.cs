@@ -18,7 +18,6 @@ public class Equipment : MonoBehaviour
             _slotBtn.onClick.AddListener(ClickSlot);   
         }
 
-        // 소비 아이템이라면 버튼에 사용 이벤트 추가
         if(isComsumable){
             _useBtn = this.transform.GetChild(0).GetComponent<Button>();
             _useBtn.onClick.AddListener(UseItem);
@@ -26,7 +25,7 @@ public class Equipment : MonoBehaviour
     }
     void FixedUpdate()
     {
-        //다른 버튼 클릭 시 사용 버튼 비활성화
+        //다른 버튼 클릭 시 판매 버튼 비활성화
         selectOb = EventSystem.current.currentSelectedGameObject;
 
         if(isComsumable &&_useBtn.gameObject.activeSelf && selectOb != _slotBtn.gameObject && selectOb != _useBtn.gameObject ){

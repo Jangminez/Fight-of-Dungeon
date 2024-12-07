@@ -4,9 +4,8 @@ using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
 
-public abstract class Player : NetworkBehaviour, IDamgeable
+public abstract class Player : NetworkBehaviour
 {
-    [SerializeField] protected GameObject _floatingDamage;
     [SerializeField] protected Rigidbody2D _playerRig;
 
     [SerializeField] protected Animator _animator;
@@ -327,17 +326,19 @@ public abstract class Player : NetworkBehaviour, IDamgeable
             return;
 
         float finalDamage = damage - FinalDefense;
-
         if(finalDamage <= 0)
             finalDamage = 1;
 
         Hp -= finalDamage;
         
-        ShowFloatingDamageServerRpc(finalDamage);
-
         if (Hp == 0f)
         {
             OnDie();
+        }
+
+        else
+        {
+            //StartCoroutine(HitEffect());
         }
     }
 
@@ -464,46 +465,11 @@ public abstract class Player : NetworkBehaviour, IDamgeable
     {
         ActiveFalseClientRpc();
     }
-
     [ClientRpc]
     private void ActiveFalseClientRpc()
     {   
         this.transform.GetChild(0).gameObject.SetActive(false);
         this.transform.GetChild(1).gameObject.SetActive(false);
-    }
-
-    [ServerRpc(RequireOwnership = false)]
-    public void AttackPlayerServerRpc(float damage, ServerRpcParams param = default)
-    {
-        foreach(var client in NetworkManager.Singleton.ConnectedClients)
-        {
-            if(param.Receive.SenderClientId != client.Key)
-            {
-                client.Value.PlayerObject.GetComponent<Player>().AttackPlayerClientRpc(client.Key, damage);
-            }
-        }
-    }
-
-    [ClientRpc]
-    public void AttackPlayerClientRpc(ulong clientId, float damage)
-    {
-        // 공격 받은 클라이언트라면 Hit() 처리
-        if (clientId == NetworkManager.Singleton.LocalClientId)
-            GameManager.Instance.player.Hit(damage: damage);
-    }
-
-    [ServerRpc(RequireOwnership = false)]
-    public void ShowFloatingDamageServerRpc(float damage)
-    {
-        ShowFloatingDamageClientRpc(damage);
-    }
-
-    [ClientRpc]
-    public void ShowFloatingDamageClientRpc(float damage)
-    {
-        // 피격데미지 표시
-        var dmg = Instantiate(_floatingDamage, transform.position + new Vector3(0f, 1f, 0f), Quaternion.identity);
-        dmg.GetComponent<TextMesh>().text = $"-" + damage.ToString("F1");
     }
 
     virtual protected void LevelUp()
@@ -532,6 +498,8 @@ public abstract class Player : NetworkBehaviour, IDamgeable
         {
             LevelUp();
         }
+
+
     }
 
     IEnumerator Regen()

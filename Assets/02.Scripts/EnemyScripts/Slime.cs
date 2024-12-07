@@ -2,7 +2,7 @@ using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
 
-public class Slime : Enemy, IDamgeable
+public class Slime : Enemy
 {
 
     public override void OnNetworkSpawn()
@@ -41,8 +41,8 @@ public class Slime : Enemy, IDamgeable
         stat.chaseRange = 5f;
         stat.speed = 1f;
 
-        stat.exp = 30f;
-        stat.gold = 50;
+        stat.exp = 10f;
+        stat.gold = 30;
 
         stat.isDie = false;
 
@@ -69,7 +69,7 @@ public class Slime : Enemy, IDamgeable
                 AttackClientRpc(_target.GetComponent<NetworkObject>().OwnerClientId, stat.attack);
         }
     }
-    public void Hit(float damage)
+    public override void Hit(float damage)
     {
         StopCoroutine("EnemyAttack");
         _isAttack = false;

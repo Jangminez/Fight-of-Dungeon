@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -9,4 +11,6 @@ public class HideUI : MonoBehaviour, IPointerClickHandler
     {
         _information.gameObject.SetActive(false);
     }
+
+
 }
