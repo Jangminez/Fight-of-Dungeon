@@ -2,7 +2,7 @@ using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
 
-public class Bat : Enemy
+public class Bat : Enemy, IDamgeable
 {
 
     public override void OnNetworkSpawn()
@@ -12,7 +12,6 @@ public class Bat : Enemy
         if (!IsServer) return;
 
         InitMonster();
-
     }
 
     public override void InitMonster()
@@ -63,7 +62,7 @@ public class Bat : Enemy
                 AttackClientRpc(_target.GetComponent<NetworkObject>().OwnerClientId, stat.attack);
         }
     }
-    public override void Hit(float damage)
+    public void Hit(float damage)
     {
         StopCoroutine("EnemyAttack");
         _isAttack = false;
@@ -86,6 +85,7 @@ public class Bat : Enemy
         anim.SetFloat("RunState", 0f);
 
         StopAllCoroutines();
+        NetworkObjectPool.Instance.ReturnNetworkObject(GetComponent<NetworkObject>(), prefab);
     }
 
     public override void Movement_Anim()

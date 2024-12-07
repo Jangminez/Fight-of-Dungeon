@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class EnemyFindTarget : MonoBehaviour
 {
-    [SerializeField] private LayerMask layer;
+    [SerializeField] private LayerMask player;
     private Collider2D[] players;
     Enemy enemy;
 
@@ -13,8 +13,7 @@ public class EnemyFindTarget : MonoBehaviour
 
     private void Update()
     {
-        players = Physics2D.OverlapCircleAll(transform.position, enemy.stat.chaseRange, layer);
-
+        players = Physics2D.OverlapCircleAll(transform.position, enemy.stat.chaseRange, player);
         if (players.Length > 0)
         {
             float closePlayer1 = Vector2.Distance(transform.position, players[0].transform.position);

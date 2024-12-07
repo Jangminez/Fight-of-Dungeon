@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Warrior_Skill3 : Skill
 {
+    private Player player;
+
     [System.Serializable]
     struct SkillInfo
     {
@@ -20,9 +22,9 @@ public class Warrior_Skill3 : Skill
     void Awake()
     {
         // 스킬 정보 초기화
-        _info.damage = 0.5f;
+        _info.damage = 0.7f;
         _info.interval = 0.5f;
-        _info.coolDown = 30f;
+        _info.coolDown = 40f;
         _info.duration = 10f;
         useMp = 15f;
         _info.collider = GetComponent<Collider2D>();
@@ -72,18 +74,32 @@ public class Warrior_Skill3 : Skill
     {
         if(!IsOwner) yield break;
 
-        var monster = other.GetComponent<Enemy>();
+        player = GameManager.Instance.player;
+        
+        var enemy = other.GetComponent<IDamgeable>();
 
         cri = Random.Range(1, 101);
 
         // 플레이어가 살아있고 몬스터가 범위 안에 있다면 데미지 부여
         while (_info.montsterInRage.Contains(other) && !GameManager.Instance.player.Die)
         {
-            if (monster != null)
-                monster.Hit(damage:
-            cri <= GameManager.Instance.player.Critical ?
-            GameManager.Instance.player.FinalAttack * _info.damage * 1.5f :
-            GameManager.Instance.player.FinalAttack * _info.damage);
+            if (enemy != null)
+            {
+                if(other.tag == "Player")
+                {
+                    player.AttackPlayerServerRpc(damage:
+                    cri <= player.Critical ?
+                    player.FinalAttack * 1.5f :
+                    player.FinalAttack);
+                }
+                else
+                {
+                    other.GetComponent<IDamgeable>().Hit(damage:
+                    cri <= player.Critical ?
+                    player.FinalAttack * _info.damage * 1.5f :
+                    player.FinalAttack * _info.damage);
+                }
+        }
 
             yield return new WaitForSeconds(_info.interval);
         }

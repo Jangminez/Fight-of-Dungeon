@@ -21,6 +21,7 @@ public class UpgradeAbility : MonoBehaviour
         public float incValue;
         public float incCost;
         public int level;
+        public int maxLevel;
     }
     float _myValue;
 
@@ -125,12 +126,13 @@ public class UpgradeAbility : MonoBehaviour
     private void Upgrade()
     {
         // 골드가 충분하면 업그레이드 진행
-        if (_player.Gold >= Int32.Parse(myUI.cost.text))
+        if (_player.Gold >= Int32.Parse(myUI.cost.text) && upgradeInfo.level < upgradeInfo.maxLevel)
         {
             _player.Gold -= Int32.Parse(myUI.cost.text);
         }
 
         else return;
+
 
         _myValue += upgradeInfo.incValue;
         
@@ -178,6 +180,23 @@ public class UpgradeAbility : MonoBehaviour
         }
 
         upgradeInfo.level += 1;
+
+        if(upgradeInfo.level >= upgradeInfo.maxLevel)
+        {
+            myUI.btn.image.color = Color.gray;
+            myUI.cost.text = "완료";
+            
+
+            if(upgradeInfo.type == UpgradeInfo.upgradeType.Critical)
+                myUI.value.text = $"{Math.Round(_myValue, 2)}%";
+
+            else if(upgradeInfo.type == UpgradeInfo.upgradeType.HpRegen || upgradeInfo.type == UpgradeInfo.upgradeType.MpRegen)
+                myUI.value.text = $"초당 {Math.Round(_myValue, 2)}";
+            
+            else
+                myUI.value.text = $"{Math.Round(_myValue, 2)}";
+            return;
+        }
     }
 
     private void SetUI(Text level, Text value, Text cost, int Lv, float initValue, float increase, float costInc, string name)
@@ -194,13 +213,13 @@ public class UpgradeAbility : MonoBehaviour
         else if (name == "체력 재생속도" || name == "마나 재생속도")
         {
             level.text = $"Lv{Lv + 1} {name}";
-            value.text = $"초당 {Math.Round(initValue, 1)} -> {Math.Round(initValue + increase, 1)}";
+            value.text = $"초당 {Math.Round(initValue, 2)} -> {Math.Round(initValue + increase, 2)}";
             cost.text = $"{Mathf.Round(float.Parse(cost.text) + costInc)}";
             return;
         }
 
         level.text = $"Lv{Lv + 1} {name}";
-        value.text = $"{Math.Round(initValue, 1)} -> {Math.Round(initValue + increase, 1)}";
+        value.text = $"{Math.Round(initValue, 2)} -> {Math.Round(initValue + increase, 2)}";
         cost.text = $"{Mathf.Round(float.Parse(cost.text) + costInc)}";
     }
 }
