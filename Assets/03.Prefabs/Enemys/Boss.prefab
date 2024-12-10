@@ -111,7 +111,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 5.46875, y: 5.59375}
+  m_Size: {x: 6.125, y: 5.40625}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 0
@@ -383,7 +383,7 @@ Transform:
   m_Children:
   - {fileID: 8211039752330399835}
   m_Father: {fileID: 8431945981730258518}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90.989}
 --- !u!1 &887274683579551933
 GameObject:
   m_ObjectHideFlags: 0
@@ -781,7 +781,7 @@ Transform:
   - {fileID: 1668000448109233250}
   - {fileID: 2988153552591135955}
   m_Father: {fileID: 8639003694315581290}
-  m_LocalEulerAnglesHint: {x: -0.107, y: -0.004, z: 3.056}
+  m_LocalEulerAnglesHint: {x: 0.054, y: -0.016, z: -17.615}
 --- !u!1 &1531472045491543622
 GameObject:
   m_ObjectHideFlags: 0
@@ -1006,7 +1006,7 @@ Transform:
   m_Children:
   - {fileID: 1822502858558569157}
   m_Father: {fileID: 9193929786021203060}
-  m_LocalEulerAnglesHint: {x: -0.066, y: 0, z: 33.763}
+  m_LocalEulerAnglesHint: {x: -0.064, y: -0.01, z: 54.005}
 --- !u!1 &2119206950755303487
 GameObject:
   m_ObjectHideFlags: 0
@@ -1123,7 +1123,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6639014083501258136}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -0.01, y: -0.179, z: 22.841}
 --- !u!212 &676643502150762430
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1207,7 +1207,7 @@ Transform:
   m_Children:
   - {fileID: 6648266054444586813}
   m_Father: {fileID: 5631938631811069256}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -30}
+  m_LocalEulerAnglesHint: {x: 0, y: -0.006, z: -36.169}
 --- !u!1 &2357587015977822015
 GameObject:
   m_ObjectHideFlags: 0
@@ -1284,7 +1284,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2502716284712820543}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -0.137, y: 0.244, z: 28.129}
 --- !u!212 &45816119238991113
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1733,7 +1733,7 @@ Transform:
   - {fileID: 4674989073115171333}
   - {fileID: 4998927145294980596}
   m_Father: {fileID: 1416065267903640118}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -0.001, y: -0.009, z: -9.785}
 --- !u!1 &3681417700489269549
 GameObject:
   m_ObjectHideFlags: 0
@@ -1978,7 +1978,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4929653308251726926}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -99.241}
 --- !u!212 &5354531650849608751
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2412,7 +2412,7 @@ Transform:
   m_Children:
   - {fileID: 8188361596215682572}
   m_Father: {fileID: 8431945981730258518}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0.617}
 --- !u!1 &4542166100953277786
 GameObject:
   m_ObjectHideFlags: 0
@@ -2422,7 +2422,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8431945981730258518}
-  - component: {fileID: 6453190527549421062}
   m_Layer: 0
   m_Name: Root
   m_TagString: Untagged
@@ -2448,97 +2447,6 @@ Transform:
   - {fileID: 2574196645960300188}
   m_Father: {fileID: 5902075284209129797}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6453190527549421062
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4542166100953277786}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: baea2e9758e554909b2367e396d9c5a4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _itemList:
-  - {fileID: 2660367633962610405}
-  - {fileID: 960806016035621858}
-  - {fileID: 4764342954653436757}
-  - {fileID: 2195935774555320790}
-  - {fileID: 45816119238991113}
-  - {fileID: 676643502150762430}
-  - {fileID: 6322267553007504651}
-  - {fileID: 3355916143790845067}
-  - {fileID: 9014325238511486402}
-  - {fileID: 45816119238991113}
-  - {fileID: 676643502150762430}
-  - {fileID: 7307867679464034981}
-  - {fileID: 7243858922015567045}
-  - {fileID: 5474152792004606926}
-  - {fileID: 1786693400424525857}
-  - {fileID: 758999584200204514}
-  _eyeList:
-  - {fileID: 8435205625459175531}
-  - {fileID: 1427078590935659871}
-  - {fileID: 8276484617615165455}
-  - {fileID: 2821289111169780262}
-  _hairList:
-  - {fileID: 2660367633962610405}
-  - {fileID: 4764342954653436757}
-  - {fileID: 3138165161601551803}
-  - {fileID: 960806016035621858}
-  _bodyList:
-  - {fileID: 1024222956601466567}
-  - {fileID: 4876599447875886866}
-  - {fileID: 1397339778536697227}
-  - {fileID: 2658442267171217969}
-  - {fileID: 4485567831584232592}
-  - {fileID: 5354531650849608751}
-  _clothList:
-  - {fileID: 2195935774555320790}
-  - {fileID: 676643502150762430}
-  - {fileID: 45816119238991113}
-  _armorList:
-  - {fileID: 9014325238511486402}
-  - {fileID: 8442287206546329468}
-  - {fileID: 7437658459197949167}
-  _pantList:
-  - {fileID: 3355916143790845067}
-  - {fileID: 6322267553007504651}
-  _weaponList:
-  - {fileID: 7307867679464034981}
-  - {fileID: 7243858922015567045}
-  - {fileID: 5474152792004606926}
-  - {fileID: 1786693400424525857}
-  _backList:
-  - {fileID: 758999584200204514}
-  _spHorseSPList: {fileID: 0}
-  _spHorseString: 
-  _bodyTexture: {fileID: 0}
-  _bodyString: 
-  _hairListString:
-  - 
-  - 
-  - 
-  - Assets/Resources/SPUM/SPUM_Sprites/Items/1_FaceHair/FaceHair_1.png
-  _clothListString:
-  - Assets/Resources/SPUM/SPUM_Sprites/Items/2_Cloth/Cloth_8.png
-  - Assets/Resources/SPUM/SPUM_Sprites/Items/2_Cloth/Cloth_8.png
-  - Assets/Resources/SPUM/SPUM_Sprites/Items/2_Cloth/Cloth_8.png
-  _armorListString:
-  - Assets/Resources/SPUM/SPUM_Sprites/Items/5_Armor/Armor_2.png
-  - Assets/Resources/SPUM/SPUM_Sprites/Items/5_Armor/Armor_2.png
-  - Assets/Resources/SPUM/SPUM_Sprites/Items/5_Armor/Armor_2.png
-  _pantListString:
-  - Assets/Resources/SPUM/SPUM_Sprites/Items/3_Pant/Foot_3.png
-  - Assets/Resources/SPUM/SPUM_Sprites/Items/3_Pant/Foot_3.png
-  _weaponListString:
-  - 
-  - 
-  - Assets/Resources/SPUM/SPUM_Sprites/Items/6_Weapons/Sword_2.png
-  - 
-  _backListString:
-  - Assets/Resources/SPUM/SPUM_Sprites/Items/7_Back/BowBack_1.png
 --- !u!1 &4847974967682410197
 GameObject:
   m_ObjectHideFlags: 0
@@ -2687,7 +2595,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8800748719575218}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -97.455}
 --- !u!212 &4485567831584232592
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3486,7 +3394,7 @@ Transform:
   m_Children:
   - {fileID: 3487347830257170199}
   m_Father: {fileID: 8843016364452307686}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -0.001, y: -0.01, z: -10.701}
 --- !u!1 &6988987162444715891
 GameObject:
   m_ObjectHideFlags: 0
@@ -3968,9 +3876,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9197970806894658928}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.5970001, y: 1.5970001, z: 1.5970001}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8431945981730258518}
@@ -3986,9 +3894,9 @@ SortingGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9197970806894658928}
   m_Enabled: 1
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 5
+  m_SortingLayerID: -944979767
+  m_SortingLayer: 5
+  m_SortingOrder: 4
   m_SortAtRoot: 0
 --- !u!95 &2355777687863213553
 Animator:
