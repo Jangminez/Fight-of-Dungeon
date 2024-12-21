@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using Unity.Netcode;
+using UnityEngine;
 
 public class Boss : Enemy
 {
@@ -10,15 +10,16 @@ public class Boss : Enemy
 
     public override void OnNetworkSpawn()
     {
-        if(!IsServer) return;
+        if (!IsServer)
+            return;
 
         InitMonster();
     }
 
-    
     public override void InitMonster()
     {
-        if(!IsServer) return;
+        if (!IsServer)
+            return;
 
         _isPattern = false;
 
@@ -43,7 +44,8 @@ public class Boss : Enemy
 
     public override IEnumerator MonsterState()
     {
-        if (!IsServer) yield break;
+        if (!IsServer)
+            yield break;
 
         while (!stat.isDie)
         {
@@ -60,13 +62,17 @@ public class Boss : Enemy
 
                 rb.velocity = Vector2.zero;
 
-                if (_target != null && Vector2.Distance(_target.position, transform.position) < stat.chaseRange && !stat.isDie && !_isPattern)
+                if (
+                    _target != null
+                    && Vector2.Distance(_target.position, transform.position) < stat.chaseRange
+                    && !stat.isDie
+                    && !_isPattern
+                )
                 {
                     timer = 0f;
                     state = States.Chase;
                 }
             }
-
             else if (state == States.Chase)
             {
                 if (_target == null)
@@ -76,19 +82,20 @@ public class Boss : Enemy
                 Movement();
                 SetDirection();
 
-                if (Vector2.Distance(_target.position, transform.position) < stat.attackRange && !stat.isDie)
+                if (
+                    Vector2.Distance(_target.position, transform.position) < stat.attackRange && !stat.isDie)
                 {
                     state = States.Attack;
                 }
-
-                else if (Vector2.Distance(_target.position, transform.position) > stat.chaseRange && !stat.isDie)
+                else if (
+                    Vector2.Distance(_target.position, transform.position) > stat.chaseRange
+                    && !stat.isDie
+                )
                 {
                     state = States.Idle;
                     timer = 0f;
                 }
-
             }
-
             else if (state == States.Attack)
             {
                 rb.velocity = Vector2.zero;
@@ -99,12 +106,15 @@ public class Boss : Enemy
                     timer = 0f;
                 }
 
-                if (_target != null && Vector2.Distance(_target.position, transform.position) > stat.attackRange && !stat.isDie)
+                if (
+                    _target != null
+                    && Vector2.Distance(_target.position, transform.position) > stat.attackRange
+                    && !stat.isDie
+                )
                 {
                     state = States.Chase;
                 }
             }
-
             // 초기위치로 돌아감
             else if (state == States.Return)
             {
@@ -124,7 +134,8 @@ public class Boss : Enemy
 
     public override void Die()
     {
-        if (!IsServer) return;
+        if (!IsServer)
+            return;
 
         state = States.Die;
         StopAllCoroutines();
@@ -132,7 +143,8 @@ public class Boss : Enemy
 
     public override IEnumerator EnemyAttack()
     {
-        if(_isPattern) yield break;
+        if (_isPattern)
+            yield break;
 
         // 공격시 방향 전환 및 애니메이션 실행
         SetDirection();
@@ -141,13 +153,12 @@ public class Boss : Enemy
         // 공격속도 지연
         yield return new WaitForSeconds(1 / stat.attackSpeed);
 
-        if(state != States.Attack) 
+        if (state != States.Attack)
         {
             _isAttack = false;
             _target = null;
             yield break;
         }
-
     }
 
     public override IEnumerator HitEffect()
@@ -157,13 +168,13 @@ public class Boss : Enemy
 
     public override void Movement_Anim()
     {
-        if (!IsServer) return;
+        if (!IsServer)
+            return;
 
         if (state == States.Chase || state == States.Return)
         {
             anim.SetFloat("RunState", 0.5f);
         }
-
         else
         {
             anim.SetFloat("RunState", 0f);
