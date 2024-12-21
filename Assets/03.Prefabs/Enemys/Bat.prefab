@@ -171,7 +171,7 @@ SortingGroup:
   m_GameObject: {fileID: 338722806159854907}
   m_Enabled: 1
   m_SortingLayerID: -44025399
-  m_SortingLayer: 2
+  m_SortingLayer: 3
   m_SortingOrder: 3
   m_SortAtRoot: 0
 --- !u!95 &6548068459935155140
@@ -227,6 +227,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df27796936dbfc749946e79f3e15ba86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  prefab: {fileID: 0}
   _initTransform: {x: 0, y: 0, z: 0}
   state: 0
   _target: {fileID: 0}
@@ -258,7 +259,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   layer:
     serializedVersion: 2
-    m_Bits: 131072
+    m_Bits: 16908288
 --- !u!114 &7960329646123412619
 MonoBehaviour:
   m_ObjectHideFlags: 0

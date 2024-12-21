@@ -180,4 +180,9 @@ public class Boss : Enemy
             anim.SetFloat("RunState", 0f);
         }
     }
+
+	public override void Hit(float damage)
+	{
+		throw new System.NotImplementedException();
+	}
 }
