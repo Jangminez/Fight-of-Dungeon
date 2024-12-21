@@ -36276,7 +36276,11 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 9197970806894658928, guid: de89a07e09d161846a143ea26e8fb979,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1202192245}
   m_SourcePrefab: {fileID: 100100000, guid: de89a07e09d161846a143ea26e8fb979, type: 3}
 --- !u!4 &1202192243 stripped
 Transform:
@@ -36284,6 +36288,42 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1202192242}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1202192244 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9197970806894658928, guid: de89a07e09d161846a143ea26e8fb979,
+    type: 3}
+  m_PrefabInstance: {fileID: 1202192242}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1202192245
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1202192244}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1fff75eb998a7a458c4572b7244606a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 0}
+  _initTransform: {x: 0, y: 0, z: 0}
+  state: 0
+  _target: {fileID: 0}
+  FloatingDamagePrefab: {fileID: 0}
+  FloatingGoldExpPrefab: {fileID: 0}
+  stat:
+    attack: 0
+    attackSpeed: 0
+    defense: 0
+    speed: 0
+    attackRange: 0
+    chaseRange: 0
+    exp: 0
+    gold: 0
+    isDie: 0
+  _isPattern: 0
+  _isStand: 0
 --- !u!1001 &1207587135
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -88992,7 +89032,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1712984926}
-  m_Layer: 0
+  - component: {fileID: 1712984927}
+  - component: {fileID: 1712984928}
+  m_Layer: 19
   m_Name: BossRoom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -89015,6 +89057,63 @@ Transform:
   - {fileID: 1202192243}
   m_Father: {fileID: 1534114279}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &1712984927
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1712984925}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.5697522, y: 42.6}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 28.575993, y: 1}
+  m_EdgeRadius: 0
+--- !u!114 &1712984928
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1712984925}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bd629ac3a57adf4196ff5960c8804a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1715764531 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4334560248341440031, guid: 4a83aae4f49d502439216af76053d953,
