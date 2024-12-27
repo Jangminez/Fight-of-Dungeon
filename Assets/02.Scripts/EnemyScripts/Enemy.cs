@@ -9,7 +9,7 @@ public abstract class Enemy : NetworkBehaviour
     protected SpriteRenderer spr;
     protected Rigidbody2D rb;
     protected Animator anim;
-    public Vector3 _initTransform;
+    public Vector3 _initTransform;      
     public enum States { Idle, Chase, Attack, Return, Die }
     public States state;
 

@@ -7,6 +7,7 @@ public class Boss : Enemy
 {
     public bool _isPattern;
     public bool _isStand;
+    private float r_Pattern;
 
     public override void OnNetworkSpawn()
     {
@@ -88,9 +89,7 @@ public class Boss : Enemy
                     state = States.Attack;
                 }
                 else if (
-                    Vector2.Distance(_target.position, transform.position) > stat.chaseRange
-                    && !stat.isDie
-                )
+                    Vector2.Distance(_target.position, transform.position) > stat.chaseRange && !stat.isDie)
                 {
                     state = States.Idle;
                     timer = 0f;
@@ -143,21 +142,47 @@ public class Boss : Enemy
 
     public override IEnumerator EnemyAttack()
     {
-        if (_isPattern)
-            yield break;
-
-        // 공격시 방향 전환 및 애니메이션 실행
-        SetDirection();
-        anim.SetTrigger("Attack");
-
-        // 공격속도 지연
-        yield return new WaitForSeconds(1 / stat.attackSpeed);
-
-        if (state != States.Attack)
+        while (_isAttack)
         {
-            _isAttack = false;
-            _target = null;
-            yield break;
+            if (_isPattern){
+                yield return new WaitForSeconds(0.5f);
+                continue;
+            }
+                
+            // 공격시 방향 전환 및 애니메이션 실행
+            SetDirection();
+            r_Pattern = Random.Range(0f, 101f);
+
+            if (r_Pattern <= 50f)
+            {
+                // 기본 공격
+                _isPattern = true;
+                StartCoroutine(Boss_BasicAttack());
+
+            }
+
+            else if (50f < r_Pattern && r_Pattern <= 75f)
+            {
+                // 점프공격
+                _isPattern = true;
+                StartCoroutine(Boss_JumpAttack());
+            }
+
+            else
+            {
+                // 회전공격
+                _isPattern = true;
+                StartCoroutine(Boss_SpinAttack());
+            }
+
+            yield return new WaitForSeconds(1 / stat.attackSpeed);
+
+            if (state != States.Attack)
+            {
+                _isAttack = false;
+                _target = null;
+                yield break;
+            }
         }
     }
 
@@ -171,13 +196,49 @@ public class Boss : Enemy
         if (!IsServer)
             return;
 
+
         if (state == States.Chase || state == States.Return)
         {
-            anim.SetFloat("RunState", 0.5f);
+            anim.SetFloat("RunState", 1f);
         }
         else
         {
-            anim.SetFloat("RunState", 0f);
+            anim.SetFloat("RunState", 1f);
         }
+    }
+
+    private IEnumerator Boss_BasicAttack()
+    {
+        anim.SetFloat("AttackState", 0f);
+        anim.SetBool("InAttack", true);
+
+        yield return new WaitForSeconds(1 / stat.attackSpeed);
+
+        anim.SetBool("InAttack", false);
+        _isPattern = false;
+    }
+
+    private IEnumerator Boss_JumpAttack()
+    {
+        anim.SetFloat("AttackState", 0.4f);
+        anim.SetBool("InAttack", true);
+
+        yield return new WaitForSeconds(1f);
+
+        anim.SetFloat("AttackState", 0.7f);
+
+        anim.SetBool("InAttack", false);
+        _isPattern = false;
+    }
+
+    private IEnumerator Boss_SpinAttack()
+    {
+        anim.SetFloat("AttackState", 1f);
+        anim.SetBool("InAttack", true);
+
+        yield return new WaitForSeconds(3f);
+
+        anim.SetBool("InAttack", false);
+        _isPattern = false;
     }
 }
