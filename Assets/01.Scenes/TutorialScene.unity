@@ -36203,26 +36203,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1712984926}
     m_Modifications:
-    - target: {fileID: 3950692324131088598, guid: de89a07e09d161846a143ea26e8fb979,
-        type: 3}
-      propertyPath: m_SortingLayer
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 3950692324131088598, guid: de89a07e09d161846a143ea26e8fb979,
-        type: 3}
-      propertyPath: m_SortingOrder
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 3950692324131088598, guid: de89a07e09d161846a143ea26e8fb979,
-        type: 3}
-      propertyPath: m_SortingLayerID
-      value: -944979767
-      objectReference: {fileID: 0}
-    - target: {fileID: 5902075284209129797, guid: de89a07e09d161846a143ea26e8fb979,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1.597
-      objectReference: {fileID: 0}
     - target: {fileID: 5902075284209129797, guid: de89a07e09d161846a143ea26e8fb979,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -36273,80 +36253,15 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7304339725211054874, guid: de89a07e09d161846a143ea26e8fb979,
+    - target: {fileID: 7591732744244733842, guid: de89a07e09d161846a143ea26e8fb979,
         type: 3}
-      propertyPath: m_Animator
-      value: 
-      objectReference: {fileID: 1202192244}
-    - target: {fileID: 7304339725211054874, guid: de89a07e09d161846a143ea26e8fb979,
-        type: 3}
-      propertyPath: TransitionStateInfoList.Array.size
-      value: 3
+      propertyPath: m_WasSpriteAssigned
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7304339725211054874, guid: de89a07e09d161846a143ea26e8fb979,
+    - target: {fileID: 8408996258502808665, guid: de89a07e09d161846a143ea26e8fb979,
         type: 3}
-      propertyPath: TransitionStateInfoList.Array.data[0].TriggerNameHash
-      value: 20298039
-      objectReference: {fileID: 0}
-    - target: {fileID: 7304339725211054874, guid: de89a07e09d161846a143ea26e8fb979,
-        type: 3}
-      propertyPath: TransitionStateInfoList.Array.data[1].TriggerNameHash
-      value: 1080829965
-      objectReference: {fileID: 0}
-    - target: {fileID: 7304339725211054874, guid: de89a07e09d161846a143ea26e8fb979,
-        type: 3}
-      propertyPath: TransitionStateInfoList.Array.data[2].TransitionIndex
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7304339725211054874, guid: de89a07e09d161846a143ea26e8fb979,
-        type: 3}
-      propertyPath: TransitionStateInfoList.Array.data[2].TriggerNameHash
-      value: 20298039
-      objectReference: {fileID: 0}
-    - target: {fileID: 7304339725211054874, guid: de89a07e09d161846a143ea26e8fb979,
-        type: 3}
-      propertyPath: TransitionStateInfoList.Array.data[0].DestinationState
-      value: -485288209
-      objectReference: {fileID: 0}
-    - target: {fileID: 7304339725211054874, guid: de89a07e09d161846a143ea26e8fb979,
-        type: 3}
-      propertyPath: TransitionStateInfoList.Array.data[0].OriginatingState
-      value: 1324401630
-      objectReference: {fileID: 0}
-    - target: {fileID: 7304339725211054874, guid: de89a07e09d161846a143ea26e8fb979,
-        type: 3}
-      propertyPath: TransitionStateInfoList.Array.data[1].DestinationState
-      value: 1324401630
-      objectReference: {fileID: 0}
-    - target: {fileID: 7304339725211054874, guid: de89a07e09d161846a143ea26e8fb979,
-        type: 3}
-      propertyPath: TransitionStateInfoList.Array.data[1].OriginatingState
-      value: -1402404781
-      objectReference: {fileID: 0}
-    - target: {fileID: 7304339725211054874, guid: de89a07e09d161846a143ea26e8fb979,
-        type: 3}
-      propertyPath: TransitionStateInfoList.Array.data[2].DestinationState
-      value: -485288209
-      objectReference: {fileID: 0}
-    - target: {fileID: 7304339725211054874, guid: de89a07e09d161846a143ea26e8fb979,
-        type: 3}
-      propertyPath: TransitionStateInfoList.Array.data[2].OriginatingState
-      value: -1402404781
-      objectReference: {fileID: 0}
-    - target: {fileID: 7304339725211054874, guid: de89a07e09d161846a143ea26e8fb979,
-        type: 3}
-      propertyPath: TransitionStateInfoList.Array.data[0].TransitionDuration
-      value: 0.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 7304339725211054874, guid: de89a07e09d161846a143ea26e8fb979,
-        type: 3}
-      propertyPath: TransitionStateInfoList.Array.data[1].TransitionDuration
-      value: 0.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 7304339725211054874, guid: de89a07e09d161846a143ea26e8fb979,
-        type: 3}
-      propertyPath: TransitionStateInfoList.Array.data[2].TransitionDuration
-      value: 0.25
+      propertyPath: GlobalObjectIdHash
+      value: 3073396784
       objectReference: {fileID: 0}
     - target: {fileID: 9197970806894658928, guid: de89a07e09d161846a143ea26e8fb979,
         type: 3}
@@ -36361,12 +36276,6 @@ PrefabInstance:
 --- !u!4 &1202192243 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5902075284209129797, guid: de89a07e09d161846a143ea26e8fb979,
-    type: 3}
-  m_PrefabInstance: {fileID: 1202192242}
-  m_PrefabAsset: {fileID: 0}
---- !u!95 &1202192244 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 2355777687863213553, guid: de89a07e09d161846a143ea26e8fb979,
     type: 3}
   m_PrefabInstance: {fileID: 1202192242}
   m_PrefabAsset: {fileID: 0}
