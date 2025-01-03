@@ -29,7 +29,7 @@ public class Boss : Enemy, IDamgeable
         MaxHp = 10000f;
         Hp = MaxHp;
 
-        stat.attack = 800f;
+        stat.attack = 100f;
         stat.attackRange = 5f;
         stat.attackSpeed = 0.5f;
 

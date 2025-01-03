@@ -36203,6 +36203,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1712984926}
     m_Modifications:
+    - target: {fileID: 5264376417112165412, guid: de89a07e09d161846a143ea26e8fb979,
+        type: 3}
+      propertyPath: _multiple
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5902075284209129797, guid: de89a07e09d161846a143ea26e8fb979,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -36253,10 +36258,20 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7591732744244733842, guid: de89a07e09d161846a143ea26e8fb979,
+    - target: {fileID: 6455640173380473659, guid: de89a07e09d161846a143ea26e8fb979,
         type: 3}
-      propertyPath: m_WasSpriteAssigned
-      value: 0
+      propertyPath: _isSpin
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6455640173380473659, guid: de89a07e09d161846a143ea26e8fb979,
+        type: 3}
+      propertyPath: _multiple
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7586982200603336370, guid: de89a07e09d161846a143ea26e8fb979,
+        type: 3}
+      propertyPath: _multiple
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 8408996258502808665, guid: de89a07e09d161846a143ea26e8fb979,
         type: 3}

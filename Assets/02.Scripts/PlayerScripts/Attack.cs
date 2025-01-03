@@ -7,18 +7,18 @@ public class Attack : NetworkBehaviour
     float cri;
     bool isAttack = false;
     [SerializeField] bool isProjectile;
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D col)
     {
         if(!IsOwner) return;
 
-        if (collision.GetComponent<IDamgeable>() != null && !isAttack)
+        if (col.GetComponent<IDamgeable>() != null && !isAttack)
         {
             player = GameManager.Instance.player;
             isAttack = true;
             cri = Random.Range(1f, 101f); // 1 ~ 100 확률 지정
 
             // cri의 값이 크리티컬 범위 안에 존재한다면 크리티컬 공격
-            if(collision.tag == "Player")
+            if(col.tag == "Player")
             {
                 player.AttackPlayerServerRpc(damage:
                 cri <= player.Critical ?
@@ -27,7 +27,7 @@ public class Attack : NetworkBehaviour
             }
             else
             {
-                collision.GetComponent<IDamgeable>().Hit(damage:
+                col.GetComponent<IDamgeable>().Hit(damage:
                 cri <= player.Critical ?
                 player.FinalAttack * 1.5f :
                 player.FinalAttack);
