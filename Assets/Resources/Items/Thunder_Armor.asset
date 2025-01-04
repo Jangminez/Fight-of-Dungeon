@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ea01d3ce1b0d2d49b7058b06eb87347, type: 3}
+  m_Name: Thunder_Armor
+  m_EditorClassIdentifier: 
+  item: {fileID: 6559273562871379002, guid: a2745f87fe52b0946a56293574efbd4a, type: 3}
+  itemName: "\uCC9C\uB465\uC758 \uAC80 "
+  statsList:
+  - valuetype: 3
+    caltype: 0
+    value: 200
+  - valuetype: 4
+    caltype: 0
+    value: 500
+  - valuetype: 5
+    caltype: 0
+    value: 20
+  - valuetype: 7
+    caltype: 0
+    value: 10
+  itemDescription: "\uC774\uAC83\uB9CC \uC788\uC73C\uBA74 \uB0B4 \uD798\uC774 \uB108\uBB34
+    \uAC15\uD574\uC9C4\uB2E4. \uB098\uB3C4 \uC774\uC81C \uB098\uB97C \uBA48\uCD9C
+    \uC218 \uC5C6\uC744 \uAC83 \uAC19\uB2E4."
+  itemCost: 10000
+  needItem:
+  - {fileID: 11400000, guid: 95770729325e3064fad4c08ef3919af2, type: 2}
+  - {fileID: 11400000, guid: b7c1a596250fe5f4bbab81ab06bf3a43, type: 2}
+  - {fileID: 11400000, guid: 315bcfd4f54a7634bbd062bacd453d2e, type: 2}

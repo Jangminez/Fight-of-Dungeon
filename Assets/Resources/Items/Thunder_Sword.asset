@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ea01d3ce1b0d2d49b7058b06eb87347, type: 3}
+  m_Name: Thunder_Sword
+  m_EditorClassIdentifier: 
+  item: {fileID: 6510065780996040825, guid: d91c846f846b8194cb13e87cb571533c, type: 3}
+  itemName: "\uB1CC\uC81C\uC758 \uAC11\uC637"
+  statsList:
+  - valuetype: 0
+    caltype: 1
+    value: 20
+  - valuetype: 1
+    caltype: 0
+    value: 0.8
+  - valuetype: 2
+    caltype: 0
+    value: 20
+  itemDescription: "\uC628 \uBAB8\uC5D0 \uD798\uC774 \uC19F\uAD6C\uCE58\uB294 \uB290\uB08C\uC774
+    \uB4E0\uB2E4. \uC774 \uC804\uAE30 \uB098\uD55C\uD14C\uB294 \uC548\uD1B5\uD558\uB294
+    \uAC78\uAE4C?"
+  itemCost: 12000
+  needItem:
+  - {fileID: 11400000, guid: 26f090931466503429df67e827ef305c, type: 2}
+  - {fileID: 11400000, guid: 8f99e278e60981b4db3f35f1897b931f, type: 2}
+  - {fileID: 11400000, guid: 315bcfd4f54a7634bbd062bacd453d2e, type: 2}

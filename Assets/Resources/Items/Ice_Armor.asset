@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ea01d3ce1b0d2d49b7058b06eb87347, type: 3}
+  m_Name: Ice_Armor
+  m_EditorClassIdentifier: 
+  item: {fileID: 1908681017442960076, guid: 1dbe6dab029e4e9488520cc5765eff43, type: 3}
+  itemName: "\uC124\uC0B0\uC758 \uAC11\uC637"
+  statsList:
+  - valuetype: 3
+    caltype: 0
+    value: 100
+  - valuetype: 4
+    caltype: 0
+    value: 300
+  - valuetype: 5
+    caltype: 0
+    value: 5
+  itemDescription: "\uC5BC\uC74C \uC9C4\uC8FC\uB97C \uD1B5\uD574 \uBE59\uACB0\uC758
+    \uD798\uC774 \uAE43\uB4E4\uC5C8\uB2E4. \uCCA0\uC774 \uB179\uC9C0\uC54A\uB294
+    \uC5BC\uC74C\uC73C\uB85C \uBC14\uB00C\uC5C8\uB2E4."
+  itemCost: 5000
+  needItem:
+  - {fileID: 11400000, guid: 7783814cf843efc4cbafb9e122f13c2d, type: 2}
+  - {fileID: 11400000, guid: 415d1ebcb37c3e449bb4c9d47dd36a6b, type: 2}
