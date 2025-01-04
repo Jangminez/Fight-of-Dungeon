@@ -70,9 +70,14 @@ public class GameManager : MonoBehaviour
         player = GameObject.FindWithTag("Player").GetComponent<Player>();
         player.GetComponent<PlayerMovement>().enabled = true;
     }
-
     public void ChangeCharacter(string name)
     {
         playerPrefabName = name;
+    }
+
+    public void GameOver(ulong clinetId)
+    {
+        // 게임 종료시 발생되는 함수
+        Debug.Log("Game Over!");
     }
 }

@@ -19,7 +19,10 @@ public class BossAttack : NetworkBehaviour
 
     IEnumerator InitAttack()
     {
+        if(!IsServer) yield break;
+
         yield return null;
+
         _InRange = new List<Collider2D>();
         _damage = transform.parent.GetComponentInParent<Boss>().stat.attack * _multiple;
 
@@ -47,7 +50,6 @@ public class BossAttack : NetworkBehaviour
 
     private void OnTriggerExit2D(Collider2D col)
     {
-        
         if (IsServer && _isSpin)
         {
             _InRange.Remove(col);

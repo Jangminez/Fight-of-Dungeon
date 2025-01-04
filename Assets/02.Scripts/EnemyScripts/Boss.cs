@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -8,6 +7,9 @@ public class Boss : Enemy, IDamgeable
     public bool _isPattern;
     public bool _isStand;
     private float r_Pattern;
+
+    [SerializeField]
+    private ulong _lastAttackClientId;
 
     public override void OnNetworkSpawn()
     {
@@ -29,7 +31,7 @@ public class Boss : Enemy, IDamgeable
         MaxHp = 10000f;
         Hp = MaxHp;
 
-        stat.attack = 100f;
+        stat.attack = 1000f;
         stat.attackRange = 5f;
         stat.attackSpeed = 0.5f;
 
@@ -40,8 +42,9 @@ public class Boss : Enemy, IDamgeable
 
         stat.isDie = false;
 
-        anim.SetFloat("NormalState", 0f);
+        anim.SetFloat("RunState", 0f);
 
+        state = States.Idle;
         StartCoroutine("MonsterState");
     }
 
@@ -71,7 +74,7 @@ public class Boss : Enemy, IDamgeable
                     state = States.Chase;
                 }
 
-                if (timer > 5f)
+                if (timer > 5f && Vector2.Distance(_initTransform, transform.position) >= 0.5f)
                 {
                     state = States.Return;
                 }
@@ -124,7 +127,7 @@ public class Boss : Enemy, IDamgeable
 
                 rb.MovePosition(rb.position + nextVec);
 
-                if (Vector3.Distance(_initTransform, this.transform.position) < 0.1f)
+                if (Vector3.Distance(_initTransform, this.transform.position) < 0.5f)
                 {
                     state = States.Idle;
                     timer = 0f;
@@ -140,10 +143,13 @@ public class Boss : Enemy, IDamgeable
 
         state = States.Die;
         StopAllCoroutines();
+        GameManager.Instance.GameOver(_lastAttackClientId);
     }
 
     public override IEnumerator EnemyAttack()
     {
+        if(!IsServer) yield break;
+
         yield return new WaitForSeconds(0.1f);
         // 공격시 방향 전환 및 애니메이션 실행
         SetDirection();
@@ -184,6 +190,7 @@ public class Boss : Enemy, IDamgeable
     public void Hit(float damage)
     {
         TakeDamageServerRpc(damage);
+        SetLastAttackClientServerRpc();
     }
 
     public override IEnumerator HitEffect()
@@ -232,5 +239,12 @@ public class Boss : Enemy, IDamgeable
         yield return new WaitForSeconds(4f);
 
         _isAttack = false;
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void SetLastAttackClientServerRpc(ServerRpcParams rpcParams = default)
+    {
+        // 마지막으로 공격한 클라이언트의 아이디 저장
+        _lastAttackClientId = rpcParams.Receive.SenderClientId;
     }
 }
