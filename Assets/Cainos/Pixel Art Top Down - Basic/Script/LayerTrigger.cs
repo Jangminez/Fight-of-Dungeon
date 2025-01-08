@@ -34,6 +34,5 @@ namespace Cainos.PixelArtTopDown_Basic
                 }
             }
         }
-
     }
 }

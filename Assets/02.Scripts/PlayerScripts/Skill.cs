@@ -3,10 +3,10 @@ using UnityEngine.UI;
 using UnityEngine;
 using System.Collections.Generic;
 using Unity.Netcode;
+using UnityEngine.EventSystems;
 
 public abstract class Skill : NetworkBehaviour
 {
-    //protected enum SkillType {Attack, Buff};
     public string skillName; // 스킬 이름
     [TextArea(3, 10)]
     public string skillDesc; // 스킬 설명
@@ -86,3 +86,6 @@ public abstract class Skill : NetworkBehaviour
             }
     }
 }
+
+
+

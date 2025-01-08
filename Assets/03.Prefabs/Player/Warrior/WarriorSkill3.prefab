@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7398619740636791625}
   - component: {fileID: 5450655433857660337}
   - component: {fileID: 4047627128320636931}
+  - component: {fileID: 78078608116067772}
   m_Layer: 0
   m_Name: WarriorSkill3
   m_TagString: Untagged
@@ -155,12 +156,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac470af536385a247bcdbc8b00095be5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skillName: 
+  skillDesc: 
+  skillCD: 
   _icon: {fileID: 2128082488, guid: 8f7953b86df2c314bac4e500f7648a12, type: 3}
   _CD: {fileID: 0}
+  useMp: 0
   _info:
     damage: 0
+    interval: 0
     coolDown: 0
     duration: 0
     collider: {fileID: 0}
-    isAttack: 0
-    montsterInRage: []
+    montsterInRange: []
+--- !u!114 &78078608116067772
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1446697348633734574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 951099334
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1

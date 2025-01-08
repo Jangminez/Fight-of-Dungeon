@@ -79,7 +79,7 @@ public class Boss : Enemy, IDamgeable
                     state = States.Return;
                 }
             }
-            else if (state == States.Chase)
+            else if (state == States.Chase && _isStand)
             {
                 if (_target == null)
                     state = States.Idle;

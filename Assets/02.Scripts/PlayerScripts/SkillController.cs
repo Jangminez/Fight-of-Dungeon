@@ -17,7 +17,7 @@ public class SkillController : NetworkBehaviour
         {
             UIManager.Instance.skillButtons[i].onClick.AddListener(_skills[i].UseSkill);
             UIManager.Instance.skillButtons[i].image.sprite = _skills[i]._icon;
-            _skills[i]._CD = UIManager.Instance.skillButtons[i].transform.parent.GetChild(1).GetComponent<Image>();
+            _skills[i]._CD = UIManager.Instance.skillButtons[i].transform.parent.GetChild(2).GetComponent<Image>();
             
             Text[] texts = UIManager.Instance.Descriptions[i].GetComponentsInChildren<Text>();
 
