@@ -115,7 +115,8 @@ public abstract class Enemy : NetworkBehaviour
 
                 if (timer > 5f)
                 {
-                    Hp = MaxHp;
+                    timer = 0f;
+                    state = States.Return;
                 }
             }
 

@@ -1,33 +1,33 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.Netcode;
 using UnityEngine;
 
-public class WarlockSkill3 : Skill
+public class ArcherSkill3 : Skill
 {
-    public GameObject _attack;
     private Player player;
 
     [System.Serializable]
     struct SkillInfo
     {
         public float damage; // 스킬 데미지
-        public float interval; // 공격 간격
+        public float interval; // 스킬 데미지 간격
         public float coolDown; // 쿨타임
         public float duration; // 지속시간
         public Collider2D collider; // 콜라이더 
         public List<Collider2D> montsterInRange; // 범위 안에 존재하는 몬스터 관리용
+
     }
     [SerializeField] SkillInfo _info;
+    private float time;
 
     void Awake()
     {
         // 스킬 정보 초기화
-        _info.damage = 0.8f;
-        _info.interval = 1.5f;
-        _info.coolDown = 50f;
-        _info.duration = 12f;
-        useMp = 20f;
+        _info.damage = 0.7f;
+        _info.interval = 0.2f;
+        _info.coolDown = 10f;
+        _info.duration = 10f;
+        useMp = 15f;
         _info.collider = GetComponent<Collider2D>();
         _info.collider.enabled = false;
         _info.montsterInRange = new List<Collider2D>();
@@ -36,12 +36,28 @@ public class WarlockSkill3 : Skill
     {
         if (!IsOwner) yield break;
 
+        player = GameManager.Instance.player;
+
         // 쿨다운 시작
         StartCoroutine(CoolDown(_info.coolDown));
 
         // 지속시간이 끝나면 콜라이더 비활성화
         _info.collider.enabled = true;
-        yield return new WaitForSeconds(_info.duration);
+
+        while (time < _info.duration)
+        {
+            time += 0.1f;
+
+            if (player._target != null)
+            {
+                Vector3 direction = (player._target.position - player.transform.position).normalized;
+                float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+                this.transform.rotation = Quaternion.Euler(0, 0, angle - 90);
+            }
+
+            yield return new WaitForSeconds(0.1f);
+        }
+
         _info.collider.enabled = false;
 
         // 애니메이션 중지
@@ -49,6 +65,8 @@ public class WarlockSkill3 : Skill
         {
             anim.SetTrigger("End");
         }
+
+        time = 0f;
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -61,6 +79,7 @@ public class WarlockSkill3 : Skill
             _info.montsterInRange.Add(other);
             StartCoroutine(SkillDamage(other));
         }
+
     }
 
     void OnTriggerExit2D(Collider2D other)
@@ -86,31 +105,22 @@ public class WarlockSkill3 : Skill
         {
             if (enemy != null)
             {
-                SpawnAttackServerRpc(other.transform.position + new Vector3(0f, 1f, 0f)); // 공격 이펙트 소환
-
-                for (int i = 0; i < 5; i++)
+                if (other.tag == "Player")
                 {
-                    cri = Random.Range(1f, 101f); // 1 ~ 100 확률 지정
-
-                    // cri의 값이 크리티컬 범위 안에 존재한다면 크리티컬 공격
-                    if (other.tag == "Player")
-                    {
-                        player.AttackPlayerServerRpc(damage:
-                        cri <= player.Critical ?
-                        player.FinalAttack * 1.5f :
-                        player.FinalAttack);
-                    }
-                    else
-                    {
-                        other.GetComponent<IDamgeable>().Hit(damage:
-                        cri <= player.Critical ?
-                        player.FinalAttack * 1.5f :
-                        player.FinalAttack);
-                    }
-
-                    yield return new WaitForSeconds(0.2f);
+                    player.AttackPlayerServerRpc(damage:
+                    cri <= player.Critical ?
+                    player.FinalAttack * 1.5f :
+                    player.FinalAttack);
+                }
+                else
+                {
+                    other.GetComponent<IDamgeable>().Hit(damage:
+                    cri <= player.Critical ?
+                    player.FinalAttack * _info.damage * 1.5f :
+                    player.FinalAttack * _info.damage);
                 }
             }
+
             yield return new WaitForSeconds(_info.interval);
         }
 
@@ -121,34 +131,9 @@ public class WarlockSkill3 : Skill
             {
                 anim.SetTrigger("End");
             }
+            time = 0f;
         }
 
         StopCoroutine(SkillDamage(other));
-    }
-
-    [ServerRpc(RequireOwnership = false)]
-    private void SpawnAttackServerRpc(Vector3 targetPosition, ServerRpcParams rpcParams = default)
-    {
-        GameObject attack = Instantiate(_attack, targetPosition, Quaternion.identity);
-        attack.GetComponent<NetworkObject>().SpawnWithOwnership(rpcParams.Receive.SenderClientId);
-
-        SetAttackClientRpc(attack.GetComponent<NetworkObject>().NetworkObjectId);
-        Destroy(attack, 0.9f);
-    }
-
-    [ClientRpc]
-    private void SetAttackClientRpc(ulong objectId)
-    {
-        if (NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(objectId, out var attackObject))
-        {
-            if (attackObject.OwnerClientId == NetworkManager.Singleton.LocalClientId)
-            {
-                // 공격 생성 및 적용
-                Attack attack = attackObject.GetComponent<Attack>();
-                attack.skillDamage = _info.damage;
-
-                Destroy(attack, 0.9f);
-            }
-        }
     }
 }

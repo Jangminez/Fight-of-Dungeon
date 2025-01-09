@@ -182,8 +182,6 @@ public class Pumkin : Enemy, IDamgeable
                 {
                     timer = 0f;
                     state = States.Return;
-
-                    Hp = MaxHp;
                 }
             }
 

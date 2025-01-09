@@ -7,7 +7,7 @@ public class ArcherSkill2 : Skill
 {
     public GameObject _attack;
     private Player player;
-    
+
     [System.Serializable]
     struct SkillInfo
     {
@@ -25,15 +25,17 @@ public class ArcherSkill2 : Skill
 
     public override IEnumerator SkillProcess()
     {
-        if(!IsOwner && player._target == null) yield break;
-
-        // 쿨타임 시작
-        StartCoroutine(CoolDown(_info.coolDown));
-
+        if (!IsOwner) yield break;
         player = GameManager.Instance.player;
-        
+
         // 스킬 이펙트 소환
-        SpawnAttackServerRpc(player._target.position + new Vector3(-0.5f, 1f));
+        if (player._target != null)
+        {
+            // 쿨타임 시작
+            StartCoroutine(CoolDown(_info.coolDown));
+
+            SpawnAttackServerRpc(player._target.position + new Vector3(-0.5f, 1f));
+        }
     }
 
     [ServerRpc(RequireOwnership = false)]
@@ -45,7 +47,7 @@ public class ArcherSkill2 : Skill
         SetAttackClientRpc(attack.GetComponent<NetworkObject>().NetworkObjectId);
         Destroy(attack, 2.5f);
     }
-    
+
     [ClientRpc]
     private void SetAttackClientRpc(ulong objectId)
     {
