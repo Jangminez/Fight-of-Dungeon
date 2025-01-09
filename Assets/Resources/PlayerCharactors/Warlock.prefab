@@ -362,8 +362,8 @@ Transform:
   m_GameObject: {fileID: 486881305489608416}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.846, z: 0}
-  m_LocalScale: {x: 1.3182, y: 1.3182, z: 1.3182}
+  m_LocalPosition: {x: 0, y: 1.319, z: 0}
+  m_LocalScale: {x: 1.0968214, y: 1.0968214, z: 1.0968214}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5238702439686641851}
@@ -431,7 +431,7 @@ Animator:
   m_GameObject: {fileID: 486881305489608416}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 7819b9d4bc48e3349873f23d0dafacd4, type: 2}
+  m_Controller: {fileID: 9100000, guid: fe6099f4cd398b9478fbc2da016ab1bf, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -455,10 +455,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skillName: "\uB05D\uC5C6\uB294 \uAC08\uB9DD"
-  skillDesc: "\uD751\uB9C8\uBC95\uC758 \uD798\uC744 \uC77C\uAE68\uC6CC \uB9C8\uBC95\uC0AC\uC758
-    \uC2E0\uCCB4\uB97C \uAC15\uD654\uD55C\uB2E4."
+  skillDesc: "\uD751\uB9C8\uBC95\uC758 \uD798\uC744 \uC77C\uAE68\uC6CC 20\uCD08 \uB3D9\uC548
+    \uACF5\uACA9\uB825 50%, \uACF5\uACA9\uC18D\uB3C4 20%, \uD06C\uB9AC\uD2F0\uCEEC
+    \uD655\uB960 5%\uAC00 \uC99D\uAC00\uD55C\uB2E4."
   skillCD: 30
-  _icon: {fileID: 964590095, guid: 666455f27205fe742b791d6fd5021c50, type: 3}
+  _icon: {fileID: -539110944, guid: 69a2841193184aa4096d6b89cc005109, type: 3}
   _CD: {fileID: 0}
   useMp: 5
   _info:
@@ -483,7 +484,7 @@ MonoBehaviour:
   - IsCrossFadeExit: 0
     Layer: 0
     OriginatingState: -542986255
-    DestinationState: 1402878126
+    DestinationState: 1964318179
     TransitionDuration: 0.25
     TriggerNameHash: -1534899462
     TransitionIndex: 0
@@ -3231,8 +3232,8 @@ Transform:
   m_GameObject: {fileID: 7128941677296460376}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.027, y: -0.293, z: 0}
-  m_LocalScale: {x: 1.5280402, y: 1.5280402, z: 1.5280402}
+  m_LocalPosition: {x: 0.027, y: -0.734, z: 1.5241e-10}
+  m_LocalScale: {x: 1.663119, y: 1.9125867, z: 1.663119}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4031371429130059000}
@@ -4595,8 +4596,8 @@ CapsuleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.01711072, y: -0.49611533}
-  m_Size: {x: 4.8625555, y: 3.4020548}
+  m_Offset: {x: 0.017110702, y: -0.64455503}
+  m_Size: {x: 4.862556, y: 3.105185}
   m_Direction: 1
 --- !u!114 &1211489088145965781
 MonoBehaviour:

@@ -145,6 +145,8 @@ public class WarlockSkill3 : Skill
             {
                 // 공격 생성 및 적용
                 Attack attack = attackObject.GetComponent<Attack>();
+                attack.skillDamage = _info.damage;
+                
                 Destroy(attack, 0.9f);
             }
         }

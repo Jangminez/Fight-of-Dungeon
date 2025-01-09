@@ -21,16 +21,17 @@ public abstract class Skill : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-        if(!IsOwner){
+        if (!IsOwner)
+        {
             return;
         }
-        
+
         // 스킬 애니메이션을 위해 스킬의 애니메이터 추가
         _anims.Add(this.GetComponent<Animator>());
 
-        if(transform.childCount != 0)
+        if (transform.childCount != 0)
         {
-            for(int i = 0; i < transform.childCount; i++)
+            for (int i = 0; i < transform.childCount; i++)
             {
                 _anims.Add(transform.GetChild(i).GetComponent<Animator>());
             }
@@ -43,13 +44,16 @@ public abstract class Skill : NetworkBehaviour
     // 스킬 버튼과 연결된 함수로 버튼에 해당하는 스킬 작동
     public void UseSkill()
     {
-        if(IsOwner && !_isCoolDown && GameManager.Instance.player.Mp > useMp)
+        if (IsOwner && !_isCoolDown && GameManager.Instance.player.Mp > useMp)
         {
             GameManager.Instance.player.Mp -= useMp;
-            
-            foreach(var anim in _anims)
+
+            if (_anims != null)
             {
-                anim.SetTrigger("UseSkill");
+                foreach (var anim in _anims)
+                {
+                    anim.SetTrigger("UseSkill");
+                }
             }
 
             StartCoroutine(SkillProcess());
@@ -62,14 +66,14 @@ public abstract class Skill : NetworkBehaviour
     // 쿨타임 UI 표시
     public virtual IEnumerator CoolDown(float cd)
     {
-        if(!IsOwner) yield break;
+        if (!IsOwner) yield break;
 
         _isCoolDown = true;
         _cdText.gameObject.SetActive(true);
-        
+
         float timer = 0f;
-    
-        while(timer < cd)
+
+        while (timer < cd)
         {
             timer += 0.1f;
             _CD.fillAmount = (cd - timer) / cd;
@@ -80,10 +84,10 @@ public abstract class Skill : NetworkBehaviour
         _isCoolDown = false;
         _cdText.gameObject.SetActive(false);
 
-            foreach(var anim in _anims)
-            {
-                anim.ResetTrigger("UseSkill");
-            }
+        foreach (var anim in _anims)
+        {
+            anim.ResetTrigger("UseSkill");
+        }
     }
 }
 
