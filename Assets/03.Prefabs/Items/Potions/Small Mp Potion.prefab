@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 109258542659402265}
   - component: {fileID: 8048032456689609429}
   - component: {fileID: 555600827323031979}
+  - component: {fileID: 4168129387622578001}
   m_Layer: 5
   m_Name: Small Mp Potion
   m_TagString: Untagged
@@ -137,6 +138,20 @@ MonoBehaviour:
   _myItem: {fileID: 11400000, guid: 6e69a71497b720e47a979f77d9d035ef, type: 2}
   _information: {fileID: 0}
   _buyBtn: {fileID: 0}
+--- !u!114 &4168129387622578001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3385851761827145632}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da35f060ea2f83a459bed94b52fe4471, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _type: 1
+  _value: 50
 --- !u!1 &9081336012350779743
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &2799090653254698547
+--- !u!1 &1358935575240201912
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,11 +8,11 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5302759454818231572}
-  - component: {fileID: 3099986735106101171}
-  - component: {fileID: 7239509358881684100}
-  - component: {fileID: 840969014083804081}
-  - component: {fileID: 4793497846451342358}
+  - component: {fileID: 5977065555204948784}
+  - component: {fileID: 3235020400895584856}
+  - component: {fileID: 7554818960435210937}
+  - component: {fileID: 4255355182950053101}
+  - component: {fileID: 1221714322955023281}
   m_Layer: 5
   m_Name: Strange_elixir
   m_TagString: Untagged
@@ -20,19 +20,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!224 &5302759454818231572
+--- !u!224 &5977065555204948784
 RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2799090653254698547}
+  m_GameObject: {fileID: 1358935575240201912}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 7021663485583819780}
+  - {fileID: 4282864799623075376}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
@@ -40,21 +40,21 @@ RectTransform:
   m_AnchoredPosition: {x: 130, y: -165}
   m_SizeDelta: {x: 230, y: 230}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &3099986735106101171
+--- !u!222 &3235020400895584856
 CanvasRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2799090653254698547}
+  m_GameObject: {fileID: 1358935575240201912}
   m_CullTransparentMesh: 1
---- !u!114 &7239509358881684100
+--- !u!114 &7554818960435210937
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2799090653254698547}
+  m_GameObject: {fileID: 1358935575240201912}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
@@ -78,13 +78,13 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &840969014083804081
+--- !u!114 &4255355182950053101
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2799090653254698547}
+  m_GameObject: {fileID: 1358935575240201912}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
@@ -118,26 +118,26 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 7239509358881684100}
+  m_TargetGraphic: {fileID: 7554818960435210937}
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &4793497846451342358
+--- !u!114 &1221714322955023281
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2799090653254698547}
+  m_GameObject: {fileID: 1358935575240201912}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 91e6e2f76cab8ec4b96bd0b8db4d800d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _myItem: {fileID: 11400000, guid: 1e1196b3679314740b8e39fa1c5baea5, type: 2}
+  _myItem: {fileID: 11400000, guid: 4b6e3c5590ca9084ba3c92ade45379f3, type: 2}
   _information: {fileID: 0}
   _buyBtn: {fileID: 0}
---- !u!1 &7597319302571617748
+--- !u!1 &7462237149138377894
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -145,9 +145,9 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7021663485583819780}
-  - component: {fileID: 89124543607806670}
-  - component: {fileID: 8804807926165477234}
+  - component: {fileID: 4282864799623075376}
+  - component: {fileID: 7248207452524037790}
+  - component: {fileID: 5148913422574284018}
   m_Layer: 5
   m_Name: Icon
   m_TagString: Untagged
@@ -155,40 +155,40 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!224 &7021663485583819780
+--- !u!224 &4282864799623075376
 RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7597319302571617748}
+  m_GameObject: {fileID: 7462237149138377894}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 5302759454818231572}
+  m_Father: {fileID: 5977065555204948784}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 200, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &89124543607806670
+--- !u!222 &7248207452524037790
 CanvasRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7597319302571617748}
+  m_GameObject: {fileID: 7462237149138377894}
   m_CullTransparentMesh: 1
---- !u!114 &8804807926165477234
+--- !u!114 &5148913422574284018
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7597319302571617748}
+  m_GameObject: {fileID: 7462237149138377894}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
