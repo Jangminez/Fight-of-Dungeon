@@ -25,7 +25,6 @@ public class Goblin : Enemy, IDamgeable
 
         else
         {
-            anim.SetTrigger("Respawn");
             _isAttack = false;
             RespawnClientRpc();
             state = States.Idle;
@@ -132,5 +131,10 @@ public class Goblin : Enemy, IDamgeable
             
             arrow.GetComponent<Rigidbody2D>().velocity = direction * 10f;
         }
+    }
+
+    public bool DieCheck()
+    {
+        return stat.isDie;
     }
 }

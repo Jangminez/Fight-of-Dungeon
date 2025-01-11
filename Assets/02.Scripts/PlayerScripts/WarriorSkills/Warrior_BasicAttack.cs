@@ -46,7 +46,7 @@ public class Warrior_BasicAttack : PlayerAttackController
         attack.GetComponent<NetworkObject>().SpawnWithOwnership(rpcParams.Receive.SenderClientId);
     
         SetAttackClientRpc(attack.GetComponent<NetworkObject>().NetworkObjectId);
-        Destroy(attack, 0.5f);
+        StartCoroutine(DeSpawnAttack(attack, 0.5f));
     }
 
     [ClientRpc]
@@ -59,7 +59,6 @@ public class Warrior_BasicAttack : PlayerAttackController
                 // 공격 생성 및 적용
                 Attack attack = attackObject.GetComponent<Attack>();
                 attack.GetComponent<Animator>().SetFloat("Attack", Random.Range(0, 2)); // 공격 이펙트 랜덤 설정
-                Destroy(attack, 0.5f);
             }
         }
     }

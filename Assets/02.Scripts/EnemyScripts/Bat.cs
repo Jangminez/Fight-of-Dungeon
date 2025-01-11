@@ -84,7 +84,7 @@ public class Bat : Enemy, IDamgeable
         state = States.Die;
         anim.SetFloat("RunState", 0f);
         anim.ResetTrigger("Hit");
-        
+
         StopAllCoroutines();
         //NetworkObjectPool.Instance.ReturnNetworkObject(GetComponent<NetworkObject>(), prefab);
     }
@@ -102,6 +102,10 @@ public class Bat : Enemy, IDamgeable
         }
     }
 
+    public bool DieCheck()
+    {
+        return stat.isDie;
+    }
 }
 
 

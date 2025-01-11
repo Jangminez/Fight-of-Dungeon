@@ -25,7 +25,7 @@ public class ArcherSkill3 : Skill
         // 스킬 정보 초기화
         _info.damage = 0.7f;
         _info.interval = 0.2f;
-        _info.coolDown = 10f;
+        _info.coolDown = 40f;
         _info.duration = 10f;
         useMp = 15f;
         _info.collider = GetComponent<Collider2D>();
@@ -103,7 +103,7 @@ public class ArcherSkill3 : Skill
         // 플레이어가 살아있고 몬스터가 범위 안에 있다면 데미지 부여
         while (_info.montsterInRange.Contains(other) && !GameManager.Instance.player.Die)
         {
-            if (enemy != null)
+            if (enemy != null && !enemy.DieCheck())
             {
                 if (other.tag == "Player")
                 {

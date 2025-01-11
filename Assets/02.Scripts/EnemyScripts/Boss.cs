@@ -227,7 +227,7 @@ public class Boss : Enemy, IDamgeable
     {
         anim.SetTrigger("JumpAttack");
         stat.speed = 0f;
-        
+
         yield return new WaitForSeconds(1f);
 
         GetComponent<Collider2D>().enabled = false;
@@ -261,5 +261,10 @@ public class Boss : Enemy, IDamgeable
     {
         // 마지막으로 공격한 클라이언트의 아이디 저장
         _lastAttackClientId = rpcParams.Receive.SenderClientId;
+    }
+
+    public bool DieCheck()
+    {
+        return stat.isDie;
     }
 }

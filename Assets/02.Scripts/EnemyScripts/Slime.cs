@@ -23,7 +23,6 @@ public class Slime : Enemy, IDamgeable
 
         else
         {
-            anim.SetTrigger("Respawn");
             _isAttack = false;
             RespawnClientRpc();
             state = States.Idle;
@@ -107,5 +106,9 @@ public class Slime : Enemy, IDamgeable
         }
     }
 
+    public bool DieCheck()
+    {
+        return stat.isDie;
+    }
 }
 

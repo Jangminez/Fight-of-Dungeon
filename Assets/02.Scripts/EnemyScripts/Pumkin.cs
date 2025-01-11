@@ -38,7 +38,6 @@ public class Pumkin : Enemy, IDamgeable
             _indiOn = false;
             RespawnClientRpc();
             state = States.Idle;
-            anim.SetTrigger("Respawn");
         }
 
         //몬스터의 초기 스탯
@@ -307,5 +306,10 @@ public class Pumkin : Enemy, IDamgeable
     private void OffAttackIndicatorClientRpc()
     {
         _attackIndicator.SetActive(false);
+    }
+
+    public bool DieCheck()
+    {
+        return stat.isDie;
     }
 }

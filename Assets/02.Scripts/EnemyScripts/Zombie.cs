@@ -21,7 +21,6 @@ public class Zombie : Enemy, IDamgeable
 
         else
         {
-            anim.SetTrigger("Respawn");
             _isAttack = false;
             state = States.Idle;
             RespawnClientRpc();
@@ -119,5 +118,10 @@ public class Zombie : Enemy, IDamgeable
             if (_target != null && Vector2.Distance(_target.position, transform.position) < stat.attackRange)
                 AttackClientRpc(_target.GetComponent<NetworkObject>().OwnerClientId, stat.attack);
         }
+    }
+
+    public bool DieCheck()
+    {
+        return stat.isDie;
     }
 }

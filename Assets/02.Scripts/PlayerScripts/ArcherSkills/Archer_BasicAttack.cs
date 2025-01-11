@@ -46,7 +46,7 @@ public class Archer_BasicAttack : PlayerAttackController
         attack.GetComponent<NetworkObject>().SpawnWithOwnership(rpcParams.Receive.SenderClientId);
 
         SetAttackClientRpc(attack.GetComponent<NetworkObject>().NetworkObjectId);
-        Destroy(attack, 0.5f);
+        StartCoroutine(DeSpawnAttack(attack, 0.7f));
     }
 
     [ClientRpc]
@@ -59,12 +59,13 @@ public class Archer_BasicAttack : PlayerAttackController
                 // 공격 생성 및 적용
                 Attack attack = attackObject.GetComponent<Attack>();
 
-                Vector3 direction = (player._target.position - _tip.position).normalized;
-                float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-                attack.transform.rotation = Quaternion.Euler(0, 0, angle);
-                attack.GetComponent<Rigidbody2D>().velocity = direction * 10f;
-
-                Destroy(attack, 0.5f);
+                if (player._target != null)
+                {
+                    Vector3 direction = (player._target.position - _tip.position).normalized;
+                    float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+                    attack.transform.rotation = Quaternion.Euler(0, 0, angle);
+                    attack.GetComponent<Rigidbody2D>().velocity = direction * 10f;
+                }
             }
         }
     }

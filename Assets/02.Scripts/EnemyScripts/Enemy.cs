@@ -322,6 +322,7 @@ public abstract class Enemy : NetworkBehaviour
     {
         GetComponent<Collider2D>().enabled = true;
         gameObject.SetActive(true);
+        anim.SetTrigger("Respawn");
     }
 
     IEnumerator DeSpawnEnemy(NetworkObject obj, GameObject prefab, float time)
