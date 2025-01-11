@@ -85,7 +85,7 @@ public class Bat : Enemy, IDamgeable
         anim.SetFloat("RunState", 0f);
 
         StopAllCoroutines();
-        NetworkObjectPool.Instance.ReturnNetworkObject(GetComponent<NetworkObject>(), prefab);
+        //NetworkObjectPool.Instance.ReturnNetworkObject(GetComponent<NetworkObject>(), prefab);
     }
 
     public override void Movement_Anim()

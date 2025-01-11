@@ -131,8 +131,8 @@ public class WarlockSkill3 : Skill
     {
         GameObject attack = Instantiate(_attack, targetPosition, Quaternion.identity);
         attack.GetComponent<NetworkObject>().SpawnWithOwnership(rpcParams.Receive.SenderClientId);
-        
-        DeSpawnObject(attack, 0.9f);
+
+        StartCoroutine(DeSpawnObject(attack, 0.9f));
     }
 
     IEnumerator DeSpawnObject(GameObject obj, float time)

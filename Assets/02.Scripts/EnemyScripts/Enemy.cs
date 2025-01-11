@@ -293,7 +293,8 @@ public abstract class Enemy : NetworkBehaviour
             anim.SetTrigger("Die");
 
             Die();
-            NetworkMonsterSpawner.Instance.DespawnMonster(GetComponent<NetworkObject>(), prefab);
+
+            StartCoroutine(DeSpawnEnemy(GetComponent<NetworkObject>(), prefab, 3f));
             DieClientRpc(rpcParams.Receive.SenderClientId);
         }
     }
@@ -305,13 +306,27 @@ public abstract class Enemy : NetworkBehaviour
         if (NetworkManager.Singleton.LocalClientId == lastAttackClient)
             GiveExpGoldServerRpc(lastAttackClient);
 
+        GetComponent<Collider2D>().enabled = false;
+    }
+
+    [ClientRpc]
+    protected void ActiveFalseClientRpc()
+    {
         gameObject.SetActive(false);
     }
 
     [ClientRpc]
     protected void RespawnClientRpc()
     {
+        GetComponent<Collider2D>().enabled = true;
         gameObject.SetActive(true);
+    }
+
+    IEnumerator DeSpawnEnemy(NetworkObject obj, GameObject prefab, float time)
+    {
+        yield return new WaitForSeconds(time);
+        ActiveFalseClientRpc();
+        NetworkMonsterSpawner.Instance.DespawnMonster(obj, prefab);
     }
 }
 

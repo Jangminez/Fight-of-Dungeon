@@ -227,12 +227,20 @@ public class Boss : Enemy, IDamgeable
     {
         anim.SetTrigger("JumpAttack");
         stat.speed = 0f;
+        
         yield return new WaitForSeconds(1f);
+
+        GetComponent<Collider2D>().enabled = false;
         stat.attackRange = 0f;
         stat.speed = 5f;
+
         yield return new WaitForSeconds(1f);
+
         stat.speed = 0f;
+
         yield return new WaitForSeconds(2f);
+
+        GetComponent<Collider2D>().enabled = true;
         stat.attackRange = 5f;
         stat.speed = 1.2f;
 

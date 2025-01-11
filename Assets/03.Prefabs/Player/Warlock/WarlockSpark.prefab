@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 5472850358956590946}
   - component: {fileID: 8848171142746849084}
   - component: {fileID: -4653885146245496805}
-  - component: {fileID: 8859947279128424995}
   m_Layer: 15
   m_Name: WarlockSpark
   m_TagString: Untagged
@@ -174,17 +173,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TransitionStateInfoList: []
   m_Animator: {fileID: 1020973523397319832}
---- !u!114 &8859947279128424995
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4889698412382106962}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 07e4133a4166b3947a4d66f80f332ae6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  type: 0
-  skillDamage: 0
