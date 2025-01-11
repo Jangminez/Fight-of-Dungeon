@@ -83,7 +83,8 @@ public class Bat : Enemy, IDamgeable
         // 몬스터 상태 Die로 설정 후 애니메이션 실행
         state = States.Die;
         anim.SetFloat("RunState", 0f);
-
+        anim.ResetTrigger("Hit");
+        
         StopAllCoroutines();
         //NetworkObjectPool.Instance.ReturnNetworkObject(GetComponent<NetworkObject>(), prefab);
     }

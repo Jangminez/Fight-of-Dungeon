@@ -38,7 +38,6 @@ public class Pumkin : Enemy, IDamgeable
             _indiOn = false;
             RespawnClientRpc();
             state = States.Idle;
-            StartCoroutine("HitEffect");
             anim.SetTrigger("Respawn");
         }
 
@@ -102,6 +101,9 @@ public class Pumkin : Enemy, IDamgeable
             }
             Bat.GetComponent<Enemy>().InitMonster();
         }
+
+        anim.ResetTrigger("Hit");
+        anim.SetFloat("RunState", 0f);
 
         StopAllCoroutines();
     }

@@ -25,10 +25,10 @@ public class Goblin : Enemy, IDamgeable
 
         else
         {
+            anim.SetTrigger("Respawn");
             _isAttack = false;
             RespawnClientRpc();
             state = States.Idle;
-            anim.SetTrigger("Respawn");
         }
 
         MaxHp = 1000f;
@@ -76,6 +76,8 @@ public class Goblin : Enemy, IDamgeable
         stat.isDie = true;
 
         state = States.Die;
+        anim.ResetTrigger("Hit");
+        anim.SetFloat("RunState", 0f);
         StopAllCoroutines();
     }
     #endregion

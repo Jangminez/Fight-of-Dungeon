@@ -307,6 +307,8 @@ public abstract class Enemy : NetworkBehaviour
             GiveExpGoldServerRpc(lastAttackClient);
 
         GetComponent<Collider2D>().enabled = false;
+        GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+        GetComponent<Animator>().ResetTrigger("Respawn");
     }
 
     [ClientRpc]
