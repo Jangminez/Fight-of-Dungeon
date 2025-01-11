@@ -9,7 +9,7 @@ public abstract class Enemy : NetworkBehaviour
     protected SpriteRenderer spr;
     protected Rigidbody2D rb;
     protected Animator anim;
-    public Vector3 _initTransform;
+    public Vector3 _initTransform;      
     public enum States { Idle, Chase, Attack, Return, Die }
     public States state;
 
@@ -113,12 +113,10 @@ public abstract class Enemy : NetworkBehaviour
                     state = States.Chase;
                 }
 
-                if (timer > 5f && Vector3.Distance(_initTransform, this.transform.position) > 0.4f)
+                if (timer > 5f)
                 {
                     timer = 0f;
                     state = States.Return;
-
-                    Hp = MaxHp;
                 }
             }
 
@@ -178,7 +176,6 @@ public abstract class Enemy : NetworkBehaviour
     }
     // 몬스터 초기화 함수
     public abstract void InitMonster();
-    public abstract void Hit(float damage);
 
     public abstract IEnumerator HitEffect();
     public abstract void Die();
@@ -219,8 +216,7 @@ public abstract class Enemy : NetworkBehaviour
             else
             {
                 anim.transform.localScale = new Vector3(-anim.transform.localScale.x, anim.transform.localScale.y, 1f);
-                _canvas.localScale = _initCanvasScale;
-                
+                _canvas.localScale = new Vector3(-_initCanvasScale.x, _initCanvasScale.y, _initCanvasScale.z);
             }
         }
 
@@ -229,7 +225,7 @@ public abstract class Enemy : NetworkBehaviour
             if (anim.transform.localScale.x < 0)
             {
                 anim.transform.localScale = new Vector3(-anim.transform.localScale.x, anim.transform.localScale.y, 1f);
-                _canvas.localScale = new Vector3(-_initCanvasScale.x, _initCanvasScale.y, _initCanvasScale.z);
+                _canvas.localScale = _initCanvasScale;
             }
 
             else
@@ -305,7 +301,7 @@ public abstract class Enemy : NetworkBehaviour
     [ClientRpc]
     protected void DieClientRpc(ulong lastAttackClient)
     {
-        // 경험치랑 골드 지급
+        // 처치한 클라이언트에게 경험치랑 골드 지급
         if (NetworkManager.Singleton.LocalClientId == lastAttackClient)
             GiveExpGoldServerRpc(lastAttackClient);
 

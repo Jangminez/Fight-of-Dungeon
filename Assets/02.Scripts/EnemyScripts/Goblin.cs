@@ -4,7 +4,7 @@ using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
 
-public class Goblin : Enemy
+public class Goblin : Enemy, IDamgeable
 {
     public GameObject _arrow;
     public Transform _tip;
@@ -26,7 +26,6 @@ public class Goblin : Enemy
         else
         {
             _isAttack = false;
-            transform.position = _initTransform;
             RespawnClientRpc();
             state = States.Idle;
             anim.SetTrigger("Respawn");
@@ -56,7 +55,7 @@ public class Goblin : Enemy
     }
 
     #region 피격 및 사망 처리
-    public override void Hit(float damage)
+    public void Hit(float damage)
     {
         anim.SetTrigger("Hit");
         StopCoroutine("EnemyAttack");

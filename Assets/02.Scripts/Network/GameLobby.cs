@@ -108,6 +108,7 @@ public class GameLobby : MonoBehaviour
 
     private void CheckPlayerCount()
     {
+        // 연결된 플레이어의 수를 확인 후 조건이 충족되면 게임시작
         if (previousPlayerList == null)
         {
             previousPlayerList = new List<Unity.Services.Lobbies.Models.Player>(joinedLobby.Players);
@@ -123,14 +124,15 @@ public class GameLobby : MonoBehaviour
 
     public async void CreateLobby()
     {
+        // 로비 생성 및 설정
         try
         {
-            string lobbyName = "MyLobby";
+            string lobbyName = "GameLobby";
             int maxPlayers = 2;
 
             CreateLobbyOptions createLobbyOptions = new CreateLobbyOptions
             {
-                IsPrivate = false,
+                IsPrivate = false,  // true로 변경 시 비공개 로비 생성 (입장코드를 통해서만 입장가능)
                 Player = GetPlayer(),
                 Data = new Dictionary<string, DataObject> {
                     { KEY_START_GAME, new DataObject(DataObject.VisibilityOptions.Member, "0")}
