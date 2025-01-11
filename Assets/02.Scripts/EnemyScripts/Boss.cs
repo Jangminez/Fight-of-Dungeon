@@ -148,7 +148,7 @@ public class Boss : Enemy, IDamgeable
 
     public override IEnumerator EnemyAttack()
     {
-        if(!IsServer) yield break;
+        if (!IsServer) yield break;
 
         yield return new WaitForSeconds(0.1f);
         // 공격시 방향 전환 및 애니메이션 실행
@@ -226,8 +226,15 @@ public class Boss : Enemy, IDamgeable
     private IEnumerator Boss_JumpAttack()
     {
         anim.SetTrigger("JumpAttack");
-
-        yield return new WaitForSeconds(4f);
+        stat.speed = 0f;
+        yield return new WaitForSeconds(1f);
+        stat.attackRange = 0f;
+        stat.speed = 5f;
+        yield return new WaitForSeconds(1f);
+        stat.speed = 0f;
+        yield return new WaitForSeconds(2f);
+        stat.attackRange = 5f;
+        stat.speed = 1.2f;
 
         _isAttack = false;
     }
