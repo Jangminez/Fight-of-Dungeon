@@ -88,6 +88,8 @@ GameObject:
   - component: {fileID: 2505194006272555113}
   - component: {fileID: 5009984444398776065}
   - component: {fileID: 8111846988028257458}
+  - component: {fileID: -8891610699356660474}
+  - component: {fileID: -5375114733461213373}
   m_Layer: 5
   m_Name: Ice_sword
   m_TagString: Untagged
@@ -143,8 +145,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -1061235666, guid: d71a3dc7aa20fad4f9a99fc76a9254ba, type: 3}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: ecdeaabe7b4719d40b38f2c784d55cc8, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -212,3 +214,32 @@ MonoBehaviour:
   _myItem: {fileID: 11400000, guid: b7c1a596250fe5f4bbab81ab06bf3a43, type: 2}
   _information: {fileID: 0}
   _buyBtn: {fileID: 0}
+--- !u!114 &-8891610699356660474
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3923125830136750951}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a81b4485f2b89c43a1c1d92d1e881ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _preParent: {fileID: 0}
+--- !u!114 &-5375114733461213373
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3923125830136750951}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5c030891a35267478e3790abd32d3bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isComsumable: 0
+  _item: {fileID: 11400000, guid: b7c1a596250fe5f4bbab81ab06bf3a43, type: 2}
+  _slotBtn: {fileID: 0}
+  _useBtn: {fileID: 0}
