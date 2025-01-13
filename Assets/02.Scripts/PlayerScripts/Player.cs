@@ -425,6 +425,7 @@ public abstract class Player : NetworkBehaviour, IDamgeable
 
     IEnumerator Respawn()
     {
+        // 플레이어 Respawn
         if(!IsOwner) yield break;
 
         yield return new WaitForSeconds(5f);
@@ -561,6 +562,10 @@ public abstract class Player : NetworkBehaviour, IDamgeable
 
         StartCoroutine("Regen");
     }
+    public bool DieCheck()
+    {
+        return Die;
+    }
     #endregion
 
     #region 테스트용 함수
@@ -607,6 +612,7 @@ public abstract class Player : NetworkBehaviour, IDamgeable
         MpRegen += 100f;
         Speed += 3f;
     }
+
     #endregion
 }
  

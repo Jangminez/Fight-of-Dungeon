@@ -39,6 +39,7 @@ public abstract class Skill : NetworkBehaviour
 
         // 쿨타임 텍스트로 표시하기 위한 UI
         _cdText = _CD.transform.GetChild(0).GetComponent<Text>();
+        _CD.transform.GetChild(0).gameObject.SetActive(false);
     }
 
     // 스킬 버튼과 연결된 함수로 버튼에 해당하는 스킬 작동

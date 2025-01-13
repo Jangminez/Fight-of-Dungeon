@@ -132,23 +132,12 @@ public class WarlockSkill3 : Skill
         GameObject attack = Instantiate(_attack, targetPosition, Quaternion.identity);
         attack.GetComponent<NetworkObject>().SpawnWithOwnership(rpcParams.Receive.SenderClientId);
 
-        SetAttackClientRpc(attack.GetComponent<NetworkObject>().NetworkObjectId);
-        Destroy(attack, 0.9f);
+        StartCoroutine(DeSpawnObject(attack, 0.9f));
     }
 
-    [ClientRpc]
-    private void SetAttackClientRpc(ulong objectId)
+    IEnumerator DeSpawnObject(GameObject obj, float time)
     {
-        if (NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(objectId, out var attackObject))
-        {
-            if (attackObject.OwnerClientId == NetworkManager.Singleton.LocalClientId)
-            {
-                // 공격 생성 및 적용
-                Attack attack = attackObject.GetComponent<Attack>();
-                attack.skillDamage = _info.damage;
-
-                Destroy(attack, 0.9f);
-            }
-        }
+        yield return new WaitForSeconds(time);
+        obj.GetComponent<NetworkObject>().Despawn(true);
     }
 }

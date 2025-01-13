@@ -25,7 +25,7 @@ public class ArcherSkill3 : Skill
         // 스킬 정보 초기화
         _info.damage = 0.7f;
         _info.interval = 0.2f;
-        _info.coolDown = 10f;
+        _info.coolDown = 40f;
         _info.duration = 10f;
         useMp = 15f;
         _info.collider = GetComponent<Collider2D>();

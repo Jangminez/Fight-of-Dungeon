@@ -32,5 +32,11 @@ public abstract class PlayerAttackController : NetworkBehaviour
     }
 
     public abstract IEnumerator BasicAttack();
+
+    public IEnumerator DeSpawnAttack(GameObject obj, float time)
+    {
+        yield return new WaitForSeconds(time);
+        obj.GetComponent<NetworkObject>().Despawn(true);
+    }
 }
 

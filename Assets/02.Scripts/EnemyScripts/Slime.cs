@@ -23,7 +23,6 @@ public class Slime : Enemy, IDamgeable
 
         else
         {
-            anim.SetTrigger("Respawn");
             _isAttack = false;
             RespawnClientRpc();
             state = States.Idle;
@@ -85,7 +84,6 @@ public class Slime : Enemy, IDamgeable
     public override void Die()
     {
         Hp = 0f;
-        stat.isDie = true;
 
         // 몬스터 상태 Die로 설정 후 애니메이션 실행
         state = States.Die;
@@ -106,6 +104,5 @@ public class Slime : Enemy, IDamgeable
             anim.SetFloat("RunState", 0f);
         }
     }
-
 }
 

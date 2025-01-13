@@ -85,7 +85,7 @@ public class Boss : Enemy, IDamgeable
                     state = States.Idle;
 
                 // 타겟의 위치 확인 후 이동
-                Movement();
+                Movement(_target.position);
                 SetDirection();
 
                 if (
@@ -148,7 +148,7 @@ public class Boss : Enemy, IDamgeable
 
     public override IEnumerator EnemyAttack()
     {
-        if(!IsServer) yield break;
+        if (!IsServer) yield break;
 
         yield return new WaitForSeconds(0.1f);
         // 공격시 방향 전환 및 애니메이션 실행
@@ -226,8 +226,23 @@ public class Boss : Enemy, IDamgeable
     private IEnumerator Boss_JumpAttack()
     {
         anim.SetTrigger("JumpAttack");
+        stat.speed = 0f;
 
-        yield return new WaitForSeconds(4f);
+        yield return new WaitForSeconds(1f);
+
+        GetComponent<Collider2D>().enabled = false;
+        stat.attackRange = 0f;
+        stat.speed = 5f;
+
+        yield return new WaitForSeconds(1f);
+
+        stat.speed = 0f;
+
+        yield return new WaitForSeconds(2f);
+
+        GetComponent<Collider2D>().enabled = true;
+        stat.attackRange = 5f;
+        stat.speed = 1.2f;
 
         _isAttack = false;
     }
@@ -246,5 +261,10 @@ public class Boss : Enemy, IDamgeable
     {
         // 마지막으로 공격한 클라이언트의 아이디 저장
         _lastAttackClientId = rpcParams.Receive.SenderClientId;
+    }
+
+    public bool DieCheck()
+    {
+        return stat.isDie;
     }
 }

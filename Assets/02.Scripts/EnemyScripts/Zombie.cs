@@ -6,7 +6,7 @@ public class Zombie : Enemy, IDamgeable
 {
     public override void OnNetworkSpawn()
     {
-        if(!IsServer) return;
+        if (!IsServer) return;
 
         InitMonster();
     }
@@ -14,7 +14,7 @@ public class Zombie : Enemy, IDamgeable
     // 몬스터 초기화
     public override void InitMonster()
     {
-        if(!IsServer) return;
+        if (!IsServer) return;
 
         if (!stat.isDie)
             _initTransform = this.transform.position;
@@ -24,7 +24,7 @@ public class Zombie : Enemy, IDamgeable
             _isAttack = false;
             state = States.Idle;
             RespawnClientRpc();
-            anim.SetTrigger("Respawn");
+
         }
 
         MaxHp = 500f;
@@ -60,21 +60,22 @@ public class Zombie : Enemy, IDamgeable
 
     public override void Die()
     {
-        if(!IsServer) return;
+        if (!IsServer) return;
 
         Hp = 0f;
-        stat.isDie = true;
 
         state = States.Die;
+        anim.ResetTrigger("Hit");
+        anim.SetFloat("RunState", 0f);
         StopAllCoroutines();
     }
     #endregion
     // 이동 애니메이션
     public override void Movement_Anim()
     {
-        if(!IsServer) return;
+        if (!IsServer) return;
 
-        if(state == States.Chase || state == States.Return)
+        if (state == States.Chase || state == States.Return)
         {
             anim.SetFloat("RunState", 0.5f);
         }
@@ -87,16 +88,16 @@ public class Zombie : Enemy, IDamgeable
 
     public override IEnumerator EnemyAttack()
     {
-        if(!IsServer) yield break;
+        if (!IsServer) yield break;
 
-        while(_isAttack)
+        while (_isAttack)
         {
             // 공격시 방향 전환 및 애니메이션 실행
             SetDirection();
 
             int ran = Random.Range(0, 2);
 
-            if(ran == 0)
+            if (ran == 0)
                 anim.SetFloat("NormalState", 0f);
             else
                 anim.SetFloat("NormalState", 0.5f);
@@ -106,14 +107,14 @@ public class Zombie : Enemy, IDamgeable
             // 공격속도 지연
             yield return new WaitForSeconds(1 / stat.attackSpeed);
 
-            if(state != States.Attack) 
+            if (state != States.Attack)
             {
                 _isAttack = false;
                 _target = null;
                 yield break;
             }
 
-            if (_target != null && Vector2.Distance(_target.position , transform.position) < stat.attackRange)
+            if (_target != null && Vector2.Distance(_target.position, transform.position) < stat.attackRange)
                 AttackClientRpc(_target.GetComponent<NetworkObject>().OwnerClientId, stat.attack);
         }
     }
