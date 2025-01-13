@@ -78,7 +78,6 @@ public class Bat : Enemy, IDamgeable
     public override void Die()
     {
         Hp = 0f;
-        stat.isDie = true;
 
         // 몬스터 상태 Die로 설정 후 애니메이션 실행
         state = States.Die;
@@ -86,7 +85,6 @@ public class Bat : Enemy, IDamgeable
         anim.ResetTrigger("Hit");
 
         StopAllCoroutines();
-        //NetworkObjectPool.Instance.ReturnNetworkObject(GetComponent<NetworkObject>(), prefab);
     }
 
     public override void Movement_Anim()
@@ -100,11 +98,6 @@ public class Bat : Enemy, IDamgeable
         {
             anim.SetFloat("RunState", 0f);
         }
-    }
-
-    public bool DieCheck()
-    {
-        return stat.isDie;
     }
 }
 

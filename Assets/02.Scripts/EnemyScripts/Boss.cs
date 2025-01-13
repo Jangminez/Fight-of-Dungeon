@@ -85,7 +85,7 @@ public class Boss : Enemy, IDamgeable
                     state = States.Idle;
 
                 // 타겟의 위치 확인 후 이동
-                Movement();
+                Movement(_target.position);
                 SetDirection();
 
                 if (

@@ -103,7 +103,7 @@ public class ArcherSkill3 : Skill
         // 플레이어가 살아있고 몬스터가 범위 안에 있다면 데미지 부여
         while (_info.montsterInRange.Contains(other) && !GameManager.Instance.player.Die)
         {
-            if (enemy != null && !enemy.DieCheck())
+            if (enemy != null)
             {
                 if (other.tag == "Player")
                 {

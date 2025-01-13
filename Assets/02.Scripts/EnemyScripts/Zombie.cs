@@ -63,7 +63,6 @@ public class Zombie : Enemy, IDamgeable
         if (!IsServer) return;
 
         Hp = 0f;
-        stat.isDie = true;
 
         state = States.Die;
         anim.ResetTrigger("Hit");
@@ -118,10 +117,5 @@ public class Zombie : Enemy, IDamgeable
             if (_target != null && Vector2.Distance(_target.position, transform.position) < stat.attackRange)
                 AttackClientRpc(_target.GetComponent<NetworkObject>().OwnerClientId, stat.attack);
         }
-    }
-
-    public bool DieCheck()
-    {
-        return stat.isDie;
     }
 }

@@ -84,14 +84,12 @@ public class WarlockSkill3 : Skill
         // 플레이어가 살아있고 몬스터가 범위 안에 있다면 데미지 부여
         while (_info.montsterInRange.Contains(other) && !GameManager.Instance.player.Die)
         {
-            if (enemy != null && !enemy.DieCheck())
+            if (enemy != null)
             {
                 SpawnAttackServerRpc(other.transform.position + new Vector3(0f, 1f, 0f)); // 공격 이펙트 소환
 
                 for (int i = 0; i < 5; i++)
                 {
-                    if(enemy.DieCheck()) continue;
-                    
                     cri = Random.Range(1f, 101f); // 1 ~ 100 확률 지정
 
                     // cri의 값이 크리티컬 범위 안에 존재한다면 크리티컬 공격

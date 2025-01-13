@@ -72,7 +72,6 @@ public class Goblin : Enemy, IDamgeable
         if(!IsServer) return;
 
         Hp = 0f;
-        stat.isDie = true;
 
         state = States.Die;
         anim.ResetTrigger("Hit");
@@ -131,10 +130,5 @@ public class Goblin : Enemy, IDamgeable
             
             arrow.GetComponent<Rigidbody2D>().velocity = direction * 10f;
         }
-    }
-
-    public bool DieCheck()
-    {
-        return stat.isDie;
     }
 }

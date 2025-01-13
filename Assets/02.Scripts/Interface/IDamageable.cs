@@ -5,5 +5,4 @@ using UnityEngine;
 public interface IDamgeable
 {
     void Hit(float damage);
-    bool DieCheck();
 }

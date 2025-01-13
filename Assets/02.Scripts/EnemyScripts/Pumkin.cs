@@ -80,7 +80,6 @@ public class Pumkin : Enemy, IDamgeable
         if (!IsServer) return;
 
         Hp = 0f;
-        stat.isDie = true;
 
         state = States.Die;
 
@@ -88,7 +87,17 @@ public class Pumkin : Enemy, IDamgeable
 
         int random_count = Random.Range(1, 4);
 
-        for(int i = 0; i < random_count; i++)
+        StartCoroutine(SpawnBats(random_count));
+
+        anim.ResetTrigger("Hit");
+        anim.SetFloat("RunState", 0f);
+    }
+
+    IEnumerator SpawnBats(int count)
+    {
+        yield return new WaitForSeconds(1f);
+
+        for(int i = 0; i < count; i++)
         {
             // 랜덤 개수로 박쥐 소환
             NetworkObject Bat = NetworkObjectPool.Instance.GetNetworkObject(_batPrefab, transform.position, Quaternion.identity);
@@ -100,11 +109,6 @@ public class Pumkin : Enemy, IDamgeable
             }
             Bat.GetComponent<Enemy>().InitMonster();
         }
-
-        anim.ResetTrigger("Hit");
-        anim.SetFloat("RunState", 0f);
-
-        StopAllCoroutines();
     }
     #endregion
 
@@ -192,7 +196,7 @@ public class Pumkin : Enemy, IDamgeable
                     state = States.Idle;
 
                 // 타겟의 위치 확인 후 이동
-                Movement();
+                Movement(_target.position);
                 SetDirection();
 
                 if (Vector2.Distance(_target.position, transform.position) < stat.attackRange && !stat.isDie)
@@ -306,10 +310,5 @@ public class Pumkin : Enemy, IDamgeable
     private void OffAttackIndicatorClientRpc()
     {
         _attackIndicator.SetActive(false);
-    }
-
-    public bool DieCheck()
-    {
-        return stat.isDie;
     }
 }

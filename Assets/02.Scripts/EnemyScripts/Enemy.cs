@@ -9,7 +9,7 @@ public abstract class Enemy : NetworkBehaviour
     protected SpriteRenderer spr;
     protected Rigidbody2D rb;
     protected Animator anim;
-    public Vector3 _initTransform;      
+    public Vector3 _initTransform;
     public enum States { Idle, Chase, Attack, Return, Die }
     public States state;
 
@@ -126,7 +126,7 @@ public abstract class Enemy : NetworkBehaviour
                     state = States.Idle;
 
                 // 타겟의 위치 확인 후 이동
-                Movement();
+                Movement(_target.position);
                 SetDirection();
 
                 if (Vector2.Distance(_target.position, transform.position) < stat.attackRange && !stat.isDie)
@@ -161,10 +161,13 @@ public abstract class Enemy : NetworkBehaviour
             // 초기위치로 돌아감
             else if (state == States.Return)
             {
-                Vector2 dirVec = _initTransform - this.transform.position;
-                Vector2 nextVec = dirVec.normalized * stat.speed * Time.fixedDeltaTime;
+                Movement(_initTransform);
 
-                rb.MovePosition(rb.position + nextVec);
+                if (_target != null && Vector2.Distance(_target.position, transform.position) < stat.chaseRange && !stat.isDie)
+                {
+                    timer = 0f;
+                    state = States.Chase;
+                }
 
                 if (Vector3.Distance(_initTransform, this.transform.position) < 0.1f)
                 {
@@ -176,22 +179,21 @@ public abstract class Enemy : NetworkBehaviour
     }
     // 몬스터 초기화 함수
     public abstract void InitMonster();
-
     public abstract IEnumerator HitEffect();
     public abstract void Die();
 
-    public virtual void Movement()
+    public virtual void Movement(Vector3 target)
     {
         if (!IsServer) return;
 
-        if (_target == null)
+        if (target == null)
         {
             state = States.Idle;
             timer = 0f;
             return;
         }
 
-        Vector2 dirVec = _target.position - transform.position;
+        Vector2 dirVec = target - transform.position;
         Vector2 nextVec = dirVec.normalized * stat.speed * Time.fixedDeltaTime;
 
         rb.MovePosition(rb.position + nextVec);
@@ -203,7 +205,11 @@ public abstract class Enemy : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     public void GiveExpGoldServerRpc(ulong lastClientId)
     {
-        ShowGoldClientRpc(lastClientId, stat.gold, stat.exp);
+        if(!stat.isDie)
+        {
+            ShowGoldClientRpc(lastClientId, stat.gold, stat.exp);
+            stat.isDie = true;
+        }
     }
 
     public virtual void SetDirection()
@@ -293,7 +299,6 @@ public abstract class Enemy : NetworkBehaviour
             anim.SetTrigger("Die");
 
             Die();
-
             StartCoroutine(DeSpawnEnemy(GetComponent<NetworkObject>(), prefab, 3f));
             DieClientRpc(rpcParams.Receive.SenderClientId);
         }
