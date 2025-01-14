@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Slime : Enemy, IDamgeable
 {
+    public enum SlimeType { Basic, Fire, Ice };
+    public SlimeType slimeType;
 
     public override void OnNetworkSpawn()
     {
@@ -27,21 +29,60 @@ public class Slime : Enemy, IDamgeable
             RespawnClientRpc();
             state = States.Idle;
         }
+        
+        switch (slimeType)
+        {
+            case SlimeType.Basic:
+                MaxHp = 30f;
+                Hp = MaxHp;
 
-        MaxHp = 30f;
-        Hp = MaxHp;
+                stat.attack = 5f;
+                stat.attackRange = 2f;
+                stat.attackSpeed = 1.5f;
 
-        stat.attack = 5f;
-        stat.attackRange = 2f;
-        stat.attackSpeed = 1.5f;
+                stat.defense = 1f;
 
-        stat.defense = 1f;
+                stat.chaseRange = 5f;
+                stat.speed = 1f;
 
-        stat.chaseRange = 5f;
-        stat.speed = 1f;
+                stat.exp = 30f;
+                stat.gold = 50;
+                break;
 
-        stat.exp = 30f;
-        stat.gold = 50;
+            case SlimeType.Ice:
+                MaxHp = 100f;
+                Hp = MaxHp;
+
+                stat.attack = 40f;
+                stat.attackRange = 2f;
+                stat.attackSpeed = 1.5f;
+
+                stat.defense = 30f;
+
+                stat.chaseRange = 5f;
+                stat.speed = 1f;
+
+                stat.exp = 100f;
+                stat.gold = 200;
+                break;
+
+            case SlimeType.Fire:
+                MaxHp = 500f;
+                Hp = MaxHp;
+
+                stat.attack = 100f;
+                stat.attackRange = 2f;
+                stat.attackSpeed = 1.5f;
+
+                stat.defense = 100f;
+
+                stat.chaseRange = 5f;
+                stat.speed = 1f;
+
+                stat.exp = 500f;
+                stat.gold = 500;
+                break;
+        }
 
         stat.isDie = false;
 
@@ -64,7 +105,7 @@ public class Slime : Enemy, IDamgeable
                 yield break;
             }
 
-            if (_target != null && Vector2.Distance(_target.position , transform.position) < stat.attackRange)
+            if (_target != null && Vector2.Distance(_target.position, transform.position) < stat.attackRange)
                 AttackClientRpc(_target.GetComponent<NetworkObject>().OwnerClientId, stat.attack);
         }
     }
