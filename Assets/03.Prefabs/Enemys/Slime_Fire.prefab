@@ -173,7 +173,7 @@ GameObject:
   - component: {fileID: 6962635018445522002}
   - component: {fileID: 4108871873104877940}
   - component: {fileID: 702181815058117970}
-  m_Layer: 0
+  m_Layer: 18
   m_Name: Slime_Fire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -348,8 +348,10 @@ MonoBehaviour:
   _initTransform: {x: 0, y: 0, z: 0}
   state: 0
   _target: {fileID: 0}
-  FloatingDamagePrefab: {fileID: 0}
-  FloatingGoldExpPrefab: {fileID: 0}
+  FloatingDamagePrefab: {fileID: 7107079607422933807, guid: 21182ee54ba58c647ba5d2063400e63f,
+    type: 3}
+  FloatingGoldExpPrefab: {fileID: 7145864357256277105, guid: 9b61fc9b659b53a49a0c824b9f943c04,
+    type: 3}
   stat:
     attack: 0
     attackSpeed: 0
@@ -360,6 +362,7 @@ MonoBehaviour:
     exp: 0
     gold: 0
     isDie: 0
+  slimeType: 1
 --- !u!114 &4022087911263206798
 MonoBehaviour:
   m_ObjectHideFlags: 0

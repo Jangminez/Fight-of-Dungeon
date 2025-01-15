@@ -5,6 +5,7 @@ public class DropZone : MonoBehaviour, IDropHandler
 {
     public enum ZoneType {Drop, Sell};
     public ZoneType _type;
+    public GameObject _dropItemChest;
 
     public void OnDrop(PointerEventData eventData)
     {
@@ -16,6 +17,7 @@ public class DropZone : MonoBehaviour, IDropHandler
             {
                 case ZoneType.Drop:
                     dragItem.UnEquipmentItem();
+                    DropItem(dragItem._item);
                     Debug.Log("아이템 드랍");
                     break;
 
@@ -27,5 +29,12 @@ public class DropZone : MonoBehaviour, IDropHandler
 
             GameManager.Instance.isDragItem = false;
         }
+    }
+
+    private void DropItem(ScriptableItem item)
+    {
+        GameObject chest = Instantiate(_dropItemChest);
+
+        chest.GetComponent<DropItemChest>()._item = item;
     }
 }

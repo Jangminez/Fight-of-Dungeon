@@ -54,5 +54,11 @@ public class Attack : NetworkBehaviour
                 Destroy(this.gameObject, 1f);
             }
         }
+
+        else
+        {
+            if(col.gameObject.layer == 7)
+                this.gameObject.SetActive(false);
+        }
     }
 }
