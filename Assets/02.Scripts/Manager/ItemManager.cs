@@ -33,6 +33,10 @@ public class ItemManager : MonoBehaviour
         // 인스턴스가 존재한다면 현재 오브젝트 파괴
         else if (_instance != null)
             Destroy(gameObject);
+
+
+        // 아이템 정보 불러오기
+        LoadAllItems();
     }
 
     private void LoadAllItems()

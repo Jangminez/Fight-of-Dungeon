@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -40,7 +41,14 @@ public class DropItemChest : NetworkBehaviour
         {
             // 아이템 인벤토리 추가
             Inventory.Instance.PickUpItem(_item);
-            Destroy(this.gameObject);
+            DespawnNetworkObjectServerRpc();
         }
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void DespawnNetworkObjectServerRpc()
+    {
+        this.GetComponent<NetworkObject>().Despawn();
+        Destroy(this.gameObject);
     }
 }

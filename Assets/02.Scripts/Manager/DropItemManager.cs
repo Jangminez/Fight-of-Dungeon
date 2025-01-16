@@ -4,7 +4,7 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-public class DropItemManager : MonoBehaviour
+public class DropItemManager : NetworkBehaviour
 {
     private static DropItemManager _instance;
     public static DropItemManager Instance
@@ -43,21 +43,21 @@ public class DropItemManager : MonoBehaviour
         GameObject chestItem = Instantiate(chest);
         chestItem.transform.position = position;
         chestItem.GetComponent<SortingGroup>().sortingLayerID = layerId;
-
-        if(NetworkManager.Singleton.IsServer)
-        {
-            chestItem.GetComponent<NetworkObject>().Spawn(true);
-            DropItemClientRpc(itemId, chestItem.GetComponent<NetworkObject>().NetworkObjectId);
-        }
+        chestItem.GetComponent<NetworkObject>().Spawn(true);
+        DropItemClientRpc(itemId, chestItem.GetComponent<NetworkObject>().NetworkObjectId, rpcParams.Receive.SenderClientId);
     }
 
     [ClientRpc]
-    public void DropItemClientRpc(int itemId, ulong objectId)
+    public void DropItemClientRpc(int itemId, ulong objectId, ulong clientId)
     {
         // 각 클라이언트에서 값 할당
         if (NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(objectId, out var chestItem))
         {
             chestItem.GetComponent<DropItemChest>()._item = ItemManager.Instance.GetItem(itemId);
+        }
+        else
+        {
+            Debug.Log("드랍박스를 가져오지 못 했습니다.");
         }
     }
 }
