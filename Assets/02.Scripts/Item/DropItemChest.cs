@@ -1,10 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class DropItemChest : MonoBehaviour
+public class DropItemChest : NetworkBehaviour
 {
     [SerializeField] private Button _pickUpBtn;
     public ScriptableItem _item;
@@ -16,7 +16,7 @@ public class DropItemChest : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D col)
     {
-        if(col.tag == "Player")
+        if (col.gameObject.layer == 17)
         {
             // 상호작용 버튼 활성화 및 이벤트 추가
             _pickUpBtn.GetComponent<Button>().onClick.AddListener(PickUpItem);
@@ -26,7 +26,7 @@ public class DropItemChest : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D col)
     {
-        if(col.tag == "Player")
+        if (col.gameObject.layer == 17)
         {
             // 상호작용 버튼 비활성화 및 이벤트 제거
             _pickUpBtn.GetComponent<Button>().onClick.RemoveAllListeners();
@@ -36,7 +36,11 @@ public class DropItemChest : MonoBehaviour
 
     private void PickUpItem()
     {
-        // 아이템 인벤토리 추가
-        Inventory.Instance.AddInventory(_item);
+        if (Inventory.Instance.CheckSlot())
+        {
+            // 아이템 인벤토리 추가
+            Inventory.Instance.PickUpItem(_item);
+            Destroy(this.gameObject);
+        }
     }
 }
