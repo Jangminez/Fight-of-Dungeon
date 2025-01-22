@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Threading.Tasks;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -46,7 +47,8 @@ public class GameManager : MonoBehaviour
 
     public void BackToScene()
     {
-        Destroy(GamePlayer);
+        NetworkManager.Singleton.Shutdown();
+
         SceneManager.LoadScene("MainScene");
     }
 
