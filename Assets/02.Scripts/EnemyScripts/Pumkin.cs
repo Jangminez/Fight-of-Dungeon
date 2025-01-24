@@ -293,6 +293,7 @@ public class Pumkin : Enemy, IDamgeable
 
         slash.GetComponent<Rigidbody2D>().velocity = direction * 3f;
         anim.SetTrigger("Attack");
+        audioController.PlayAttackSFX();
 
         yield return new WaitForSeconds(1f);
         NetworkObjectPool.Instance.ReturnNetworkObject(slash, _attackEffect);

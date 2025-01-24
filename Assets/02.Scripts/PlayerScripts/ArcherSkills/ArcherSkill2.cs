@@ -35,6 +35,7 @@ public class ArcherSkill2 : Skill
             StartCoroutine(CoolDown(_info.coolDown));
 
             SpawnAttackServerRpc(player._target.position + new Vector3(-0.5f, 1f));
+            GameManager.Instance.player._audio.PlaySkill2SFX();
         }
     }
 

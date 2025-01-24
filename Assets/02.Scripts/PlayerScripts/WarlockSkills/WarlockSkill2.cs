@@ -24,7 +24,7 @@ public class WarlockSkill2 : Skill
     public override IEnumerator SkillProcess()
     {
         if(!IsOwner) yield break;
-
+        GameManager.Instance.player._audio.PlaySkill2SFX();
         // 쿨타임 시작
         StartCoroutine(CoolDown(_info.coolDown));
         yield return null;

@@ -217,6 +217,7 @@ public class Boss : Enemy, IDamgeable
     private IEnumerator Boss_BasicAttack()
     {
         anim.SetTrigger("Attack");
+        audioController.PlayAttackSFX();
 
         yield return new WaitForSeconds(1f);
 
@@ -226,6 +227,7 @@ public class Boss : Enemy, IDamgeable
     private IEnumerator Boss_JumpAttack()
     {
         anim.SetTrigger("JumpAttack");
+        audioController.PlaySkill1SFX();
         stat.speed = 0f;
 
         yield return new WaitForSeconds(1f);
@@ -240,6 +242,7 @@ public class Boss : Enemy, IDamgeable
 
         yield return new WaitForSeconds(2f);
 
+        audioController.PlaySkill3SFX();
         GetComponent<Collider2D>().enabled = true;
         stat.attackRange = 5f;
         stat.speed = 1.2f;
@@ -250,7 +253,7 @@ public class Boss : Enemy, IDamgeable
     private IEnumerator Boss_SpinAttack()
     {
         anim.SetTrigger("SpinAttack");
-
+        audioController.PlaySkill3SFX();
         yield return new WaitForSeconds(4f);
 
         _isAttack = false;

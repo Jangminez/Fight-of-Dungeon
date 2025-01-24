@@ -9,6 +9,7 @@ public abstract class Enemy : NetworkBehaviour
     protected SpriteRenderer spr;
     protected Rigidbody2D rb;
     protected Animator anim;
+    public AudioController audioController;
     public Vector3 _initTransform;
     public enum States { Idle, Chase, Attack, Return, Die }
     public States state;
@@ -66,6 +67,7 @@ public abstract class Enemy : NetworkBehaviour
         anim = GetComponent<Animator>();
         _canvas = transform.GetChild(0);
         _initCanvasScale = _canvas.transform.localScale;
+        audioController = GetComponent<AudioController>();
     }
 
     private void Start()
@@ -202,6 +204,11 @@ public abstract class Enemy : NetworkBehaviour
 
     public abstract IEnumerator EnemyAttack();
 
+    public void PlayAttackSfx()
+    {
+        audioController.PlayAttackSFX();
+    }
+
     [ServerRpc(RequireOwnership = false)]
     public void GiveExpGoldServerRpc(ulong lastClientId)
     {
@@ -285,6 +292,8 @@ public abstract class Enemy : NetworkBehaviour
 
         Hp -= finalDamage;
 
+        audioController.PlayHitSFX();
+
         if (FloatingDamagePrefab != null && Hp > 0)
         {
             // 데미지 표시 동기화
@@ -299,6 +308,7 @@ public abstract class Enemy : NetworkBehaviour
             anim.SetTrigger("Die");
 
             Die();
+            audioController.PlayDeathSFX();
             StartCoroutine(DeSpawnEnemy(GetComponent<NetworkObject>(), prefab, 3f));
             DieClientRpc(rpcParams.Receive.SenderClientId);
         }

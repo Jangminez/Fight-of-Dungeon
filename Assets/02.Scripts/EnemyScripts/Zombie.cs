@@ -103,6 +103,7 @@ public class Zombie : Enemy, IDamgeable
                 anim.SetFloat("NormalState", 0.5f);
 
             anim.SetTrigger("Attack");
+            audioController.PlayAttackSFX();
 
             // 공격속도 지연
             yield return new WaitForSeconds(1 / stat.attackSpeed);

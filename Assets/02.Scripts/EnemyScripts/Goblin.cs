@@ -104,6 +104,7 @@ public class Goblin : Enemy, IDamgeable
             // 공격시 방향 전환 및 애니메이션 실행
             SetDirection();
             anim.SetTrigger("Attack");
+            audioController.PlayAttackSFX();
 
             // 공격속도 지연
             yield return new WaitForSeconds(1 / stat.attackSpeed);

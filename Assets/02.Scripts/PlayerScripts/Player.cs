@@ -10,6 +10,7 @@ public abstract class Player : NetworkBehaviour, IDamgeable
     [SerializeField] protected Rigidbody2D _playerRig;
 
     [SerializeField] protected Animator _animator;
+    [SerializeField] public AudioController _audio;
     #region 플레이어 스탯 변수
     [Header("Player Stats")]
     [SerializeField] NetworkVariable<float> _maxHp = new NetworkVariable<float>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
@@ -68,6 +69,7 @@ public abstract class Player : NetworkBehaviour, IDamgeable
         _maxHp.OnValueChanged += GetComponent<PlayerUIController>().MaxHpChanged;
         _mp.OnValueChanged += GetComponent<PlayerUIController>().MpChanged;
         _maxMp.OnValueChanged += GetComponent<PlayerUIController>().MaxHpChanged;
+        _audio = GetComponent<AudioController>();
     }
     // 플레이어 초기화 함수
     abstract protected void SetCharater();
@@ -334,6 +336,7 @@ public abstract class Player : NetworkBehaviour, IDamgeable
         Hp -= finalDamage;
         
         ShowFloatingDamageServerRpc(finalDamage);
+        _audio.PlayHitSFX();
 
         if (Hp == 0f)
         {
@@ -389,7 +392,6 @@ public abstract class Player : NetworkBehaviour, IDamgeable
         }
     }
 
-    [ContextMenu("Die")]
     protected void OnDie() 
     {
         if(!IsOwner) return;
@@ -404,7 +406,7 @@ public abstract class Player : NetworkBehaviour, IDamgeable
         DiePlayerServerRpc();
         this.GetComponent<PlayerMovement>().enabled = false;
         this.GetComponent<PlayerFindTarget>().enabled = false;
-
+        _audio.PlayDeathSFX();
 
         // 체력, 마나 재생 정지 & 리스폰 기능 활성화
         StopCoroutine("Regen");

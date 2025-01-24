@@ -32,6 +32,7 @@ public class Warrior_Skill1 : Skill
 
         // 쿨타임 시작
         StartCoroutine(CoolDown(_info.coolDown));
+        GameManager.Instance.player._audio.PlaySkill1SFX();
         
         // 각 플레이어 증가수치 증가 후 지속 시간이 끝나면 다시 효과 제거
         GameManager.Instance.player.AttackBonus += _info.attackUp;

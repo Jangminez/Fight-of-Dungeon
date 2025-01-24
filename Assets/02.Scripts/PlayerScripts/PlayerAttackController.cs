@@ -28,6 +28,7 @@ public abstract class PlayerAttackController : NetworkBehaviour
             _isAttack = true;
             _anim.SetFloat("AttackSpeed", player.FinalAS);
             StartCoroutine("BasicAttack");
+            player._audio.PlayAttackSFX();
         }
     }
 

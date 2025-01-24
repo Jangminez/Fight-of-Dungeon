@@ -49,6 +49,7 @@ public class Bat : Enemy, IDamgeable
         while (_isAttack)
         {
             anim.SetTrigger("Attack");
+            audioController.PlayAttackSFX();
             yield return new WaitForSeconds(1 / stat.attackSpeed);
 
             if (state != States.Attack)

@@ -40,6 +40,7 @@ public class ArcherSkill3 : Skill
 
         // 쿨다운 시작
         StartCoroutine(CoolDown(_info.coolDown));
+        GameManager.Instance.player._audio.PlaySkill3SFX();
 
         // 지속시간이 끝나면 콜라이더 비활성화
         _info.collider.enabled = true;
