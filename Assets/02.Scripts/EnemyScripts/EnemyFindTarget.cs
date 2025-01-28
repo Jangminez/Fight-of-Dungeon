@@ -11,7 +11,7 @@ public class EnemyFindTarget : MonoBehaviour
         enemy = GetComponent<Enemy>();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         players = Physics2D.OverlapCircleAll(transform.position, enemy.stat.chaseRange, player);
         if (players.Length > 0)

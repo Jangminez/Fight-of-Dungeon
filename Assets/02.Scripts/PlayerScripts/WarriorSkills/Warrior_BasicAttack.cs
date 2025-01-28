@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Warrior_BasicAttack : PlayerAttackController
 {
-    void Update()
+    void FixedUpdate()
     {
         if (!IsOwner) return;
 
@@ -24,6 +24,7 @@ public class Warrior_BasicAttack : PlayerAttackController
             _anim.SetFloat("AttackState", 0f);
             _anim.SetFloat("NormalState", 0f);
             _anim.SetTrigger("Attack");
+            player._audio.PlayAttackSFX();
             
             // 타겟의 위치에 공격 이펙트 생성
             SpawnAttackServerRpc(player._target.position);

@@ -56,8 +56,6 @@ public class PlayerSpawner : NetworkBehaviour
         GameManager.Instance.player.transform.position = GameManager.Instance.player._spawnPoint.position + new Vector3(0f, 1f, 0f);
         SetUpCamera(GameManager.Instance.player.transform);
         GameManager.Instance.player.gameObject.SetActive(true);
-
-        UIManager.Instance.goToMain.onClick.AddListener(GameManager.Instance.BackToScene);
     }
 
     private void SetUpCamera(Transform playerTransform)
