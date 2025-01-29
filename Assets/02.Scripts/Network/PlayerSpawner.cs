@@ -33,7 +33,7 @@ public class PlayerSpawner : NetworkBehaviour
         if (clientId == NetworkManager.Singleton.LocalClientId)
         {
             NetworkSpawnPlayerServerRpc(clientId, GameManager.Instance.playerPrefabName);
-            Invoke("SpawnPlayer", 1f);
+            Invoke("SpawnPlayer", 3f);
         }
     }
 
