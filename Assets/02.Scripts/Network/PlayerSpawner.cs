@@ -6,6 +6,7 @@ public class PlayerSpawner : NetworkBehaviour
 {
     [SerializeField]
     private CameraFollow _cam;
+    private bool isSpawn = false;
     void Start()
     {
         DontDestroyOnLoad(this.gameObject);
@@ -30,10 +31,11 @@ public class PlayerSpawner : NetworkBehaviour
     [ClientRpc]
     public void PlayerSpawnClientRpc(ulong clientId)
     {
-        if (clientId == NetworkManager.Singleton.LocalClientId)
+        if (clientId == NetworkManager.Singleton.LocalClientId && !isSpawn)
         {
             NetworkSpawnPlayerServerRpc(clientId, GameManager.Instance.playerPrefabName);
             Invoke("SpawnPlayer", 3f);
+            isSpawn = true;
         }
     }
 

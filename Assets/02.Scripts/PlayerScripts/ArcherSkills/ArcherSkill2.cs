@@ -27,10 +27,13 @@ public class ArcherSkill2 : Skill
     {
         if (!IsOwner) yield break;
         player = GameManager.Instance.player;
+        player.Mp += useMp;
 
         // 스킬 이펙트 소환
         if (player._target != null)
         {
+            player.Mp -= useMp;
+            
             // 쿨타임 시작
             StartCoroutine(CoolDown(_info.coolDown));
 

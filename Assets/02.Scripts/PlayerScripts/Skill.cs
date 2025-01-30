@@ -48,7 +48,7 @@ public abstract class Skill : NetworkBehaviour
         if (IsOwner && !_isCoolDown && GameManager.Instance.player.Mp > useMp)
         {
             GameManager.Instance.player.Mp -= useMp;
-
+            
             if (_anims != null)
             {
                 foreach (var anim in _anims)
