@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Threading.Tasks;
 using Unity.Netcode;
@@ -22,6 +23,19 @@ public class GameManager : MonoBehaviour
             return _instance;
         }
     }
+    private int gold;
+    private int dia;
+    public int Gold
+    {
+        set => gold = Math.Max(0, value);
+        get => gold;
+    }
+
+    public int Dia
+    {
+        set => dia = Math.Max(0, value);
+        get => dia;
+    }
 
     public string playerPrefabName;
     public Player player;
@@ -43,6 +57,9 @@ public class GameManager : MonoBehaviour
         Application.targetFrameRate = 60;
         // 씬 로드시에도 파괴되지않음 
         DontDestroyOnLoad(gameObject);
+
+        Gold += 50000;
+        Dia += 50000;
     }
 
     public void BackToScene()
