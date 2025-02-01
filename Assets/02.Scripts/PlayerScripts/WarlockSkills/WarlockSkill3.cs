@@ -103,7 +103,7 @@ public class WarlockSkill3 : Skill
                     }
                     else
                     {
-                        other.GetComponent<IDamgeable>().Hit(damage:
+                        enemy.Hit(damage:
                         cri <= player.Critical ?
                         player.FinalAttack * 1.5f :
                         player.FinalAttack);
@@ -115,16 +115,10 @@ public class WarlockSkill3 : Skill
             yield return new WaitForSeconds(_info.interval);
         }
 
-        // 플레이어가 죽으면 애니메이션 중지
-        if (GameManager.Instance.player.Die)
+        foreach (var anim in _anims)
         {
-            foreach (var anim in _anims)
-            {
-                anim.SetTrigger("End");
-            }
+            anim.SetTrigger("End");
         }
-
-        StopCoroutine(SkillDamage(other));
     }
 
     [ServerRpc(RequireOwnership = false)]

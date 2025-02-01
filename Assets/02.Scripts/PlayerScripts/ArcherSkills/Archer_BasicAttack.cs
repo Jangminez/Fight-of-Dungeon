@@ -5,7 +5,7 @@ using UnityEngine;
 public class Archer_BasicAttack : PlayerAttackController
 {
     [SerializeField] Transform _tip;
-    void Update()
+    void FixedUpdate()
     {
         if (!IsOwner) return;
 
@@ -25,6 +25,7 @@ public class Archer_BasicAttack : PlayerAttackController
             _anim.SetFloat("AttackState", 0f);
             _anim.SetFloat("NormalState", 0.5f);
             _anim.SetTrigger("Attack");
+            player._audio.PlayAttackSFX();
 
             // 공격 이펙트 생성
             SpawnAttackServerRpc(_tip.position);

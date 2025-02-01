@@ -95,7 +95,7 @@ public class Warrior_Skill3 : Skill
                 }
                 else
                 {
-                    other.GetComponent<IDamgeable>().Hit(damage:
+                    enemy.Hit(damage:
                     cri <= player.Critical ?
                     player.FinalAttack * _info.damage * 1.5f :
                     player.FinalAttack * _info.damage);

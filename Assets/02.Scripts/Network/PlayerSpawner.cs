@@ -6,6 +6,7 @@ public class PlayerSpawner : NetworkBehaviour
 {
     [SerializeField]
     private CameraFollow _cam;
+    private bool isSpawn = false;
     void Start()
     {
         DontDestroyOnLoad(this.gameObject);
@@ -30,10 +31,11 @@ public class PlayerSpawner : NetworkBehaviour
     [ClientRpc]
     public void PlayerSpawnClientRpc(ulong clientId)
     {
-        if (clientId == NetworkManager.Singleton.LocalClientId)
+        if (clientId == NetworkManager.Singleton.LocalClientId && !isSpawn)
         {
             NetworkSpawnPlayerServerRpc(clientId, GameManager.Instance.playerPrefabName);
-            Invoke("SpawnPlayer", 1f);
+            Invoke("SpawnPlayer", 3f);
+            isSpawn = true;
         }
     }
 
@@ -56,8 +58,6 @@ public class PlayerSpawner : NetworkBehaviour
         GameManager.Instance.player.transform.position = GameManager.Instance.player._spawnPoint.position + new Vector3(0f, 1f, 0f);
         SetUpCamera(GameManager.Instance.player.transform);
         GameManager.Instance.player.gameObject.SetActive(true);
-
-        UIManager.Instance.goToMain.onClick.AddListener(GameManager.Instance.BackToScene);
     }
 
     private void SetUpCamera(Transform playerTransform)
