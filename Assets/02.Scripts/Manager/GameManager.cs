@@ -23,20 +23,76 @@ public class GameManager : MonoBehaviour
             return _instance;
         }
     }
+
+    private int level;
+    private float exp;
+    private float nextExp;
     private int gold;
     private int dia;
+
+    public int Level
+    {
+        set
+        {
+            level = Math.Max(0, value);
+
+            if(mainUI != null)
+                mainUI.SetLevel();
+        }
+
+        get => level;
+    }
+    public float Exp
+    {
+        set
+        {
+            exp = Math.Max(0, value);
+
+            if(mainUI != null)
+                mainUI.SetExpBar();
+
+            if(exp >= nextExp)
+                    {
+                        LevelUp();
+                    }
+        }
+        
+        get => exp;
+    }
+    public float NextExp
+    {
+        set
+        {
+            nextExp = Math.Max(0, value);
+
+            if(mainUI != null)
+                mainUI.SetExpBar();
+        }
+        
+        get => nextExp;
+    }
     public int Gold
     {
-        set => gold = Math.Max(0, value);
+        set 
+        {
+            gold = Math.Max(0, value);
+            if(mainUI != null)
+                mainUI.SetGold();
+        }
         get => gold;
     }
-
     public int Dia
     {
-        set => dia = Math.Max(0, value);
+        set
+        {
+            dia = Math.Max(0, value);
+
+            if(mainUI != null)
+                mainUI.SetDia();
+        }
         get => dia;
     }
-
+    [HideInInspector] public MainUIController mainUI;
     public string playerPrefabName;
     public Player player;
     GameObject GamePlayer;
@@ -60,6 +116,24 @@ public class GameManager : MonoBehaviour
 
         Gold += 50000;
         Dia += 50000;
+        Level = 5;
+        exp = 500f;
+        nextExp = 1000f;
+    }
+
+    virtual protected void LevelUp()
+    {
+        exp -= nextExp;
+        NextExp *= 1.5f;
+
+        Level += 1;
+
+        mainUI.SetExpBar();
+          
+        if (exp >= nextExp)
+        {
+            LevelUp();
+        }
     }
 
     public void BackToScene()
