@@ -10,21 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1ea01d3ce1b0d2d49b7058b06eb87347, type: 3}
-  m_Name: Fire_Sword
+  m_Name: Fire_Carambit
   m_EditorClassIdentifier: 
-  item: {fileID: 9058309215404983156, guid: ede71ded859ae824bb8a37efc2920897, type: 3}
-  itemName: "\uD654\uC5FC\uC758 \uAC80"
-  Id: 103
+  item: {fileID: 3039131687473626542, guid: 28ebc8ecdc9f1864e9ac3e27814769c2, type: 3}
+  itemName: "\uD654\uC5FC\uC758 \uCE74\uB78C\uBE57"
+  Id: 107
   statsList:
   - valuetype: 0
-    caltype: 0
-    value: 300
-  - valuetype: 0
     caltype: 1
-    value: 10
-  itemDescription: "\uB2E4 \uD0C8\uC904 \uC54C\uC558\uB358 \uB098\uBB34\uC758 \uBD88\uC774
-    \uAEBC\uC9C0\uC9C0 \uC54A\uB294\uB2E4. \uC774\uAC70 \uB2F9\uC7A5 \uC368\uC57C\uACA0\uB294\uAC78?"
-  itemCost: 2500
+    value: 15
+  - valuetype: 1
+    caltype: 1
+    value: 50
+  itemDescription: "\uC628 \uBAB8\uC774 \uAC00\uBCBC\uC6CC\uC84C\uB2E4. "
+  itemCost: 1500
   needItem:
-  - {fileID: 11400000, guid: d54887fc29506404c93973f6f356bc5a, type: 2}
   - {fileID: 11400000, guid: 420b8bf8302fb05499952ac4a2f123da, type: 2}
+  - {fileID: 11400000, guid: d54de22a15c009c4ba9547ab21674c3b, type: 2}
