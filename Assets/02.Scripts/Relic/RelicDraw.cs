@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class RelicDraw : MonoBehaviour
 {
     private Button myBtn;
-    public ScriptableRelic[] relics;
     public GameObject infoObject;
     public GameObject drawEffect;
     public GameObject drawInfo;
@@ -21,7 +20,6 @@ public class RelicDraw : MonoBehaviour
 
     void Awake()
     {
-        relics = Resources.LoadAll<ScriptableRelic>("Relics");
         myBtn = GetComponent<Button>();
 
         if (myBtn != null)
@@ -32,7 +30,7 @@ public class RelicDraw : MonoBehaviour
 
     private int GetRandomRelic()
     {
-        return Random.Range(0, relics.Length);
+        return Random.Range(101, 110);
     }
 
     public void DrawRelic()
@@ -48,17 +46,21 @@ public class RelicDraw : MonoBehaviour
 
     IEnumerator StartDrawRelic()
     {
-        ScriptableRelic drawRelic = relics[GetRandomRelic()];
-        Debug.Log(drawRelic.r_Name);
+        ScriptableRelic drawRelic = RelicManager.Instance.GetRelic(GetRandomRelic());
 
-        drawRelic.r_Count += 1;
+        if (drawRelic != null)
+        {
+            Debug.Log(drawRelic.r_Name);
 
-        relicIcon.sprite = drawRelic.r_Icon;
-        relicName.text = drawRelic.r_Name;
-        relicCount.text = $"{drawRelic.r_Count} / {drawRelic.r_UpgradeCount}";
-        relicLevel.text = $"Lv. {drawRelic.r_Level}";
-        relicBar.fillAmount = (float)drawRelic.r_Count / (float)drawRelic.r_UpgradeCount;
+            drawRelic.r_Count += 1;
 
+            relicIcon.sprite = drawRelic.r_Icon;
+            relicName.text = drawRelic.r_Name;
+            relicCount.text = $"{drawRelic.r_Count} / {drawRelic.r_UpgradeCount}";
+            relicLevel.text = $"Lv. {drawRelic.r_Level}";
+            relicBar.fillAmount = (float)drawRelic.r_Count / (float)drawRelic.r_UpgradeCount;
+        }
+        
         drawEffect.SetActive(true);
 
         drawEffect.GetComponent<Animator>().SetTrigger("Draw");
@@ -73,7 +75,7 @@ public class RelicDraw : MonoBehaviour
 
         drawEffect.SetActive(false);
 
-        
+
 
         drawInfo.SetActive(true);
 

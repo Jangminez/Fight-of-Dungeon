@@ -6,6 +6,7 @@ using System;
 [CreateAssetMenu(menuName = "Scriptable Objects/Relic")]
 public class ScriptableRelic : ScriptableObject
 {
+    public short r_Id;
     public MyRelic myRelic;
     public Sprite r_Icon;
     public string r_Name;
