@@ -13,6 +13,7 @@ public class WarlockSkill1 : Skill
         public float coolDown; // 쿨타임
         public float duration; // 스킬 지속시간
     }
+    private float timer;
 
     [SerializeField]SkillInfo _info;
     void Awake()
@@ -30,6 +31,9 @@ public class WarlockSkill1 : Skill
     public override IEnumerator SkillProcess()
     {
         if(!IsOwner) yield break;
+
+        timer = 0f;
+        
         GameManager.Instance.player._audio.PlaySkill1SFX();
 
         // 쿨타임 시작
@@ -40,7 +44,11 @@ public class WarlockSkill1 : Skill
         GameManager.Instance.player.AsBonus += _info.asUp;
         GameManager.Instance.player.Critical += _info.criUp;
 
-        yield return new WaitForSeconds(_info.duration);
+        while(timer <= _info.duration && !GameManager.Instance.player.Die)
+        {
+            timer += 0.5f;
+            yield return new WaitForSeconds(0.5f);
+        }
 
         _anims[1].SetTrigger("End");
 

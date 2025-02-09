@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 public class Warrior_Skill3 : Skill
@@ -18,6 +19,7 @@ public class Warrior_Skill3 : Skill
 
     }
     [SerializeField] SkillInfo _info;
+    private float timer;
 
     void Awake()
     {
@@ -35,13 +37,21 @@ public class Warrior_Skill3 : Skill
     {
         if(!IsOwner) yield break;
 
+        timer = 0f;
+
         // 쿨다운 시작
         StartCoroutine(CoolDown(_info.coolDown));
         GameManager.Instance.player._audio.PlaySkill3SFX();
 
         // 지속시간이 끝나면 콜라이더 비활성화
         _info.collider.enabled = true;
-        yield return new WaitForSeconds(_info.duration);
+        
+        while(timer <= _info.duration && !GameManager.Instance.player.Die)
+        {
+            timer += 0.5f;
+            yield return new WaitForSeconds(0.5f);
+        }
+
         _info.collider.enabled = false;
 
         // 애니메이션 중지
@@ -87,19 +97,21 @@ public class Warrior_Skill3 : Skill
             if (enemy != null)
             {
                 if(other.tag == "Player")
-                {
-                    player.AttackPlayerServerRpc(damage:
-                    cri <= player.Critical ?
-                    player.FinalAttack * 1.5f :
-                    player.FinalAttack);
-                }
+            {
+                if(cri <= player.Critical)
+                    player.AttackPlayerServerRpc(player.FinalAttack * _info.damage * 1.5f, true);
+
                 else
-                {
-                    enemy.Hit(damage:
-                    cri <= player.Critical ?
-                    player.FinalAttack * _info.damage * 1.5f :
-                    player.FinalAttack * _info.damage);
-                }
+                    player.AttackPlayerServerRpc(player.FinalAttack * _info.damage, false);
+            }
+            else
+            {
+                if(cri <= player.Critical)
+                    enemy.Hit(player.FinalAttack * _info.damage * 1.5f, true);
+
+                else
+                    enemy.Hit(player.FinalAttack * _info.damage, false);
+            }
         }
 
             yield return new WaitForSeconds(_info.interval);

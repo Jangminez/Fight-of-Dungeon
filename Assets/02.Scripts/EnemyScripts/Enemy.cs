@@ -251,18 +251,21 @@ public abstract class Enemy : NetworkBehaviour
     }
 
     [ClientRpc]
-    protected void AttackClientRpc(ulong clientId, float damage)
+    protected void AttackClientRpc(ulong clientId, float damage, bool isCritical)
     {
         // 공격 받은 클라이언트라면 Hit() 처리
         if (clientId == NetworkManager.Singleton.LocalClientId)
-            GameManager.Instance.player.Hit(damage: damage);
+            GameManager.Instance.player.Hit(damage: damage, isCritical);
     }
 
     [ClientRpc]
-    public void ShowFloatingDamageClientRpc(float damage)
+    public void ShowFloatingDamageClientRpc(float damage, bool isCritical)
     {
         // 몬스터 피격 데미지 표시
         var dmg = Instantiate(FloatingDamagePrefab, transform.position, Quaternion.identity);
+        if(isCritical)
+            dmg.GetComponent<TextMesh>().color = Color.red;
+
         dmg.GetComponent<TextMesh>().text = $"-" + damage.ToString("F1");
     }
 
@@ -280,7 +283,7 @@ public abstract class Enemy : NetworkBehaviour
     }
 
     [ServerRpc(RequireOwnership = false)]
-    protected void TakeDamageServerRpc(float damage, ServerRpcParams rpcParams = default)
+    protected void TakeDamageServerRpc(float damage, bool isCritical, ServerRpcParams rpcParams = default)
     {
         // 받은 데미지 - 방어력 으로 최종데미지 계산
         float finalDamage = damage - stat.defense;
@@ -297,7 +300,7 @@ public abstract class Enemy : NetworkBehaviour
         if (FloatingDamagePrefab != null && Hp > 0)
         {
             // 데미지 표시 동기화
-            ShowFloatingDamageClientRpc(finalDamage);
+            ShowFloatingDamageClientRpc(finalDamage, isCritical);
         }
 
         if (Hp <= 0)

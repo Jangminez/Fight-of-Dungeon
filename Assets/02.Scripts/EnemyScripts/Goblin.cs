@@ -54,12 +54,12 @@ public class Goblin : Enemy, IDamgeable
     }
 
     #region 피격 및 사망 처리
-    public void Hit(float damage)
+    public void Hit(float damage, bool isCritical)
     {
         anim.SetTrigger("Hit");
         StopCoroutine("EnemyAttack");
         _isAttack = false;
-        TakeDamageServerRpc(damage);
+        TakeDamageServerRpc(damage, isCritical);
     }
 
     public override IEnumerator HitEffect()

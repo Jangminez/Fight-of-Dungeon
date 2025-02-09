@@ -34,17 +34,19 @@ public class Attack : NetworkBehaviour
             // cri의 값이 크리티컬 범위 안에 존재한다면 크리티컬 공격
             if (col.tag == "Player")
             {
-                player.AttackPlayerServerRpc(damage:
-                cri <= player.Critical ?
-                player.FinalAttack * 1.5f * skillDamage :
-                player.FinalAttack * skillDamage);
+                if(cri <= player.Critical)
+                    player.AttackPlayerServerRpc(player.FinalAttack * skillDamage * 1.5f, true);
+
+                else
+                    player.AttackPlayerServerRpc(player.FinalAttack * skillDamage, false);
             }
             else
             {
-                col.GetComponent<IDamgeable>().Hit(damage:
-                cri <= player.Critical ?
-                player.FinalAttack * 1.5f * skillDamage :
-                player.FinalAttack * skillDamage);
+                if(cri <= player.Critical)
+                    col.GetComponent<IDamgeable>().Hit(player.FinalAttack * skillDamage * 1.5f, true);
+
+                else
+                    col.GetComponent<IDamgeable>().Hit(player.FinalAttack * skillDamage, false);
             }
 
             if (type == attackType.Projectile)

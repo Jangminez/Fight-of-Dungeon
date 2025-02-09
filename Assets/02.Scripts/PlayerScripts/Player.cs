@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.UI;
 
 public abstract class Player : NetworkBehaviour, IDamgeable
 {
@@ -321,7 +322,7 @@ public abstract class Player : NetworkBehaviour, IDamgeable
     #endregion
 
     #region 플레이어 이벤트 처리
-    public void Hit(float damage)
+    public void Hit(float damage, bool isCritical)
     {
         if(!IsOwner) return;
 
@@ -335,7 +336,8 @@ public abstract class Player : NetworkBehaviour, IDamgeable
 
         Hp -= finalDamage;
         
-        ShowFloatingDamageServerRpc(finalDamage);
+        ShowFloatingDamageServerRpc(finalDamage, isCritical);
+
         _audio.PlayHitSFX();
 
         if (Hp == 0f)
@@ -476,36 +478,40 @@ public abstract class Player : NetworkBehaviour, IDamgeable
     }
 
     [ServerRpc(RequireOwnership = false)]
-    public void AttackPlayerServerRpc(float damage, ServerRpcParams param = default)
+    public void AttackPlayerServerRpc(float damage, bool isCritical, ServerRpcParams param = default)
     {
         foreach(var client in NetworkManager.Singleton.ConnectedClients)
         {
             if(param.Receive.SenderClientId != client.Key)
             {
-                client.Value.PlayerObject.GetComponent<Player>().AttackPlayerClientRpc(client.Key, damage);
+                client.Value.PlayerObject.GetComponent<Player>().AttackPlayerClientRpc(client.Key, damage, isCritical);
             }
         }
     }
 
     [ClientRpc]
-    public void AttackPlayerClientRpc(ulong clientId, float damage)
+    public void AttackPlayerClientRpc(ulong clientId, float damage, bool isCritical)
     {
         // 공격 받은 클라이언트라면 Hit() 처리
         if (clientId == NetworkManager.Singleton.LocalClientId)
-            GameManager.Instance.player.Hit(damage: damage);
+            GameManager.Instance.player.Hit(damage: damage, isCritical);
     }
 
     [ServerRpc(RequireOwnership = false)]
-    public void ShowFloatingDamageServerRpc(float damage)
+    public void ShowFloatingDamageServerRpc(float damage, bool isCritical)
     {
-        ShowFloatingDamageClientRpc(damage);
+        ShowFloatingDamageClientRpc(damage, isCritical);
     }
 
     [ClientRpc]
-    public void ShowFloatingDamageClientRpc(float damage)
+    public void ShowFloatingDamageClientRpc(float damage, bool isCritical)
     {
         // 피격데미지 표시
         var dmg = Instantiate(_floatingDamage, transform.position + new Vector3(0f, 1f, 0f), Quaternion.identity);
+
+        if(isCritical)
+            dmg.GetComponent<TextMesh>().color = Color.red;
+
         dmg.GetComponent<TextMesh>().text = $"-" + damage.ToString("F1");
     }
 

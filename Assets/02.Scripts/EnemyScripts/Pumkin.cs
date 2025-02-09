@@ -63,10 +63,10 @@ public class Pumkin : Enemy, IDamgeable
     }
 
     #region 피격 및 사망 처리
-    public void Hit(float damage)
+    public void Hit(float damage, bool isCritical)
     {
         // 데미지 처리 ServerRpc 호출
-        TakeDamageServerRpc(damage);
+        TakeDamageServerRpc(damage, isCritical);
     }
 
     public override IEnumerator HitEffect()

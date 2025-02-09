@@ -106,20 +106,22 @@ public class ArcherSkill3 : Skill
         {
             if (enemy != null)
             {
-                if (other.tag == "Player")
-                {
-                    player.AttackPlayerServerRpc(damage:
-                    cri <= player.Critical ?
-                    player.FinalAttack * 1.5f :
-                    player.FinalAttack);
-                }
+                if(other.tag == "Player")
+            {
+                if(cri <= player.Critical)
+                    player.AttackPlayerServerRpc(player.FinalAttack * _info.damage * 1.5f, true);
+
                 else
-                {
-                    enemy.Hit(damage:
-                    cri <= player.Critical ?
-                    player.FinalAttack * _info.damage * 1.5f :
-                    player.FinalAttack * _info.damage);
-                }
+                    player.AttackPlayerServerRpc(player.FinalAttack * _info.damage, false);
+            }
+            else
+            {
+                if(cri <= player.Critical)
+                    enemy.Hit(player.FinalAttack * _info.damage * 1.5f, true);
+
+                else
+                    enemy.Hit(player.FinalAttack * _info.damage, false);
+            }
             }
 
             yield return new WaitForSeconds(_info.interval);

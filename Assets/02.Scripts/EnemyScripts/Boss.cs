@@ -187,9 +187,9 @@ public class Boss : Enemy, IDamgeable
         }
     }
 
-    public void Hit(float damage)
+    public void Hit(float damage, bool isCritical)
     {
-        TakeDamageServerRpc(damage);
+        TakeDamageServerRpc(damage, isCritical);
         SetLastAttackClientServerRpc();
     }
 
