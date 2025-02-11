@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -65,10 +63,10 @@ public class PurchaseItem : MonoBehaviour
                 break;
 
             case ItemType.Relic:
-                ScriptableRelic relic = RelicManager.Instance.GetRelic(itemValue);
-                relic.r_Count ++;
+                RelicManager.Instance.GetRelic(itemValue).r_Count ++;
                 break;
         }
+        purchaseInfo.SetActive(false);
     }
 }
 
