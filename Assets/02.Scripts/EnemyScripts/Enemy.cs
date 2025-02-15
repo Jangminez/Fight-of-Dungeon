@@ -165,12 +165,6 @@ public abstract class Enemy : NetworkBehaviour
             {
                 Movement(_initTransform);
 
-                if (_target != null && Vector2.Distance(_target.position, transform.position) < stat.chaseRange && !stat.isDie)
-                {
-                    timer = 0f;
-                    state = States.Chase;
-                }
-
                 if (Vector3.Distance(_initTransform, this.transform.position) < 0.1f)
                 {
                     state = States.Idle;

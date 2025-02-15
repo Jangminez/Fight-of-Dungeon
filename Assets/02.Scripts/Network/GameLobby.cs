@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using Unity.Services.Authentication;
@@ -309,12 +310,23 @@ public class GameLobby : MonoBehaviour
 
                 joinedLobby = lobby;
 
+                LoadingScreen.Instance.ShowLoadingScreen();
+
                 NetworkManager.Singleton.SceneManager.LoadScene("StageScene", LoadSceneMode.Single);
+
+                StartCoroutine(CheckAllPlayersLoaded());
             }
             catch (LobbyServiceException e)
             {
                 Debug.Log(e);
             }
         }
+    }
+
+    private IEnumerator CheckAllPlayersLoaded()
+    {
+        yield return new WaitUntil(() => SceneLoadSync.Instance.playersLoaded.Value == joinedLobby.Players.Count);
+
+        LoadingScreen.Instance.HideLoadingScreen();
     }
 }
