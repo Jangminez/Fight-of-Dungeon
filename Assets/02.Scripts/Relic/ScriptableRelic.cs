@@ -17,7 +17,7 @@ public class ScriptableRelic : ScriptableObject
     public int r_UpgradeCost;
     public int r_UpgradeValue;
 
-    public enum ValueType {Attack, AttackSpeed, Critical, Defense, Hp, HpRegen, Mp, MpRegen}
+    public enum ValueType {Attack, AttackSpeed, Critical, Defense, Hp, HpRegen, Mp, MpRegen, Speed}
     public enum CalType {Plus, Percentage}
 
     [Serializable]
