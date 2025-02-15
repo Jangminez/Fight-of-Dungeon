@@ -55,9 +55,9 @@ public class SceneLoadManager : NetworkBehaviour
     {
         foreach(var client in NetworkManager.Singleton.ConnectedClientsList)
         {
-            if(client.PlayerObject.TryGetComponent(out SceneLoadSync playerLoadStatus))
+            if(client.PlayerObject.TryGetComponent(out SceneLoadSync loadSync))
             {
-                if(!playerLoadStatus.IsLoaded.Value)
+                if(!loadSync.IsLoaded.Value)
                     return false;
             }
         }

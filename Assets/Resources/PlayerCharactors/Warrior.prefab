@@ -3234,6 +3234,7 @@ GameObject:
   - component: {fileID: 7997057478271587318}
   - component: {fileID: -7249839130210021135}
   - component: {fileID: -3582569102416866609}
+  - component: {fileID: -8770834685916930165}
   m_Layer: 17
   m_Name: Warrior
   m_TagString: Player
@@ -3394,6 +3395,7 @@ MonoBehaviour:
   _defense: 0
   _defenseBonus: 0
   _speed: 0
+  _speedBonus: 0
   _attackRange: 0
   _isDie: 0
   _level: 0
@@ -3725,6 +3727,20 @@ MonoBehaviour:
   skill1: {fileID: 8300000, guid: b0e62ed71b1538648b719821f4f63b4c, type: 3}
   skill2: {fileID: 8300000, guid: 1d74880bed4586644a16a79a2d9dc8af, type: 3}
   skill3: {fileID: 0}
+--- !u!114 &-8770834685916930165
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7038658517558419819}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34bdae7a1513a57419dd9d2772bc767e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IsLoaded:
+    m_InternalValue: 0
 --- !u!1 &7046389342001341989
 GameObject:
   m_ObjectHideFlags: 0

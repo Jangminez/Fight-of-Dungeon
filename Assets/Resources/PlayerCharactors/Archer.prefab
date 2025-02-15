@@ -4281,6 +4281,7 @@ GameObject:
   - component: {fileID: 2380983750172202954}
   - component: {fileID: -7506281653277864062}
   - component: {fileID: 429988567091172084}
+  - component: {fileID: 5537035660343841559}
   m_Layer: 17
   m_Name: Archer
   m_TagString: Player
@@ -4633,6 +4634,7 @@ MonoBehaviour:
   _defense: 0
   _defenseBonus: 0
   _speed: 0
+  _speedBonus: 0
   _attackRange: 0
   _isDie: 0
   _level: 0
@@ -4773,6 +4775,20 @@ MonoBehaviour:
   skill1: {fileID: 8300000, guid: cfce0cea076109f478783201b2a9f57f, type: 3}
   skill2: {fileID: 8300000, guid: a652877b012108e41871f867ada9f176, type: 3}
   skill3: {fileID: 8300000, guid: f1cb5d83282f2904a85f73111d068616, type: 3}
+--- !u!114 &5537035660343841559
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7873974111260657164}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34bdae7a1513a57419dd9d2772bc767e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IsLoaded:
+    m_InternalValue: 0
 --- !u!1 &7914441927558968785
 GameObject:
   m_ObjectHideFlags: 0
