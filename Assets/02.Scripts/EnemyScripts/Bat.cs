@@ -67,7 +67,6 @@ public class Bat : Enemy, IDamgeable
     {
         StopCoroutine("EnemyAttack");
         _isAttack = false;
-        anim.SetTrigger("Hit");
         TakeDamageServerRpc(damage, isCritical);
     }
 

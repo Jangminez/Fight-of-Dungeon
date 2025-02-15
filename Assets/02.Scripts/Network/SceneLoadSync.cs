@@ -5,33 +5,23 @@ using UnityEngine;
 
 public class SceneLoadSync : NetworkBehaviour
 {
-    public static SceneLoadSync Instance;
-    private void Awake()
+    public NetworkVariable<bool> IsLoaded = new NetworkVariable<bool>(false);
+
+    private void Start()
     {
-        if(Instance == null)
+        if (IsOwner)
         {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
+            StartCoroutine(CheckLoadingProgress());
         }
     }
 
-    public NetworkVariable<int> playersLoaded = new NetworkVariable<int>(0);
-
-    public override void OnNetworkSpawn()
+    private IEnumerator CheckLoadingProgress()
     {
-        if(IsClient)
+        while (SceneLoadManager.Instance.loadingProgress.Value < 1f)
         {
-            SceneLoadedServerRpc();
+            yield return null;
         }
-    }
 
-    [ServerRpc(RequireOwnership = false)]
-    public void SceneLoadedServerRpc()
-    {
-        playersLoaded.Value++;
+        IsLoaded.Value = true;
     }
 }

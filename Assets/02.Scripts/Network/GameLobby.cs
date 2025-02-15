@@ -310,11 +310,8 @@ public class GameLobby : MonoBehaviour
 
                 joinedLobby = lobby;
 
-                LoadingScreen.Instance.ShowLoadingScreen();
+                SceneLoadManager.Instance.LoadSceneAsync("StageScene");
 
-                NetworkManager.Singleton.SceneManager.LoadScene("StageScene", LoadSceneMode.Single);
-
-                StartCoroutine(CheckAllPlayersLoaded());
             }
             catch (LobbyServiceException e)
             {
@@ -323,10 +320,4 @@ public class GameLobby : MonoBehaviour
         }
     }
 
-    private IEnumerator CheckAllPlayersLoaded()
-    {
-        yield return new WaitUntil(() => SceneLoadSync.Instance.playersLoaded.Value == joinedLobby.Players.Count);
-
-        LoadingScreen.Instance.HideLoadingScreen();
-    }
 }
