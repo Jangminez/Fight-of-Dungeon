@@ -9,6 +9,7 @@ public abstract class Enemy : NetworkBehaviour
     protected SpriteRenderer spr;
     protected Rigidbody2D rb;
     protected Animator anim;
+    public AudioController audioController;
     public Vector3 _initTransform;
     public enum States { Idle, Chase, Attack, Return, Die }
     public States state;
@@ -66,6 +67,7 @@ public abstract class Enemy : NetworkBehaviour
         anim = GetComponent<Animator>();
         _canvas = transform.GetChild(0);
         _initCanvasScale = _canvas.transform.localScale;
+        audioController = GetComponent<AudioController>();
     }
 
     private void Start()
@@ -113,12 +115,10 @@ public abstract class Enemy : NetworkBehaviour
                     state = States.Chase;
                 }
 
-                if (timer > 5f && Vector3.Distance(_initTransform, this.transform.position) > 0.4f)
+                if (timer > 5f)
                 {
                     timer = 0f;
                     state = States.Return;
-
-                    Hp = MaxHp;
                 }
             }
 
@@ -128,7 +128,7 @@ public abstract class Enemy : NetworkBehaviour
                     state = States.Idle;
 
                 // 타겟의 위치 확인 후 이동
-                Movement();
+                Movement(_target.position);
                 SetDirection();
 
                 if (Vector2.Distance(_target.position, transform.position) < stat.attackRange && !stat.isDie)
@@ -163,10 +163,13 @@ public abstract class Enemy : NetworkBehaviour
             // 초기위치로 돌아감
             else if (state == States.Return)
             {
-                Vector2 dirVec = _initTransform - this.transform.position;
-                Vector2 nextVec = dirVec.normalized * stat.speed * Time.fixedDeltaTime;
+                Movement(_initTransform);
 
-                rb.MovePosition(rb.position + nextVec);
+                if (_target != null && Vector2.Distance(_target.position, transform.position) < stat.chaseRange && !stat.isDie)
+                {
+                    timer = 0f;
+                    state = States.Chase;
+                }
 
                 if (Vector3.Distance(_initTransform, this.transform.position) < 0.1f)
                 {
@@ -178,23 +181,21 @@ public abstract class Enemy : NetworkBehaviour
     }
     // 몬스터 초기화 함수
     public abstract void InitMonster();
-    public abstract void Hit(float damage);
-
     public abstract IEnumerator HitEffect();
     public abstract void Die();
 
-    public virtual void Movement()
+    public virtual void Movement(Vector3 target)
     {
         if (!IsServer) return;
 
-        if (_target == null)
+        if (target == null)
         {
             state = States.Idle;
             timer = 0f;
             return;
         }
 
-        Vector2 dirVec = _target.position - transform.position;
+        Vector2 dirVec = target - transform.position;
         Vector2 nextVec = dirVec.normalized * stat.speed * Time.fixedDeltaTime;
 
         rb.MovePosition(rb.position + nextVec);
@@ -203,10 +204,19 @@ public abstract class Enemy : NetworkBehaviour
 
     public abstract IEnumerator EnemyAttack();
 
+    public void PlayAttackSfx()
+    {
+        audioController.PlayAttackSFX();
+    }
+
     [ServerRpc(RequireOwnership = false)]
     public void GiveExpGoldServerRpc(ulong lastClientId)
     {
-        ShowGoldClientRpc(lastClientId, stat.gold, stat.exp);
+        if(!stat.isDie)
+        {
+            ShowGoldClientRpc(lastClientId, stat.gold, stat.exp);
+            stat.isDie = true;
+        }
     }
 
     public virtual void SetDirection()
@@ -219,8 +229,7 @@ public abstract class Enemy : NetworkBehaviour
             else
             {
                 anim.transform.localScale = new Vector3(-anim.transform.localScale.x, anim.transform.localScale.y, 1f);
-                _canvas.localScale = _initCanvasScale;
-                
+                _canvas.localScale = new Vector3(-_initCanvasScale.x, _initCanvasScale.y, _initCanvasScale.z);
             }
         }
 
@@ -229,7 +238,7 @@ public abstract class Enemy : NetworkBehaviour
             if (anim.transform.localScale.x < 0)
             {
                 anim.transform.localScale = new Vector3(-anim.transform.localScale.x, anim.transform.localScale.y, 1f);
-                _canvas.localScale = new Vector3(-_initCanvasScale.x, _initCanvasScale.y, _initCanvasScale.z);
+                _canvas.localScale = _initCanvasScale;
             }
 
             else
@@ -242,18 +251,21 @@ public abstract class Enemy : NetworkBehaviour
     }
 
     [ClientRpc]
-    protected void AttackClientRpc(ulong clientId, float damage)
+    protected void AttackClientRpc(ulong clientId, float damage, bool isCritical)
     {
         // 공격 받은 클라이언트라면 Hit() 처리
         if (clientId == NetworkManager.Singleton.LocalClientId)
-            GameManager.Instance.player.Hit(damage: damage);
+            GameManager.Instance.player.Hit(damage: damage, isCritical);
     }
 
     [ClientRpc]
-    public void ShowFloatingDamageClientRpc(float damage)
+    public void ShowFloatingDamageClientRpc(float damage, bool isCritical)
     {
         // 몬스터 피격 데미지 표시
         var dmg = Instantiate(FloatingDamagePrefab, transform.position, Quaternion.identity);
+        if(isCritical)
+            dmg.GetComponent<TextMesh>().color = Color.red;
+
         dmg.GetComponent<TextMesh>().text = $"-" + damage.ToString("F1");
     }
 
@@ -271,7 +283,7 @@ public abstract class Enemy : NetworkBehaviour
     }
 
     [ServerRpc(RequireOwnership = false)]
-    protected void TakeDamageServerRpc(float damage, ServerRpcParams rpcParams = default)
+    protected void TakeDamageServerRpc(float damage, bool isCritical, ServerRpcParams rpcParams = default)
     {
         // 받은 데미지 - 방어력 으로 최종데미지 계산
         float finalDamage = damage - stat.defense;
@@ -283,10 +295,12 @@ public abstract class Enemy : NetworkBehaviour
 
         Hp -= finalDamage;
 
+        audioController.PlayHitSFX();
+
         if (FloatingDamagePrefab != null && Hp > 0)
         {
             // 데미지 표시 동기화
-            ShowFloatingDamageClientRpc(finalDamage);
+            ShowFloatingDamageClientRpc(finalDamage, isCritical);
         }
 
         if (Hp <= 0)
@@ -297,7 +311,8 @@ public abstract class Enemy : NetworkBehaviour
             anim.SetTrigger("Die");
 
             Die();
-            NetworkMonsterSpawner.Instance.DespawnMonster(GetComponent<NetworkObject>(), prefab);
+            audioController.PlayDeathSFX();
+            StartCoroutine(DeSpawnEnemy(GetComponent<NetworkObject>(), prefab, 3f));
             DieClientRpc(rpcParams.Receive.SenderClientId);
         }
     }
@@ -309,13 +324,30 @@ public abstract class Enemy : NetworkBehaviour
         if (NetworkManager.Singleton.LocalClientId == lastAttackClient)
             GiveExpGoldServerRpc(lastAttackClient);
 
+        GetComponent<Collider2D>().enabled = false;
+        GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+        GetComponent<Animator>().ResetTrigger("Respawn");
+    }
+
+    [ClientRpc]
+    protected void ActiveFalseClientRpc()
+    {
         gameObject.SetActive(false);
     }
 
     [ClientRpc]
     protected void RespawnClientRpc()
     {
+        GetComponent<Collider2D>().enabled = true;
         gameObject.SetActive(true);
+        anim.SetTrigger("Respawn");
+    }
+
+    IEnumerator DeSpawnEnemy(NetworkObject obj, GameObject prefab, float time)
+    {
+        yield return new WaitForSeconds(time);
+        ActiveFalseClientRpc();
+        NetworkMonsterSpawner.Instance.DespawnMonster(obj, prefab);
     }
 }
 

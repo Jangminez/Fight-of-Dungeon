@@ -2,7 +2,7 @@ using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
 
-public class Bat : Enemy
+public class Bat : Enemy, IDamgeable
 {
 
     public override void OnNetworkSpawn()
@@ -12,7 +12,6 @@ public class Bat : Enemy
         if (!IsServer) return;
 
         InitMonster();
-
     }
 
     public override void InitMonster()
@@ -50,6 +49,7 @@ public class Bat : Enemy
         while (_isAttack)
         {
             anim.SetTrigger("Attack");
+            audioController.PlayAttackSFX();
             yield return new WaitForSeconds(1 / stat.attackSpeed);
 
             if (state != States.Attack)
@@ -60,15 +60,15 @@ public class Bat : Enemy
             }
 
             if (_target != null && Vector2.Distance(_target.position , transform.position) < stat.attackRange)
-                AttackClientRpc(_target.GetComponent<NetworkObject>().OwnerClientId, stat.attack);
+                AttackClientRpc(_target.GetComponent<NetworkObject>().OwnerClientId, stat.attack, false);
         }
     }
-    public override void Hit(float damage)
+    public void Hit(float damage, bool isCritical)
     {
         StopCoroutine("EnemyAttack");
         _isAttack = false;
         anim.SetTrigger("Hit");
-        TakeDamageServerRpc(damage);
+        TakeDamageServerRpc(damage, isCritical);
     }
 
     public override IEnumerator HitEffect()
@@ -79,11 +79,11 @@ public class Bat : Enemy
     public override void Die()
     {
         Hp = 0f;
-        stat.isDie = true;
 
         // 몬스터 상태 Die로 설정 후 애니메이션 실행
         state = States.Die;
         anim.SetFloat("RunState", 0f);
+        anim.ResetTrigger("Hit");
 
         StopAllCoroutines();
     }
@@ -100,7 +100,6 @@ public class Bat : Enemy
             anim.SetFloat("RunState", 0f);
         }
     }
-
 }
 
 

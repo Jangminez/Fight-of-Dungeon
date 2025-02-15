@@ -1646,7 +1646,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4785643574606080875}
-  - component: {fileID: 8879682465790252192}
   m_Layer: 17
   m_Name: Root
   m_TagString: Untagged
@@ -1673,97 +1672,6 @@ Transform:
   - {fileID: 8781327592242281485}
   m_Father: {fileID: 3823532714361842770}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8879682465790252192
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2473595801142665280}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: baea2e9758e554909b2367e396d9c5a4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _itemList:
-  - {fileID: 2595868413576673088}
-  - {fileID: 5168918041319357311}
-  - {fileID: 6257872336739233369}
-  - {fileID: 2890182751320761026}
-  - {fileID: 210107834652656127}
-  - {fileID: 4933018206110301973}
-  - {fileID: 953738326166528300}
-  - {fileID: 2439719712327486736}
-  - {fileID: 4674509603666419038}
-  - {fileID: 210107834652656127}
-  - {fileID: 4933018206110301973}
-  - {fileID: 1624555123338856306}
-  - {fileID: 8467208545594488562}
-  - {fileID: 2928525309592339375}
-  - {fileID: 5570167451591942943}
-  - {fileID: 4578507306553502609}
-  _eyeList:
-  - {fileID: 876339849033047679}
-  - {fileID: 7749967476607320335}
-  - {fileID: 2384189943771511340}
-  - {fileID: 2621004597185963348}
-  _hairList:
-  - {fileID: 2595868413576673088}
-  - {fileID: 6257872336739233369}
-  - {fileID: 7441547931582991928}
-  - {fileID: 5168918041319357311}
-  _bodyList:
-  - {fileID: 7331614144100928425}
-  - {fileID: 1835825578888642498}
-  - {fileID: 8488703814443225437}
-  - {fileID: 6602460628710439663}
-  - {fileID: 1259002918418759792}
-  - {fileID: 2439772050701238476}
-  _clothList:
-  - {fileID: 2890182751320761026}
-  - {fileID: 4933018206110301973}
-  - {fileID: 210107834652656127}
-  _armorList:
-  - {fileID: 4674509603666419038}
-  - {fileID: 7849900601756103354}
-  - {fileID: 833437910005678406}
-  _pantList:
-  - {fileID: 2439719712327486736}
-  - {fileID: 953738326166528300}
-  _weaponList:
-  - {fileID: 1624555123338856306}
-  - {fileID: 8467208545594488562}
-  - {fileID: 2928525309592339375}
-  - {fileID: 5570167451591942943}
-  _backList:
-  - {fileID: 4578507306553502609}
-  _spHorseSPList: {fileID: 0}
-  _spHorseString: 
-  _bodyTexture: {fileID: 0}
-  _bodyString: 
-  _hairListString:
-  - 
-  - Assets/Resources/SPUM/SPUM_Sprites/Items/4_Helmet/Helmet_5.png
-  - 
-  - 
-  _clothListString:
-  - Assets/Resources/SPUM/SPUM_Sprites/Packages/Ver300/2_Cloth/New_Cloth_06.png
-  - Assets/Resources/SPUM/SPUM_Sprites/Packages/Ver300/2_Cloth/New_Cloth_06.png
-  - Assets/Resources/SPUM/SPUM_Sprites/Packages/Ver300/2_Cloth/New_Cloth_06.png
-  _armorListString:
-  - Assets/Resources/SPUM/SPUM_Sprites/Items/5_Armor/Armor_4.png
-  - Assets/Resources/SPUM/SPUM_Sprites/Items/5_Armor/Armor_4.png
-  - Assets/Resources/SPUM/SPUM_Sprites/Items/5_Armor/Armor_4.png
-  _pantListString:
-  - Assets/Resources/SPUM/SPUM_Sprites/Packages/Ver300/3_Pant/New_Pant_08.png
-  - Assets/Resources/SPUM/SPUM_Sprites/Packages/Ver300/3_Pant/New_Pant_08.png
-  _weaponListString:
-  - 
-  - Assets/Resources/SPUM/SPUM_Sprites/Items/6_Weapons/Shield_1.png
-  - Assets/Resources/SPUM/SPUM_Sprites/Packages/Ver300/6_Weapons/New_Weapon_01.png
-  - 
-  _backListString:
-  - 
 --- !u!1 &2494429565981081638
 GameObject:
   m_ObjectHideFlags: 0
@@ -2374,7 +2282,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.65625, y: 0.625}
+  m_Size: {x: 0.625, y: 0.65625}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -2567,8 +2475,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fab870b2cfc52647b90796ffd6337c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skillName: "\uC804\uC0AC\uC758 \uD798"
+  skillDesc: "\uC804\uC0AC\uC758 \uAE30\uC9C0\uB97C \uBC1C\uD718\uD558\uC5EC 20\uCD08
+    \uB3D9\uC548 \uACF5\uACA9\uB825 30%, \uACF5\uACA9\uC18D\uB3C4 30%, \uD06C\uB9AC\uD2F0\uCEEC
+    \uD655\uB960 10% \uC99D\uAC00\uC2DC\uD0A8\uB2E4."
+  skillCD: "\uCFE8\uD0C0\uC784: 30s"
   _icon: {fileID: -627944568, guid: 87f235b93ba79374eb1afdc1d344b393, type: 3}
   _CD: {fileID: 0}
+  useMp: 0
   _info:
     attackUp: 0
     asUp: 0
@@ -3317,8 +3231,11 @@ GameObject:
   - component: {fileID: 5392295104493556711}
   - component: {fileID: 5143138813125117457}
   - component: {fileID: 2452477755705979072}
+  - component: {fileID: 7997057478271587318}
+  - component: {fileID: -7249839130210021135}
+  - component: {fileID: -3582569102416866609}
   m_Layer: 17
-  m_Name: Warrior_Network
+  m_Name: Warrior
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3333,7 +3250,7 @@ Transform:
   m_GameObject: {fileID: 7038658517558419819}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.17, y: -9.45, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.7, y: 1.7, z: 1.7}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3351,8 +3268,8 @@ SortingGroup:
   m_GameObject: {fileID: 7038658517558419819}
   m_Enabled: 1
   m_SortingLayerID: -1869315837
-  m_SortingLayer: 1
-  m_SortingOrder: 5
+  m_SortingLayer: 2
+  m_SortingOrder: 3
   m_SortAtRoot: 0
 --- !u!95 &7929015100967848278
 Animator:
@@ -3449,8 +3366,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ab5149cfe0f39543be60f978c4f419b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _floatingDamage: {fileID: 7107079607422933807, guid: 21182ee54ba58c647ba5d2063400e63f,
+    type: 3}
   _playerRig: {fileID: 8605291009809623574}
   _animator: {fileID: 7929015100967848278}
+  _audio: {fileID: 0}
   _maxHp:
     m_InternalValue: 0
   _hp:
@@ -3527,7 +3447,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   layer:
     serializedVersion: 2
-    m_Bits: 262144
+    m_Bits: 17039360
   enemys: []
 --- !u!114 &4694814571735404842
 MonoBehaviour:
@@ -3541,7 +3461,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f794b3f7218eff74089f0e95f476a5c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _basicAttack: {fileID: 2154604722833059101, guid: 7c887c4bb382ff940b17ca7d471c0e2b,
+  _basicAttack: {fileID: 1866123413100334659, guid: 7c887c4bb382ff940b17ca7d471c0e2b,
     type: 3}
 --- !u!114 &4696496129587346831
 MonoBehaviour:
@@ -3572,6 +3492,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _joystickMovement: {fileID: 0}
+  _speed: 0
 --- !u!114 &7596352804070474375
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3676,6 +3597,134 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80d7c879794dfda4687da0e400131852, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &7997057478271587318
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7038658517558419819}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05a875b8458171d4b99846cd7c2776af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!82 &-7249839130210021135
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7038658517558419819}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: -4676925305396723040, guid: b68384355b134124cab221873380926f,
+    type: 2}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &-3582569102416866609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7038658517558419819}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91aa7737ad2ec1046a4a88d8ea7eee43, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioSource: {fileID: 0}
+  death: {fileID: 8300000, guid: 566d2ea6240b489479a6e9fd608c2621, type: 3}
+  attack: {fileID: 8300000, guid: 323e15cfe809e114ab92c9f4b25e8bc2, type: 3}
+  hit: {fileID: 8300000, guid: 8b23b175a78d6b5458322e3a6c9905d0, type: 3}
+  skill1: {fileID: 8300000, guid: b0e62ed71b1538648b719821f4f63b4c, type: 3}
+  skill2: {fileID: 8300000, guid: 1d74880bed4586644a16a79a2d9dc8af, type: 3}
+  skill3: {fileID: 0}
 --- !u!1 &7046389342001341989
 GameObject:
   m_ObjectHideFlags: 0
@@ -3778,6 +3827,7 @@ GameObject:
   - component: {fileID: 8772532050239868083}
   - component: {fileID: 8728814460764019631}
   - component: {fileID: 4021479531362736973}
+  - component: {fileID: 2906869854464865700}
   m_Layer: 5
   m_Name: Hp & MP _Canvas
   m_TagString: Untagged
@@ -3869,6 +3919,36 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &2906869854464865700
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7061303689787230925}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7925a23010d94b649bd99c35a27e0479, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SyncPositionX: 0
+  SyncPositionY: 0
+  SyncPositionZ: 0
+  SyncRotAngleX: 0
+  SyncRotAngleY: 0
+  SyncRotAngleZ: 0
+  SyncScaleX: 1
+  SyncScaleY: 0
+  SyncScaleZ: 0
+  PositionThreshold: 0.001
+  RotAngleThreshold: 0.01
+  ScaleThreshold: 0.01
+  UseQuaternionSynchronization: 0
+  UseQuaternionCompression: 0
+  UseHalfFloatPrecision: 0
+  InLocalSpace: 0
+  Interpolate: 1
+  SlerpPosition: 0
 --- !u!1 &7165494715163982389
 GameObject:
   m_ObjectHideFlags: 0
@@ -4193,8 +4273,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c6896a34a5e3d348a30e228aa13e94b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skillName: "\uBC29\uD328\uBC00\uAE30"
+  skillDesc: "\uBC29\uD328\uB85C \uC8FC\uBCC0\uC5D0 \uC788\uB294 \uBAAC\uC2A4\uD130\uB4E4\uC5D0\uAC8C
+    \uACF5\uACA9\uB825\uC758 150%\uC5D0 \uD574\uB2F9\uD558\uB294 \uD53C\uD574\uB97C
+    \uC785\uD78C\uB2E4."
+  skillCD: "\uCFE8\uD0C0\uC784: 10s"
   _icon: {fileID: -286090102, guid: 5efb8a0913636f6408680660ca44563c, type: 3}
   _CD: {fileID: 0}
+  useMp: 0
   _info:
     damage: 0
     coolDown: 0
@@ -4510,15 +4596,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac470af536385a247bcdbc8b00095be5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skillName: "\uAC80\uC758 \uD3ED\uD48D"
+  skillDesc: "\uC0AC\uBC29\uC73C\uB85C \uAC80\uC744 \uBE60\uB974\uAC8C \uD718\uB458\uB7EC
+    \uC8FC\uBCC0 \uBAAC\uC2A4\uD130\uC5D0\uAC8C 0.5\uCD08\uB9C8\uB2E4 \uACF5\uACA9\uB825\uC758
+    70%\uC5D0 \uD574\uB2F9\uD558\uB294 \uD53C\uD574\uB97C \uC785\uD788\uB294 \uD3ED\uD48D\uC744
+    \uB9CC\uB4E4\uC5B4\uB0B8\uB2E4."
+  skillCD: "\uCFE8\uD0C0\uC784: 40s"
   _icon: {fileID: 2128082488, guid: 8f7953b86df2c314bac4e500f7648a12, type: 3}
   _CD: {fileID: 0}
+  useMp: 0
   _info:
     damage: 0
     interval: 0
     coolDown: 0
     duration: 0
     collider: {fileID: 0}
-    montsterInRage: []
+    montsterInRange: []
 --- !u!114 &6174236730722431451
 MonoBehaviour:
   m_ObjectHideFlags: 0

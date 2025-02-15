@@ -4,7 +4,7 @@ using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
 
-public class Goblin : Enemy
+public class Goblin : Enemy, IDamgeable
 {
     public GameObject _arrow;
     public Transform _tip;
@@ -28,7 +28,6 @@ public class Goblin : Enemy
             _isAttack = false;
             RespawnClientRpc();
             state = States.Idle;
-            anim.SetTrigger("Respawn");
         }
 
         MaxHp = 1000f;
@@ -55,12 +54,12 @@ public class Goblin : Enemy
     }
 
     #region 피격 및 사망 처리
-    public override void Hit(float damage)
+    public void Hit(float damage, bool isCritical)
     {
         anim.SetTrigger("Hit");
         StopCoroutine("EnemyAttack");
         _isAttack = false;
-        TakeDamageServerRpc(damage);
+        TakeDamageServerRpc(damage, isCritical);
     }
 
     public override IEnumerator HitEffect()
@@ -73,9 +72,10 @@ public class Goblin : Enemy
         if(!IsServer) return;
 
         Hp = 0f;
-        stat.isDie = true;
 
         state = States.Die;
+        anim.ResetTrigger("Hit");
+        anim.SetFloat("RunState", 0f);
         StopAllCoroutines();
     }
     #endregion
@@ -104,6 +104,7 @@ public class Goblin : Enemy
             // 공격시 방향 전환 및 애니메이션 실행
             SetDirection();
             anim.SetTrigger("Attack");
+            audioController.PlayAttackSFX();
 
             // 공격속도 지연
             yield return new WaitForSeconds(1 / stat.attackSpeed);

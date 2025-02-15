@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -7,6 +6,7 @@ public class PlayerSpawner : NetworkBehaviour
 {
     [SerializeField]
     private CameraFollow _cam;
+    private bool isSpawn = false;
     void Start()
     {
         DontDestroyOnLoad(this.gameObject);
@@ -31,10 +31,11 @@ public class PlayerSpawner : NetworkBehaviour
     [ClientRpc]
     public void PlayerSpawnClientRpc(ulong clientId)
     {
-        if (clientId == NetworkManager.Singleton.LocalClientId)
+        if (clientId == NetworkManager.Singleton.LocalClientId && !isSpawn)
         {
             NetworkSpawnPlayerServerRpc(clientId, GameManager.Instance.playerPrefabName);
-            Invoke("SpawnPlayer", 1f);
+            Invoke("SpawnPlayer", 3f);
+            isSpawn = true;
         }
     }
 
@@ -45,13 +46,18 @@ public class PlayerSpawner : NetworkBehaviour
         UIManager.Instance.player = GameManager.Instance.player;
 
         //플레이어 위치 설정
-        GameManager.Instance.player.gameObject.SetActive(true);
-        GameManager.Instance.player._spawnPoint = GameObject.FindWithTag("BlueSpawn").transform;
-        GameManager.Instance.player.transform.position = GameManager.Instance.player._spawnPoint.position + new Vector3(0f, 1f, 0f); ;
+        if(IsServer)
+        {
+            GameManager.Instance.player._spawnPoint = GameObject.FindWithTag("BlueSpawn").transform;
+        }
+        else
+        {
+            GameManager.Instance.player._spawnPoint = GameObject.FindWithTag("RedSpawn").transform;
+        }
 
-        UIManager.Instance.goToMain.onClick.AddListener(GameManager.Instance.BackToScene);
-
+        GameManager.Instance.player.transform.position = GameManager.Instance.player._spawnPoint.position + new Vector3(0f, 1f, 0f);
         SetUpCamera(GameManager.Instance.player.transform);
+        GameManager.Instance.player.gameObject.SetActive(true);
     }
 
     private void SetUpCamera(Transform playerTransform)

@@ -11,7 +11,7 @@ using UnityEngine.UI;
 
 public class GameLobby : MonoBehaviour
 {
-    public static GameLobby Instance {get; private set;}
+    public static GameLobby Instance { get; private set; }
     Lobby hostLobby;
     Lobby joinedLobby;
     float heartbeatTimer;
@@ -43,7 +43,8 @@ public class GameLobby : MonoBehaviour
             Debug.Log("Signed in " + AuthenticationService.Instance.PlayerId);
         };
         // 익명 로그인
-        await AuthenticationService.Instance.SignInAnonymouslyAsync();
+        if(!AuthenticationService.Instance.IsSignedIn)
+            await AuthenticationService.Instance.SignInAnonymouslyAsync();
 
         joinButton.onClick.AddListener(JoinLobbyByCode);
 
@@ -116,7 +117,7 @@ public class GameLobby : MonoBehaviour
 
         if (joinedLobby.Players.Count > previousPlayerList.Count)
         {
-            if(IsLobbyHost())
+            if (IsLobbyHost())
                 StartGame();
         }
     }
@@ -248,11 +249,14 @@ public class GameLobby : MonoBehaviour
     }
 
     // 로비 퇴장
-    private async void LeaveLobby()
+    public async void LeaveLobby()
     {
         try
         {
             await LobbyService.Instance.RemovePlayerAsync(joinedLobby.Id, AuthenticationService.Instance.PlayerId);
+            Debug.Log($"Leave Lobby LobbyId : {joinedLobby.LobbyCode}");
+            joinedLobby = null;
+
         }
         catch (LobbyServiceException e)
         {
@@ -264,10 +268,10 @@ public class GameLobby : MonoBehaviour
     {
         try
         {
-            hostLobby = await Lobbies.Instance.UpdateLobbyAsync(hostLobby.Id, new UpdateLobbyOptions
-            {
-                HostId = joinedLobby.Players[1].Id
-            });
+                hostLobby = await Lobbies.Instance.UpdateLobbyAsync(hostLobby.Id, new UpdateLobbyOptions
+                {
+                    HostId = joinedLobby.Players[1].Id
+                });
         }
         catch (LobbyServiceException e)
         {

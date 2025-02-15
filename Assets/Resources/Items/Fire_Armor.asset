@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ea01d3ce1b0d2d49b7058b06eb87347, type: 3}
+  m_Name: Fire_Armor
+  m_EditorClassIdentifier: 
+  item: {fileID: 4872118840267448, guid: 35c204b30fda80448b0489a5d23780fe, type: 3}
+  itemName: "\uD654\uC5FC \uC81C\uB828 \uAC11\uC637"
+  Id: 203
+  statsList:
+  - valuetype: 3
+    caltype: 0
+    value: 50
+  - valuetype: 5
+    caltype: 0
+    value: 3
+  itemDescription: "\uBD88\uC758 \uACB0\uC815\uC744 \uC774\uC6A9\uD574 \uB354 \uAC00\uBCCD\uACE0
+    \uB2E8\uB2E8\uD558\uAC8C \uC81C\uB828\uB418\uC5C8\uB2E4. \uC774\uC820 \uC880
+    \uC6C0\uC9C1\uC77C \uB9CC\uD558\uB2E4."
+  itemCost: 2000
+  needItem:
+  - {fileID: 11400000, guid: 420b8bf8302fb05499952ac4a2f123da, type: 2}
+  - {fileID: 11400000, guid: 7783814cf843efc4cbafb9e122f13c2d, type: 2}

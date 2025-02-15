@@ -35,6 +35,7 @@ public class UIManager : MonoBehaviour
     public GameObject[] locked;
 
     public Button goToMain;
+    public Button pickUpButton;
 
     private void Awake()
     {

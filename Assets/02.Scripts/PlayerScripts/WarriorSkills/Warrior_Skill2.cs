@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class Warrior_Skill2 : Skill
 {
+    private Player player;
     [System.Serializable]
     struct SkillInfo
     {
@@ -21,7 +22,8 @@ public class Warrior_Skill2 : Skill
     public override IEnumerator SkillProcess()
     {
         if(!IsOwner) yield break;
-
+        GameManager.Instance.player._audio.PlaySkill2SFX();
+        
         // 쿨타임 시작
         StartCoroutine(CoolDown(_info.coolDown));
         yield return null;
@@ -31,18 +33,31 @@ public class Warrior_Skill2 : Skill
     {
         if(!IsOwner) return;
 
+        player = GameManager.Instance.player;
+
         // 몬스터가 스킬 범위에 들어오면 데미지 적용
-        var monster = other.GetComponent<Enemy>();
+        var enemy = other.GetComponent<IDamgeable>();
 
         cri = Random.Range(1f, 101f); // 1 ~ 100 확률 지정
 
-        if (monster != null)
+        if (enemy != null)
         {
-            monster.Hit(damage:
-            cri <= GameManager.Instance.player.Critical ?
-            GameManager.Instance.player.FinalAttack * _info.damage * 1.5f :
-            GameManager.Instance.player.FinalAttack * _info.damage);
+            if(other.tag == "Player")
+            {
+                if(cri <= player.Critical)
+                    player.AttackPlayerServerRpc(player.FinalAttack * _info.damage * 1.5f, true);
+
+                else
+                    player.AttackPlayerServerRpc(player.FinalAttack * _info.damage, false);
+            }
+            else
+            {
+                if(cri <= player.Critical)
+                    enemy.Hit(player.FinalAttack * _info.damage * 1.5f, true);
+
+                else
+                    enemy.Hit(player.FinalAttack * _info.damage, false);
+            }
         }
     }
-
 }
