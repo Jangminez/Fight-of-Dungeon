@@ -7,10 +7,18 @@ public class PlayerSpawner : NetworkBehaviour
     [SerializeField]
     private CameraFollow _cam;
     private bool isSpawn = false;
-    void Start()
+
+    void Awake()
     {
+        if(FindObjectOfType<PlayerSpawner>() != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         DontDestroyOnLoad(this.gameObject);
     }
+
     public override void OnNetworkSpawn()
     {
         // 씬이 로드 되면 플레이어 오브젝트 생성
@@ -21,7 +29,7 @@ public class PlayerSpawner : NetworkBehaviour
     {
         if (sceneName == "StageScene")
         {
-            if (IsHost)
+            if (IsServer)
             {
                 PlayerSpawnClientRpc(clientId);
             }
@@ -58,6 +66,7 @@ public class PlayerSpawner : NetworkBehaviour
         GameManager.Instance.player.transform.position = GameManager.Instance.player._spawnPoint.position + new Vector3(0f, 1f, 0f);
         SetUpCamera(GameManager.Instance.player.transform);
         GameManager.Instance.player.gameObject.SetActive(true);
+        RelicManager.Instance.ApplyRelics();
     }
 
     private void SetUpCamera(Transform playerTransform)

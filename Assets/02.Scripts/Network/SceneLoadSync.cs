@@ -5,23 +5,16 @@ using UnityEngine;
 
 public class SceneLoadSync : NetworkBehaviour
 {
-    public NetworkVariable<bool> IsLoaded = new NetworkVariable<bool>(false);
+    public NetworkVariable<bool> IsPlayerReady = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+
+    public static SceneLoadSync Instance;
 
     private void Start()
     {
-        if (IsOwner)
+        if(IsOwner)
         {
-            StartCoroutine(CheckLoadingProgress());
-        }
-    }
-
-    private IEnumerator CheckLoadingProgress()
-    {
-        while (SceneLoadManager.Instance.loadingProgress.Value < 1f)
-        {
-            yield return null;
-        }
-
-        IsLoaded.Value = true;
+            Instance = this;
+            IsPlayerReady.Value = true;
+        }   
     }
 }

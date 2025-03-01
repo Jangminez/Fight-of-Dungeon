@@ -162,6 +162,8 @@ public class GameManager : MonoBehaviour
 
         player = GameObject.FindWithTag("Player").GetComponent<Player>();
         player.GetComponent<PlayerMovement>().enabled = true;
+        
+        RelicManager.Instance.ApplyRelics();
     }
     public void ChangeCharacter(string name)
     {

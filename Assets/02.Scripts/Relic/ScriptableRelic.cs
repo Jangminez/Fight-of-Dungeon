@@ -16,6 +16,7 @@ public class ScriptableRelic : ScriptableObject
     public string r_Description;
     public int r_UpgradeCost;
     public int r_UpgradeValue;
+    public bool isDraw;
 
     public enum ValueType {Attack, AttackSpeed, Critical, Defense, Hp, HpRegen, Mp, MpRegen, Speed}
     public enum CalType {Plus, Percentage}

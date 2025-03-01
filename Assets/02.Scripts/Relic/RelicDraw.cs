@@ -53,6 +53,7 @@ public class RelicDraw : MonoBehaviour
             Debug.Log(drawRelic.r_Name);
 
             drawRelic.r_Count += 1;
+            drawRelic.isDraw = true;
 
             relicIcon.sprite = drawRelic.r_Icon;
             relicName.text = drawRelic.r_Name;

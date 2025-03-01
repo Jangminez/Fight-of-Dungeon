@@ -311,7 +311,6 @@ public class GameLobby : MonoBehaviour
                 joinedLobby = lobby;
 
                 SceneLoadManager.Instance.LoadSceneAsync("StageScene");
-
             }
             catch (LobbyServiceException e)
             {

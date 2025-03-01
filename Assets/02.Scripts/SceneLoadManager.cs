@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class SceneLoadManager : NetworkBehaviour
 {
     public static SceneLoadManager Instance;
-    public NetworkVariable<float> loadingProgress = new NetworkVariable<float>(0f);
+    public NetworkVariable<float> loadingProgress = new NetworkVariable<float>(0f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
     void Awake()
     {
         if (Instance == null)
@@ -23,45 +23,65 @@ public class SceneLoadManager : NetworkBehaviour
     {
         if (IsServer)
         {
-            StartCoroutine(LoadSceneCoroutine(sceneName));
+            ShowLoadingClientRpc();
         }
+
+        StartCoroutine(LoadSceneCoroutine(sceneName));
     }
 
     private IEnumerator LoadSceneCoroutine(string sceneName)
     {
-        var asyncOperation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+        var asyncOperation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
         asyncOperation.allowSceneActivation = false;
 
         while (!asyncOperation.isDone)
         {
             float progress = Mathf.Clamp01(asyncOperation.progress / 0.9f);
             loadingProgress.Value = progress;
-            
-            LoadingScreen.Instance.ShowLoadingScreen();
 
             if (asyncOperation.progress >= 0.9f)
             {
-                if(AreAllClientsLoaded())
-                    asyncOperation.allowSceneActivation = true;
+                asyncOperation.allowSceneActivation = true;
             }
 
             yield return null;
         }
 
-        LoadingScreen.Instance.HideLoadingScreen();
+        while(!CheckAllPlayersReady())
+        {
+            yield return new WaitForSeconds(0.5f);
+        }
+
+        if(IsServer)
+            HideLoadingClientRpc();
     }
 
-    private bool AreAllClientsLoaded()
+    public bool CheckAllPlayersReady()
     {
-        foreach(var client in NetworkManager.Singleton.ConnectedClientsList)
+        foreach(var client in NetworkManager.Singleton.ConnectedClients)
         {
-            if(client.PlayerObject.TryGetComponent(out SceneLoadSync loadSync))
+            if (client.Value.PlayerObject == null)
+                return false;
+
+            if(client.Value.PlayerObject.TryGetComponent(out SceneLoadSync loadSync))
             {
-                if(!loadSync.IsLoaded.Value)
+                if(!loadSync.IsPlayerReady.Value)
                     return false;
             }
         }
 
         return true;
+    }
+
+    [ClientRpc]
+    public void ShowLoadingClientRpc()
+    {
+        LoadingScreen.Instance.ShowLoadingScreen();
+    }
+
+    [ClientRpc]
+    public void HideLoadingClientRpc()
+    {
+        LoadingScreen.Instance.HideLoadingScreen();
     }
 }

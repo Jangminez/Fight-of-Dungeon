@@ -34,7 +34,6 @@ public class ItemManager : MonoBehaviour
         else if (_instance != null)
             Destroy(gameObject);
 
-
         // 아이템 정보 불러오기
         LoadAllItems();
     }
