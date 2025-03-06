@@ -7,11 +7,13 @@ using UnityEngine.UI;
 
 public abstract class Player : NetworkBehaviour, IDamgeable
 {
+    #region 플레이어 참조 변수
     [SerializeField] protected GameObject _floatingDamage;
     [SerializeField] protected Rigidbody2D _playerRig;
 
     [SerializeField] protected Animator _animator;
     [SerializeField] public AudioController _audio;
+    #endregion
     #region 플레이어 스탯 변수
     [Header("Player Stats")]
     [SerializeField] NetworkVariable<float> _maxHp = new NetworkVariable<float>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
@@ -477,6 +479,7 @@ public abstract class Player : NetworkBehaviour, IDamgeable
         this.GetComponent<Collider2D>().enabled = true;
         this.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
     }
+    
     [ServerRpc(RequireOwnership = false)]
     private void ActiveFalseServerRpc()
     {

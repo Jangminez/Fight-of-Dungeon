@@ -157,37 +157,6 @@ public class GameLobby : MonoBehaviour
         }
     }
 
-    // 현재 존재하는 로비 목록 출력
-    private async void ListLobbies()
-    {
-        try
-        {
-            // 로비 검색 필터 설정
-            QueryLobbiesOptions queryLobbiesOptions = new QueryLobbiesOptions
-            {
-                Count = 25,
-                Filters = new List<QueryFilter> {
-                    new QueryFilter(QueryFilter.FieldOptions.AvailableSlots, "0", QueryFilter.OpOptions.GT)
-                },
-                Order = new List<QueryOrder> {
-                    new QueryOrder(false, QueryOrder.FieldOptions.Created)
-                }
-            };
-
-            QueryResponse queryResponse = await Lobbies.Instance.QueryLobbiesAsync(queryLobbiesOptions);
-
-            foreach (Lobby lobby in queryResponse.Results)
-            {
-                Debug.Log(lobby.Name + " " + lobby.MaxPlayers);
-            }
-        }
-
-        catch (LobbyServiceException e)
-        {
-            Debug.Log(e);
-        }
-    }
-
     // 현재 존재하는 입장가능한 로비로 빠르게 입장
     public async void QuickJoinLobby()
     {

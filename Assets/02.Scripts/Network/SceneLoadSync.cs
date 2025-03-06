@@ -14,7 +14,11 @@ public class SceneLoadSync : NetworkBehaviour
         if(IsOwner)
         {
             Instance = this;
-            IsPlayerReady.Value = true;
         }   
+    }
+
+    public void SetReady()
+    {
+        IsPlayerReady.Value = true;
     }
 }

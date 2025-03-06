@@ -152,18 +152,20 @@ public class GameManager : MonoBehaviour
 
     IEnumerator LoadTutorial()
     {
+        LoadingScreen.Instance.ShowLoadingScreen();
         AsyncOperation asyncOperation = SceneManager.LoadSceneAsync("TutorialScene");
 
         while(!asyncOperation.isDone){
             yield return null;
         }
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(4f);
 
         player = GameObject.FindWithTag("Player").GetComponent<Player>();
         player.GetComponent<PlayerMovement>().enabled = true;
         
         RelicManager.Instance.ApplyRelics();
+        LoadingScreen.Instance.HideLoadingScreen();
     }
     public void ChangeCharacter(string name)
     {

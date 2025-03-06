@@ -31,6 +31,7 @@ public class PlayerSpawner : NetworkBehaviour
         {
             if (IsServer)
             {
+                ShowLoadingClientRpc();
                 PlayerSpawnClientRpc(clientId);
             }
         }
@@ -41,7 +42,12 @@ public class PlayerSpawner : NetworkBehaviour
     {
         if (clientId == NetworkManager.Singleton.LocalClientId && !isSpawn)
         {
-            NetworkSpawnPlayerServerRpc(clientId, GameManager.Instance.playerPrefabName);
+            if(IsServer)
+                NetworkSpawnPlayerServerRpc(clientId, GameManager.Instance.playerPrefabName);
+            
+            else
+                NetworkSpawnPlayerServerRpc(clientId, GameManager.Instance.playerPrefabName);
+
             Invoke("SpawnPlayer", 3f);
             isSpawn = true;
         }
@@ -63,10 +69,12 @@ public class PlayerSpawner : NetworkBehaviour
             GameManager.Instance.player._spawnPoint = GameObject.FindWithTag("RedSpawn").transform;
         }
 
-        GameManager.Instance.player.transform.position = GameManager.Instance.player._spawnPoint.position + new Vector3(0f, 1f, 0f);
+        //GameManager.Instance.player.transform.position = GameManager.Instance.player._spawnPoint.position + new Vector3(0f, 1f, 0f);
         SetUpCamera(GameManager.Instance.player.transform);
         GameManager.Instance.player.gameObject.SetActive(true);
         RelicManager.Instance.ApplyRelics();
+
+        if(!IsServer) HideLoadingServerRpc();
     }
 
     private void SetUpCamera(Transform playerTransform)
@@ -82,6 +90,31 @@ public class PlayerSpawner : NetworkBehaviour
     public void NetworkSpawnPlayerServerRpc(ulong clientId, string name)
     {
         NetworkObject playerObject = Instantiate(Resources.Load<GameObject>($"PlayerCharactors/{name}")).GetComponent<NetworkObject>();
+
+        if(clientId == NetworkManager.Singleton.LocalClientId)
+            playerObject.transform.position = GameObject.FindWithTag("BlueSpawn").transform.position + new Vector3(0f, 1f, 0f) ;
+        else
+            playerObject.transform.position = GameObject.FindWithTag("RedSpawn").transform.position + new Vector3(0f, 1f, 0f);
+
         playerObject.SpawnAsPlayerObject(clientId, true);
+    }
+
+    [ClientRpc]
+    public void ShowLoadingClientRpc()
+    {
+        LoadingScreen.Instance.ShowLoadingScreen();
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void HideLoadingServerRpc()
+    {
+        HideLoadingClientRpc();
+    }
+
+
+    [ClientRpc]
+    public void HideLoadingClientRpc()
+    {
+        LoadingScreen.Instance.HideLoadingScreen();
     }
 }

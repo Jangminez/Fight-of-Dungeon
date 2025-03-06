@@ -5,11 +5,19 @@ using UnityEngine;
 
 public abstract class Enemy : NetworkBehaviour
 {
+    #region 참조 변수
+
     public GameObject prefab;
     protected SpriteRenderer spr;
     protected Rigidbody2D rb;
     protected Animator anim;
     public AudioController audioController;
+    public GameObject FloatingDamagePrefab;
+    public GameObject FloatingGoldExpPrefab;
+
+    #endregion
+
+    #region 상태 및 위치 변수
     public Vector3 _initTransform;
     public enum States { Idle, Chase, Attack, Return, Die }
     public States state;
@@ -18,10 +26,9 @@ public abstract class Enemy : NetworkBehaviour
     protected bool _isAttack;
     Transform _canvas;
     Vector3 _initCanvasScale;
-    public GameObject FloatingDamagePrefab;
-    public GameObject FloatingGoldExpPrefab;
-    protected float timer;
+    #endregion
 
+    #region 적 스탯 변수
     [Serializable]
     public struct Stats
     {
@@ -60,9 +67,11 @@ public abstract class Enemy : NetworkBehaviour
         }
         get => _hp.Value;
     }
+    #endregion
 
     private void Awake()
     {
+        // 참조 변수 적용
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         _canvas = transform.GetChild(0);
@@ -72,11 +81,13 @@ public abstract class Enemy : NetworkBehaviour
 
     private void Start()
     {
+        // 체력바 UI 표시를 위한 이벤트 연결
         _hp.OnValueChanged += GetComponent<EnemyHp>().ChangeHp;
     }
 
     void LateUpdate()
     {
+        // 서버에서 적의 공격 및 애니메이션 관리
         if (!IsServer) return;
 
         Movement_Anim();
@@ -92,6 +103,7 @@ public abstract class Enemy : NetworkBehaviour
 
     virtual public IEnumerator MonsterState()
     {
+        // 몬스터 상태(Idle, Chase, Attack, Return)
         if (!IsServer) yield break;
 
         while (!stat.isDie)
@@ -105,20 +117,11 @@ public abstract class Enemy : NetworkBehaviour
 
             if (state == States.Idle)
             {
-                timer += Time.deltaTime;
-
                 rb.velocity = Vector2.zero;
 
                 if (_target != null && Vector2.Distance(_target.position, transform.position) < stat.chaseRange && !stat.isDie)
                 {
-                    timer = 0f;
                     state = States.Chase;
-                }
-
-                if (timer > 5f)
-                {
-                    timer = 0f;
-                    state = States.Return;
                 }
             }
 
@@ -139,7 +142,6 @@ public abstract class Enemy : NetworkBehaviour
                 else if (Vector2.Distance(_target.position, transform.position) > stat.chaseRange && !stat.isDie)
                 {
                     state = States.Idle;
-                    timer = 0f;
                 }
 
             }
@@ -151,7 +153,6 @@ public abstract class Enemy : NetworkBehaviour
                 if (_target == null)
                 {
                     state = States.Idle;
-                    timer = 0f;
                 }
 
                 if (_target != null && Vector2.Distance(_target.position, transform.position) > stat.attackRange && !stat.isDie)
@@ -168,16 +169,14 @@ public abstract class Enemy : NetworkBehaviour
                 if (Vector3.Distance(_initTransform, this.transform.position) < 0.1f)
                 {
                     state = States.Idle;
-                    timer = 0f;
                 }
             }
         }
     }
+    
     // 몬스터 초기화 함수
     public abstract void InitMonster();
-    public abstract IEnumerator HitEffect();
-    public abstract void Die();
-
+    #region 적 이동 관련 함수
     public virtual void Movement(Vector3 target)
     {
         if (!IsServer) return;
@@ -185,7 +184,6 @@ public abstract class Enemy : NetworkBehaviour
         if (target == null)
         {
             state = States.Idle;
-            timer = 0f;
             return;
         }
 
@@ -195,24 +193,6 @@ public abstract class Enemy : NetworkBehaviour
         rb.MovePosition(rb.position + nextVec);
     }
     public abstract void Movement_Anim();
-
-    public abstract IEnumerator EnemyAttack();
-
-    public void PlayAttackSfx()
-    {
-        audioController.PlayAttackSFX();
-    }
-
-    [ServerRpc(RequireOwnership = false)]
-    public void GiveExpGoldServerRpc(ulong lastClientId)
-    {
-        if(!stat.isDie)
-        {
-            ShowGoldClientRpc(lastClientId, stat.gold, stat.exp);
-            stat.isDie = true;
-        }
-    }
-
     public virtual void SetDirection()
     {
         if (_target != null && _target.position.x - transform.position.x > 0)
@@ -242,6 +222,30 @@ public abstract class Enemy : NetworkBehaviour
     virtual public void OutofArea()
     {
         state = States.Return;
+    }
+    #endregion
+    
+    #region 적 전투 관련 함수 (공격, 피격, 사망)
+    public abstract IEnumerator EnemyAttack();
+    public abstract IEnumerator HitEffect();
+     public abstract void Die();
+
+    #endregion
+    public void PlayAttackSfx()
+    {
+        audioController.PlayAttackSFX();
+    }
+
+    #region 서버 처리 관련(ServerRpc, ClientRpc)
+
+    [ServerRpc(RequireOwnership = false)]
+    public void GiveExpGoldServerRpc(ulong lastClientId)
+    {
+        if(!stat.isDie)
+        {
+            ShowGoldClientRpc(lastClientId, stat.gold, stat.exp);
+            stat.isDie = true;
+        }
     }
 
     [ClientRpc]
@@ -337,6 +341,7 @@ public abstract class Enemy : NetworkBehaviour
         anim.SetTrigger("Respawn");
     }
 
+    #endregion
     IEnumerator DeSpawnEnemy(NetworkObject obj, GameObject prefab, float time)
     {
         yield return new WaitForSeconds(time);

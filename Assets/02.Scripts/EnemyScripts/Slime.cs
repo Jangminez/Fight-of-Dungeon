@@ -137,7 +137,7 @@ public class Slime : Enemy, IDamgeable
         anim.SetFloat("RunState", 0f);
         StopAllCoroutines();
 
-        // 10% 확률로 아이템 드랍
+        // 5% 확률로 아이템 드랍
         if (slimeType == SlimeType.Fire || slimeType == SlimeType.Ice)
         {
             int random_int = Random.Range(1, 101);

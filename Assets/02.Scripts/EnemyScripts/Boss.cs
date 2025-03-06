@@ -64,19 +64,11 @@ public class Boss : Enemy, IDamgeable
 
             if (state == States.Idle)
             {
-                timer += Time.deltaTime;
-
                 rb.velocity = Vector2.zero;
 
                 if (_target != null && Vector2.Distance(_target.position, transform.position) < stat.chaseRange && !stat.isDie)
                 {
-                    timer = 0f;
                     state = States.Chase;
-                }
-
-                if (timer > 5f && Vector2.Distance(_initTransform, transform.position) >= 0.5f)
-                {
-                    state = States.Return;
                 }
             }
             else if (state == States.Chase && _isStand)
@@ -97,7 +89,6 @@ public class Boss : Enemy, IDamgeable
                     Vector2.Distance(_target.position, transform.position) > stat.chaseRange && !stat.isDie)
                 {
                     state = States.Idle;
-                    timer = 0f;
                 }
             }
             else if (state == States.Attack)
@@ -107,7 +98,6 @@ public class Boss : Enemy, IDamgeable
                 if (_target == null)
                 {
                     state = States.Idle;
-                    timer = 0f;
                 }
 
                 if (
@@ -130,7 +120,6 @@ public class Boss : Enemy, IDamgeable
                 if (Vector3.Distance(_initTransform, this.transform.position) < 0.5f)
                 {
                     state = States.Idle;
-                    timer = 0f;
                 }
             }
         }

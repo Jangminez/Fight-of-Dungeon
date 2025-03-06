@@ -2351,13 +2351,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GlobalObjectIdHash: 1713432937
-  AlwaysReplicateAsRoot: 0
+  AlwaysReplicateAsRoot: 1
   SynchronizeTransform: 0
-  ActiveSceneSynchronization: 0
+  ActiveSceneSynchronization: 1
   SceneMigrationSynchronization: 0
-  SpawnWithObservers: 0
+  SpawnWithObservers: 1
   DontDestroyWithOwner: 0
-  AutoObjectParentSync: 0
+  AutoObjectParentSync: 1
 --- !u!114 &182750047
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31236,8 +31236,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39bba95e0eec82349843caeab6aacb5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  loadingProgress:
-    m_InternalValue: 0
 --- !u!4 &1435343145
 Transform:
   m_ObjectHideFlags: 0

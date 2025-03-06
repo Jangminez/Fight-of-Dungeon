@@ -173,20 +173,11 @@ public class Pumkin : Enemy, IDamgeable
 
             if (state == States.Idle)
             {
-                timer += Time.deltaTime;
-
                 rb.velocity = Vector2.zero;
 
                 if (_target != null && Vector2.Distance(_target.position, transform.position) < stat.chaseRange && !stat.isDie)
                 {
-                    timer = 0f;
                     state = States.Chase;
-                }
-
-                if (timer > 5f)
-                {
-                    timer = 0f;
-                    state = States.Return;
                 }
             }
 
@@ -207,7 +198,6 @@ public class Pumkin : Enemy, IDamgeable
                 else if (Vector2.Distance(_target.position, transform.position) > stat.chaseRange && !stat.isDie)
                 {
                     state = States.Idle;
-                    timer = 0f;
                 }
 
             }
@@ -219,7 +209,6 @@ public class Pumkin : Enemy, IDamgeable
                 if (_target == null)
                 {
                     state = States.Idle;
-                    timer = 0f;
                 }
 
                 if (_target != null && Vector2.Distance(_target.position, transform.position) > stat.attackRange && !_isAttack && !stat.isDie)
@@ -239,7 +228,6 @@ public class Pumkin : Enemy, IDamgeable
                 if (Vector3.Distance(_initTransform, this.transform.position) < 0.1f)
                 {
                     state = States.Idle;
-                    timer = 0f;
                 }
             }
         }
