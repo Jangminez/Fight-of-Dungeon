@@ -31,7 +31,6 @@ public class PlayerSpawner : NetworkBehaviour
         {
             if (IsServer)
             {
-                ShowLoadingClientRpc();
                 PlayerSpawnClientRpc(clientId);
             }
         }
@@ -69,12 +68,11 @@ public class PlayerSpawner : NetworkBehaviour
             GameManager.Instance.player._spawnPoint = GameObject.FindWithTag("RedSpawn").transform;
         }
 
-        //GameManager.Instance.player.transform.position = GameManager.Instance.player._spawnPoint.position + new Vector3(0f, 1f, 0f);
         SetUpCamera(GameManager.Instance.player.transform);
         GameManager.Instance.player.gameObject.SetActive(true);
         RelicManager.Instance.ApplyRelics();
 
-        if(!IsServer) HideLoadingServerRpc();
+        if(!IsServer) SceneLoadManager.Instance.HideLoadingServerRpc();
     }
 
     private void SetUpCamera(Transform playerTransform)
@@ -99,22 +97,5 @@ public class PlayerSpawner : NetworkBehaviour
         playerObject.SpawnAsPlayerObject(clientId, true);
     }
 
-    [ClientRpc]
-    public void ShowLoadingClientRpc()
-    {
-        LoadingScreen.Instance.ShowLoadingScreen();
-    }
-
-    [ServerRpc(RequireOwnership = false)]
-    public void HideLoadingServerRpc()
-    {
-        HideLoadingClientRpc();
-    }
-
-
-    [ClientRpc]
-    public void HideLoadingClientRpc()
-    {
-        LoadingScreen.Instance.HideLoadingScreen();
-    }
+    
 }

@@ -12,6 +12,7 @@ public class SceneLoadManager : NetworkBehaviour
         if (Instance == null)
         {
             Instance = this;
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -30,28 +31,25 @@ public class SceneLoadManager : NetworkBehaviour
     private IEnumerator LoadSceneCoroutine(string sceneName)
     {
         NetworkManager.Singleton.SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
-
-        while(!CheckAllPlayersReady())
-        {
-            yield return null;
-        }
-
+        yield return null;
     }
 
-    public bool CheckAllPlayersReady()
+    [ClientRpc]
+    public void ShowLoadingClientRpc()
     {
-        foreach(var client in NetworkManager.Singleton.ConnectedClients)
-        {
-            if (client.Value.PlayerObject == null)
-                return false;
+        LoadingScreen.Instance.ShowLoadingScreen();
+    }
 
-            if(client.Value.PlayerObject.TryGetComponent(out SceneLoadSync loadSync))
-            {
-                if(!loadSync.IsPlayerReady.Value)
-                    return false;
-            }
-        }
+    [ServerRpc(RequireOwnership = false)]
+    public void HideLoadingServerRpc()
+    {
+        HideLoadingClientRpc();
+    }
 
-        return true;
+
+    [ClientRpc]
+    public void HideLoadingClientRpc()
+    {
+        LoadingScreen.Instance.HideLoadingScreen();
     }
 }
