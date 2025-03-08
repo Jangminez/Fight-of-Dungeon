@@ -37,6 +37,8 @@ public class RelicDraw : MonoBehaviour
     {
         if (!isDraw && GameManager.Instance.Dia >= 100)
         {
+            UISoundManager.Instance.PlayClickSound();
+            
             drawEffect.transform.parent.gameObject.SetActive(true);
             StartCoroutine(StartDrawRelic());
             GameManager.Instance.Dia -= 100;

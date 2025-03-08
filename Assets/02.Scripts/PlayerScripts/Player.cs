@@ -73,6 +73,7 @@ public abstract class Player : NetworkBehaviour, IDamgeable
         _maxHp.OnValueChanged += GetComponent<PlayerUIController>().MaxHpChanged;
         _mp.OnValueChanged += GetComponent<PlayerUIController>().MpChanged;
         _maxMp.OnValueChanged += GetComponent<PlayerUIController>().MaxHpChanged;
+        
         _audio = GetComponent<AudioController>();
     }
     // 플레이어 초기화 함수

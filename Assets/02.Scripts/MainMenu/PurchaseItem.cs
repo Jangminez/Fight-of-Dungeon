@@ -25,7 +25,8 @@ public class PurchaseItem : MonoBehaviour
     private void ClickBtn()
     {
         purchaseInfo.SetActive(true);
-        
+        UISoundManager.Instance.PlayClickSound();
+
         if (pButton != null)
         {
             pButton.onClick.RemoveAllListeners();
@@ -35,6 +36,8 @@ public class PurchaseItem : MonoBehaviour
 
     private void BuyItem()
     {
+        UISoundManager.Instance.PlayBuySound();
+
         switch (costType)
         {
             case CostType.Gold:

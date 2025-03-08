@@ -17,6 +17,8 @@ public class HideUIEffect : MonoBehaviour
 
     private void ExitUI()
     {
+        UISoundManager.Instance.PlayExitSound();
+        
         HideUI(obj.transform);
     }
 

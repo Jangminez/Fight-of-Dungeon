@@ -13,21 +13,25 @@ public class SettingsMenuManager : MonoBehaviour
 
     public void ChangeGraphicsQuality()
     {
+        UISoundManager.Instance.PlayClickSound();
         QualitySettings.SetQualityLevel(_graphicsDropdown.value);
     }
 
     public void ChangeMusicVolume()
     {
+        UISoundManager.Instance.PlayClickSound();
         _mainAudioMixer.SetFloat("MusicVol", _musicVol.value);
     }
 
     public void ChangeSfxVolume()
     {
+        UISoundManager.Instance.PlayClickSound();
         _mainAudioMixer.SetFloat("SfxVol", _sfxVol.value);
     }
 
     public void GotoMain()
     {
+        UISoundManager.Instance.PlayClickSound();
         GameManager.Instance.BackToScene();
     }
 }

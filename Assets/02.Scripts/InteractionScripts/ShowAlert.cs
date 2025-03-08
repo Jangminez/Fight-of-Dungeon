@@ -16,6 +16,8 @@ public class ShowAlert : MonoBehaviour
 
     void ShowMessage() 
     {
+        UISoundManager.Instance.PlayPopUpSound();
+        
         _message.SetActive(true);
     }
 }

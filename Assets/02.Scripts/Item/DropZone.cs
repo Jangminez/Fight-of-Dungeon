@@ -30,6 +30,7 @@ public class DropZone : MonoBehaviour, IDropHandler
                 case ZoneType.Sell:
                     dragItem.SellItem();
                     Debug.Log("아이템 판매");
+                    UISoundManager.Instance.PlayBuySound();
                     break;
             }
 

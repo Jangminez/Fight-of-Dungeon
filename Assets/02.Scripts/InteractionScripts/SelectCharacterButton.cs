@@ -18,6 +18,8 @@ public class SelectCharacterButton : MonoBehaviour
 
     public void ClickButton()
     {
+        UISoundManager.Instance.PlayClickSound();
+        
         manager.SelectCharacter(character, transform);
     }
 

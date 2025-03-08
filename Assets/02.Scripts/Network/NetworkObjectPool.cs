@@ -20,6 +20,7 @@ public class NetworkObjectPool : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
+        // 네트워크 생성 시 싱글톤 패턴 적용
         if(!IsServer) return;
 
         if(_instance != null && _instance != this)
@@ -31,11 +32,13 @@ public class NetworkObjectPool : NetworkBehaviour
             _instance = this;
         }
 
+        // 풀 초기화
         InitializePool();
     }
 
     public override void OnNetworkDespawn()
     {
+        // 네트워크 종료시 풀 청소
         if(!IsServer) return;
         
         ClearPool();
@@ -43,6 +46,7 @@ public class NetworkObjectPool : NetworkBehaviour
 
     public void OnValidate()
     {
+        // 풀에 존재하는 prefab NetworkObject 컴포넌트가 존재하는지 유효성 검사
         for (var i = 0; i < PooledPrefabsList.Count; i++)
         {
             var prefab = PooledPrefabsList[i].prefab;

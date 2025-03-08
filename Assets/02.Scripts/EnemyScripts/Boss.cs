@@ -231,7 +231,7 @@ public class Boss : Enemy, IDamgeable
 
         yield return new WaitForSeconds(2f);
 
-        audioController.PlaySkill3SFX();
+        audioController.PlaySkill2SFX();
         GetComponent<Collider2D>().enabled = true;
         stat.attackRange = 5f;
         stat.speed = 1.2f;
