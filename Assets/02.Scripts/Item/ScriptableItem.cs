@@ -7,9 +7,11 @@ public class ScriptableItem : ScriptableObject
 {
     public GameObject item;
     public string itemName;
-    public enum ValueType {Attack, AttackSpeed, Critical, Defense, Hp, HpRegen, Mp, MpRegen}
+    public int Id;
+    public enum ValueType {Attack, AttackSpeed, Critical, Defense, Hp, HpRegen, Mp, MpRegen, Speed}
     public enum CalType {Plus, Percentage}
     public List<Stat> statsList = new List<Stat>();
+    [TextArea(3, 5)]
     public string itemDescription;
     public string itemCost;
     public List<ScriptableItem> needItem;

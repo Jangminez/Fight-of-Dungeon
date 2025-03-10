@@ -49,6 +49,8 @@ public class TabBtn : MonoBehaviour
 
     void OpenTab()
     {
+        UISoundManager.Instance.PlayClickSound();
+        
         _myTab.gameObject.SetActive(true);
 
         foreach(Transform other in _otherTabs)

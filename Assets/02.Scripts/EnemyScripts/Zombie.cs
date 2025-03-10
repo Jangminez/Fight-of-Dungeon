@@ -48,9 +48,9 @@ public class Zombie : Enemy, IDamgeable
     }
 
     #region 피격 및 사망 처리
-    public void Hit(float damage)
+    public void Hit(float damage, bool isCritical)
     {
-        TakeDamageServerRpc(damage);
+        TakeDamageServerRpc(damage, isCritical);
     }
 
     public override IEnumerator HitEffect()
@@ -103,6 +103,7 @@ public class Zombie : Enemy, IDamgeable
                 anim.SetFloat("NormalState", 0.5f);
 
             anim.SetTrigger("Attack");
+            audioController.PlayAttackSFX();
 
             // 공격속도 지연
             yield return new WaitForSeconds(1 / stat.attackSpeed);
@@ -115,7 +116,7 @@ public class Zombie : Enemy, IDamgeable
             }
 
             if (_target != null && Vector2.Distance(_target.position, transform.position) < stat.attackRange)
-                AttackClientRpc(_target.GetComponent<NetworkObject>().OwnerClientId, stat.attack);
+                AttackClientRpc(_target.GetComponent<NetworkObject>().OwnerClientId, stat.attack, false);
         }
     }
 }

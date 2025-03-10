@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ea01d3ce1b0d2d49b7058b06eb87347, type: 3}
+  m_Name: Immortal_Armor
+  m_EditorClassIdentifier: 
+  item: {fileID: 7408633580958280852, guid: b493f589872cbb248935d69cc3250603, type: 3}
+  itemName: "\uBD88\uC0AC\uC2E0\uC758 \uAC11\uC637"
+  Id: 210
+  statsList:
+  - valuetype: 5
+    caltype: 0
+    value: 80
+  - valuetype: 3
+    caltype: 0
+    value: 200
+  - valuetype: 7
+    caltype: 0
+    value: 10
+  itemDescription: "\uBD88 \uC0AC\uC2E0\uC77C\uAE4C? \uBD88\uC0AC\uC2E0\uC77C\uAE4C? "
+  itemCost: 1000
+  needItem:
+  - {fileID: 11400000, guid: 420b8bf8302fb05499952ac4a2f123da, type: 2}
+  - {fileID: 11400000, guid: 8774abe0a5106e04dbce05a57336a2dd, type: 2}

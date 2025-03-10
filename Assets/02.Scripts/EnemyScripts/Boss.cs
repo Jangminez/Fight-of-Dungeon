@@ -64,19 +64,11 @@ public class Boss : Enemy, IDamgeable
 
             if (state == States.Idle)
             {
-                timer += Time.deltaTime;
-
                 rb.velocity = Vector2.zero;
 
                 if (_target != null && Vector2.Distance(_target.position, transform.position) < stat.chaseRange && !stat.isDie)
                 {
-                    timer = 0f;
                     state = States.Chase;
-                }
-
-                if (timer > 5f && Vector2.Distance(_initTransform, transform.position) >= 0.5f)
-                {
-                    state = States.Return;
                 }
             }
             else if (state == States.Chase && _isStand)
@@ -97,7 +89,6 @@ public class Boss : Enemy, IDamgeable
                     Vector2.Distance(_target.position, transform.position) > stat.chaseRange && !stat.isDie)
                 {
                     state = States.Idle;
-                    timer = 0f;
                 }
             }
             else if (state == States.Attack)
@@ -107,7 +98,6 @@ public class Boss : Enemy, IDamgeable
                 if (_target == null)
                 {
                     state = States.Idle;
-                    timer = 0f;
                 }
 
                 if (
@@ -130,7 +120,6 @@ public class Boss : Enemy, IDamgeable
                 if (Vector3.Distance(_initTransform, this.transform.position) < 0.5f)
                 {
                     state = States.Idle;
-                    timer = 0f;
                 }
             }
         }
@@ -187,9 +176,9 @@ public class Boss : Enemy, IDamgeable
         }
     }
 
-    public void Hit(float damage)
+    public void Hit(float damage, bool isCritical)
     {
-        TakeDamageServerRpc(damage);
+        TakeDamageServerRpc(damage, isCritical);
         SetLastAttackClientServerRpc();
     }
 
@@ -217,6 +206,7 @@ public class Boss : Enemy, IDamgeable
     private IEnumerator Boss_BasicAttack()
     {
         anim.SetTrigger("Attack");
+        audioController.PlayAttackSFX();
 
         yield return new WaitForSeconds(1f);
 
@@ -226,6 +216,7 @@ public class Boss : Enemy, IDamgeable
     private IEnumerator Boss_JumpAttack()
     {
         anim.SetTrigger("JumpAttack");
+        audioController.PlaySkill1SFX();
         stat.speed = 0f;
 
         yield return new WaitForSeconds(1f);
@@ -240,6 +231,7 @@ public class Boss : Enemy, IDamgeable
 
         yield return new WaitForSeconds(2f);
 
+        audioController.PlaySkill2SFX();
         GetComponent<Collider2D>().enabled = true;
         stat.attackRange = 5f;
         stat.speed = 1.2f;
@@ -250,7 +242,7 @@ public class Boss : Enemy, IDamgeable
     private IEnumerator Boss_SpinAttack()
     {
         anim.SetTrigger("SpinAttack");
-
+        audioController.PlaySkill3SFX();
         yield return new WaitForSeconds(4f);
 
         _isAttack = false;

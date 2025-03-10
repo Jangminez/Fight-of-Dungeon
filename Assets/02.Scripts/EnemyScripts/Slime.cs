@@ -1,10 +1,15 @@
 using System.Collections;
+using System.Runtime.CompilerServices;
 using Unity.Netcode;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class Slime : Enemy, IDamgeable
 {
-
+    public enum SlimeType { Basic, Fire, Ice };
+    public SlimeType slimeType;
+    [SerializeField] private ScriptableItem _dropItem;
     public override void OnNetworkSpawn()
     {
         spr = GetComponent<SpriteRenderer>();
@@ -28,20 +33,59 @@ public class Slime : Enemy, IDamgeable
             state = States.Idle;
         }
 
-        MaxHp = 30f;
-        Hp = MaxHp;
+        switch (slimeType)
+        {
+            case SlimeType.Basic:
+                MaxHp = 30f;
+                Hp = MaxHp;
 
-        stat.attack = 5f;
-        stat.attackRange = 2f;
-        stat.attackSpeed = 1.5f;
+                stat.attack = 5f;
+                stat.attackRange = 2f;
+                stat.attackSpeed = 1.5f;
 
-        stat.defense = 1f;
+                stat.defense = 1f;
 
-        stat.chaseRange = 5f;
-        stat.speed = 1f;
+                stat.chaseRange = 5f;
+                stat.speed = 1f;
 
-        stat.exp = 30f;
-        stat.gold = 50;
+                stat.exp = 30f;
+                stat.gold = 50;
+                break;
+
+            case SlimeType.Ice:
+                MaxHp = 100f;
+                Hp = MaxHp;
+
+                stat.attack = 40f;
+                stat.attackRange = 2f;
+                stat.attackSpeed = 1.5f;
+
+                stat.defense = 30f;
+
+                stat.chaseRange = 5f;
+                stat.speed = 1f;
+
+                stat.exp = 100f;
+                stat.gold = 200;
+                break;
+
+            case SlimeType.Fire:
+                MaxHp = 500f;
+                Hp = MaxHp;
+
+                stat.attack = 100f;
+                stat.attackRange = 2f;
+                stat.attackSpeed = 1.5f;
+
+                stat.defense = 100f;
+
+                stat.chaseRange = 5f;
+                stat.speed = 1f;
+
+                stat.exp = 500f;
+                stat.gold = 500;
+                break;
+        }
 
         stat.isDie = false;
 
@@ -55,6 +99,8 @@ public class Slime : Enemy, IDamgeable
         while (_isAttack)
         {
             anim.SetTrigger("Attack");
+            audioController.PlayAttackSFX();
+            
             yield return new WaitForSeconds(1 / stat.attackSpeed);
 
             if (state != States.Attack)
@@ -64,16 +110,16 @@ public class Slime : Enemy, IDamgeable
                 yield break;
             }
 
-            if (_target != null && Vector2.Distance(_target.position , transform.position) < stat.attackRange)
-                AttackClientRpc(_target.GetComponent<NetworkObject>().OwnerClientId, stat.attack);
+            if (_target != null && Vector2.Distance(_target.position, transform.position) < stat.attackRange)
+                AttackClientRpc(_target.GetComponent<NetworkObject>().OwnerClientId, stat.attack, false);
         }
     }
-    public void Hit(float damage)
+    public void Hit(float damage, bool isCritical)
     {
         StopCoroutine("EnemyAttack");
         _isAttack = false;
         anim.SetTrigger("Hit");
-        TakeDamageServerRpc(damage);
+        TakeDamageServerRpc(damage, isCritical);
     }
 
     public override IEnumerator HitEffect()
@@ -90,6 +136,17 @@ public class Slime : Enemy, IDamgeable
         anim.ResetTrigger("Hit");
         anim.SetFloat("RunState", 0f);
         StopAllCoroutines();
+
+        // 5% 확률로 아이템 드랍
+        if (slimeType == SlimeType.Fire || slimeType == SlimeType.Ice)
+        {
+            int random_int = Random.Range(1, 101);
+
+            if (random_int <= 5)
+            {
+                DropItemManager.Instance.DropItemServerRpc(this.transform.position, _dropItem.Id, GetComponent<SortingGroup>().sortingLayerID);
+            }
+        }
     }
 
     public override void Movement_Anim()

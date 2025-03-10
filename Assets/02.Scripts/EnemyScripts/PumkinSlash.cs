@@ -35,7 +35,7 @@ public class PumkinSlash : NetworkBehaviour
     {
         // 공격 받은 클라이언트라면 Hit() 처리
         if (clientId == NetworkManager.Singleton.LocalClientId)
-            GameManager.Instance.player.Hit(damage: damage);
+            GameManager.Instance.player.Hit(damage: damage, false);
     }
 
     [ClientRpc]

@@ -17,6 +17,8 @@ public class ToggleUI : MonoBehaviour
 
     private void ToggleObject()
     {
+        UISoundManager.Instance.PlayClickSound();
+        
         // 같은 버튼을 눌렀을 때 UI가 켜지고 꺼짐
         if(!_isOn)
         {

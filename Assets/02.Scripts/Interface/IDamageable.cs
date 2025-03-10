@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface IDamgeable
 {
-    void Hit(float damage);
+    void Hit(float damage, bool isCritical);
 }

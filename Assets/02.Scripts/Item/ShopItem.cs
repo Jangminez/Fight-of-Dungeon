@@ -20,6 +20,7 @@ public class ShopItem : MonoBehaviour
     }
     void ClickItem() 
     {
+        UISoundManager.Instance.PlayClickSound();
         // 아이템 정보 UI에 표시
         SetUI();
 
@@ -121,8 +122,9 @@ public class ShopItem : MonoBehaviour
         // 플레이어의 골드가 충분하다면 구매
         if(GameManager.Instance.player.Gold >= Int32.Parse(_myItem.itemCost) && _myItem.needItem.Count == 0)
         {
+            UISoundManager.Instance.PlayBuySound();
+
             Inventory.Instance.AddInventory(_myItem);
-            
         }
 
         else if(GameManager.Instance.player.Gold >= Int32.Parse(_myItem.itemCost) && _myItem.needItem.Count > 0)

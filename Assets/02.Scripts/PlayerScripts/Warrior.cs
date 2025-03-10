@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class Warrior : Player
@@ -9,6 +10,12 @@ public class Warrior : Player
 
         if(!IsOwner) return;
 
+        StartCoroutine(InitCharacter());
+    }
+
+    private IEnumerator InitCharacter()
+    {
+        yield return null;
         SetCharater();
     }
 

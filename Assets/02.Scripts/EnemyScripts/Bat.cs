@@ -49,6 +49,7 @@ public class Bat : Enemy, IDamgeable
         while (_isAttack)
         {
             anim.SetTrigger("Attack");
+            audioController.PlayAttackSFX();
             yield return new WaitForSeconds(1 / stat.attackSpeed);
 
             if (state != States.Attack)
@@ -59,15 +60,14 @@ public class Bat : Enemy, IDamgeable
             }
 
             if (_target != null && Vector2.Distance(_target.position , transform.position) < stat.attackRange)
-                AttackClientRpc(_target.GetComponent<NetworkObject>().OwnerClientId, stat.attack);
+                AttackClientRpc(_target.GetComponent<NetworkObject>().OwnerClientId, stat.attack, false);
         }
     }
-    public void Hit(float damage)
+    public void Hit(float damage, bool isCritical)
     {
         StopCoroutine("EnemyAttack");
         _isAttack = false;
-        anim.SetTrigger("Hit");
-        TakeDamageServerRpc(damage);
+        TakeDamageServerRpc(damage, isCritical);
     }
 
     public override IEnumerator HitEffect()

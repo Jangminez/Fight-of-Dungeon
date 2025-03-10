@@ -54,12 +54,12 @@ public class Goblin : Enemy, IDamgeable
     }
 
     #region 피격 및 사망 처리
-    public void Hit(float damage)
+    public void Hit(float damage, bool isCritical)
     {
         anim.SetTrigger("Hit");
         StopCoroutine("EnemyAttack");
         _isAttack = false;
-        TakeDamageServerRpc(damage);
+        TakeDamageServerRpc(damage, isCritical);
     }
 
     public override IEnumerator HitEffect()
@@ -104,6 +104,7 @@ public class Goblin : Enemy, IDamgeable
             // 공격시 방향 전환 및 애니메이션 실행
             SetDirection();
             anim.SetTrigger("Attack");
+            audioController.PlayAttackSFX();
 
             // 공격속도 지연
             yield return new WaitForSeconds(1 / stat.attackSpeed);

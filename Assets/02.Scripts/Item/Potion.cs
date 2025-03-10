@@ -7,6 +7,8 @@ public class Potion : MonoBehaviour, IConsumable
     public float _value;
     public void UseItem()
     {
+        UISoundManager.Instance.PlayClickSound();
+        
         switch(_type)
         {
             case PotionType.Hp:

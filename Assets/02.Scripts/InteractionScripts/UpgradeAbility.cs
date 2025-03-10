@@ -1,4 +1,5 @@
 using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -183,7 +184,7 @@ public class UpgradeAbility : MonoBehaviour
 
         if(upgradeInfo.level >= upgradeInfo.maxLevel)
         {
-            myUI.btn.image.color = Color.gray;
+            myUI.btn.interactable = false;
             myUI.cost.text = "완료";
             
 

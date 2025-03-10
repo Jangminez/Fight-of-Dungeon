@@ -45,12 +45,11 @@ public class NetworkMonsterSpawner : NetworkBehaviour
 
                 if (!monster.IsSpawned)
                 {
-                    // 몬스터가 NetworkObject Spawn이 되어있지않을 때 소환 및 부모 재지정
+                    // 몬스터가 NetworkObject Spawn이 되어있지않을 때 소환
                     monster.GetComponent<Enemy>().prefab = area.monsterPrefab;
                     monster.Spawn();
 
                     yield return null;
-                    monster.transform.SetParent(area.spawnCenter.parent);
                 }
                 
                 // 몬스터 초기화 및 활성화 몬스터 List에 저장

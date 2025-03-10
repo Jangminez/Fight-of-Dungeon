@@ -18,6 +18,8 @@ public class ConnectRelay : MonoBehaviour
     public async Task<string> CreateRelay()
     {
         try {
+            LoadingScreen.Instance.ShowLoadingScreen();
+
             Allocation allocation = await RelayService.Instance.CreateAllocationAsync(1);
 
             string joinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
@@ -39,6 +41,8 @@ public class ConnectRelay : MonoBehaviour
 
     public async void JoinRelay(string joinCode){
         try {
+            LoadingScreen.Instance.ShowLoadingScreen();
+
             JoinAllocation joinAllocation = await RelayService.Instance.JoinAllocationAsync(joinCode);
 
             RelayServerData relayServerData = new RelayServerData(joinAllocation, "dtls");

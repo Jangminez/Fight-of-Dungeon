@@ -63,10 +63,10 @@ public class Pumkin : Enemy, IDamgeable
     }
 
     #region 피격 및 사망 처리
-    public void Hit(float damage)
+    public void Hit(float damage, bool isCritical)
     {
         // 데미지 처리 ServerRpc 호출
-        TakeDamageServerRpc(damage);
+        TakeDamageServerRpc(damage, isCritical);
     }
 
     public override IEnumerator HitEffect()
@@ -173,20 +173,11 @@ public class Pumkin : Enemy, IDamgeable
 
             if (state == States.Idle)
             {
-                timer += Time.deltaTime;
-
                 rb.velocity = Vector2.zero;
 
                 if (_target != null && Vector2.Distance(_target.position, transform.position) < stat.chaseRange && !stat.isDie)
                 {
-                    timer = 0f;
                     state = States.Chase;
-                }
-
-                if (timer > 5f)
-                {
-                    timer = 0f;
-                    state = States.Return;
                 }
             }
 
@@ -207,7 +198,6 @@ public class Pumkin : Enemy, IDamgeable
                 else if (Vector2.Distance(_target.position, transform.position) > stat.chaseRange && !stat.isDie)
                 {
                     state = States.Idle;
-                    timer = 0f;
                 }
 
             }
@@ -219,7 +209,6 @@ public class Pumkin : Enemy, IDamgeable
                 if (_target == null)
                 {
                     state = States.Idle;
-                    timer = 0f;
                 }
 
                 if (_target != null && Vector2.Distance(_target.position, transform.position) > stat.attackRange && !_isAttack && !stat.isDie)
@@ -239,7 +228,6 @@ public class Pumkin : Enemy, IDamgeable
                 if (Vector3.Distance(_initTransform, this.transform.position) < 0.1f)
                 {
                     state = States.Idle;
-                    timer = 0f;
                 }
             }
         }
@@ -293,6 +281,7 @@ public class Pumkin : Enemy, IDamgeable
 
         slash.GetComponent<Rigidbody2D>().velocity = direction * 3f;
         anim.SetTrigger("Attack");
+        audioController.PlayAttackSFX();
 
         yield return new WaitForSeconds(1f);
         NetworkObjectPool.Instance.ReturnNetworkObject(slash, _attackEffect);

@@ -24,7 +24,7 @@ public class WarlockSkill2 : Skill
     public override IEnumerator SkillProcess()
     {
         if(!IsOwner) yield break;
-
+        GameManager.Instance.player._audio.PlaySkill2SFX();
         // 쿨타임 시작
         StartCoroutine(CoolDown(_info.coolDown));
         yield return null;
@@ -45,17 +45,20 @@ public class WarlockSkill2 : Skill
         {
             if(other.tag == "Player")
             {
-                player.AttackPlayerServerRpc(damage:
-                cri <= player.Critical ?
-                player.FinalAttack * _info.damage * 1.5f :
-                player.FinalAttack * _info.damage);
+                if(cri <= player.Critical)
+                    player.AttackPlayerServerRpc(player.FinalAttack * _info.damage * 1.5f, true);
+
+                else
+                    player.AttackPlayerServerRpc(player.FinalAttack * _info.damage, false);
             }
             else
             {
-                other.GetComponent<IDamgeable>().Hit(damage:
-                cri <= player.Critical ?
-                player.FinalAttack * _info.damage * 1.5f :
-                player.FinalAttack * _info.damage);
+                if(cri <= player.Critical)
+                    enemy.Hit(player.FinalAttack * _info.damage * 1.5f, true);
+
+                else
+                    enemy.Hit(player.FinalAttack * _info.damage, false);
+
             }
         }
     }

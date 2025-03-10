@@ -6,10 +6,19 @@ public class PlayerSpawner : NetworkBehaviour
 {
     [SerializeField]
     private CameraFollow _cam;
-    void Start()
+    private bool isSpawn = false;
+
+    void Awake()
     {
+        if(FindObjectOfType<PlayerSpawner>() != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         DontDestroyOnLoad(this.gameObject);
     }
+
     public override void OnNetworkSpawn()
     {
         // 씬이 로드 되면 플레이어 오브젝트 생성
@@ -20,7 +29,7 @@ public class PlayerSpawner : NetworkBehaviour
     {
         if (sceneName == "StageScene")
         {
-            if (IsHost)
+            if (IsServer)
             {
                 PlayerSpawnClientRpc(clientId);
             }
@@ -30,10 +39,16 @@ public class PlayerSpawner : NetworkBehaviour
     [ClientRpc]
     public void PlayerSpawnClientRpc(ulong clientId)
     {
-        if (clientId == NetworkManager.Singleton.LocalClientId)
+        if (clientId == NetworkManager.Singleton.LocalClientId && !isSpawn)
         {
-            NetworkSpawnPlayerServerRpc(clientId, GameManager.Instance.playerPrefabName);
-            Invoke("SpawnPlayer", 1f);
+            if(IsServer)
+                NetworkSpawnPlayerServerRpc(clientId, GameManager.Instance.playerPrefabName);
+            
+            else
+                NetworkSpawnPlayerServerRpc(clientId, GameManager.Instance.playerPrefabName);
+
+            Invoke("SpawnPlayer", 3f);
+            isSpawn = true;
         }
     }
 
@@ -53,11 +68,11 @@ public class PlayerSpawner : NetworkBehaviour
             GameManager.Instance.player._spawnPoint = GameObject.FindWithTag("RedSpawn").transform;
         }
 
-        GameManager.Instance.player.transform.position = GameManager.Instance.player._spawnPoint.position + new Vector3(0f, 1f, 0f);
         SetUpCamera(GameManager.Instance.player.transform);
         GameManager.Instance.player.gameObject.SetActive(true);
+        RelicManager.Instance.ApplyRelics();
 
-        UIManager.Instance.goToMain.onClick.AddListener(GameManager.Instance.BackToScene);
+        if(!IsServer) SceneLoadManager.Instance.HideLoadingServerRpc();
     }
 
     private void SetUpCamera(Transform playerTransform)
@@ -73,6 +88,14 @@ public class PlayerSpawner : NetworkBehaviour
     public void NetworkSpawnPlayerServerRpc(ulong clientId, string name)
     {
         NetworkObject playerObject = Instantiate(Resources.Load<GameObject>($"PlayerCharactors/{name}")).GetComponent<NetworkObject>();
+
+        if(clientId == NetworkManager.Singleton.LocalClientId)
+            playerObject.transform.position = GameObject.FindWithTag("BlueSpawn").transform.position + new Vector3(0f, 1f, 0f) ;
+        else
+            playerObject.transform.position = GameObject.FindWithTag("RedSpawn").transform.position + new Vector3(0f, 1f, 0f);
+
         playerObject.SpawnAsPlayerObject(clientId, true);
     }
+
+    
 }

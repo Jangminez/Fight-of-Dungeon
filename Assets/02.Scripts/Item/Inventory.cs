@@ -57,4 +57,44 @@ public class Inventory : MonoBehaviour
             
         }
     }
+
+    public void PickUpItem(ScriptableItem scriptable)
+    {
+        foreach(Transform slot in _slots)
+        {
+            // 슬롯이 비어있다면 아이템 장착
+            if(slot.childCount == 0)
+            {
+                // 인터페이스 확인 후 장착
+                Equipment equipment = scriptable.item.GetComponent<Equipment>();
+                if(equipment != null)
+                {
+                    equipment.EquipmentItem();
+                    Instantiate(scriptable.item, slot);
+                    break;
+                }
+            }
+            // 슬롯에 아이템이 있다면 다음 슬롯 확인
+            else
+                continue;
+            
+        }
+    }
+
+    public bool CheckSlot()
+    {
+        foreach(Transform slot in _slots)
+        {
+            // 슬롯이 비어있다면 아이템 장착
+            if(slot.childCount == 0)
+            {
+                return true;
+            }
+            // 슬롯에 아이템이 있다면 다음 슬롯 확인
+            else
+                continue;
+            
+        }
+        return false;
+    }
 }

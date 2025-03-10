@@ -36,7 +36,7 @@ public class PlayerUIController : NetworkBehaviour
     public void MaxHpChanged(float preValue, float newValue)
     {
         if (_player != null)
-            _hpBar.fillAmount = _player.Hp / _player.FinalHp;
+            _hpBar.fillAmount = _player.Hp / newValue;
     }
 
     // MP의 값이 변경될 때 UI 변경
@@ -49,6 +49,6 @@ public class PlayerUIController : NetworkBehaviour
     public void MaxMpChanged(float preValue, float newValue)
     {
         if (_player != null)
-            _mpBar.fillAmount = _player.Mp / _player.FinalMp;
+            _mpBar.fillAmount = _player.Mp / newValue;
     }
 }

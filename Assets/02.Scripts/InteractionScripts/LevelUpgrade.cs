@@ -148,7 +148,7 @@ public class LevelUpgrade : MonoBehaviour
         // 레벨이 최대 레벨이라면 업그레이드 X
         if(upgradeInfo.level >= upgradeInfo.maxLevel)
         {
-            myUI.btn.image.color = Color.gray;
+            myUI.btn.interactable = false;
 
             if(upgradeInfo.type == UpgradeInfo.upgradeType.Critical)
                 myUI.value.text = $"{Math.Round(_myValue, 2)}%";
@@ -243,6 +243,8 @@ public class LevelUpgrade : MonoBehaviour
             _myValue = 0f;
             upgradeInfo.level = 0;
         }
+
+        myUI.btn.interactable = true;
     }
 
     void ResetUI(Text level, Text value ,float initValue ,float increase, string name)

@@ -21,7 +21,7 @@ public class GoblinArrow : NetworkBehaviour
             NetworkObjectPool.Instance.ReturnNetworkObject(GetComponent<NetworkObject>(), _arrow);
             OffArrowClientRpc();
         }
-        else if (other.gameObject.layer == 22 || other.gameObject.layer == 21)
+        else if (other.gameObject.layer == 7)
         {
             NetworkObjectPool.Instance.ReturnNetworkObject(GetComponent<NetworkObject>(), _arrow);
             OffArrowClientRpc();
@@ -33,7 +33,7 @@ public class GoblinArrow : NetworkBehaviour
     {
         // 공격 받은 클라이언트라면 Hit() 처리
         if (clientId == NetworkManager.Singleton.LocalClientId)
-            GameManager.Instance.player.Hit(damage: damage);
+            GameManager.Instance.player.Hit(damage: damage, false);
     }
 
     [ClientRpc]

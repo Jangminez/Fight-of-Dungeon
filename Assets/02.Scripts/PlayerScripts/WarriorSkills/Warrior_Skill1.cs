@@ -14,6 +14,8 @@ public class Warrior_Skill1 : Skill
     }
 
     [SerializeField]SkillInfo _info;
+    private float timer;
+
     void Awake()
     {
         // 스킬 정보 초기화
@@ -30,15 +32,22 @@ public class Warrior_Skill1 : Skill
     {
         if(!IsOwner) yield break;
 
+        timer = 0f;
+        
         // 쿨타임 시작
         StartCoroutine(CoolDown(_info.coolDown));
+        GameManager.Instance.player._audio.PlaySkill1SFX();
         
         // 각 플레이어 증가수치 증가 후 지속 시간이 끝나면 다시 효과 제거
         GameManager.Instance.player.AttackBonus += _info.attackUp;
         GameManager.Instance.player.AsBonus += _info.asUp;
         GameManager.Instance.player.Critical += _info.criUp;
 
-        yield return new WaitForSeconds(_info.duration);
+        while(timer <= _info.duration && !GameManager.Instance.player.Die)
+        {
+            timer += 0.5f;
+            yield return new WaitForSeconds(0.5f);
+        }
 
         _anims[1].SetTrigger("End");
 

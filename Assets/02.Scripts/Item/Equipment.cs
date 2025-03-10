@@ -97,6 +97,9 @@ public class Equipment : MonoBehaviour
                 case ScriptableItem.ValueType.MpRegen:
                     GameManager.Instance.player.MpRegen += multiplier * value;
                     break;
+                case ScriptableItem.ValueType.Speed:
+                    GameManager.Instance.player.Speed += multiplier * value;
+                    break;
             }
         }
         else if (calType == ScriptableItem.CalType.Percentage)
@@ -126,6 +129,9 @@ public class Equipment : MonoBehaviour
                     break;
                 case ScriptableItem.ValueType.MpRegen:
                     GameManager.Instance.player.MpRegenBonus += multiplier * value;
+                    break;
+                case ScriptableItem.ValueType.Speed:
+                    GameManager.Instance.player.SpeedBonus += multiplier * value;
                     break;
             }
         }
