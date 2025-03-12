@@ -41,6 +41,5 @@ public class InteractionObject : MonoBehaviour
         {
             ui.gameObject.SetActive(true);
         }
-
-    }
+    }   
 }

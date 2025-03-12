@@ -119,6 +119,8 @@ public class ShopItem : MonoBehaviour
 
     IEnumerator BuyItem()
     {
+        UISoundManager.Instance.PlayClickSound();
+        
         // 플레이어의 골드가 충분하다면 구매
         if(GameManager.Instance.player.Gold >= Int32.Parse(_myItem.itemCost) && _myItem.needItem.Count == 0)
         {

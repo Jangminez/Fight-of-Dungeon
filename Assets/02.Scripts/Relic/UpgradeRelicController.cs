@@ -61,6 +61,8 @@ public class UpgradeRelicController : MonoBehaviour
             // UI 변경값 적용
             ClickRelic(selectedRelic);
             selectedRelic.myRelic.SetUI();
+
+            UISoundManager.Instance.PlayClickSound();
         }
     }
 }

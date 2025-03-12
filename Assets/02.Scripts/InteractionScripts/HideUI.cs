@@ -7,6 +7,8 @@ public class HideUI : MonoBehaviour, IPointerClickHandler
     
     public void OnPointerClick(PointerEventData eventData)
     {
+        UISoundManager.Instance.PlayExitSound();
+
         _information.gameObject.SetActive(false);
     }
 }

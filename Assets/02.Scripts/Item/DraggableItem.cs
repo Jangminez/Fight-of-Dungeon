@@ -35,6 +35,8 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        UISoundManager.Instance.PlayClickSound();
+        
         transform.SetParent(_preParent);
         SetButton();
 

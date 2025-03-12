@@ -91,6 +91,8 @@ public class LevelUpgrade : MonoBehaviour
 
     private void Upgrade()
     {
+        UISoundManager.Instance.PlayClickSound();
+        
         // 레벨 포인트가 있다면 업그레이드 진행
         if(_player.LvPoint > 0 && upgradeInfo.level < upgradeInfo.maxLevel){
             _player.LvPoint -= 1;
@@ -186,11 +188,13 @@ public class LevelUpgrade : MonoBehaviour
 
     void ResetStat() 
     {
+        UISoundManager.Instance.PlayClickSound();
+
         // 플레이어의 골드가 충분하면 초기화 진행
         if(_player.Gold >= 3000 && upgradeInfo.type == UpgradeInfo.upgradeType.Attack) {
             _player.Gold -= 3000;
         }
-
+        
         else if(_player.Gold < 3000){
             return;
         }
