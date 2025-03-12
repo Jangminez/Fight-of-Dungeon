@@ -158,14 +158,15 @@ public class GameManager : MonoBehaviour
             yield return null;
         }
 
-        yield return new WaitForSeconds(4f);
-
+        //yield return new WaitForSeconds(4f);
+  
         player = GameObject.FindWithTag("Player").GetComponent<Player>();
         player.GetComponent<PlayerMovement>().enabled = true;
         
         RelicManager.Instance.ApplyRelics();
         LoadingScreen.Instance.HideLoadingScreen();
     }
+
     public void ChangeCharacter(string name)
     {
         playerPrefabName = name;

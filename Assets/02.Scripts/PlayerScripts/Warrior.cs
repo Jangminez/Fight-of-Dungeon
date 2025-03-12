@@ -10,15 +10,8 @@ public class Warrior : Player
 
         if(!IsOwner) return;
 
-        StartCoroutine(InitCharacter());
-    }
-
-    private IEnumerator InitCharacter()
-    {
-        yield return null;
         SetCharater();
     }
-
 
     protected override void SetCharater()
     {
