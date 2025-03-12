@@ -20,6 +20,8 @@ public class MyRelic : MonoBehaviour
         btn.onClick.AddListener(ClickButton);
         relicController = transform.parent.GetComponent<UpgradeRelicController>();
         myRelic.myRelic = this;
+
+        transform.GetChild(0).GetComponent<Image>().sprite = myRelic.r_Icon;
     }
 
     void OnEnable()

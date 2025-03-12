@@ -427,6 +427,7 @@ GameObject:
   - component: {fileID: 45627991}
   - component: {fileID: 45627990}
   - component: {fileID: 45627992}
+  - component: {fileID: 45627993}
   m_Layer: 5
   m_Name: Relic (7)
   m_TagString: Untagged
@@ -536,6 +537,22 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &45627993
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 45627988}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf76217429268674fbc4936d2a3a8845, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myRelic: {fileID: 11400000, guid: fac8a8c562913a64fb08c254f22e4cd3, type: 2}
+  r_Level: {fileID: 262359633}
+  r_Count: {fileID: 392606402}
+  r_Bar: {fileID: 1730807019}
 --- !u!1 &50114255
 GameObject:
   m_ObjectHideFlags: 0
@@ -1335,6 +1352,7 @@ GameObject:
   - component: {fileID: 112362354}
   - component: {fileID: 112362353}
   - component: {fileID: 112362355}
+  - component: {fileID: 112362356}
   m_Layer: 5
   m_Name: Relic (8)
   m_TagString: Untagged
@@ -1444,6 +1462,22 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &112362356
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 112362351}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf76217429268674fbc4936d2a3a8845, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myRelic: {fileID: 11400000, guid: eea4ecc9ac5d49c4b8adf1104a7c4462, type: 2}
+  r_Level: {fileID: 1502458879}
+  r_Count: {fileID: 2097701674}
+  r_Bar: {fileID: 429984927}
 --- !u!1 &123719666
 GameObject:
   m_ObjectHideFlags: 0
@@ -6253,6 +6287,7 @@ GameObject:
   - component: {fileID: 403155458}
   - component: {fileID: 403155457}
   - component: {fileID: 403155459}
+  - component: {fileID: 403155460}
   m_Layer: 5
   m_Name: Relic (6)
   m_TagString: Untagged
@@ -6362,6 +6397,22 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &403155460
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 403155455}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf76217429268674fbc4936d2a3a8845, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myRelic: {fileID: 11400000, guid: 05b96fa035d7d6846a008b43da101a70, type: 2}
+  r_Level: {fileID: 1699848790}
+  r_Count: {fileID: 897743784}
+  r_Bar: {fileID: 246377461}
 --- !u!1 &406925832
 GameObject:
   m_ObjectHideFlags: 0
@@ -16375,6 +16426,7 @@ GameObject:
   - component: {fileID: 1006943633}
   - component: {fileID: 1006943632}
   - component: {fileID: 1006943634}
+  - component: {fileID: 1006943635}
   m_Layer: 5
   m_Name: Relic (5)
   m_TagString: Untagged
@@ -16484,6 +16536,22 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1006943635
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1006943630}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf76217429268674fbc4936d2a3a8845, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myRelic: {fileID: 11400000, guid: fdf198d1208a6e141a397be7bb2bd723, type: 2}
+  r_Level: {fileID: 1679811067}
+  r_Count: {fileID: 1837279745}
+  r_Bar: {fileID: 717210621}
 --- !u!1 &1007541309
 GameObject:
   m_ObjectHideFlags: 0
@@ -30579,6 +30647,7 @@ GameObject:
   - component: {fileID: 1411011894}
   - component: {fileID: 1411011893}
   - component: {fileID: 1411011895}
+  - component: {fileID: 1411011896}
   m_Layer: 5
   m_Name: Relic (4)
   m_TagString: Untagged
@@ -30688,6 +30757,22 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1411011896
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1411011891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf76217429268674fbc4936d2a3a8845, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myRelic: {fileID: 11400000, guid: eb70fc29ea0747d4f9558cc094102478, type: 2}
+  r_Level: {fileID: 1345959134}
+  r_Count: {fileID: 1752175088}
+  r_Bar: {fileID: 1749878249}
 --- !u!1 &1412815525
 GameObject:
   m_ObjectHideFlags: 0
@@ -31462,6 +31547,7 @@ GameObject:
   - component: {fileID: 1456235154}
   - component: {fileID: 1456235153}
   - component: {fileID: 1456235155}
+  - component: {fileID: 1456235156}
   m_Layer: 5
   m_Name: Relic (3)
   m_TagString: Untagged
@@ -31571,6 +31657,22 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1456235156
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1456235151}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf76217429268674fbc4936d2a3a8845, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myRelic: {fileID: 11400000, guid: 2de9fd10bf91ed84688636e287e7f5bc, type: 2}
+  r_Level: {fileID: 1163750824}
+  r_Count: {fileID: 1417150572}
+  r_Bar: {fileID: 371780931}
 --- !u!1 &1463652902
 GameObject:
   m_ObjectHideFlags: 0
@@ -33712,6 +33814,81 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 1
+--- !u!1 &1596025076
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1596025077}
+  - component: {fileID: 1596025079}
+  - component: {fileID: 1596025078}
+  m_Layer: 5
+  m_Name: Panel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1596025077
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1596025076}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2025111203}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 1000, y: 1800}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1596025078
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1596025076}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1596025079
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1596025076}
+  m_CullTransparentMesh: 1
 --- !u!1 &1597028541
 GameObject:
   m_ObjectHideFlags: 0
@@ -35886,6 +36063,7 @@ GameObject:
   - component: {fileID: 1715501609}
   - component: {fileID: 1715501608}
   - component: {fileID: 1715501610}
+  - component: {fileID: 1715501611}
   m_Layer: 5
   m_Name: Relic (2)
   m_TagString: Untagged
@@ -35995,6 +36173,22 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1715501611
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1715501606}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf76217429268674fbc4936d2a3a8845, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myRelic: {fileID: 11400000, guid: 729020cdb784c714ea3e62a9cd226ce5, type: 2}
+  r_Level: {fileID: 771105885}
+  r_Count: {fileID: 123719668}
+  r_Bar: {fileID: 1921039069}
 --- !u!1 &1724116309
 GameObject:
   m_ObjectHideFlags: 0
@@ -41562,6 +41756,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1596025077}
   - {fileID: 546293345}
   m_Father: {fileID: 511926027}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
