@@ -306,18 +306,19 @@ public abstract class Enemy : NetworkBehaviour
             // 체력이 0 이하라면 Die
             StopAllCoroutines();
 
-            anim.SetTrigger("Die");
-
             Die();
-            audioController.PlayDeathSFX();
+    
             StartCoroutine(DeSpawnEnemy(GetComponent<NetworkObject>(), prefab, 3f));
             DieClientRpc(rpcParams.Receive.SenderClientId);
+            anim.SetTrigger("Die");
         }
     }
 
     [ClientRpc]
     protected void DieClientRpc(ulong lastAttackClient)
     {
+        audioController.PlayDeathSFX();
+
         // 처치한 클라이언트에게 경험치랑 골드 지급
         if (NetworkManager.Singleton.LocalClientId == lastAttackClient)
             GiveExpGoldServerRpc(lastAttackClient);

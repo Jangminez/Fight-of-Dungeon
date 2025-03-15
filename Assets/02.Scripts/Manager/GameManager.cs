@@ -172,9 +172,11 @@ public class GameManager : MonoBehaviour
         playerPrefabName = name;
     }
 
-    public void GameOver(ulong clinetId)
+    public void GameOver(ulong clientId)
     {
         // 게임 종료시 발생되는 함수
         Debug.Log("Game Over!");
+
+        
     }
 }

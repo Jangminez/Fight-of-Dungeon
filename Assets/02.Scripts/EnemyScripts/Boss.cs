@@ -132,7 +132,9 @@ public class Boss : Enemy, IDamgeable
 
         state = States.Die;
         StopAllCoroutines();
-        GameManager.Instance.GameOver(_lastAttackClientId);
+
+        // 이긴 클라이언트 ID 
+        EndGameClientRpc(_lastAttackClientId);
     }
 
     public override IEnumerator EnemyAttack()
@@ -253,10 +255,21 @@ public class Boss : Enemy, IDamgeable
     {
         // 마지막으로 공격한 클라이언트의 아이디 저장
         _lastAttackClientId = rpcParams.Receive.SenderClientId;
-    }
+    } 
 
-    public bool DieCheck()
+    [ClientRpc]
+    private void EndGameClientRpc(ulong clientId)
     {
-        return stat.isDie;
+        GameManager.Instance.GameOver(clientId);
+
+        if(clientId == NetworkManager.Singleton.LocalClientId)
+        {
+            Debug.Log("Win!!!!!!!!!!");
+        }
+
+        else
+        {
+            Debug.Log("Lose............");
+        }
     }
 }
