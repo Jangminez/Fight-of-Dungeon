@@ -258,18 +258,18 @@ public class Boss : Enemy, IDamgeable
     } 
 
     [ClientRpc]
-    private void EndGameClientRpc(ulong clientId)
+    private void EndGameClientRpc(ulong lastAttackClient)
     {
-        GameManager.Instance.GameOver(clientId);
-
-        if(clientId == NetworkManager.Singleton.LocalClientId)
+        if(lastAttackClient == NetworkManager.Singleton.LocalClientId)
         {
             Debug.Log("Win!!!!!!!!!!");
+            StageRewardManager.Instance.ShowRewardUI(true);
         }
 
         else
         {
             Debug.Log("Lose............");
+            StageRewardManager.Instance.ShowRewardUI(false);
         }
     }
 }

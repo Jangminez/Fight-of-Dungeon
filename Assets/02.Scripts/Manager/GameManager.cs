@@ -36,7 +36,7 @@ public class GameManager : MonoBehaviour
         {
             level = Math.Max(0, value);
 
-            if(mainUI != null)
+            if (mainUI != null)
                 mainUI.SetLevel();
         }
 
@@ -48,15 +48,15 @@ public class GameManager : MonoBehaviour
         {
             exp = Math.Max(0, value);
 
-            if(mainUI != null)
+            if (mainUI != null)
                 mainUI.SetExpBar();
 
-            if(exp >= nextExp)
-                    {
-                        LevelUp();
-                    }
+            if (exp >= nextExp)
+            {
+                LevelUp();
+            }
         }
-        
+
         get => exp;
     }
     public float NextExp
@@ -65,18 +65,18 @@ public class GameManager : MonoBehaviour
         {
             nextExp = Math.Max(0, value);
 
-            if(mainUI != null)
+            if (mainUI != null)
                 mainUI.SetExpBar();
         }
-        
+
         get => nextExp;
     }
     public int Gold
     {
-        set 
+        set
         {
             gold = Math.Max(0, value);
-            if(mainUI != null)
+            if (mainUI != null)
                 mainUI.SetGold();
         }
         get => gold;
@@ -87,7 +87,7 @@ public class GameManager : MonoBehaviour
         {
             dia = Math.Max(0, value);
 
-            if(mainUI != null)
+            if (mainUI != null)
                 mainUI.SetDia();
         }
         get => dia;
@@ -109,7 +109,7 @@ public class GameManager : MonoBehaviour
         // 인스턴스가 존재한다면 현재 오브젝트 파괴
         else if (_instance != null)
             Destroy(gameObject);
-            
+
         // 씬 로드시에도 파괴되지않음 
         DontDestroyOnLoad(gameObject);
 
@@ -128,7 +128,7 @@ public class GameManager : MonoBehaviour
         Level += 1;
 
         mainUI.SetExpBar();
-          
+
         if (exp >= nextExp)
         {
             LevelUp();
@@ -138,7 +138,9 @@ public class GameManager : MonoBehaviour
     public void BackToScene()
     {
         NetworkManager.Singleton.Shutdown();
+        Destroy(NetworkManager.Singleton.gameObject);
 
+        GameLobby.Instance.LeaveLobby();
         SceneManager.LoadScene("MainScene");
     }
 
@@ -149,22 +151,30 @@ public class GameManager : MonoBehaviour
         StartCoroutine("LoadTutorial");
     }
 
-    IEnumerator LoadTutorial()
+    private IEnumerator LoadTutorial()
     {
         LoadingScreen.Instance.ShowLoadingScreen();
-        AsyncOperation asyncOperation = SceneManager.LoadSceneAsync("TutorialScene");
 
-        while(!asyncOperation.isDone){
+        while (!NetworkManager.Singleton.IsConnectedClient)
             yield return null;
+
+        NetworkManager.Singleton.SceneManager.LoadScene("TutorialScene", LoadSceneMode.Single);
+
+        NetworkManager.Singleton.SceneManager.OnLoadComplete += SetTutorialPlayer;
+    }
+
+    private void SetTutorialPlayer(ulong clientId, string sceneName, LoadSceneMode loadSceneMode)
+    {
+        if (sceneName == "TutorialScene")
+        {
+            player = GameObject.FindWithTag("Player").GetComponent<Player>();
+            player.GetComponent<PlayerMovement>().enabled = true;
+
+            RelicManager.Instance.ApplyRelics();
+            LoadingScreen.Instance.HideLoadingScreen();
         }
 
-        //yield return new WaitForSeconds(4f);
-  
-        player = GameObject.FindWithTag("Player").GetComponent<Player>();
-        player.GetComponent<PlayerMovement>().enabled = true;
-        
-        RelicManager.Instance.ApplyRelics();
-        LoadingScreen.Instance.HideLoadingScreen();
+        NetworkManager.Singleton.SceneManager.OnLoadComplete -= SetTutorialPlayer;
     }
 
     public void ChangeCharacter(string name)
@@ -177,6 +187,21 @@ public class GameManager : MonoBehaviour
         // 게임 종료시 발생되는 함수
         Debug.Log("Game Over!");
 
-        
+
+    }
+
+    public void GetPowerUp()
+    {
+        if (player != null)
+        {
+            player.Attack += 800f;
+            player.Defense += 500f;
+            player.AttackSpeed += 2f;
+            player.MaxHp += 1000f;
+            player.MaxMp += 1000f;
+            player.HpRegen += 100f;
+            player.MpRegen += 100f;
+            player.Speed += 3f;
+        }
     }
 }

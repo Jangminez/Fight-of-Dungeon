@@ -277,6 +277,7 @@ public abstract class Player : NetworkBehaviour, IDamgeable
             {
                 _level = Mathf.Max(0, value);
                 UIManager.Instance.LevelChanged();
+                StageRewardManager.Instance.playerLevel = _level;
             }
         }
 

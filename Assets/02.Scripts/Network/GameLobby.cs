@@ -6,6 +6,7 @@ using Unity.Services.Authentication;
 using Unity.Services.Core;
 using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
+using Unity.Services.Relay;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -32,6 +33,7 @@ public class GameLobby : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+
     }
 
     private async void Start()
@@ -65,6 +67,8 @@ public class GameLobby : MonoBehaviour
     {
         StartGame();
     }
+
+    
 
     // 이 신호를 통해 로비가 활성화 되어있는지 확인
     private async void HandleLobbyHeartBeat()
@@ -228,7 +232,6 @@ public class GameLobby : MonoBehaviour
             await LobbyService.Instance.RemovePlayerAsync(joinedLobby.Id, AuthenticationService.Instance.PlayerId);
             Debug.Log($"Leave Lobby LobbyId : {joinedLobby.LobbyCode}");
             joinedLobby = null;
-
         }
         catch (LobbyServiceException e)
         {
