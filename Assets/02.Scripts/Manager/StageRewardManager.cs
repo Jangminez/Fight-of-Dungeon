@@ -50,13 +50,12 @@ public class StageRewardManager : MonoBehaviour
         basicGold = 100;
         basicExp = 50;
 
-        victoryBtn.onClick.AddListener(GameManager.Instance.BackToScene);
-        loseBtn.onClick.AddListener(GameManager.Instance.BackToScene);
+        victoryBtn.onClick.AddListener(GameManager.Instance.GameOver);
+        loseBtn.onClick.AddListener(GameManager.Instance.GameOver);
     }
 
     public void ShowRewardUI(bool isWin)
     {
-
         if(isWin)
         {
             victoryGold.text = (rewardGold * 1.5f).ToString("F0");
@@ -70,6 +69,8 @@ public class StageRewardManager : MonoBehaviour
             loseExp.text = (rewardExp * 0.5f).ToString("F0");
             loseUI.SetActive(true);
         }
+
+        GiveReward(isWin);
     }
 
 
@@ -77,14 +78,14 @@ public class StageRewardManager : MonoBehaviour
     {
         if(isWin)
         {
-            GameManager.Instance.Gold += (int)(rewardGold * 1.5f);
-            GameManager.Instance.Exp += rewardExp * 1.5f;
+            GameManager.Instance.rewardGold = (int)(rewardGold * 1.5f);
+            GameManager.Instance.rewardExp = rewardExp * 1.5f;
         }
 
         else
         {
-            GameManager.Instance.Gold += (int)(rewardGold * 0.5f);
-            GameManager.Instance.Exp += rewardExp * 0.5f;
+            GameManager.Instance.rewardGold = (int)(rewardGold * 0.5f);
+            GameManager.Instance.rewardExp = rewardExp * 0.5f;
         }
     }
 }

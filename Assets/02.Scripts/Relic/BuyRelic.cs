@@ -58,6 +58,8 @@ public class BuyRelic : MonoBehaviour
         myRelic.isDraw = true;
 
         ExitUI();
+
+        GameManager.Instance.SavePlayerData();
     }
 
     private void ExitUI()

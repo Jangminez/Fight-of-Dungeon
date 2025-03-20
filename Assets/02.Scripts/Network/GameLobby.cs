@@ -15,7 +15,7 @@ public class GameLobby : MonoBehaviour
 {
     public static GameLobby Instance { get; private set; }
     Lobby hostLobby;
-    Lobby joinedLobby;
+    public Lobby joinedLobby;
     float heartbeatTimer;
     float HandleLobbyTimer;
     string playerName;

@@ -4,6 +4,7 @@ using UnityEngine.UI;
 public class MainUIController : MonoBehaviour
 {
     public Button startButton;
+    public Text nameText;
     public Text goldText;
     public Text diaText;
     public Text levelText;
@@ -13,34 +14,30 @@ public class MainUIController : MonoBehaviour
     {
         startButton.onClick.AddListener(GameLobby.Instance.QuickJoinLobby);
         GameManager.Instance.mainUI = this;
-
-        SetAllUI();
     }
 
-    void SetAllUI()
+    public void SetNickName(string name)
     {
-        SetGold();
-        SetDia();
-        SetLevel();
-        SetExpBar();
-    }
-    public void SetGold()
-    {
-        goldText.text = GameManager.Instance.Gold.ToString();
+        nameText.text = name;
     }
 
-    public void SetDia()
+    public void SetGold(int gold)
     {
-        diaText.text = GameManager.Instance.Dia.ToString();
+        goldText.text = gold.ToString();
     }
 
-    public void SetLevel()
+    public void SetDia(int dia)
     {
-        levelText.text = $"Lv. {GameManager.Instance.Level}";
+        diaText.text = dia.ToString();
     }
 
-    public void SetExpBar()
+    public void SetLevel(int level)
     {
-        expSlider.value = GameManager.Instance.Exp / GameManager.Instance.NextExp;
+        levelText.text = $"Lv. {level}";
+    }
+
+    public void SetExpBar(float exp, float nextExp)
+    {
+        expSlider.value = exp / nextExp;
     }
 }

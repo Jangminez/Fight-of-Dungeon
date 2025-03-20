@@ -37,7 +37,7 @@ public class UIManager : MonoBehaviour
 
     public Button goToMain;
     public Button pickUpButton;
-
+    public bool isDragItem = false;
     private void Awake()
     {
         // 인스턴스가 없을 때 해당 오브젝트로 설정

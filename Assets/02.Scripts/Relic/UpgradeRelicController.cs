@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,7 +17,7 @@ public class UpgradeRelicController : MonoBehaviour
 
     void Awake()
     {
-        if(r_UpgradeButton != null)
+        if (r_UpgradeButton != null)
             r_UpgradeButton.onClick.AddListener(UpgradeRelic);
     }
 
@@ -37,11 +35,11 @@ public class UpgradeRelicController : MonoBehaviour
         r_UpgradeValue.text = $"(+{relic.r_UpgradeValue})";
         r_Cost.text = relic.r_UpgradeCost.ToString();
 
-        if(selectedRelic.r_Count >= selectedRelic.r_UpgradeCount)
+        if (selectedRelic.r_Count >= selectedRelic.r_UpgradeCount)
             r_UpgradeButton.interactable = true;
         else
             r_UpgradeButton.interactable = false;
-        
+
         // 유물 업그레이드 창 활성화
         info.SetActive(true);
     }
@@ -49,7 +47,7 @@ public class UpgradeRelicController : MonoBehaviour
     public void UpgradeRelic()
     {
         // 전체 메인 골드 확인하는 부분 필요
-        if(GameManager.Instance.Gold >= selectedRelic.r_UpgradeCost) 
+        if (GameManager.Instance.Gold >= selectedRelic.r_UpgradeCost)
         {
             GameManager.Instance.Gold -= selectedRelic.r_UpgradeCost;
             selectedRelic.r_Count -= selectedRelic.r_UpgradeCount;
@@ -63,6 +61,9 @@ public class UpgradeRelicController : MonoBehaviour
             selectedRelic.myRelic.SetUI();
 
             UISoundManager.Instance.PlayClickSound();
+
+            // 플레이어 데이터 저장
+            GameManager.Instance.SavePlayerData();
         }
     }
 }

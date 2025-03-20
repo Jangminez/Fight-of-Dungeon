@@ -37,7 +37,7 @@ public class DropZone : MonoBehaviour, IDropHandler
                     break;
             }
 
-            GameManager.Instance.isDragItem = false;
+            UIManager.Instance.isDragItem = false;
         }
     }
 

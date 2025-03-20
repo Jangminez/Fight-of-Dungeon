@@ -6,7 +6,7 @@ public class DragManager : MonoBehaviour
 
     void Update()
     {
-        if(GameManager.Instance.isDragItem)
+        if(UIManager.Instance.isDragItem)
         {
             foreach(var dz in DropZones)
             {
