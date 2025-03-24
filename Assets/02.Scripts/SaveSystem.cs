@@ -3,7 +3,6 @@ using UnityEngine;
 using System.IO;
 using Newtonsoft.Json;
 using System;
-using System.Threading.Tasks;
 
 [Serializable]
 public class RelicData

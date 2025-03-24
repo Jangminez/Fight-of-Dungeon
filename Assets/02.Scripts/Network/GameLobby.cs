@@ -46,7 +46,7 @@ public class GameLobby : MonoBehaviour
             Debug.Log("Signed in " + AuthenticationService.Instance.PlayerId);
         };
         // 익명 로그인
-        if(!AuthenticationService.Instance.IsSignedIn)
+        if (!AuthenticationService.Instance.IsSignedIn)
             await AuthenticationService.Instance.SignInAnonymouslyAsync();
 
         joinButton.onClick.AddListener(JoinLobbyByCode);
@@ -68,7 +68,7 @@ public class GameLobby : MonoBehaviour
         StartGame();
     }
 
-    
+
 
     // 이 신호를 통해 로비가 활성화 되어있는지 확인
     private async void HandleLobbyHeartBeat()
@@ -229,9 +229,12 @@ public class GameLobby : MonoBehaviour
     {
         try
         {
-            await LobbyService.Instance.RemovePlayerAsync(joinedLobby.Id, AuthenticationService.Instance.PlayerId);
-            Debug.Log($"Leave Lobby LobbyId : {joinedLobby.LobbyCode}");
-            joinedLobby = null;
+            if (joinedLobby != null)
+            {
+                await LobbyService.Instance.RemovePlayerAsync(joinedLobby.Id, AuthenticationService.Instance.PlayerId);
+                Debug.Log($"Leave Lobby LobbyId : {joinedLobby.LobbyCode}");
+                joinedLobby = null;
+            }
         }
         catch (LobbyServiceException e)
         {
@@ -243,10 +246,10 @@ public class GameLobby : MonoBehaviour
     {
         try
         {
-                hostLobby = await Lobbies.Instance.UpdateLobbyAsync(hostLobby.Id, new UpdateLobbyOptions
-                {
-                    HostId = joinedLobby.Players[1].Id
-                });
+            hostLobby = await Lobbies.Instance.UpdateLobbyAsync(hostLobby.Id, new UpdateLobbyOptions
+            {
+                HostId = joinedLobby.Players[1].Id
+            });
         }
         catch (LobbyServiceException e)
         {

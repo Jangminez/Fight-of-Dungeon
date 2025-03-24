@@ -10,13 +10,23 @@ public class SettingsMenuManager : MonoBehaviour
 
     void OnEnable()
     {
-        _mainAudioMixer.SetFloat("MusicVol", PlayerPrefs.GetFloat("MusicVol"));
-        _mainAudioMixer.SetFloat("SfxVol", PlayerPrefs.GetFloat("SfxVol"));
-        QualitySettings.SetQualityLevel(PlayerPrefs.GetInt("QualitySet"));
+        InitializeSetting();
+    }
 
-        _musicVol.value = PlayerPrefs.GetFloat("MusicVol");
-        _sfxVol.value = PlayerPrefs.GetFloat("SfxVol");
-        _graphicsDropdown.value = PlayerPrefs.GetInt("QualitySet");
+    void Start()
+    {
+        InitializeSetting();
+    }
+
+    public void InitializeSetting()
+    {
+        _mainAudioMixer.SetFloat("MusicVol", PlayerPrefs.GetFloat("MusicVol", 0f));
+        _mainAudioMixer.SetFloat("SfxVol", PlayerPrefs.GetFloat("SfxVol", 0f));
+        QualitySettings.SetQualityLevel(PlayerPrefs.GetInt("QualitySet", 1));
+
+        _musicVol.value = PlayerPrefs.GetFloat("MusicVol", 0f);
+        _sfxVol.value = PlayerPrefs.GetFloat("SfxVol", 0f);
+        _graphicsDropdown.value = PlayerPrefs.GetInt("QualitySet", 1);
     }
 
     public void ChangeGraphicsQuality()
@@ -30,7 +40,6 @@ public class SettingsMenuManager : MonoBehaviour
 
     public void ChangeMusicVolume()
     {
-        UISoundManager.Instance.PlayClickSound();
         _mainAudioMixer.SetFloat("MusicVol", _musicVol.value);
 
         PlayerPrefs.SetFloat("MusicVol", _musicVol.value);
@@ -39,7 +48,6 @@ public class SettingsMenuManager : MonoBehaviour
 
     public void ChangeSfxVolume()
     {
-        UISoundManager.Instance.PlayClickSound();
         _mainAudioMixer.SetFloat("SfxVol", _sfxVol.value);
 
         PlayerPrefs.SetFloat("SfxVol", _sfxVol.value);

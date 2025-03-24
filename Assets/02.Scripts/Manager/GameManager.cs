@@ -223,30 +223,46 @@ public class GameManager : MonoBehaviour
 
     public void BackToScene()
     {
+        LoadingScreen.Instance.ShowLoadingScreen();
+
         NetworkManager.Singleton.Shutdown();
         Destroy(NetworkManager.Singleton.gameObject);
 
         GameLobby.Instance.LeaveLobby();
-        SceneManager.LoadScene("MainScene");
+        StartCoroutine(BackToMain());
     }
 
-    public void StartTutorial()
+    private IEnumerator BackToMain()
+    {
+        AsyncOperation asyncOperation = SceneManager.LoadSceneAsync("MainScene");
+
+        while(!asyncOperation.isDone)
+        {
+            yield return null;
+        }
+
+        LoadPlayerData();
+        LoadingScreen.Instance.HideLoadingScreen();
+    }
+
+    public void StartScene(string sceneName)
     {
         Task<string> code = ConnectRelay.Instance.CreateRelay();
         Debug.Log(code);
-        StartCoroutine("LoadTutorial");
+        StartCoroutine(LoadScene(sceneName));
     }
 
-    private IEnumerator LoadTutorial()
+    private IEnumerator LoadScene(string sceneName)
     {
         LoadingScreen.Instance.ShowLoadingScreen();
 
         while (!NetworkManager.Singleton.IsConnectedClient)
             yield return null;
 
-        NetworkManager.Singleton.SceneManager.LoadScene("TutorialScene", LoadSceneMode.Single);
-
-        NetworkManager.Singleton.SceneManager.OnLoadComplete += SetTutorialPlayer;
+        NetworkManager.Singleton.SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
+        
+        if(sceneName == "TutorialScene")
+            NetworkManager.Singleton.SceneManager.OnLoadComplete += SetTutorialPlayer;
     }
 
     private void SetTutorialPlayer(ulong clientId, string sceneName, LoadSceneMode loadSceneMode)
