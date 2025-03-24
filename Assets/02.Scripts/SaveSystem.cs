@@ -3,6 +3,7 @@ using UnityEngine;
 using System.IO;
 using Newtonsoft.Json;
 using System;
+using System.Threading.Tasks;
 
 [Serializable]
 public class RelicData
@@ -51,7 +52,8 @@ public class SaveSystem : MonoBehaviour
         else if (_instance != null)
             Destroy(gameObject);
 
-        filePath = Application.persistentDataPath + "/PlayerData.json";
+        filePath = Path.Combine(Application.persistentDataPath, "PlayerData.json");
+        Debug.Log("데이터 저장경로 " + filePath);
 
         DontDestroyOnLoad(gameObject);
     }
@@ -62,8 +64,16 @@ public class SaveSystem : MonoBehaviour
         SaveRelicData(data);
 
         string json = JsonConvert.SerializeObject(data, Formatting.Indented);
+        
         File.WriteAllText(filePath, json);
-        Debug.Log("데이터 JSON 저장 완료: " + filePath);
+        Debug.Log("JSON 데이터 저장 완료 경로: " + filePath);
+    }
+
+    public void SaveDataFirst(PlayerData data)
+    {
+        string json = JsonConvert.SerializeObject(data, Formatting.Indented);
+
+        File.WriteAllText(filePath, json);
     }
 
     private void SavePlayerData(PlayerData data)
@@ -82,6 +92,14 @@ public class SaveSystem : MonoBehaviour
         {
             ScriptableRelic relic = RelicManager.Instance.GetRelic(i);
 
+            if (!data.relicDict.ContainsKey(i))
+            {
+                data.relicDict[i] = new RelicData
+                {
+                    r_Level = 1,
+                    r_Count = 0
+                };
+            }
             data.relicDict[i].r_Level = relic.r_Level;
             data.relicDict[i].r_Count = relic.r_Count;
         }
@@ -93,7 +111,7 @@ public class SaveSystem : MonoBehaviour
         {
             string json = File.ReadAllText(filePath);
             PlayerData data = JsonConvert.DeserializeObject<PlayerData>(json);
-            Debug.Log("JSON 데이터 불러오기");
+            Debug.Log("JSON 데이터 불러오기 경로: " + filePath);
 
             return data;
         }
@@ -111,8 +129,8 @@ public class SaveSystem : MonoBehaviour
 
         newData.nickname = "플레이어";
         newData.level = 1;
+        newData.nextExp = 100f;
         newData.exp = 0;
-        newData.nextExp = 100;
         newData.gold = 0;
         newData.dia = 0;
         newData.relicDict = new Dictionary<int, RelicData>();
@@ -126,7 +144,7 @@ public class SaveSystem : MonoBehaviour
             };
         }
 
-        SaveData(newData);
+        SaveDataFirst(newData);
 
         return newData;
     }

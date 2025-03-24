@@ -38,7 +38,7 @@ public class GameManager : MonoBehaviour
         {
             nickname = value;
 
-            if(playerData != null)
+            if (playerData != null)
                 playerData.nickname = nickname;
 
             if (mainUI != null)
@@ -55,11 +55,11 @@ public class GameManager : MonoBehaviour
         {
             level = Math.Max(0, value);
 
-            if(playerData != null)
-                playerData.level = level;
+            if (playerData != null)
+                playerData.level = value;
 
             if (mainUI != null)
-                mainUI.SetLevel(level);
+                mainUI.SetLevel(value);
         }
 
         get => level;
@@ -70,13 +70,13 @@ public class GameManager : MonoBehaviour
         {
             exp = Math.Max(0, value);
 
-            if(playerData != null)
-                playerData.exp = exp;
+            if (playerData != null)
+                playerData.exp = value;
 
             if (mainUI != null)
                 mainUI.SetExpBar(playerData.exp, playerData.nextExp);
 
-            if (playerData.exp >= playerData.nextExp)
+            if (value >= playerData.nextExp)
             {
                 LevelUp();
             }
@@ -90,8 +90,8 @@ public class GameManager : MonoBehaviour
         {
             nextExp = Math.Max(0, value);
 
-            if(playerData != null)
-                playerData.nextExp = nextExp;
+            if (playerData != null)
+                playerData.nextExp = value;
 
             if (mainUI != null)
                 mainUI.SetExpBar(exp, nextExp);
@@ -105,7 +105,7 @@ public class GameManager : MonoBehaviour
         {
             gold = Math.Max(0, value);
 
-            if(playerData != null)
+            if (playerData != null)
                 playerData.gold = gold;
 
             if (mainUI != null)
@@ -119,7 +119,7 @@ public class GameManager : MonoBehaviour
         {
             dia = Math.Max(0, value);
 
-            if(playerData != null)
+            if (playerData != null)
                 playerData.dia = dia;
 
             if (mainUI != null)
@@ -149,10 +149,14 @@ public class GameManager : MonoBehaviour
 
         // 씬 로드시에도 파괴되지않음 
         DontDestroyOnLoad(gameObject);
-        saveSystem = SaveSystem.Instance;
     }
 
     void Start()
+    {
+        LoadPlayerData();
+    }
+
+    public void LoadDataButton()
     {
         LoadPlayerData();
     }
@@ -165,21 +169,28 @@ public class GameManager : MonoBehaviour
 
     private void LoadPlayerData()
     {
-        try
+        playerData = saveSystem.LoadData();
+
+        if (playerData != null)
         {
-            playerData = saveSystem.LoadData();
             ApplyPlayerData();
             ApplyRelicData();
         }
 
-        catch (Exception e)
+        else
         {
-            Debug.LogError($"데이터 로드 실패: {e.Message}");
+            return;
         }
     }
 
     private void ApplyPlayerData()
     {
+        if (playerData == null)
+        {
+            Debug.LogError("PlayerData가 존재하지않습니다.");
+            return;
+        }
+
         // JSON 데이터 적용
         Nickname = playerData.nickname;
         Gold = playerData.gold;
@@ -191,6 +202,11 @@ public class GameManager : MonoBehaviour
 
     private void ApplyRelicData()
     {
+        if (playerData == null || playerData.relicDict == null)
+        {
+            Debug.LogError("Relic 데이터를 불러올 수 없습니다.");
+            return;
+        }
         for (int i = 101; i <= 109; i++)
         {
             ScriptableRelic relic = RelicManager.Instance.GetRelic(i);
@@ -205,20 +221,23 @@ public class GameManager : MonoBehaviour
 
     private void LevelUp()
     {
-        playerData.exp -= playerData.nextExp;
-        NextExp *= 1.5f;
-
-        Level += 1;
-
-        mainUI.SetExpBar(playerData.exp, playerData.nextExp);
-
-        if (playerData.exp >= playerData.nextExp)
+        if (playerData != null)
         {
-            LevelUp();
-        }
+            playerData.exp -= playerData.nextExp;
+            NextExp *= 1.5f;
 
-        SavePlayerData();
-        LoadPlayerData();
+            Level += 1;
+
+            mainUI.SetExpBar(playerData.exp, playerData.nextExp);
+
+            if (playerData.exp >= playerData.nextExp)
+            {
+                LevelUp();
+            }
+
+            SavePlayerData();
+            LoadPlayerData();
+        }
     }
 
     public void BackToScene()
@@ -236,7 +255,7 @@ public class GameManager : MonoBehaviour
     {
         AsyncOperation asyncOperation = SceneManager.LoadSceneAsync("MainScene");
 
-        while(!asyncOperation.isDone)
+        while (!asyncOperation.isDone)
         {
             yield return null;
         }
@@ -260,8 +279,8 @@ public class GameManager : MonoBehaviour
             yield return null;
 
         NetworkManager.Singleton.SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
-        
-        if(sceneName == "TutorialScene")
+
+        if (sceneName == "TutorialScene")
             NetworkManager.Singleton.SceneManager.OnLoadComplete += SetTutorialPlayer;
     }
 

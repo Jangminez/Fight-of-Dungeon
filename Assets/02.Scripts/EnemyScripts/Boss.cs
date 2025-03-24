@@ -269,7 +269,7 @@ public class Boss : Enemy, IDamgeable
         else
         {
             Debug.Log("Lose............");
-            StageRewardManager.Instance.ShowRewardUI(true);
+            StageRewardManager.Instance.ShowRewardUI(false);
         }
     }
 }
