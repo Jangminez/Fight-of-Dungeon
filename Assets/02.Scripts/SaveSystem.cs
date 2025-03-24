@@ -129,7 +129,7 @@ public class SaveSystem : MonoBehaviour
 
         newData.nickname = "플레이어";
         newData.level = 1;
-        newData.nextExp = 100f;
+        newData.nextExp = 1000f;
         newData.exp = 0;
         newData.gold = 0;
         newData.dia = 0;
