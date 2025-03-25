@@ -28,7 +28,7 @@ public class RandomRelicShop : MonoBehaviour
 
     void Awake()
     {
-        resetButton.onClick.AddListener(ResetRelicsToSlot);
+        resetButton.onClick.AddListener(ClickResetButton);
     }
 
     void Start()
@@ -92,6 +92,17 @@ public class RandomRelicShop : MonoBehaviour
             {
                 buyRelic.SetBuySlot();
             }
+        }
+    }
+
+    private void ClickResetButton()
+    {
+        if(GameManager.Instance.Dia >= 50)
+        {
+            GameManager.Instance.Dia -= 50;
+            ResetRelicsToSlot();
+
+            GameManager.Instance.SavePlayerData();
         }
     }
 
