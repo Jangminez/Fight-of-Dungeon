@@ -27,19 +27,21 @@ public class HideUIEffect : MonoBehaviour
 
     public void HideUI(Transform obj)
     {
-        switch (hT)
+        if (obj.gameObject.activeSelf)
         {
-            case hideType.pop:
-                obj.DOScale(0, 0.3f).SetEase(Ease.InBack)
-                .OnComplete(() => obj.gameObject.SetActive(false));
-                break;
-
-            case hideType.down:
-                obj.DOMoveY(obj.position.y - 1200f, 0.5f).SetEase(Ease.InOutQuad) // 아래로 이동
+            switch (hT)
+            {
+                case hideType.pop:
+                    obj.DOScale(0, 0.3f).SetEase(Ease.InBack)
                     .OnComplete(() => obj.gameObject.SetActive(false));
-                break;
+                    break;
 
+                case hideType.down:
+                    obj.DOMoveY(obj.position.y - 1200f, 0.5f).SetEase(Ease.InOutQuad) // 아래로 이동
+                        .OnComplete(() => obj.gameObject.SetActive(false));
+                    break;
+
+            }
         }
-
     }
 }

@@ -6,9 +6,12 @@ using UnityEngine.UI;
 
 public class BuyRelic : MonoBehaviour
 {
+    public RandomRelicShop relicShop;
     public ScriptableRelic myRelic; // 유물 SO
     private Button myBtn; // 슬롯 버튼
     public GameObject relic_Description; // 유물 구매창
+    public GameObject isBuy_Object; // 구매 완료 UI
+    public bool isBuy; // 구매 확인
     public Image relic_Icon; // 유물 아이콘
     public Text relic_Name; // 유물 이름
     public Text relic_Information; // 유물 정보
@@ -20,6 +23,7 @@ public class BuyRelic : MonoBehaviour
     {
         myBtn = GetComponent<Button>();
         myBtn.onClick.AddListener(ShowDescription);
+        isBuy_Object = transform.GetChild(2).gameObject;
     }
 
     void ShowDescription()
@@ -36,42 +40,65 @@ public class BuyRelic : MonoBehaviour
 
     void ClickBuyButton()
     {
+        if (isBuy) return;
+
         // 유물 구매 
-        if(costType == 0)
+        if (costType == 0)
         {
-            if(GameManager.Instance.Gold >= relicCost)
+            if (GameManager.Instance.Gold >= relicCost)
             {
                 GameManager.Instance.Gold -= relicCost;
-                myRelic.r_Count ++;
+                myRelic.r_Count++;
+
+                SetBuySlot();
+                relicShop.BuyItem(transform.GetSiblingIndex());
+
+                ExitUI();
+                GameManager.Instance.SavePlayerData();
             }
         }
 
         else
         {
-            if(GameManager.Instance.Dia >= relicCost)
+            if (GameManager.Instance.Dia >= relicCost)
             {
                 GameManager.Instance.Dia -= relicCost;
-                myRelic.r_Count ++;
+                myRelic.r_Count++;
+
+                SetBuySlot();
+                relicShop.BuyItem(transform.GetSiblingIndex());
+
+                ExitUI();
+                GameManager.Instance.SavePlayerData();
             }
         }
+    }
 
+    public void ResetSlot()
+    {
+        isBuy = false;
+        isBuy_Object.SetActive(false);
+        myBtn.interactable = true;
+    }
+
+    public void SetBuySlot()
+    {
         myRelic.isDraw = true;
-
-        ExitUI();
-
-        GameManager.Instance.SavePlayerData();
+        isBuy = true;
+        isBuy_Object.SetActive(true);
+        myBtn.interactable = false;
     }
 
     private void ExitUI()
     {
         UISoundManager.Instance.PlayBuySound();
-        
+
         HideUI(relic_Description.transform);
     }
 
     public void HideUI(Transform obj)
     {
         obj.DOScale(0, 0.3f).SetEase(Ease.InBack)
-            .OnComplete(() => obj.gameObject.SetActive(false)); 
+            .OnComplete(() => obj.gameObject.SetActive(false));
     }
 }

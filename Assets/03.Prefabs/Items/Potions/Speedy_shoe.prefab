@@ -86,8 +86,8 @@ GameObject:
   - component: {fileID: 2508387593922192107}
   - component: {fileID: 859431730274134071}
   - component: {fileID: 5531097851730670359}
-  - component: {fileID: -7551234642260412716}
   - component: {fileID: 2997556731581660011}
+  - component: {fileID: 7113715569105480899}
   m_Layer: 5
   m_Name: Speedy_shoe
   m_TagString: Untagged
@@ -143,8 +143,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 5004c0e79dddb0140ba3e767b91d5623, type: 3}
-  m_Type: 0
+  m_Sprite: {fileID: -1010605625, guid: d71a3dc7aa20fad4f9a99fc76a9254ba, type: 3}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -153,18 +153,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &-7551234642260412716
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6603799919290090851}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d916dd094dc24c43ad08dde88bebf6a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &2997556731581660011
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -178,3 +166,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _preParent: {fileID: 0}
+--- !u!114 &7113715569105480899
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6603799919290090851}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5c030891a35267478e3790abd32d3bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isComsumable: 0
+  _item: {fileID: 11400000, guid: 5446f4f4c15bcbf49ba923cd2f06e72d, type: 2}
+  _slotBtn: {fileID: 0}
+  _useBtn: {fileID: 0}

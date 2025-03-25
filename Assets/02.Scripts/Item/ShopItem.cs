@@ -102,6 +102,10 @@ public class ShopItem : MonoBehaviour
                 case ScriptableItem.ValueType.MpRegen:
                 statText = $"마나 재생 +{value}";
                 break;
+
+                case ScriptableItem.ValueType.Speed:
+                statText = $"이동 속도 +{value}";
+                break;
             }
 
     if (calType == ScriptableItem.CalType.Percentage)

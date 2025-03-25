@@ -56,7 +56,7 @@ public class GameManager : MonoBehaviour
             level = Math.Max(0, value);
 
             if (playerData != null)
-                playerData.level = value;
+                playerData.level = level;
 
             if (mainUI != null)
                 mainUI.SetLevel(value);
@@ -71,7 +71,7 @@ public class GameManager : MonoBehaviour
             exp = Math.Max(0, value);
 
             if (playerData != null)
-                playerData.exp = value;
+                playerData.exp = exp;
 
             if (mainUI != null)
                 mainUI.SetExpBar(playerData.exp, playerData.nextExp);
@@ -91,7 +91,7 @@ public class GameManager : MonoBehaviour
             nextExp = Math.Max(0, value);
 
             if (playerData != null)
-                playerData.nextExp = value;
+                playerData.nextExp = nextExp;
 
             if (mainUI != null)
                 mainUI.SetExpBar(exp, nextExp);
@@ -102,12 +102,12 @@ public class GameManager : MonoBehaviour
     public int Gold
     {
         set
-        {
+        {   
             gold = Math.Max(0, value);
 
             if (playerData != null)
                 playerData.gold = gold;
-
+            
             if (mainUI != null)
                 mainUI.SetGold(gold);
         }
@@ -136,6 +136,7 @@ public class GameManager : MonoBehaviour
 
     public SaveSystem saveSystem;
     private PlayerData playerData;
+    public CoinEffectManager coinEffect;
 
     private void Awake()
     {
@@ -328,7 +329,7 @@ public class GameManager : MonoBehaviour
         LoadingScreen.Instance.HideLoadingScreen();
 
         // 게임 종료시 골드와 경험치 지급
-        Gold += rewardGold;
+        coinEffect.RewardPileOfGold(Gold, Gold + rewardGold);
         Exp += rewardExp;
 
         // 플레이어 데이터 저장 & 불러오기
