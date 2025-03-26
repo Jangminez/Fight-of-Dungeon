@@ -23,6 +23,7 @@ public class UISoundManager : MonoBehaviour
     [SerializeField] private AudioClip clickButton_Sound;
     [SerializeField] private AudioClip exitButton_Sound;
     [SerializeField] private AudioClip buy_Sound;
+    [SerializeField] private AudioClip cantBuy_Sound;
     [SerializeField] private AudioClip popUp_Sound;
 
     void Awake()
@@ -59,6 +60,11 @@ public class UISoundManager : MonoBehaviour
     public void PlayPopUpSound()
     {
         _audio.PlayOneShot(popUp_Sound);
+    }
+
+    public void PlayCantBuySound()
+    {
+        _audio.PlayOneShot(cantBuy_Sound);
     }
 
     public void PlayOneShotSound(AudioClip clip)

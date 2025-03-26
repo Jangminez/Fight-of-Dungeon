@@ -1,59 +1,111 @@
-using System.Collections;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class MainUIController : MonoBehaviour
 {
-    public Button startButton;
-    public Text nameText;
-    public Text goldText;
-    public Text diaText;
-    public Text levelText;
-    public Slider expSlider;
+    [SerializeField] private NickNameValidator nickValidator;  // 닉네임 유효성 검사
+    public Button startButton; // 빠른시작 버튼
+    public Text nameText; // 상단 프로필 이름 텍스트
+    public Text goldText; // 상단 프로필 골드 텍스트
+    public Text diaText; // 상단 프로필 다이아 텍스트
+    public Text levelText; // 상단 프로필 레벨 텍스트
+    public Slider expSlider; // 상당 프로필 경험치 바
+    public Button nameEdit_Btn; // 프로필 이름 변경 버튼
+    public GameObject editInfo; // 프로필 닉네임 변경 UI 오브젝트
+    public Button change_Btn; // 프로필 이름 변경 최종확인 버튼
+    public GameObject canChangeFirst; // 이름 변경 안했을 시 나타나는 UI 오브젝트
+
+    [Serializable]
+    public class ProfileUI // 프로필 UI에 들어가는 컴포넌트들
+    {
+        public Text nickName; // 프로필 닉네임 텍스트
+        public Text level; // 프로필 레벨 텍스트
+        public Text winCount; // 프로필 우승 횟수 텍스트
+        public Text exp; // 프로필 경험치양 텍스트
+        public Slider slider; // 프로필 경험치 바
+    }
+
+    public ProfileUI myPorfile = new ProfileUI();
 
     void Start()
     {
+        // 빠른시작 버튼에 리스너 추가
         startButton.onClick.AddListener(GameLobby.Instance.QuickJoinLobby);
+
+        // 값 변경시 UI 최신화 하기위해 게임매니저에 등록
         GameManager.Instance.mainUI = this;
+
+        // 프로필 이름변경 관련된 버튼들 리스너 추가
+        nameEdit_Btn.onClick.AddListener(OpenInfo);
+        change_Btn.onClick.AddListener(ChangeNickName);
     }
 
-    public void SetNickName(string name)
+    // 닉네임 변경시 UI 업데이트
+    public void SetNickName(string name) 
     {
         nameText.text = name;
+        myPorfile.nickName.text = name;
     }
 
+    // 골드 변경시 UI 업데이트
     public void SetGold(int gold)
     {
         goldText.text = gold.ToString();
     }
 
+    // 다이아 변경시 UI 업데이트
     public void SetDia(int dia)
     {
         diaText.text = dia.ToString();
     }
 
+    // 레벨 변경시 UI 업데이트
     public void SetLevel(int level)
     {
         levelText.text = $"Lv. {level}";
+        myPorfile.level.text = $"Lv. {level}";
     }
 
+    // 경험치 변경시 UI 업데이트
     public void SetExpBar(float exp, float nextExp)
     {
         expSlider.value = exp / nextExp;
+        myPorfile.exp.text = exp.ToString("F0") + "/" + nextExp.ToString("F0");
+        myPorfile.slider.value = exp / nextExp;
     }
 
-    IEnumerator SetGoldText(int pre_Gold, int next_Gold)
+    //우승 횟수 변경시 UI 업데이트
+    public void SetWinCount(int count)
     {
-        float timer = 0f;
-        float duration = 2f;
+        myPorfile.winCount.text = $"승리 횟수: {count}";
+    }
 
-        while (timer < duration)
+    // 프로필 닉네임 변경 정보창 활성화
+    private void OpenInfo()
+    {
+        editInfo.SetActive(true);
+    }
+
+    // 닉네임 변경
+    private void ChangeNickName()
+    {
+        // 닉네임이 유효하고 InputField의 값도 변경되지않고 유효하다면 닉네임 변경
+        if(nickValidator.canChange && nickValidator.IsValidNickName(nickValidator.inputField.text))
         {
-            timer += Time.deltaTime;
-            goldText.text = Mathf.Lerp(pre_Gold, next_Gold, timer / duration).ToString("F0");
-            yield return null;
+            GameManager.Instance.Nickname = nickValidator.inputField.text;
+            GameManager.Instance.IsChangeName = true;
+
+            nickValidator.inputField.text = "";
+            change_Btn.interactable = false;
+            editInfo.SetActive(false);
+    
+            GameManager.Instance.SavePlayerData();
         }
 
-        goldText.text = next_Gold.ToString();
+        else
+        {
+            UISoundManager.Instance.PlayCantBuySound();
+        }
     }
 }

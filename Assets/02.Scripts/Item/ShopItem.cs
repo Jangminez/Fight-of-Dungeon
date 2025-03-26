@@ -161,6 +161,13 @@ public class ShopItem : MonoBehaviour
                 yield return null;
                 Inventory.Instance.AddInventory(_myItem);
             }
+
+            UISoundManager.Instance.PlayBuySound();
+        }
+
+        else
+        {
+            UISoundManager.Instance.PlayCantBuySound();
         }
     }
 }

@@ -21,6 +21,8 @@ public class PlayerData
     public float nextExp;
     public int gold;
     public int dia;
+    public int winCount;
+    public bool isChangeName;
     public Dictionary<int, RelicData> relicDict = new Dictionary<int, RelicData>();
 }
 
@@ -84,6 +86,8 @@ public class SaveSystem : MonoBehaviour
         data.nextExp = GameManager.Instance.NextExp;
         data.gold = GameManager.Instance.Gold;
         data.dia = GameManager.Instance.Dia;
+        data.winCount = GameManager.Instance.WinCount;
+        data.isChangeName = GameManager.Instance.IsChangeName;
     }
 
     public void SaveRelicData(PlayerData data)
@@ -133,6 +137,8 @@ public class SaveSystem : MonoBehaviour
         newData.exp = 0;
         newData.gold = 0;
         newData.dia = 0;
+        newData.winCount = 0;
+        newData.isChangeName = false;
         newData.relicDict = new Dictionary<int, RelicData>();
 
         for (int i = 101; i <= 109; i++)

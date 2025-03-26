@@ -112,6 +112,20 @@ public class CoinEffectManager : MonoBehaviour
                 GameManager.Instance.Dia = next_Coin;
                 break;
         }
+    }
 
+    public IEnumerator SetExp(float pre_Exp, float next_Exp)
+    {
+        float timer = 0f;
+        float duration = 2f;
+
+        while (timer < duration)
+                {
+                    timer += Time.deltaTime;
+                    GameManager.Instance.Exp = (int)Mathf.Lerp(pre_Exp, next_Exp, timer / duration);
+                    yield return null;
+                }
+
+                GameManager.Instance.Exp = next_Exp;
     }
 }

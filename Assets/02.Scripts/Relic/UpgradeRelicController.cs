@@ -65,5 +65,10 @@ public class UpgradeRelicController : MonoBehaviour
             // 플레이어 데이터 저장
             GameManager.Instance.SavePlayerData();
         }
+
+        else
+        {
+            UISoundManager.Instance.PlayCantBuySound();
+        }
     }
 }

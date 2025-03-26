@@ -43,6 +43,11 @@ public class RelicDraw : MonoBehaviour
             GameManager.Instance.Dia -= 100;
             isDraw = true;
         }
+
+        else
+        {
+            UISoundManager.Instance.PlayCantBuySound();
+        }
     }
 
     IEnumerator StartDrawRelic()

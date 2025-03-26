@@ -85,7 +85,7 @@ public abstract class Enemy : NetworkBehaviour
         _hp.OnValueChanged += GetComponent<EnemyHp>().ChangeHp;
     }
 
-    void LateUpdate()
+    void FixedUpdate()
     {
         // 서버에서 적의 공격 및 애니메이션 관리
         if (!IsServer) return;
@@ -231,10 +231,6 @@ public abstract class Enemy : NetworkBehaviour
      public abstract void Die();
 
     #endregion
-    public void PlayAttackSfx()
-    {
-        audioController.PlayAttackSFX();
-    }
 
     #region 서버 처리 관련(ServerRpc, ClientRpc)
 

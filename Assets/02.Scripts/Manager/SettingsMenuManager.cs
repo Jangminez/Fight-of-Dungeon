@@ -7,7 +7,6 @@ public class SettingsMenuManager : MonoBehaviour
     public Dropdown _graphicsDropdown;
     public Slider _musicVol, _sfxVol;
     public AudioMixer _mainAudioMixer;
-
     void OnEnable()
     {
         InitializeSetting();

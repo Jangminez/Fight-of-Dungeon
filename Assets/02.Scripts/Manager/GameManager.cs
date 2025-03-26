@@ -31,6 +31,8 @@ public class GameManager : MonoBehaviour
     private float nextExp;
     private int gold;
     private int dia;
+    private int winCount;
+    private bool isChangeName;
 
     public string Nickname
     {
@@ -127,6 +129,37 @@ public class GameManager : MonoBehaviour
         }
         get => dia;
     }
+
+    public int WinCount
+    {
+        set
+        {
+            winCount = Math.Max(0, value);
+
+            if(playerData != null)
+                playerData.winCount = winCount;
+
+            if(mainUI != null)
+                mainUI.SetWinCount(winCount);
+        }
+
+        get => winCount;
+    }
+
+    public bool IsChangeName
+    {
+        set
+        {
+            isChangeName = value;
+
+            if(isChangeName && mainUI != null)
+            {
+                mainUI.canChangeFirst.SetActive(false);
+                mainUI.nameEdit_Btn.interactable = false;
+            }
+        }
+        get => isChangeName;
+    }
     #endregion
     [HideInInspector] public MainUIController mainUI;
     public string playerPrefabName;
@@ -199,6 +232,8 @@ public class GameManager : MonoBehaviour
         Level = playerData.level;
         NextExp = playerData.nextExp;
         Exp = playerData.exp;
+        WinCount = playerData.winCount;
+        IsChangeName = playerData.isChangeName;
     }
 
     private void ApplyRelicData()
@@ -224,14 +259,14 @@ public class GameManager : MonoBehaviour
     {
         if (playerData != null)
         {
-            playerData.exp -= playerData.nextExp;
-            NextExp *= 1.5f;
+            Exp -= NextExp;
+            NextExp += 500f;
 
             Level += 1;
 
-            mainUI.SetExpBar(playerData.exp, playerData.nextExp);
+            mainUI.SetExpBar(Exp, NextExp);
 
-            if (playerData.exp >= playerData.nextExp)
+            if (Exp >= NextExp)
             {
                 LevelUp();
             }
@@ -330,7 +365,7 @@ public class GameManager : MonoBehaviour
 
         // 게임 종료시 골드와 경험치 지급
         coinEffect.RewardPileOfCoin(Gold, Gold + rewardGold, 0);
-        Exp += rewardExp;
+        coinEffect.StartCoroutine(coinEffect.SetExp(Exp, Exp + rewardExp));
 
         // 플레이어 데이터 저장 & 불러오기
         SavePlayerData();

@@ -56,6 +56,11 @@ public class BuyRelic : MonoBehaviour
                 ExitUI();
                 GameManager.Instance.SavePlayerData();
             }
+
+            else
+            {
+                UISoundManager.Instance.PlayCantBuySound();
+            }
         }
 
         else
@@ -70,6 +75,11 @@ public class BuyRelic : MonoBehaviour
 
                 ExitUI();
                 GameManager.Instance.SavePlayerData();
+            }
+
+            else
+            {
+                UISoundManager.Instance.PlayCantBuySound();
             }
         }
     }

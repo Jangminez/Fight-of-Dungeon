@@ -80,6 +80,7 @@ public class StageRewardManager : MonoBehaviour
         {
             GameManager.Instance.rewardGold = (int)(rewardGold * 1.5f);
             GameManager.Instance.rewardExp = rewardExp * 1.5f;
+            GameManager.Instance.WinCount++;
         }
 
         else

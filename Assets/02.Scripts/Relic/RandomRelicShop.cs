@@ -22,13 +22,16 @@ public class RandomRelicShop : MonoBehaviour
     public int[] random_diaCost;
     public Text timerText;
     public Button resetButton;
+    public Button confirmBtn;
+    public GameObject resetInfo;
     private const string LastResetTime = "LastShopResetTime";
     private const string ShopDataKey = "ShopData";
     private TimeSpan resetInterval = TimeSpan.FromHours(3);
 
     void Awake()
     {
-        resetButton.onClick.AddListener(ClickResetButton);
+        confirmBtn.onClick.AddListener(ClickConfirmBtn);
+        resetButton.onClick.AddListener(ClickResetBtn);
     }
 
     void Start()
@@ -95,14 +98,25 @@ public class RandomRelicShop : MonoBehaviour
         }
     }
 
-    private void ClickResetButton()
+    private void ClickResetBtn()
+    {
+        resetInfo.SetActive(true);
+    }
+
+    private void ClickConfirmBtn()
     {
         if(GameManager.Instance.Dia >= 50)
         {
             GameManager.Instance.Dia -= 50;
             ResetRelicsToSlot();
 
+            resetInfo.SetActive(false);
             GameManager.Instance.SavePlayerData();
+        }
+
+        else
+        {
+            UISoundManager.Instance.PlayCantBuySound();
         }
     }
 
