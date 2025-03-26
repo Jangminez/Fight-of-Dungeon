@@ -78,7 +78,7 @@ public class GameManager : MonoBehaviour
             if (mainUI != null)
                 mainUI.SetExpBar(playerData.exp, playerData.nextExp);
 
-            if (value >= playerData.nextExp)
+            if (exp >= nextExp)
             {
                 LevelUp();
             }
@@ -94,9 +94,6 @@ public class GameManager : MonoBehaviour
 
             if (playerData != null)
                 playerData.nextExp = nextExp;
-
-            if (mainUI != null)
-                mainUI.SetExpBar(exp, nextExp);
         }
 
         get => nextExp;
@@ -365,7 +362,7 @@ public class GameManager : MonoBehaviour
 
         // 게임 종료시 골드와 경험치 지급
         coinEffect.RewardPileOfCoin(Gold, Gold + rewardGold, 0);
-        coinEffect.StartCoroutine(coinEffect.SetExp(Exp, Exp + rewardExp));
+        Exp += rewardExp;   
 
         // 플레이어 데이터 저장 & 불러오기
         SavePlayerData();
