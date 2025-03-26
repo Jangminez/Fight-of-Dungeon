@@ -329,7 +329,7 @@ public class GameManager : MonoBehaviour
         LoadingScreen.Instance.HideLoadingScreen();
 
         // 게임 종료시 골드와 경험치 지급
-        coinEffect.RewardPileOfGold(Gold, Gold + rewardGold);
+        coinEffect.RewardPileOfCoin(Gold, Gold + rewardGold, 0);
         Exp += rewardExp;
 
         // 플레이어 데이터 저장 & 불러오기

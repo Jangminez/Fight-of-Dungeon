@@ -5,72 +5,113 @@ using UnityEngine.UI;
 
 public class CoinEffectManager : MonoBehaviour
 {
-    [SerializeField] private GameObject PileofGoldParent;
-    [SerializeField] private Text Counter;
+    [SerializeField] private Sprite goldIcon;
+    [SerializeField] private Sprite diaIcon;
+    [SerializeField] private GameObject PileofCoinParent;
     private Vector3[] InitialPos;
     private Quaternion[] InitialRotation;
+    private Vector2 coinAnchorPos;
     void Start()
     {
         GameManager.Instance.coinEffect = this;
 
-        InitialPos = new Vector3[PileofGoldParent.transform.childCount];
-        InitialRotation = new Quaternion[PileofGoldParent.transform.childCount];
+        InitialPos = new Vector3[PileofCoinParent.transform.childCount];
+        InitialRotation = new Quaternion[PileofCoinParent.transform.childCount];
 
-        for (int i = 0; i < PileofGoldParent.transform.childCount; i++)
+        for (int i = 0; i < PileofCoinParent.transform.childCount; i++)
         {
-            InitialPos[i] = PileofGoldParent.transform.GetChild(i).position;
-            InitialRotation[i] = PileofGoldParent.transform.GetChild(i).rotation;
+            InitialPos[i] = PileofCoinParent.transform.GetChild(i).position;
+            InitialRotation[i] = PileofCoinParent.transform.GetChild(i).rotation;
         }
     }
 
-    private void ResetGolds()
+    private void ResetCoins()
     {
-        for (int i = 0; i < PileofGoldParent.transform.childCount; i++)
+        for (int i = 0; i < PileofCoinParent.transform.childCount; i++)
         {
-            PileofGoldParent.transform.GetChild(i).position = InitialPos[i];
-            PileofGoldParent.transform.GetChild(i).rotation = InitialRotation[i];
+            PileofCoinParent.transform.GetChild(i).position = InitialPos[i];
+            PileofCoinParent.transform.GetChild(i).rotation = InitialRotation[i];
         }
     }
 
-    public void RewardPileOfGold(int pre_Gold, int next_Gold)
+    /// <summary>
+    /// 코인 지급 시 이펙트를 위한 함수
+    /// </summary>
+    /// <param name="pre_Coin"></param>
+    /// <param name="next_Coin"></param>
+    /// <param name="coinType"> 0 = Gold, 1 = Dia</param>
+    public void RewardPileOfCoin(int pre_Coin, int next_Coin, int coinType)
     {
-        ResetGolds();
+        ResetCoins();
 
         var delay = 0f;
+        Sprite coinSprite = null;
 
-        PileofGoldParent.SetActive(true);
+        PileofCoinParent.SetActive(true);
 
-        for (int i = 0; i < PileofGoldParent.transform.childCount; i++)
+        switch (coinType)
         {
-            PileofGoldParent.transform.GetChild(i).DOScale(1f, 0.3f).SetDelay(delay).SetEase(Ease.OutBack);
+            case 0:
+                coinSprite = goldIcon;
+                coinAnchorPos = new Vector2(-200f, 1720f);
+                break;
 
-            PileofGoldParent.transform.GetChild(i).GetComponent<RectTransform>().DOAnchorPos(new Vector2(-200f, 1720f), 1f)
+            case 1:
+                coinSprite = diaIcon;
+                coinAnchorPos = new Vector2(110f, 1720f);
+                break;
+        }
+
+        for (int i = 0; i < PileofCoinParent.transform.childCount; i++)
+        {
+            PileofCoinParent.transform.GetChild(i).GetComponent<Image>().sprite = coinSprite;
+
+            PileofCoinParent.transform.GetChild(i).DOScale(1f, 0.3f).SetDelay(delay).SetEase(Ease.OutBack);
+
+            PileofCoinParent.transform.GetChild(i).GetComponent<RectTransform>().DOAnchorPos(coinAnchorPos, 1f)
             .SetDelay(delay + 0.5f).SetEase(Ease.InBack);
 
-            PileofGoldParent.transform.GetChild(i).DORotate(Vector3.zero, 0.5f).SetDelay(delay + 0.5f).SetEase(Ease.Flash);
+            PileofCoinParent.transform.GetChild(i).DORotate(Vector3.zero, 0.5f).SetDelay(delay + 0.5f).SetEase(Ease.Flash);
 
-            PileofGoldParent.transform.GetChild(i).DOScale(0f, 0.3f).SetDelay(delay + 1.5f).SetEase(Ease.OutBack);
+            PileofCoinParent.transform.GetChild(i).DOScale(0f, 0.3f).SetDelay(delay + 1.5f).SetEase(Ease.OutBack);
 
             delay += 0.1f;
         }
 
-        StartCoroutine(SetGold(pre_Gold, next_Gold));
+        StartCoroutine(SetCoin(pre_Coin, next_Coin, coinType));
     }
 
-    IEnumerator SetGold(int pre_Gold, int next_Gold)
+    IEnumerator SetCoin(int pre_Coin, int next_Coin, int coinType)
     {
         yield return new WaitForSecondsRealtime(1f);
-        
+
         float timer = 0f;
         float duration = 2f;
 
-        while (timer < duration)
+        switch (coinType)
         {
-            timer += Time.deltaTime;
-            GameManager.Instance.Gold = (int)Mathf.Lerp(pre_Gold, next_Gold, timer / duration);
-            yield return null;
+            case 0:
+                while (timer < duration)
+                {
+                    timer += Time.deltaTime;
+                    GameManager.Instance.Gold = (int)Mathf.Lerp(pre_Coin, next_Coin, timer / duration);
+                    yield return null;
+                }
+
+                GameManager.Instance.Gold = next_Coin;
+                break;
+
+            case 1:
+                while (timer < duration)
+                {
+                    timer += Time.deltaTime;
+                    GameManager.Instance.Dia = (int)Mathf.Lerp(pre_Coin, next_Coin, timer / duration);
+                    yield return null;
+                }
+
+                GameManager.Instance.Dia = next_Coin;
+                break;
         }
 
-        GameManager.Instance.Gold = next_Gold;
     }
 }

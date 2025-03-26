@@ -3740,7 +3740,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: -0.00012207031}
-  m_SizeDelta: {x: 47, y: 2500}
+  m_SizeDelta: {x: 47, y: 3500}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &228564283
 MonoBehaviour:
@@ -34542,8 +34542,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7637be8001a65bd40bd266c325905fae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PileofGoldParent: {fileID: 1803512097}
-  Counter: {fileID: 2017472081}
+  goldIcon: {fileID: 21300000, guid: 39d66829824cb1d4da958035ee18213a, type: 3}
+  diaIcon: {fileID: 21300000, guid: 3faa68d4e2f05f04786133598667ac36, type: 3}
+  PileofCoinParent: {fileID: 1803512097}
 --- !u!1 &1304168400
 GameObject:
   m_ObjectHideFlags: 0
@@ -45602,7 +45603,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1803512098}
   m_Layer: 5
-  m_Name: Gold_Pile_Parent
+  m_Name: Coin_Pile_Parent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
