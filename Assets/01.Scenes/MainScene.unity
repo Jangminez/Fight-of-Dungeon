@@ -1605,6 +1605,50 @@ MonoBehaviour:
   joinButton: {fileID: 101236155}
   roomCode: {fileID: 1379365030}
   inputField: {fileID: 1234180171}
+--- !u!1 &78827558
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 78827560}
+  - component: {fileID: 78827559}
+  m_Layer: 0
+  m_Name: GPGSManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &78827559
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 78827558}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b1094992f51b914b95d970013d9662a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &78827560
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 78827558}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &82378443
 GameObject:
   m_ObjectHideFlags: 0
@@ -2548,7 +2592,7 @@ GameObject:
   - component: {fileID: 124244984}
   - component: {fileID: 124244987}
   m_Layer: 5
-  m_Name: Button
+  m_Name: Dia_100
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2667,15 +2711,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 124244982}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3db78f2acfa10894593acd9f05a17e73, type: 3}
+  m_Script: {fileID: 11500000, guid: 7b79b5624d944058bd39aad2b90fb275, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  purchaseInfo: {fileID: 292676807}
-  pButton: {fileID: 1768224230}
-  itemType: 1
-  itemValue: 50
-  costType: 2
-  itemCost: 1000
+  productId: dia_100
+  buttonType: 0
+  consumePurchase: 1
+  onTransactionsRestored:
+    m_PersistentCalls:
+      m_Calls: []
+  onPurchaseComplete:
+    m_PersistentCalls:
+      m_Calls: []
+  onPurchaseFailed:
+    m_PersistentCalls:
+      m_Calls: []
+  onProductFetched:
+    m_PersistentCalls:
+      m_Calls: []
+  button: {fileID: 124244984}
 --- !u!1 &134643421
 GameObject:
   m_ObjectHideFlags: 0
@@ -5407,7 +5461,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "200 \uB2E4\uC774\uC544"
+  m_Text: "500 \uB2E4\uC774\uC544"
 --- !u!222 &262200123
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -9781,7 +9835,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "50 \uB2E4\uC774\uC544"
+  m_Text: "100 \uB2E4\uC774\uC544"
 --- !u!222 &440316078
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -9994,6 +10048,78 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1dfa2ceb371f424eaea22fe821dcce0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &445869923
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 445869924}
+  - component: {fileID: 445869926}
+  - component: {fileID: 445869925}
+  m_Layer: 0
+  m_Name: IAPManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &445869924
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 445869923}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1877090148}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &445869925
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 445869923}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f7dd963c1a8b427b96975fa211478a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  consumePurchase: 1
+  dontDestroyOnLoad: 1
+  onProductsFetched:
+    m_PersistentCalls:
+      m_Calls: []
+  onPurchaseComplete:
+    m_PersistentCalls:
+      m_Calls: []
+  onPurchaseFailed:
+    m_PersistentCalls:
+      m_Calls: []
+  onPurchaseDetailedFailedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &445869926
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 445869923}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 715d16aabfb424044b84c50c6a7aefb0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coinEffectManager: {fileID: 1301342495}
 --- !u!1 &453099082
 GameObject:
   m_ObjectHideFlags: 0
@@ -14049,7 +14175,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "1500 \uB2E4\uC774\uC544"
+  m_Text: "3000 \uB2E4\uC774\uC544"
 --- !u!222 &597113792
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -14305,7 +14431,7 @@ GameObject:
   - component: {fileID: 603841956}
   - component: {fileID: 603841959}
   m_Layer: 5
-  m_Name: Button (1)
+  m_Name: Dia_500
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14424,15 +14550,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 603841954}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3db78f2acfa10894593acd9f05a17e73, type: 3}
+  m_Script: {fileID: 11500000, guid: 7b79b5624d944058bd39aad2b90fb275, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  purchaseInfo: {fileID: 292676807}
-  pButton: {fileID: 1768224230}
-  itemType: 1
-  itemValue: 200
-  costType: 2
-  itemCost: 3000
+  productId: dia_500_
+  buttonType: 0
+  consumePurchase: 1
+  onTransactionsRestored:
+    m_PersistentCalls:
+      m_Calls: []
+  onPurchaseComplete:
+    m_PersistentCalls:
+      m_Calls: []
+  onPurchaseFailed:
+    m_PersistentCalls:
+      m_Calls: []
+  onProductFetched:
+    m_PersistentCalls:
+      m_Calls: []
+  button: {fileID: 603841956}
 --- !u!1 &606623527
 GameObject:
   m_ObjectHideFlags: 0
@@ -18008,7 +18144,7 @@ GameObject:
   - component: {fileID: 777174213}
   - component: {fileID: 777174216}
   m_Layer: 5
-  m_Name: Button (1)
+  m_Name: Dia_3000
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -18127,15 +18263,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 777174211}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3db78f2acfa10894593acd9f05a17e73, type: 3}
+  m_Script: {fileID: 11500000, guid: 7b79b5624d944058bd39aad2b90fb275, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  purchaseInfo: {fileID: 292676807}
-  pButton: {fileID: 1768224230}
-  itemType: 1
-  itemValue: 1500
-  costType: 2
-  itemCost: 10000
+  productId: dia_3000
+  buttonType: 0
+  consumePurchase: 1
+  onTransactionsRestored:
+    m_PersistentCalls:
+      m_Calls: []
+  onPurchaseComplete:
+    m_PersistentCalls:
+      m_Calls: []
+  onPurchaseFailed:
+    m_PersistentCalls:
+      m_Calls: []
+  onProductFetched:
+    m_PersistentCalls:
+      m_Calls: []
+  button: {fileID: 777174213}
 --- !u!1 &780615160
 GameObject:
   m_ObjectHideFlags: 0
@@ -19362,7 +19508,7 @@ GameObject:
   - component: {fileID: 820666339}
   - component: {fileID: 820666342}
   m_Layer: 5
-  m_Name: Button
+  m_Name: Dia_1000
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -19481,15 +19627,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 820666337}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3db78f2acfa10894593acd9f05a17e73, type: 3}
+  m_Script: {fileID: 11500000, guid: 7b79b5624d944058bd39aad2b90fb275, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  purchaseInfo: {fileID: 292676807}
-  pButton: {fileID: 1768224230}
-  itemType: 1
-  itemValue: 500
-  costType: 2
-  itemCost: 5000
+  productId: dia_1000
+  buttonType: 0
+  consumePurchase: 1
+  onTransactionsRestored:
+    m_PersistentCalls:
+      m_Calls: []
+  onPurchaseComplete:
+    m_PersistentCalls:
+      m_Calls: []
+  onPurchaseFailed:
+    m_PersistentCalls:
+      m_Calls: []
+  onProductFetched:
+    m_PersistentCalls:
+      m_Calls: []
+  button: {fileID: 820666339}
 --- !u!1 &821928087
 GameObject:
   m_ObjectHideFlags: 0
@@ -47275,7 +47431,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "500 \uB2E4\uC774\uC544"
+  m_Text: "1000 \uB2E4\uC774\uC544"
 --- !u!222 &1724116312
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -51394,6 +51550,7 @@ Transform:
   - {fileID: 941549727}
   - {fileID: 1182134300}
   - {fileID: 1301342494}
+  - {fileID: 445869924}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1877811635
@@ -64290,3 +64447,4 @@ SceneRoots:
   - {fileID: 1570831796}
   - {fileID: 857704572}
   - {fileID: 1948911749}
+  - {fileID: 78827560}

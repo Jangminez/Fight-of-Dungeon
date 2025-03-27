@@ -4,6 +4,10 @@ using System.IO;
 using Newtonsoft.Json;
 using System;
 using System.Threading.Tasks;
+using GooglePlayGames.BasicApi.SavedGame;
+using GooglePlayGames;
+using GooglePlayGames.BasicApi;
+using System.Text;
 
 [Serializable]
 public class RelicData
@@ -54,19 +58,58 @@ public class SaveSystem : MonoBehaviour
         else if (_instance != null)
             Destroy(gameObject);
 
-        filePath = Path.Combine(Application.persistentDataPath, "PlayerData.json");
+        filePath = Path.Combine(Application.persistentDataPath, "Player_Data.json");
         Debug.Log("데이터 저장경로 " + filePath);
 
         DontDestroyOnLoad(gameObject);
     }
 
+    public void SasveDataWithGPGS(PlayerData data)
+    {
+        string filename = "Player_Data";
+
+        SavePlayerData(data);
+        SaveRelicData(data);
+
+        string json = JsonConvert.SerializeObject(data, Formatting.Indented);
+
+        ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
+        savedGameClient.OpenWithAutomaticConflictResolution(
+            filename,
+            DataSource.ReadCacheOrNetwork,
+            ConflictResolutionStrategy.UseLongestPlaytime,
+            (status, game) =>
+            {
+                if (status == SavedGameRequestStatus.Success)
+                {
+                    byte[] dtbyte = Encoding.UTF8.GetBytes(json);
+                    SavedGameMetadataUpdate update = new SavedGameMetadataUpdate.Builder().Build();
+                    savedGameClient.CommitUpdate(game, update, dtbyte, (saveStatus, updateGame) =>
+                    {
+                        if (saveStatus == SavedGameRequestStatus.Success)
+                        {
+                            Debug.Log("(구글)데이터 저장 성공");
+                        }
+                        else
+                        {
+                            Debug.Log("(구글)데이터 저장 실패");
+                        }
+                    });
+                }
+                else
+                {
+                    Debug.Log("파일 열기 실패(구글)");
+                }
+            }
+        );
+    }
     public void SaveData(PlayerData data)
     {
         SavePlayerData(data);
         SaveRelicData(data);
 
         string json = JsonConvert.SerializeObject(data, Formatting.Indented);
-        
+
         File.WriteAllText(filePath, json);
         Debug.Log("JSON 데이터 저장 완료 경로: " + filePath);
     }
@@ -106,6 +149,53 @@ public class SaveSystem : MonoBehaviour
             }
             data.relicDict[i].r_Level = relic.r_Level;
             data.relicDict[i].r_Count = relic.r_Count;
+        }
+    }
+
+    public PlayerData LoadDataWithGPGS()
+    {
+        string filename = "Player_Data";
+        string json = "";
+
+        ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
+        savedGameClient.OpenWithAutomaticConflictResolution(
+            filename,
+            DataSource.ReadCacheOrNetwork,
+            ConflictResolutionStrategy.UseLongestPlaytime,
+            (status, game) =>
+            {
+                if (status == SavedGameRequestStatus.Success)
+                {
+                    savedGameClient.ReadBinaryData(game, (readStatus, data) =>
+                    {
+                        if (readStatus == SavedGameRequestStatus.Success)
+                        {
+                            json = Encoding.UTF8.GetString(data);
+                            Debug.Log("(구글) 불러온 데이터: " + json);
+                        }
+                        else
+                        {
+                            Debug.Log("(구글) 데이터 읽기 실패");
+                        }
+                    });
+                }
+                else
+                {
+                    Debug.Log("(구글) 파일 열기 실패");
+                }
+            }
+        );
+
+        if (json != "")
+        {
+            PlayerData pData = JsonConvert.DeserializeObject<PlayerData>(json);
+
+            return pData;
+        }
+
+        else
+        {
+            return CreateNewPlayerData();
         }
     }
 

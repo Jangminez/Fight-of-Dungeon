@@ -1,18 +1,17 @@
-/*
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using GooglePlayGames;
 using GooglePlayGames.BasicApi;
 
-public class GoogleManager : MonoBehaviour
+public class GPGSManager : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
     {
         PlayGamesPlatform.DebugLogEnabled = true;
         PlayGamesPlatform.Activate();
-        SignIn();
+        //SignIn();
     }
 
     public void SignIn()
@@ -42,4 +41,3 @@ public class GoogleManager : MonoBehaviour
         
     }
 }
-*/
