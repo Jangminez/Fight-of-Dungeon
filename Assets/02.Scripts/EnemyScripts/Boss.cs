@@ -132,14 +132,15 @@ public class Boss : Enemy, IDamgeable
 
         state = States.Die;
         StopAllCoroutines();
-        GameManager.Instance.GameOver(_lastAttackClientId);
+
+        // 이긴 클라이언트 ID 
+        EndGameClientRpc(_lastAttackClientId);
     }
 
     public override IEnumerator EnemyAttack()
     {
         if (!IsServer) yield break;
-
-        yield return new WaitForSeconds(0.1f);
+        
         // 공격시 방향 전환 및 애니메이션 실행
         SetDirection();
 
@@ -152,7 +153,7 @@ public class Boss : Enemy, IDamgeable
             StartCoroutine(Boss_BasicAttack());
         }
 
-        else if (50f < r_Pattern && r_Pattern <= 75f)
+        else if (50f < r_Pattern && r_Pattern <= 80f)
         {
             // 점프공격
             _isPattern = true;
@@ -165,8 +166,6 @@ public class Boss : Enemy, IDamgeable
             _isPattern = true;
             StartCoroutine(Boss_SpinAttack());
         }
-
-        yield return new WaitForSeconds(1 / stat.attackSpeed);
 
         if (state != States.Attack)
         {
@@ -206,33 +205,40 @@ public class Boss : Enemy, IDamgeable
     private IEnumerator Boss_BasicAttack()
     {
         anim.SetTrigger("Attack");
+
+        yield return new WaitUntil(() => anim.GetCurrentAnimatorStateInfo(0).IsName("Attack")
+            && anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.6f);
+
         audioController.PlayAttackSFX();
-
-        yield return new WaitForSeconds(1f);
-
         _isAttack = false;
     }
 
     private IEnumerator Boss_JumpAttack()
     {
         anim.SetTrigger("JumpAttack");
-        audioController.PlaySkill1SFX();
         stat.speed = 0f;
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitUntil(() => anim.GetCurrentAnimatorStateInfo(0).IsName("JumpAttack")
+            && anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.9f);
 
+        audioController.PlaySkill1SFX();
         GetComponent<Collider2D>().enabled = false;
         stat.attackRange = 0f;
         stat.speed = 5f;
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(2f);
 
         stat.speed = 0f;
+        anim.SetTrigger("JumpDown");
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitUntil(() => anim.GetCurrentAnimatorStateInfo(0).IsName("JumpDown")
+            && anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.3f);
 
         audioController.PlaySkill2SFX();
         GetComponent<Collider2D>().enabled = true;
+
+        yield return new WaitForSeconds(0.5f);
+
         stat.attackRange = 5f;
         stat.speed = 1.2f;
 
@@ -243,6 +249,7 @@ public class Boss : Enemy, IDamgeable
     {
         anim.SetTrigger("SpinAttack");
         audioController.PlaySkill3SFX();
+        
         yield return new WaitForSeconds(4f);
 
         _isAttack = false;
@@ -255,8 +262,19 @@ public class Boss : Enemy, IDamgeable
         _lastAttackClientId = rpcParams.Receive.SenderClientId;
     }
 
-    public bool DieCheck()
+    [ClientRpc]
+    private void EndGameClientRpc(ulong lastAttackClient)
     {
-        return stat.isDie;
+        if (lastAttackClient == NetworkManager.Singleton.LocalClientId)
+        {
+            Debug.Log("Win!!!!!!!!!!");
+            StageRewardManager.Instance.ShowRewardUI(true);
+        }
+
+        else
+        {
+            Debug.Log("Lose............");
+            StageRewardManager.Instance.ShowRewardUI(false);
+        }
     }
 }

@@ -47,7 +47,8 @@ public class NetworkMonsterSpawner : NetworkBehaviour
                 {
                     // 몬스터가 NetworkObject Spawn이 되어있지않을 때 소환
                     monster.GetComponent<Enemy>().prefab = area.monsterPrefab;
-                    monster.Spawn();
+                    monster.Spawn(true);
+                    monster.TrySetParent(area.spawnCenter.parent, true);
 
                     yield return null;
                 }

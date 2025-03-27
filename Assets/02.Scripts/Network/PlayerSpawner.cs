@@ -6,18 +6,18 @@ public class PlayerSpawner : NetworkBehaviour
 {
     [SerializeField]
     private CameraFollow _cam;
-    private bool isSpawn = false;
+    public bool isSpawn = false;
 
-    void Awake()
-    {
-        if(FindObjectOfType<PlayerSpawner>() != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
+    // void Awake()
+    // {
+    //     if(FindObjectOfType<PlayerSpawner>() != this)
+    //     {
+    //         Destroy(gameObject);
+    //         return;
+    //     }
 
-        DontDestroyOnLoad(this.gameObject);
-    }
+    //     DontDestroyOnLoad(this.gameObject);
+    // }
 
     public override void OnNetworkSpawn()
     {
@@ -27,17 +27,17 @@ public class PlayerSpawner : NetworkBehaviour
 
     private void SpawnPlayerObject(ulong clientId, string sceneName, LoadSceneMode loadSceneMode)
     {
-        if (sceneName == "StageScene")
+        if (sceneName == "StageScene" || sceneName == "PlayAloneScene")
         {
             if (IsServer)
             {
-                PlayerSpawnClientRpc(clientId);
+                PlayerSpawnClientRpc(clientId, sceneName);
             }
         }
     }
 
     [ClientRpc]
-    public void PlayerSpawnClientRpc(ulong clientId)
+    public void PlayerSpawnClientRpc(ulong clientId, string sceneName)
     {
         if (clientId == NetworkManager.Singleton.LocalClientId && !isSpawn)
         {
@@ -50,6 +50,14 @@ public class PlayerSpawner : NetworkBehaviour
             Invoke("SpawnPlayer", 3f);
             isSpawn = true;
         }
+
+        if(sceneName == "PlayAloneScene")
+            Invoke("HideLoading", 3f);
+    }
+
+    private void HideLoading()
+    {
+        LoadingScreen.Instance.HideLoadingScreen();
     }
 
     private void SpawnPlayer()

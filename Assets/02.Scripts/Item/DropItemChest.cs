@@ -43,6 +43,11 @@ public class DropItemChest : NetworkBehaviour
             Inventory.Instance.PickUpItem(_item);
             DespawnNetworkObjectServerRpc();
         }
+
+        else
+        {
+            UISoundManager.Instance.PlayCantBuySound();
+        }
     }
 
     [ServerRpc(RequireOwnership = false)]

@@ -126,6 +126,8 @@ public class UpgradeAbility : MonoBehaviour
 
     private void Upgrade()
     {
+        UISoundManager.Instance.PlayClickSound();
+        
         // 골드가 충분하면 업그레이드 진행
         if (_player.Gold >= Int32.Parse(myUI.cost.text) && upgradeInfo.level < upgradeInfo.maxLevel)
         {

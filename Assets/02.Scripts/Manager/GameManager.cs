@@ -24,20 +24,44 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    #region 플레이어 데이터
+    private string nickname;
     private int level;
     private float exp;
     private float nextExp;
     private int gold;
     private int dia;
+    private int winCount;
+    private bool isChangeName;
 
+    public string Nickname
+    {
+        set
+        {
+            nickname = value;
+
+            if (playerData != null)
+                playerData.nickname = nickname;
+
+            if (mainUI != null)
+            {
+                mainUI.SetNickName(nickname);
+            }
+        }
+
+        get => nickname;
+    }
     public int Level
     {
         set
         {
             level = Math.Max(0, value);
 
-            if(mainUI != null)
-                mainUI.SetLevel();
+            if (playerData != null)
+                playerData.level = level;
+
+            if (mainUI != null)
+                mainUI.SetLevel(value);
         }
 
         get => level;
@@ -48,15 +72,18 @@ public class GameManager : MonoBehaviour
         {
             exp = Math.Max(0, value);
 
-            if(mainUI != null)
-                mainUI.SetExpBar();
+            if (playerData != null)
+                playerData.exp = exp;
 
-            if(exp >= nextExp)
-                    {
-                        LevelUp();
-                    }
+            if (mainUI != null)
+                mainUI.SetExpBar(playerData.exp, playerData.nextExp);
+
+            if (exp >= nextExp)
+            {
+                LevelUp();
+            }
         }
-        
+
         get => exp;
     }
     public float NextExp
@@ -65,19 +92,23 @@ public class GameManager : MonoBehaviour
         {
             nextExp = Math.Max(0, value);
 
-            if(mainUI != null)
-                mainUI.SetExpBar();
+            if (playerData != null)
+                playerData.nextExp = nextExp;
         }
-        
+
         get => nextExp;
     }
     public int Gold
     {
-        set 
-        {
+        set
+        {   
             gold = Math.Max(0, value);
-            if(mainUI != null)
-                mainUI.SetGold();
+
+            if (playerData != null)
+                playerData.gold = gold;
+            
+            if (mainUI != null)
+                mainUI.SetGold(gold);
         }
         get => gold;
     }
@@ -87,18 +118,55 @@ public class GameManager : MonoBehaviour
         {
             dia = Math.Max(0, value);
 
-            if(mainUI != null)
-                mainUI.SetDia();
+            if (playerData != null)
+                playerData.dia = dia;
+
+            if (mainUI != null)
+                mainUI.SetDia(dia);
         }
         get => dia;
     }
+
+    public int WinCount
+    {
+        set
+        {
+            winCount = Math.Max(0, value);
+
+            if(playerData != null)
+                playerData.winCount = winCount;
+
+            if(mainUI != null)
+                mainUI.SetWinCount(winCount);
+        }
+
+        get => winCount;
+    }
+
+    public bool IsChangeName
+    {
+        set
+        {
+            isChangeName = value;
+
+            if(isChangeName && mainUI != null)
+            {
+                mainUI.canChangeFirst.SetActive(false);
+                mainUI.nameEdit_Btn.interactable = false;
+            }
+        }
+        get => isChangeName;
+    }
+    #endregion
     [HideInInspector] public MainUIController mainUI;
     public string playerPrefabName;
     public Player player;
-    GameObject GamePlayer;
-    [HideInInspector] public bool isDragItem = false;
+    public int rewardGold;
+    public float rewardExp;
 
-
+    public SaveSystem saveSystem;
+    private PlayerData playerData;
+    public CoinEffectManager coinEffect;
 
     private void Awake()
     {
@@ -109,62 +177,158 @@ public class GameManager : MonoBehaviour
         // 인스턴스가 존재한다면 현재 오브젝트 파괴
         else if (_instance != null)
             Destroy(gameObject);
-            
+
         // 씬 로드시에도 파괴되지않음 
         DontDestroyOnLoad(gameObject);
-
-        Gold += 50000;
-        Dia += 50000;
-        Level = 5;
-        exp = 500f;
-        nextExp = 1000f;
     }
 
-    virtual protected void LevelUp()
+    void Start()
     {
-        exp -= nextExp;
-        NextExp *= 1.5f;
+        LoadPlayerData();
+    }
 
-        Level += 1;
+    public void LoadDataButton()
+    {
+        LoadPlayerData();
+    }
 
-        mainUI.SetExpBar();
-          
-        if (exp >= nextExp)
+    public void SavePlayerData()
+    {
+        if (playerData != null && saveSystem != null)
+            saveSystem.SaveData(playerData);
+    }
+
+    private void LoadPlayerData()
+    {
+        playerData = saveSystem.LoadData();
+
+        if (playerData != null)
         {
-            LevelUp();
+            ApplyPlayerData();
+            ApplyRelicData();
+        }
+
+        else
+        {
+            return;
+        }
+    }
+
+    private void ApplyPlayerData()
+    {
+        if (playerData == null)
+        {
+            Debug.LogError("PlayerData가 존재하지않습니다.");
+            return;
+        }
+
+        // JSON 데이터 적용
+        Nickname = playerData.nickname;
+        Gold = playerData.gold;
+        Dia = playerData.dia;
+        Level = playerData.level;
+        NextExp = playerData.nextExp;
+        Exp = playerData.exp;
+        WinCount = playerData.winCount;
+        IsChangeName = playerData.isChangeName;
+    }
+
+    private void ApplyRelicData()
+    {
+        if (playerData == null || playerData.relicDict == null)
+        {
+            Debug.LogError("Relic 데이터를 불러올 수 없습니다.");
+            return;
+        }
+        for (int i = 101; i <= 109; i++)
+        {
+            ScriptableRelic relic = RelicManager.Instance.GetRelic(i);
+
+            relic.r_Level = playerData.relicDict[i].r_Level;
+            relic.r_Count = playerData.relicDict[i].r_Count;
+            relic.r_UpgradeCost = 2000 + (1000 * (playerData.relicDict[i].r_Level - 1));
+            relic.r_UpgradeCount = 5 + (3 * (playerData.relicDict[i].r_Level - 1));
+            relic.r_UpgradeValue = (playerData.relicDict[i].r_Level - 1) * 2;
+        }
+    }
+
+    private void LevelUp()
+    {
+        if (playerData != null)
+        {
+            Exp -= NextExp;
+            NextExp += 500f;
+
+            Level += 1;
+
+            mainUI.SetExpBar(Exp, NextExp);
+
+            if (Exp >= NextExp)
+            {
+                LevelUp();
+            }
+
+            SavePlayerData();
+            LoadPlayerData();
         }
     }
 
     public void BackToScene()
     {
-        NetworkManager.Singleton.Shutdown();
-
-        SceneManager.LoadScene("MainScene");
-    }
-
-    public void StartTutorial()
-    {
-        Task<string> code = ConnectRelay.Instance.CreateRelay();
-        Debug.Log(code);
-        StartCoroutine("LoadTutorial");
-    }
-
-    IEnumerator LoadTutorial()
-    {
         LoadingScreen.Instance.ShowLoadingScreen();
-        AsyncOperation asyncOperation = SceneManager.LoadSceneAsync("TutorialScene");
 
-        while(!asyncOperation.isDone){
+        NetworkManager.Singleton.Shutdown();
+        Destroy(NetworkManager.Singleton.gameObject);
+
+        GameLobby.Instance.LeaveLobby();
+        StartCoroutine(BackToMain());
+    }
+
+    private IEnumerator BackToMain()
+    {
+        AsyncOperation asyncOperation = SceneManager.LoadSceneAsync("MainScene");
+
+        while (!asyncOperation.isDone)
+        {
             yield return null;
         }
 
-        //yield return new WaitForSeconds(4f);
-  
-        player = GameObject.FindWithTag("Player").GetComponent<Player>();
-        player.GetComponent<PlayerMovement>().enabled = true;
-        
-        RelicManager.Instance.ApplyRelics();
+        LoadPlayerData();
         LoadingScreen.Instance.HideLoadingScreen();
+    }
+
+    public void StartScene(string sceneName)
+    {
+        Task<string> code = ConnectRelay.Instance.CreateRelay();
+        Debug.Log(code);
+        StartCoroutine(LoadScene(sceneName));
+    }
+
+    private IEnumerator LoadScene(string sceneName)
+    {
+        LoadingScreen.Instance.ShowLoadingScreen();
+
+        while (!NetworkManager.Singleton.IsConnectedClient)
+            yield return null;
+
+        NetworkManager.Singleton.SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
+
+        if (sceneName == "TutorialScene")
+            NetworkManager.Singleton.SceneManager.OnLoadComplete += SetTutorialPlayer;
+    }
+
+    private void SetTutorialPlayer(ulong clientId, string sceneName, LoadSceneMode loadSceneMode)
+    {
+        if (sceneName == "TutorialScene")
+        {
+            player = GameObject.FindWithTag("Player").GetComponent<Player>();
+            player.GetComponent<PlayerMovement>().enabled = true;
+
+            RelicManager.Instance.ApplyRelics();
+            LoadingScreen.Instance.HideLoadingScreen();
+        }
+
+        NetworkManager.Singleton.SceneManager.OnLoadComplete -= SetTutorialPlayer;
     }
 
     public void ChangeCharacter(string name)
@@ -172,9 +336,51 @@ public class GameManager : MonoBehaviour
         playerPrefabName = name;
     }
 
-    public void GameOver(ulong clinetId)
+    public void GameOver()
     {
-        // 게임 종료시 발생되는 함수
-        Debug.Log("Game Over!");
+        NetworkManager.Singleton.Shutdown();
+        Destroy(NetworkManager.Singleton.gameObject);
+
+        if (GameLobby.Instance.joinedLobby != null)
+            GameLobby.Instance.LeaveLobby();
+
+        StartCoroutine(GameOverCoroutine());
+    }
+
+    private IEnumerator GameOverCoroutine()
+    {
+        LoadingScreen.Instance.ShowLoadingScreen();
+
+        AsyncOperation asyncOperation = SceneManager.LoadSceneAsync("MainScene");
+
+        while (!asyncOperation.isDone)
+        {
+            yield return null;
+        }
+
+        LoadingScreen.Instance.HideLoadingScreen();
+
+        // 게임 종료시 골드와 경험치 지급
+        coinEffect.RewardPileOfCoin(Gold, Gold + rewardGold, 0);
+        Exp += rewardExp;   
+
+        // 플레이어 데이터 저장 & 불러오기
+        SavePlayerData();
+        LoadPlayerData();
+    }
+
+    public void GetPowerUp()
+    {
+        if (player != null)
+        {
+            player.Attack += 800f;
+            player.Defense += 500f;
+            player.AttackSpeed += 2f;
+            player.MaxHp += 1000f;
+            player.MaxMp += 1000f;
+            player.HpRegen += 100f;
+            player.MpRegen += 100f;
+            player.Speed += 3f;
+        }
     }
 }

@@ -16,7 +16,7 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         if(_equipment.isComsumable){
             _equipment.UseBtn.gameObject.SetActive(false);
         }
-        GameManager.Instance.isDragItem = true;
+        UIManager.Instance.isDragItem = true;
 
         _img = GetComponent<Image>();
         
@@ -35,10 +35,12 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        UISoundManager.Instance.PlayClickSound();
+        
         transform.SetParent(_preParent);
         SetButton();
 
-        GameManager.Instance.isDragItem = false;
+        UIManager.Instance.isDragItem = false;
         _img.raycastTarget = true;
     }
 

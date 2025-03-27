@@ -1,0 +1,7 @@
+-keep class com.unity3d.player.** { *; }
+-keep class com.FoD.FigthofDungeon.** { *; }
+-keep class Newtonsoft.Json.** { *; }
+-keep class Newtonsoft.** { *; }
+-keepnames class * {
+    @com.google.gson.annotations.SerializedName *;
+}

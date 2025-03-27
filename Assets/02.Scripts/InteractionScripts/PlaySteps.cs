@@ -22,6 +22,8 @@ public class PlaySteps : MonoBehaviour
 
     public void PlayStepIndex(int index)
     {
+        UISoundManager.Instance.PlayClickSound();
+        
         Step step = steps[index];
 
         if(!step.hasPlayed)

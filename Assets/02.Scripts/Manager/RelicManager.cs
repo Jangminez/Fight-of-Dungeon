@@ -73,44 +73,44 @@ public class RelicManager : MonoBehaviour
         {
             if (relic.isDraw)
             {
-                ApplyRelicStat(relic.stat.valuetype, relic.stat.caltype, relic.stat.value);
+                ApplyRelicStat(relic.stat.valuetype, relic.stat.caltype, relic.stat.value, relic.r_UpgradeValue);
                 Debug.Log(relic.r_Name + ": 스탯 적용");
             }
         }
     }
 
-    private void ApplyRelicStat(ScriptableRelic.ValueType valueType, ScriptableRelic.CalType calType, float value)
+    private void ApplyRelicStat(ScriptableRelic.ValueType valueType, ScriptableRelic.CalType calType, float value, float upgradeValue)
     {
         if (calType == ScriptableRelic.CalType.Plus)
         {
             switch (valueType)
             {
                 case ScriptableRelic.ValueType.Attack:
-                    GameManager.Instance.player.Attack += value;
+                    GameManager.Instance.player.Attack += value + upgradeValue;
                     break;
                 case ScriptableRelic.ValueType.AttackSpeed:
-                    GameManager.Instance.player.AttackSpeed += value;
+                    GameManager.Instance.player.AttackSpeed += value + upgradeValue;
                     break;
                 case ScriptableRelic.ValueType.Critical:
-                    GameManager.Instance.player.Critical += value;
+                    GameManager.Instance.player.Critical += value + upgradeValue;
                     break;
                 case ScriptableRelic.ValueType.Defense:
-                    GameManager.Instance.player.Defense += value;
+                    GameManager.Instance.player.Defense += value + upgradeValue;
                     break;
                 case ScriptableRelic.ValueType.Hp:
-                    GameManager.Instance.player.MaxHp += value;
+                    GameManager.Instance.player.MaxHp += value + upgradeValue;
                     break;
                 case ScriptableRelic.ValueType.HpRegen:
-                    GameManager.Instance.player.HpRegen += value;
+                    GameManager.Instance.player.HpRegen += value + upgradeValue;
                     break;
                 case ScriptableRelic.ValueType.Mp:
-                    GameManager.Instance.player.MaxMp += value;
+                    GameManager.Instance.player.MaxMp += value + upgradeValue;
                     break;
                 case ScriptableRelic.ValueType.MpRegen:
-                    GameManager.Instance.player.MpRegen += value;
+                    GameManager.Instance.player.MpRegen += value + upgradeValue;
                     break;
                 case ScriptableRelic.ValueType.Speed:
-                    GameManager.Instance.player.Speed += value;
+                    GameManager.Instance.player.Speed += value + upgradeValue;
                     break;
             }
         }
@@ -119,31 +119,31 @@ public class RelicManager : MonoBehaviour
             switch (valueType)
             {
                 case ScriptableRelic.ValueType.Attack:
-                    GameManager.Instance.player.AttackBonus += value;
+                    GameManager.Instance.player.AttackBonus += value + upgradeValue;
                     break;
                 case ScriptableRelic.ValueType.AttackSpeed:
-                    GameManager.Instance.player.AsBonus += value;
+                    GameManager.Instance.player.AsBonus += value + upgradeValue;
                     break;
                 case ScriptableRelic.ValueType.Critical:
                     Debug.Log("Wrong Setting!!");
                     break;
                 case ScriptableRelic.ValueType.Defense:
-                    GameManager.Instance.player.DefenseBonus += value;
+                    GameManager.Instance.player.DefenseBonus += value + upgradeValue;
                     break;
                 case ScriptableRelic.ValueType.Hp:
-                    GameManager.Instance.player.HpBonus += value;
+                    GameManager.Instance.player.HpBonus += value + upgradeValue;
                     break;
                 case ScriptableRelic.ValueType.HpRegen:
-                    GameManager.Instance.player.HpRegenBonus += value;
+                    GameManager.Instance.player.HpRegenBonus += value + upgradeValue;
                     break;
                 case ScriptableRelic.ValueType.Mp:
-                    GameManager.Instance.player.MpBonus += value;
+                    GameManager.Instance.player.MpBonus += value + upgradeValue;
                     break;
                 case ScriptableRelic.ValueType.MpRegen:
-                    GameManager.Instance.player.MpRegenBonus += value;
+                    GameManager.Instance.player.MpRegenBonus += value + upgradeValue;
                     break;
                 case ScriptableRelic.ValueType.Speed:
-                    GameManager.Instance.player.SpeedBonus += value;
+                    GameManager.Instance.player.SpeedBonus += value + upgradeValue;
                     break;
             }
         }

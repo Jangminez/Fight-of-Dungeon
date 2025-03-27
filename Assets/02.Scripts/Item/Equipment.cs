@@ -140,6 +140,8 @@ public class Equipment : MonoBehaviour
     // 슬롯 버튼 클릭시
     public void ClickSlot()
     {
+        UISoundManager.Instance.PlayClickSound();
+
         if(isComsumable)
         {
             _useBtn.gameObject.SetActive(true);
@@ -156,6 +158,7 @@ public class Equipment : MonoBehaviour
 
     void UseItem()
     {
+        UISoundManager.Instance.PlayClickSound();
         GetComponent<IConsumable>().UseItem();
         UnEquipmentItem();
     }

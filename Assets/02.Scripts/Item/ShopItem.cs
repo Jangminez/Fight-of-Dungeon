@@ -102,6 +102,10 @@ public class ShopItem : MonoBehaviour
                 case ScriptableItem.ValueType.MpRegen:
                 statText = $"마나 재생 +{value}";
                 break;
+
+                case ScriptableItem.ValueType.Speed:
+                statText = $"이동 속도 +{value}";
+                break;
             }
 
     if (calType == ScriptableItem.CalType.Percentage)
@@ -119,6 +123,8 @@ public class ShopItem : MonoBehaviour
 
     IEnumerator BuyItem()
     {
+        UISoundManager.Instance.PlayClickSound();
+        
         // 플레이어의 골드가 충분하다면 구매
         if(GameManager.Instance.player.Gold >= Int32.Parse(_myItem.itemCost) && _myItem.needItem.Count == 0)
         {
@@ -155,6 +161,13 @@ public class ShopItem : MonoBehaviour
                 yield return null;
                 Inventory.Instance.AddInventory(_myItem);
             }
+
+            UISoundManager.Instance.PlayBuySound();
+        }
+
+        else
+        {
+            UISoundManager.Instance.PlayCantBuySound();
         }
     }
 }

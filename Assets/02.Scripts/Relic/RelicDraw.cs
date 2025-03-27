@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -44,6 +43,11 @@ public class RelicDraw : MonoBehaviour
             GameManager.Instance.Dia -= 100;
             isDraw = true;
         }
+
+        else
+        {
+            UISoundManager.Instance.PlayCantBuySound();
+        }
     }
 
     IEnumerator StartDrawRelic()
@@ -86,5 +90,8 @@ public class RelicDraw : MonoBehaviour
 
         isDraw = false;
         infoObject.SetActive(false);
+
+        // 플레이어 데이터 저장
+        GameManager.Instance.SavePlayerData();
     }
 }
