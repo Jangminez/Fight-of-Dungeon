@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Purchasing;
 
@@ -82,7 +83,8 @@ public class IAPManager : MonoBehaviour, IStoreListener
         }
 
         Debug.Log("구매 성공! 상품 ID: " + purchaseEvent.purchasedProduct.definition.id);
-        GameManager.Instance.SavePlayerData();
+
+        StartCoroutine(SavePlayerData());
         
         return PurchaseProcessingResult.Complete;
     }
@@ -94,6 +96,15 @@ public class IAPManager : MonoBehaviour, IStoreListener
 
     public void OnInitialized(IStoreController controller, IExtensionProvider extensions)
     {
-        Debug.Log("초기화 실패");
+        Debug.Log("유니티 IAP 초기화 성공");
+        storeController = controller;
+        extensionProvider = extensions;
+    }
+
+    private IEnumerator SavePlayerData()
+    {
+        yield return new WaitForSeconds(3f);
+
+        GameManager.Instance.SavePlayerData();
     }
 }

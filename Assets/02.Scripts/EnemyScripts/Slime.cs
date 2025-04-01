@@ -1,7 +1,5 @@
 using System.Collections;
-using System.Runtime.CompilerServices;
 using Unity.Netcode;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -142,7 +140,7 @@ public class Slime : Enemy, IDamgeable
         {
             int random_int = Random.Range(1, 101);
 
-            if (random_int <= 5)
+            if (random_int <= 10)
             {
                 DropItemManager.Instance.DropItemServerRpc(this.transform.position, _dropItem.Id, GetComponent<SortingGroup>().sortingLayerID);
             }

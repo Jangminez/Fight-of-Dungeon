@@ -231,13 +231,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 0}
   audioController: {fileID: 0}
-  _initTransform: {x: 0, y: 0, z: 0}
-  state: 0
-  _target: {fileID: 0}
   FloatingDamagePrefab: {fileID: 7107079607422933807, guid: 21182ee54ba58c647ba5d2063400e63f,
     type: 3}
   FloatingGoldExpPrefab: {fileID: 7145864357256277105, guid: 9b61fc9b659b53a49a0c824b9f943c04,
     type: 3}
+  _initTransform: {x: 0, y: 0, z: 0}
+  state: 0
+  _target: {fileID: 0}
   stat:
     attack: 0
     attackSpeed: 0
@@ -248,6 +248,7 @@ MonoBehaviour:
     exp: 0
     gold: 0
     isDie: 0
+  _dropItem: {fileID: 11400000, guid: 315bcfd4f54a7634bbd062bacd453d2e, type: 2}
 --- !u!114 &6676816583610149722
 MonoBehaviour:
   m_ObjectHideFlags: 0

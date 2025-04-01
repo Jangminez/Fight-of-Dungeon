@@ -1,21 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class StartScene : MonoBehaviour
 {
-    private Button _tutorialBtn;
+    private Button _playAloneBtn;
     public string loadSceneName;
 
     void Start()
     {
-        _tutorialBtn = GetComponent<Button>();
-        _tutorialBtn.onClick.AddListener(ClickSceneStartButton);
+        _playAloneBtn = GetComponent<Button>();
+        _playAloneBtn.onClick.AddListener(ClickSceneStartButton);
     }
 
     private void ClickSceneStartButton()
     {
-        GameManager.Instance.StartScene(loadSceneName);
+        GameManager.Instance.StartAloneScene(loadSceneName);
     }
 }

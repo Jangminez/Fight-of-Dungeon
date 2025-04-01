@@ -1,9 +1,11 @@
 using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class Bat : Enemy, IDamgeable
 {
+    [SerializeField] private ScriptableItem _dropItem;
 
     public override void OnNetworkSpawn()
     {
@@ -59,7 +61,7 @@ public class Bat : Enemy, IDamgeable
                 yield break;
             }
 
-            if (_target != null && Vector2.Distance(_target.position , transform.position) < stat.attackRange)
+            if (_target != null && Vector2.Distance(_target.position, transform.position) < stat.attackRange)
                 AttackClientRpc(_target.GetComponent<NetworkObject>().OwnerClientId, stat.attack, false);
         }
     }
@@ -82,9 +84,15 @@ public class Bat : Enemy, IDamgeable
         // 몬스터 상태 Die로 설정 후 애니메이션 실행
         state = States.Die;
         anim.SetFloat("RunState", 0f);
-        anim.ResetTrigger("Hit");
 
         StopAllCoroutines();
+
+        int random_int = Random.Range(1, 101);
+
+        if (random_int <= 5)
+        {
+            DropItemManager.Instance.DropItemServerRpc(this.transform.position, _dropItem.Id, GetComponent<SortingGroup>().sortingLayerID);
+        }
     }
 
     public override void Movement_Anim()

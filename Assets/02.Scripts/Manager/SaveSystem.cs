@@ -64,44 +64,14 @@ public class SaveSystem : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    public void SasveDataWithGPGS(PlayerData data)
+    public void SaveDataWithGPGS(PlayerData data)
     {
-        string filename = "Player_Data";
-
         SavePlayerData(data);
         SaveRelicData(data);
 
         string json = JsonConvert.SerializeObject(data, Formatting.Indented);
 
-        ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
-        savedGameClient.OpenWithAutomaticConflictResolution(
-            filename,
-            DataSource.ReadCacheOrNetwork,
-            ConflictResolutionStrategy.UseLongestPlaytime,
-            (status, game) =>
-            {
-                if (status == SavedGameRequestStatus.Success)
-                {
-                    byte[] dtbyte = Encoding.UTF8.GetBytes(json);
-                    SavedGameMetadataUpdate update = new SavedGameMetadataUpdate.Builder().Build();
-                    savedGameClient.CommitUpdate(game, update, dtbyte, (saveStatus, updateGame) =>
-                    {
-                        if (saveStatus == SavedGameRequestStatus.Success)
-                        {
-                            Debug.Log("(구글)데이터 저장 성공");
-                        }
-                        else
-                        {
-                            Debug.Log("(구글)데이터 저장 실패");
-                        }
-                    });
-                }
-                else
-                {
-                    Debug.Log("파일 열기 실패(구글)");
-                }
-            }
-        );
+        GPGSManager.Instance.SaveGameData(json);
     }
     public void SaveData(PlayerData data)
     {
@@ -154,48 +124,21 @@ public class SaveSystem : MonoBehaviour
 
     public PlayerData LoadDataWithGPGS()
     {
-        string filename = "Player_Data";
         string json = "";
+        GPGSManager.Instance.LoadGameData(json);
 
-        ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
-        savedGameClient.OpenWithAutomaticConflictResolution(
-            filename,
-            DataSource.ReadCacheOrNetwork,
-            ConflictResolutionStrategy.UseLongestPlaytime,
-            (status, game) =>
-            {
-                if (status == SavedGameRequestStatus.Success)
-                {
-                    savedGameClient.ReadBinaryData(game, (readStatus, data) =>
-                    {
-                        if (readStatus == SavedGameRequestStatus.Success)
-                        {
-                            json = Encoding.UTF8.GetString(data);
-                            Debug.Log("(구글) 불러온 데이터: " + json);
-                        }
-                        else
-                        {
-                            Debug.Log("(구글) 데이터 읽기 실패");
-                        }
-                    });
-                }
-                else
-                {
-                    Debug.Log("(구글) 파일 열기 실패");
-                }
-            }
-        );
-
-        if (json != "")
+        if(json != "")
         {
-            PlayerData pData = JsonConvert.DeserializeObject<PlayerData>(json);
-
-            return pData;
+            PlayerData data = JsonConvert.DeserializeObject<PlayerData>(json);
+            
+            return data;
         }
 
         else
         {
-            return CreateNewPlayerData();
+            Debug.LogWarning("구글에 저장된 데이터 없음 불러오기 실패");
+
+            return null;
         }
     }
 
