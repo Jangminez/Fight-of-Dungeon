@@ -76,6 +76,7 @@ public class DialogueManager : MonoBehaviour
 
     public void TypeAllMessage(string message)
     {
+        UISoundManager.Instance.PlayClickSound();
         dialogueText.text = message;
         isTyping = false;
     }
@@ -85,6 +86,8 @@ public class DialogueManager : MonoBehaviour
     {
         if (nextTime != 0)
         {
+            UISoundManager.Instance.PlayExitSound();
+            
             director.Stop();
             director.time = nextTime;
             director.Play();

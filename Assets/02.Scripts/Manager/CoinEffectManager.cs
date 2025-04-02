@@ -82,7 +82,7 @@ public class CoinEffectManager : MonoBehaviour
         StartCoroutine(SetCoin(pre_Coin, next_Coin, coinType));
     }
 
-    IEnumerator SetCoin(int pre_Coin, int next_Coin, int coinType)
+    IEnumerator SetCoin(int pre_Value, int next_Value, int coinType)
     {
         yield return new WaitForSecondsRealtime(1f);
 
@@ -97,25 +97,27 @@ public class CoinEffectManager : MonoBehaviour
                 while (timer < duration)
                 {
                     timer += Time.deltaTime;
-                    GameManager.Instance.Gold = (int)Mathf.Lerp(pre_Coin, next_Coin, timer / duration);
+                    GameManager.Instance.Gold = (int)Mathf.Lerp(pre_Value, next_Value, timer / duration);
                     yield return null;
                 }
 
-                GameManager.Instance.Gold = next_Coin;
+                GameManager.Instance.Gold = next_Value;
                 break;
 
             case 1:
                 while (timer < duration)
                 {
                     timer += Time.deltaTime;
-                    GameManager.Instance.Dia = (int)Mathf.Lerp(pre_Coin, next_Coin, timer / duration);
+                    GameManager.Instance.Dia = (int)Mathf.Lerp(pre_Value, next_Value, timer / duration);
                     yield return null;
                 }
 
-                GameManager.Instance.Dia = next_Coin;
+                GameManager.Instance.Dia = next_Value;
                 break;
         }
 
         UISoundManager.Instance.StopCoinIncreaseSound();
+        
+        GameManager.Instance.SavePlayerData();
     }
 }

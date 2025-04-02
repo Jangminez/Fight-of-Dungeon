@@ -4,6 +4,8 @@ using GooglePlayGames.BasicApi;
 using GooglePlayGames.BasicApi.SavedGame;
 using System.Text;
 using UnityEngine.UI;
+using GoogleMobileAds.Api;
+using System;
 
 public class GPGSManager : MonoBehaviour
 {
@@ -23,6 +25,11 @@ public class GPGSManager : MonoBehaviour
             return instance;
         }
     }
+#if UNITY_ANDROID
+    private string _adUnitId = "ca-app-pub-3940256099942544/1033173712";
+#endif
+
+    private InterstitialAd _interestitialAd;
 
     void Awake()
     {
@@ -34,6 +41,11 @@ public class GPGSManager : MonoBehaviour
         }
         else
             Destroy(gameObject);
+    }
+
+    void Start()
+    {
+        MobileAds.Initialize(initStatus => { });
     }
 
     private void InitGPGS()
@@ -71,7 +83,7 @@ public class GPGSManager : MonoBehaviour
 
     public void SaveGameData(string jsonData)
     {
-        if(!PlayGamesPlatform.Instance.IsAuthenticated()) return;
+        if (!PlayGamesPlatform.Instance.IsAuthenticated()) return;
 
         ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
         savedGameClient.OpenWithAutomaticConflictResolution(
@@ -106,7 +118,7 @@ public class GPGSManager : MonoBehaviour
 
     public string LoadGameData(string jsonData)
     {
-        if(!PlayGamesPlatform.Instance.IsAuthenticated()) return null;
+        if (!PlayGamesPlatform.Instance.IsAuthenticated()) return null;
 
         ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
         savedGameClient.OpenWithAutomaticConflictResolution(
@@ -140,5 +152,88 @@ public class GPGSManager : MonoBehaviour
         return jsonData;
     }
 
+    public void LoadInterstitialAd()
+    {
+        if (_interestitialAd != null)
+        {
+            _interestitialAd.Destroy();
+            _interestitialAd = null;
+        }
 
+        Debug.Log("광고 로딩");
+
+        var adRequest = new AdRequest();
+
+        InterstitialAd.Load(_adUnitId, adRequest,
+        (InterstitialAd ad, LoadAdError error) =>
+        {
+            if (error != null || ad == null)
+            {
+                Debug.LogError("광고 로드 실패: " + error);
+
+                return;
+            }
+
+            Debug.Log("광고 로드 성공: " + ad.GetResponseInfo());
+
+            _interestitialAd = ad;
+            RegisterEventHandlers(_interestitialAd);
+        });
+    }
+
+    public void ShowInterstitialAd()
+    {
+        if (_interestitialAd != null && _interestitialAd.CanShowAd())
+        {
+            Debug.Log("광고 출력");
+            _interestitialAd.Show();
+        }
+
+        else
+        {
+            Debug.LogError("광고가 준비되지않았습니다.");
+            LoadInterstitialAd();
+        }
+    }
+
+    private void RegisterEventHandlers(InterstitialAd interstitialAd)
+    {
+        // Raised when the ad is estimated to have earned money.
+        interstitialAd.OnAdPaid += (AdValue adValue) =>
+        {
+            Debug.Log(String.Format("Interstitial ad paid {0} {1}.",
+                adValue.Value,
+                adValue.CurrencyCode));
+        };
+        // Raised when an impression is recorded for an ad.
+        interstitialAd.OnAdImpressionRecorded += () =>
+        {
+            Debug.Log("Interstitial ad recorded an impression.");
+        };
+        // Raised when a click is recorded for an ad.
+        interstitialAd.OnAdClicked += () =>
+        {
+            Debug.Log("Interstitial ad was clicked.");
+        };
+        // Raised when an ad opened full screen content.
+        interstitialAd.OnAdFullScreenContentOpened += () =>
+        {
+            Debug.Log("Interstitial ad full screen content opened.");
+        };
+        // Raised when the ad closed full screen content.
+        interstitialAd.OnAdFullScreenContentClosed += () =>
+        {
+            Debug.Log("Interstitial ad full screen content closed.");
+
+            LoadInterstitialAd();
+        };
+        // Raised when the ad failed to open full screen content.
+        interstitialAd.OnAdFullScreenContentFailed += (AdError error) =>
+        {
+            Debug.LogError("Interstitial ad failed to open full screen content " +
+                           "with error : " + error);
+
+            LoadInterstitialAd();
+        };
+    }
 }

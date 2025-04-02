@@ -34,6 +34,7 @@ public class GameManager : MonoBehaviour
     private int dia;
     private int winCount;
     private bool isChangeName;
+    private bool didTutorial;
 
     public string Nickname
     {
@@ -158,6 +159,8 @@ public class GameManager : MonoBehaviour
         }
         get => isChangeName;
     }
+
+    public bool DidTutorial { set => didTutorial = value; get => didTutorial; }
     #endregion
     [HideInInspector] public MainUIController mainUI;
     [SerializeField] GameObject quitUI;
@@ -187,20 +190,15 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
             quitUI.SetActive(true);
         }
 
-        if(Input.GetKeyDown(KeyCode.Backspace))
+        if (Input.GetKeyDown(KeyCode.Backspace))
         {
             quitUI.SetActive(true);
         }
-    }
-
-    public void LoadDataButton()
-    {
-        LoadPlayerData();
     }
 
     public void SavePlayerData()
@@ -242,6 +240,7 @@ public class GameManager : MonoBehaviour
         Exp = playerData.exp;
         WinCount = playerData.winCount;
         IsChangeName = playerData.isChangeName;
+        DidTutorial = playerData.didTutorial;
     }
 
     private void ApplyRelicData()
@@ -286,13 +285,19 @@ public class GameManager : MonoBehaviour
 
     public void BackToScene()
     {
-        LoadingScreen.Instance.ShowLoadingScreen();
-
         StartCoroutine(BackToMain());
+        
+        if(!DidTutorial)
+        {
+            DidTutorial = true;
+            SavePlayerData();
+        }
     }
 
     private IEnumerator BackToMain()
     {
+        LoadingScreen.Instance.ShowLoadingScreen();
+
         AsyncOperation asyncOperation = SceneManager.LoadSceneAsync("MainScene");
 
         GameLobby.Instance.LeaveLobby();
@@ -314,13 +319,14 @@ public class GameManager : MonoBehaviour
     public void StartMainScene()
     {
         UISoundManager.Instance.PlayClickSound();
-        LoadingScreen.Instance.ShowLoadingScreen();
 
         StartCoroutine(LoadMainSceneCoroutine());
     }
 
     private IEnumerator LoadMainSceneCoroutine()
     {
+        LoadingScreen.Instance.ShowLoadingScreen();
+
         AsyncOperation asyncOperation = SceneManager.LoadSceneAsync("MainScene");
 
         while (!asyncOperation.isDone)
@@ -331,6 +337,13 @@ public class GameManager : MonoBehaviour
         LoadPlayerData();
 
         yield return new WaitForSeconds(1f);
+
+        // 튜토리얼을 한 적이 없다면 튜토리얼 씬으로 이동
+        if (!didTutorial)
+        {
+            StartAloneScene("TutorialScene");
+            yield break;
+        }
 
         LoadingScreen.Instance.HideLoadingScreen();
     }
@@ -352,7 +365,9 @@ public class GameManager : MonoBehaviour
         NetworkManager.Singleton.SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
 
         if (sceneName == "TutorialScene")
+        {
             NetworkManager.Singleton.SceneManager.OnLoadComplete += SetTutorialPlayer;
+        }
     }
 
     private void SetTutorialPlayer(ulong clientId, string sceneName, LoadSceneMode loadSceneMode)
@@ -376,6 +391,9 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
+        if(!DidTutorial)
+            DidTutorial = true;
+
         NetworkManager.Singleton.Shutdown();
         Destroy(NetworkManager.Singleton.gameObject);
 
@@ -400,15 +418,11 @@ public class GameManager : MonoBehaviour
         LoadPlayerData();
         yield return new WaitForSeconds(1f);
         LoadingScreen.Instance.HideLoadingScreen();
+        GPGSManager.Instance.ShowInterstitialAd();
 
         // 게임 종료시 골드와 경험치 지급
         coinEffect.RewardPileOfCoin(Gold, Gold + rewardGold, 0);
         Exp += rewardExp;
-
-        yield return new WaitForSeconds(3.5f);
-
-        // 플레이어 데이터 저장
-        SavePlayerData();
     }
 
     public void GetPowerUp()

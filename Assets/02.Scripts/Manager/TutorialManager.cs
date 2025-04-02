@@ -45,5 +45,6 @@ public class TutorialManager : MonoBehaviour
     public void GiveGold()
     {
         GameManager.Instance.player.Gold += 300;
+        _shopArrow.SetActive(false);
     }
 }

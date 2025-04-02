@@ -7,6 +7,8 @@ public class SlideUpUI : MonoBehaviour
 {
     void OnEnable()
     {
+        UISoundManager.Instance.PlayPopUpSound();
+        
         transform.gameObject.SetActive(true);
         
         transform.DOMoveY(transform.position.y + 1200f, 0.5f)

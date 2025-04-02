@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -34,6 +35,8 @@ public class PurchaseItem : MonoBehaviour
     {
         if(GameManager.Instance.Dia >= itemCost)
         {
+            GameManager.Instance.Dia -= itemCost;
+
             int gold = GameManager.Instance.Gold;
 
             GameManager.Instance.coinEffect.RewardPileOfCoin(gold, gold + itemValue, 0);

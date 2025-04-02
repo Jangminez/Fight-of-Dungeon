@@ -27,6 +27,7 @@ public class PlayerData
     public int dia;
     public int winCount;
     public bool isChangeName;
+    public bool didTutorial;
     public Dictionary<int, RelicData> relicDict = new Dictionary<int, RelicData>();
 }
 
@@ -101,6 +102,7 @@ public class SaveSystem : MonoBehaviour
         data.dia = GameManager.Instance.Dia;
         data.winCount = GameManager.Instance.WinCount;
         data.isChangeName = GameManager.Instance.IsChangeName;
+        data.didTutorial = GameManager.Instance.DidTutorial;
     }
 
     public void SaveRelicData(PlayerData data)
@@ -172,6 +174,7 @@ public class SaveSystem : MonoBehaviour
         newData.dia = 0;
         newData.winCount = 0;
         newData.isChangeName = false;
+        newData.didTutorial = false;
         newData.relicDict = new Dictionary<int, RelicData>();
 
         for (int i = 101; i <= 109; i++)

@@ -128,7 +128,7 @@ public class MainUIController : MonoBehaviour
         if (myMenu.isMenuOpen)
         {
             // 메뉴 닫기
-            myMenu.subMenuPanel.DOAnchorPosY(-50f, 0.3f).SetEase(Ease.InBack)
+            myMenu.subMenuPanel.DOAnchorPosY(-35f, 0.3f).SetEase(Ease.InBack)
                 .OnComplete(() => myMenu.subMenuPanel.gameObject.SetActive(false));
 
             
@@ -137,7 +137,7 @@ public class MainUIController : MonoBehaviour
         {
             // 메뉴 열기
             myMenu.subMenuPanel.gameObject.SetActive(true);
-            myMenu.subMenuPanel.DOAnchorPosY(-365, 0.3f).SetEase(Ease.OutBack);
+            myMenu.subMenuPanel.DOAnchorPosY(-405, 0.3f).SetEase(Ease.OutBack);
         }
 
         myMenu.isMenuOpen = !myMenu.isMenuOpen;
