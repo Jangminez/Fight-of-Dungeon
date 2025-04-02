@@ -125,7 +125,7 @@ public class SaveSystem : MonoBehaviour
     public PlayerData LoadDataWithGPGS()
     {
         string json = "";
-        GPGSManager.Instance.LoadGameData(json);
+        json = GPGSManager.Instance.LoadGameData(json);
 
         if(json != "")
         {

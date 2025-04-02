@@ -67,7 +67,7 @@ public class CoinEffectManager : MonoBehaviour
         {
             PileofCoinParent.transform.GetChild(i).GetComponent<Image>().sprite = coinSprite;
 
-            PileofCoinParent.transform.GetChild(i).DOScale(1f, 0.3f).SetDelay(delay).SetEase(Ease.OutBack);
+            PileofCoinParent.transform.GetChild(i).DOScale(1f, 0.3f).SetDelay(delay).SetEase(Ease.OutBack).OnStart(()=> UISoundManager.Instance.PlayClickSound());
 
             PileofCoinParent.transform.GetChild(i).GetComponent<RectTransform>().DOAnchorPos(coinAnchorPos, 1f)
             .SetDelay(delay + 0.5f).SetEase(Ease.InBack);
@@ -88,6 +88,8 @@ public class CoinEffectManager : MonoBehaviour
 
         float timer = 0f;
         float duration = 2f;
+
+        UISoundManager.Instance.PlayCoinIncreaseSound();
 
         switch (coinType)
         {
@@ -113,5 +115,7 @@ public class CoinEffectManager : MonoBehaviour
                 GameManager.Instance.Dia = next_Coin;
                 break;
         }
+
+        UISoundManager.Instance.StopCoinIncreaseSound();
     }
 }

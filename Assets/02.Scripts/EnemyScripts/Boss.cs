@@ -10,6 +10,7 @@ public class Boss : Enemy, IDamgeable
 
     [SerializeField]
     private ulong _lastAttackClientId;
+    [SerializeField] private StageTimer stageTimer;
 
     public override void OnNetworkSpawn()
     {
@@ -135,6 +136,11 @@ public class Boss : Enemy, IDamgeable
 
         // 이긴 클라이언트 ID 
         EndGameClientRpc(_lastAttackClientId);
+
+        if(stageTimer != null)
+        {
+            stageTimer.EndStage(true);
+        }
     }
 
     public override IEnumerator EnemyAttack()

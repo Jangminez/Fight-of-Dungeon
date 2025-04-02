@@ -25,6 +25,7 @@ public class UISoundManager : MonoBehaviour
     [SerializeField] private AudioClip buy_Sound;
     [SerializeField] private AudioClip cantBuy_Sound;
     [SerializeField] private AudioClip popUp_Sound;
+    [SerializeField] private AudioClip coinInc_Sound;
 
     void Awake()
     {
@@ -70,5 +71,19 @@ public class UISoundManager : MonoBehaviour
     public void PlayOneShotSound(AudioClip clip)
     {
         _audio.PlayOneShot(clip);
+    }
+
+    public void PlayCoinIncreaseSound()
+    {
+        _audio.clip = coinInc_Sound;
+        _audio.loop = true;
+        _audio.Play();
+    }
+
+    public void StopCoinIncreaseSound()
+    {
+        _audio.Stop();
+        _audio.loop = false;
+        _audio.clip = null;
     }
 }

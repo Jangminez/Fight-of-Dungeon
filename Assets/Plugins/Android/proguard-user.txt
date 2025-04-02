@@ -2,6 +2,8 @@
 -keep class com.FoD.FigthofDungeon.** { *; }
 -keep class Newtonsoft.Json.** { *; }
 -keep class Newtonsoft.** { *; }
+-keep class com.unity.purchasing.**
+-keep class com.android.vending.billing.**
 -keepnames class * {
     @com.google.gson.annotations.SerializedName *;
 }

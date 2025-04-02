@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Threading.Tasks;
+using GooglePlayGames.BasicApi.SavedGame;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -167,6 +168,7 @@ public class GameManager : MonoBehaviour
     public SaveSystem saveSystem;
     private PlayerData playerData;
     public CoinEffectManager coinEffect;
+    public float clearTime;
 
     private void Awake()
     {
@@ -297,6 +299,7 @@ public class GameManager : MonoBehaviour
 
     public void StartMainScene()
     {
+        UISoundManager.Instance.PlayClickSound();
         LoadingScreen.Instance.ShowLoadingScreen();
 
         StartCoroutine(LoadMainSceneCoroutine());
@@ -407,5 +410,12 @@ public class GameManager : MonoBehaviour
             player.MpRegen += 100f;
             player.Speed += 3f;
         }
+    }
+
+    public void GameQuit()
+    {
+        SavePlayerData();
+
+        Application.Quit();
     }
 }

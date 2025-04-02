@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
@@ -7,11 +8,12 @@ public class SettingsMenuManager : MonoBehaviour
     public Dropdown _graphicsDropdown;
     public Slider _musicVol, _sfxVol;
     public AudioMixer _mainAudioMixer;
-    void OnEnable()
-    {
-        InitializeSetting();
-    }
+    private GameObject settingObject;
 
+    void Awake()
+    {
+        settingObject = transform.GetChild(0).GetComponent<GameObject>();
+    }
     void Start()
     {
         InitializeSetting();
@@ -30,6 +32,8 @@ public class SettingsMenuManager : MonoBehaviour
 
     public void ChangeGraphicsQuality()
     {
+        if(settingObject != null &&!settingObject.activeSelf) return;
+
         UISoundManager.Instance.PlayClickSound();
         QualitySettings.SetQualityLevel(_graphicsDropdown.value);
 

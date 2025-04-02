@@ -3,9 +3,11 @@ using GooglePlayGames;
 using GooglePlayGames.BasicApi;
 using GooglePlayGames.BasicApi.SavedGame;
 using System.Text;
+using UnityEngine.UI;
 
 public class GPGSManager : MonoBehaviour
 {
+    [SerializeField] private Button goolgeLoginBtn;
     private static GPGSManager instance;
     public static GPGSManager Instance
     {
@@ -38,6 +40,8 @@ public class GPGSManager : MonoBehaviour
     {
         PlayGamesPlatform.DebugLogEnabled = true;
         PlayGamesPlatform.Activate();
+
+        PlayGamesPlatform.Instance.Authenticate(ProcessAuthentication);
     }
 
     public void SignIn()
@@ -54,11 +58,14 @@ public class GPGSManager : MonoBehaviour
             string name = PlayGamesPlatform.Instance.GetUserDisplayName();
             string id = PlayGamesPlatform.Instance.GetUserId();
 
+            goolgeLoginBtn.gameObject.SetActive(false);
+
             Debug.Log("Succes \n " + name);
         }
         else
         {
             Debug.Log("Login Failed");
+            goolgeLoginBtn.gameObject.SetActive(true);
         }
     }
 
