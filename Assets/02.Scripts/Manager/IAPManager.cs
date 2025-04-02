@@ -103,7 +103,7 @@ public class IAPManager : MonoBehaviour, IStoreListener
 
     private IEnumerator SavePlayerData()
     {
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(3.5f);
 
         GameManager.Instance.SavePlayerData();
     }

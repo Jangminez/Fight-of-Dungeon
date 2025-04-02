@@ -160,6 +160,7 @@ public class GameManager : MonoBehaviour
     }
     #endregion
     [HideInInspector] public MainUIController mainUI;
+    [SerializeField] GameObject quitUI;
     public string playerPrefabName;
     public Player player;
     public int rewardGold;
@@ -182,6 +183,19 @@ public class GameManager : MonoBehaviour
 
         // 씬 로드시에도 파괴되지않음 
         DontDestroyOnLoad(gameObject);
+    }
+
+    void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            quitUI.SetActive(true);
+        }
+
+        if(Input.GetKeyDown(KeyCode.Backspace))
+        {
+            quitUI.SetActive(true);
+        }
     }
 
     public void LoadDataButton()
@@ -391,7 +405,7 @@ public class GameManager : MonoBehaviour
         coinEffect.RewardPileOfCoin(Gold, Gold + rewardGold, 0);
         Exp += rewardExp;
 
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(3.5f);
 
         // 플레이어 데이터 저장
         SavePlayerData();

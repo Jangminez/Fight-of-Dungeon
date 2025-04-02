@@ -71,6 +71,8 @@ public class GPGSManager : MonoBehaviour
 
     public void SaveGameData(string jsonData)
     {
+        if(!PlayGamesPlatform.Instance.IsAuthenticated()) return;
+
         ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
         savedGameClient.OpenWithAutomaticConflictResolution(
             "player_data",
@@ -96,7 +98,7 @@ public class GPGSManager : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("파일 열기 실패(구글)");
+                    Debug.Log("파일 저장 실패(구글)");
                 }
             }
         );
@@ -104,6 +106,7 @@ public class GPGSManager : MonoBehaviour
 
     public string LoadGameData(string jsonData)
     {
+        if(!PlayGamesPlatform.Instance.IsAuthenticated()) return null;
 
         ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
         savedGameClient.OpenWithAutomaticConflictResolution(

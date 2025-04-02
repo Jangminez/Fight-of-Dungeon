@@ -74,7 +74,7 @@ public class StageTimer : MonoBehaviour
     {
         if(PlayGamesPlatform.Instance.IsAuthenticated())
         {
-            long score = (long)(clearTime * 10000); // 초 -> 밀리초 변환
+            long score = (long)(clearTime * 1000); // 초 -> 밀리초 변환
             PlayGamesPlatform.Instance.ReportScore(score, leaderboardId, (success) => 
             {
                 if(success)

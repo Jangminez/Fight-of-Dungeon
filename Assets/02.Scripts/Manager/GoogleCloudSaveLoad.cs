@@ -19,6 +19,8 @@ public class GoogleCloudSaveLoad : MonoBehaviour
         PlayerData data = SaveSystem.Instance.LoadData();
 
         SaveSystem.Instance.SaveDataWithGPGS(data);
+
+        
     }
 
     private void LoadDataGPGS()
