@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class SettingsMenuManager : MonoBehaviour
 {
-    public Dropdown _graphicsDropdown;
+    public Dropdown _frameDropdown;
     public Slider _musicVol, _sfxVol;
     public AudioMixer _mainAudioMixer;
     private GameObject settingObject;
@@ -23,21 +23,30 @@ public class SettingsMenuManager : MonoBehaviour
     {
         _mainAudioMixer.SetFloat("MusicVol", PlayerPrefs.GetFloat("MusicVol", 0f));
         _mainAudioMixer.SetFloat("SfxVol", PlayerPrefs.GetFloat("SfxVol", 0f));
-        QualitySettings.SetQualityLevel(PlayerPrefs.GetInt("QualitySet", 1));
+        int savedFrameRate = PlayerPrefs.GetInt("FrameRate", 1);
+        SetFrameRate(savedFrameRate);
 
         _musicVol.value = PlayerPrefs.GetFloat("MusicVol", 0f);
         _sfxVol.value = PlayerPrefs.GetFloat("SfxVol", 0f);
-        _graphicsDropdown.value = PlayerPrefs.GetInt("QualitySet", 1);
+        _frameDropdown.value = savedFrameRate;
+        _frameDropdown.onValueChanged.AddListener(SetFrameRate);
     }
 
-    public void ChangeGraphicsQuality()
+    public void SetFrameRate(int index)
     {
-        if(settingObject != null &&!settingObject.activeSelf) return;
+        if (settingObject != null && !settingObject.activeSelf) return;
 
         UISoundManager.Instance.PlayClickSound();
-        QualitySettings.SetQualityLevel(_graphicsDropdown.value);
 
-        PlayerPrefs.SetInt("QualitySet", _graphicsDropdown.value);
+        switch (index)
+        {
+            case 0: Application.targetFrameRate = 30; break;
+            case 1: Application.targetFrameRate = 60; break;
+        }
+
+        QualitySettings.vSyncCount = 0;
+
+        PlayerPrefs.SetInt("FrameRate", index);
         PlayerPrefs.Save();
     }
 
