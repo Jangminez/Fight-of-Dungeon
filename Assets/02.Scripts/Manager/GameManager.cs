@@ -193,11 +193,13 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             quitUI.SetActive(true);
+            quitUI.transform.parent.GetChild(0).gameObject.SetActive(true);
         }
 
         if (Input.GetKeyDown(KeyCode.Backspace))
         {
             quitUI.SetActive(true);
+            quitUI.transform.parent.GetChild(0).gameObject.SetActive(true);
         }
     }
 
@@ -245,6 +247,7 @@ public class GameManager : MonoBehaviour
 
     private void ApplyRelicData()
     {
+        // 유물 정보 적용
         if (playerData == null || playerData.relicDict == null)
         {
             Debug.LogError("Relic 데이터를 불러올 수 없습니다.");

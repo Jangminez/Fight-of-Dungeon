@@ -313,6 +313,8 @@ public abstract class Enemy : NetworkBehaviour
     [ClientRpc]
     protected void DieClientRpc(ulong lastAttackClient)
     {
+        audioController.audioSource.Stop();
+        
         audioController.PlayDeathSFX();
 
         // 처치한 클라이언트에게 경험치랑 골드 지급

@@ -54,12 +54,12 @@ public class CoinEffectManager : MonoBehaviour
         {
             case 0:
                 coinSprite = goldIcon;
-                coinAnchorPos = new Vector2(-200f, 1720f);
+                coinAnchorPos = new Vector2(-200f, 1690f);
                 break;
 
             case 1:
                 coinSprite = diaIcon;
-                coinAnchorPos = new Vector2(110f, 1720f);
+                coinAnchorPos = new Vector2(110f, 1690f);
                 break;
         }
 
