@@ -30,6 +30,7 @@ public class GPGSManager : MonoBehaviour
 #endif
 
     private InterstitialAd _interestitialAd;
+    private const string fileName = "Fod_Player_Data";
 
     void Awake()
     {
@@ -37,7 +38,6 @@ public class GPGSManager : MonoBehaviour
         {
             instance = this;
             DontDestroyOnLoad(gameObject);
-            InitGPGS();
         }
         else
             Destroy(gameObject);
@@ -45,6 +45,11 @@ public class GPGSManager : MonoBehaviour
 
     void Start()
     {
+        if (GameManager.Instance.DidTutorial)
+        {
+            InitGPGS();
+        }
+
         MobileAds.Initialize(initStatus => { });
     }
 
@@ -68,7 +73,8 @@ public class GPGSManager : MonoBehaviour
             // 로그인이 성공했을 때
 
             string name = PlayGamesPlatform.Instance.GetUserDisplayName();
-            string id = PlayGamesPlatform.Instance.GetUserId();
+            GameManager.Instance.Nickname = name;
+            //string id = PlayGamesPlatform.Instance.GetUserId();
 
             goolgeLoginBtn.gameObject.SetActive(false);
 
@@ -81,39 +87,48 @@ public class GPGSManager : MonoBehaviour
         }
     }
 
-    public void SaveGameData(string jsonData)
+    public bool SaveGameData(string jsonData)
     {
-        if (!PlayGamesPlatform.Instance.IsAuthenticated()) return;
+        bool isSuccess = false;
+
+        if (!PlayGamesPlatform.Instance.IsAuthenticated()) return false;
 
         ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
         savedGameClient.OpenWithAutomaticConflictResolution(
-            "player_data",
+            fileName,
             DataSource.ReadCacheOrNetwork,
             ConflictResolutionStrategy.UseLongestPlaytime,
             (status, game) =>
             {
                 if (status == SavedGameRequestStatus.Success)
                 {
-                    byte[] dtbyte = Encoding.UTF8.GetBytes(jsonData);
+                    byte[] data = Encoding.UTF8.GetBytes(jsonData);
                     SavedGameMetadataUpdate update = new SavedGameMetadataUpdate.Builder().Build();
-                    savedGameClient.CommitUpdate(game, update, dtbyte, (saveStatus, updateGame) =>
+                    savedGameClient.CommitUpdate(game, update, data, (saveStatus, updateGame) =>
                     {
                         if (saveStatus == SavedGameRequestStatus.Success)
                         {
                             Debug.Log("(구글)데이터 저장 성공");
+                            isSuccess = true;
                         }
                         else
                         {
                             Debug.Log("(구글)데이터 저장 실패");
+                            Debug.Log(saveStatus);
+                            isSuccess = false;
                         }
                     });
                 }
                 else
                 {
                     Debug.Log("파일 저장 실패(구글)");
+                    isSuccess = false;
+                    Debug.Log(status);
                 }
             }
         );
+
+        return isSuccess;
     }
 
     public string LoadGameData(string jsonData)
@@ -122,7 +137,7 @@ public class GPGSManager : MonoBehaviour
 
         ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
         savedGameClient.OpenWithAutomaticConflictResolution(
-            "player_data",
+            fileName,
             DataSource.ReadCacheOrNetwork,
             ConflictResolutionStrategy.UseLongestPlaytime,
             (status, game) =>
@@ -139,12 +154,14 @@ public class GPGSManager : MonoBehaviour
                         else
                         {
                             Debug.Log("(구글) 데이터 읽기 실패");
+                            Debug.Log(status);
                         }
                     });
                 }
                 else
                 {
                     Debug.Log("(구글) 파일 열기 실패");
+                    Debug.Log(status);
                 }
             }
         );

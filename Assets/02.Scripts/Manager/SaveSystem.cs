@@ -8,6 +8,7 @@ using GooglePlayGames.BasicApi.SavedGame;
 using GooglePlayGames;
 using GooglePlayGames.BasicApi;
 using System.Text;
+using WebSocketSharp;
 
 [Serializable]
 public class RelicData
@@ -65,14 +66,20 @@ public class SaveSystem : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    public void SaveDataWithGPGS(PlayerData data)
+    public bool SaveDataWithGPGS(PlayerData data)
     {
+        bool isSuccess = false;
         SavePlayerData(data);
         SaveRelicData(data);
 
         string json = JsonConvert.SerializeObject(data, Formatting.Indented);
 
-        GPGSManager.Instance.SaveGameData(json);
+        if(GPGSManager.Instance.SaveGameData(json))
+        {
+            isSuccess = true;
+        }
+
+        return isSuccess;
     }
     public void SaveData(PlayerData data)
     {
@@ -129,7 +136,7 @@ public class SaveSystem : MonoBehaviour
         string json = "";
         json = GPGSManager.Instance.LoadGameData(json);
 
-        if(json != "")
+        if(!json.IsNullOrEmpty())
         {
             PlayerData data = JsonConvert.DeserializeObject<PlayerData>(json);
             
