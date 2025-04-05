@@ -66,20 +66,17 @@ public class SaveSystem : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    public bool SaveDataWithGPGS(PlayerData data)
+    public void SaveDataWithGPGS(PlayerData data, Action<bool> onComplete)
     {
-        bool isSuccess = false;
         SavePlayerData(data);
         SaveRelicData(data);
 
         string json = JsonConvert.SerializeObject(data, Formatting.Indented);
 
-        if(GPGSManager.Instance.SaveGameData(json))
+        GPGSManager.Instance.SaveGameData(json, (success) =>
         {
-            isSuccess = true;
-        }
-
-        return isSuccess;
+            onComplete?.Invoke(success);
+        });
     }
     public void SaveData(PlayerData data)
     {
@@ -131,24 +128,22 @@ public class SaveSystem : MonoBehaviour
         }
     }
 
-    public PlayerData LoadDataWithGPGS()
+    public void LoadDataWithGPGS(Action<PlayerData> onComplete)
     {
-        string json = "";
-        json = GPGSManager.Instance.LoadGameData(json);
-
-        if(!json.IsNullOrEmpty())
+        GPGSManager.Instance.LoadGameData((json) =>
         {
-            PlayerData data = JsonConvert.DeserializeObject<PlayerData>(json);
-            
-            return data;
-        }
+            if (!json.IsNullOrEmpty())
+            {
+                PlayerData data = JsonConvert.DeserializeObject<PlayerData>(json);
+                onComplete?.Invoke(data);
+            }
 
-        else
-        {
-            Debug.LogWarning("구글에 저장된 데이터 없음 불러오기 실패");
-
-            return null;
-        }
+            else
+            {
+                Debug.LogWarning("구글에 저장된 데이터 없음 불러오기 실패");
+                onComplete?.Invoke(null);
+            }
+        });
     }
 
     public PlayerData LoadData()

@@ -21,45 +21,56 @@ public class GoogleCloudSaveLoad : MonoBehaviour
     {
         PlayerData data = SaveSystem.Instance.LoadData();
 
-        if(SaveSystem.Instance.SaveDataWithGPGS(data))
+        SaveSystem.Instance.SaveDataWithGPGS(data, (isSuccess) =>
         {
-            successInfo.transform.GetChild(0).GetComponent<Text>().text = "데이터 저장 성공";
-            
-            successInfo.DOFade(1f, 1f)
-            .OnComplete(() => 
-            DOVirtual.DelayedCall(1f, () => successInfo.DOFade(0f, 1f).SetEase(Ease.InOutSine)));
-        }
+            if (isSuccess)
+            {
+                successInfo.transform.GetChild(0).GetComponent<Text>().text = "데이터 저장 성공";
 
-        else
-        {
-            failedInfo.transform.GetChild(0).GetComponent<Text>().text = "데이터 저장 실패";
-            
-            failedInfo.DOFade(1f, 1f)
-            .OnComplete(() => 
-            DOVirtual.DelayedCall(1f, () => failedInfo.DOFade(0f, 1f).SetEase(Ease.InOutSine)));
-        }
+                successInfo.DOFade(1f, 1f)
+                .OnComplete(() =>
+                DOVirtual.DelayedCall(1f, () => successInfo.DOFade(0f, 1f).SetEase(Ease.InOutSine)));
+
+                Debug.Log("데이터 저장 성공!!!!!!");
+            }
+            else
+            {
+                failedInfo.transform.GetChild(0).GetComponent<Text>().text = "데이터 저장 실패";
+
+                failedInfo.DOFade(1f, 1f)
+                .OnComplete(() =>
+                DOVirtual.DelayedCall(1f, () => failedInfo.DOFade(0f, 1f).SetEase(Ease.InOutSine)));
+
+                Debug.Log("데이터 저장 실패........");
+            }
+        });
     }
 
     private void LoadDataGPGS()
     {
-        PlayerData data = SaveSystem.Instance.LoadDataWithGPGS();
-
-        if(data != null)
+        SaveSystem.Instance.LoadDataWithGPGS((data) =>
         {
-            successInfo.transform.GetChild(0).GetComponent<Text>().text = "데이터 불러오기 성공";
-            
-            successInfo.DOFade(1f, 1f)
-            .OnComplete(() => 
-            DOVirtual.DelayedCall(1f, () => successInfo.DOFade(0f, 1f).SetEase(Ease.InOutSine)));
-        }
+            if (data != null)
+            {
+                successInfo.transform.GetChild(0).GetComponent<Text>().text = "데이터 불러오기 성공";
 
-        else
-        {
-            failedInfo.transform.GetChild(0).GetComponent<Text>().text = "데이터 불러오기 실패";
-            
-            failedInfo.DOFade(1f, 1f)
-            .OnComplete(() => 
-            DOVirtual.DelayedCall(1f, () => failedInfo.DOFade(0f, 1f).SetEase(Ease.InOutSine)));
-        }
+                successInfo.DOFade(1f, 1f)
+                .OnComplete(() =>
+                DOVirtual.DelayedCall(1f, () => successInfo.DOFade(0f, 1f).SetEase(Ease.InOutSine)));
+
+                Debug.Log("데이터 불러오기 성공!!!!!!");
+            }
+
+            else
+            {
+                failedInfo.transform.GetChild(0).GetComponent<Text>().text = "데이터 불러오기 실패";
+
+                failedInfo.DOFade(1f, 1f)
+                .OnComplete(() =>
+                DOVirtual.DelayedCall(1f, () => failedInfo.DOFade(0f, 1f).SetEase(Ease.InOutSine)));
+
+                Debug.Log("데이터 불러오기 실패.......");
+            }
+        });
     }
 }

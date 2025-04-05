@@ -6,10 +6,12 @@ using System.Text;
 using UnityEngine.UI;
 using GoogleMobileAds.Api;
 using System;
+using GooglePlayGames.OurUtils;
 
 public class GPGSManager : MonoBehaviour
 {
     [SerializeField] private Button goolgeLoginBtn;
+    [SerializeField] private Button startBtn;
     private static GPGSManager instance;
     public static GPGSManager Instance
     {
@@ -41,16 +43,17 @@ public class GPGSManager : MonoBehaviour
         }
         else
             Destroy(gameObject);
+
+        startBtn.interactable = false;
     }
 
     void Start()
     {
-        if (GameManager.Instance.DidTutorial)
+        if (PlayerPrefs.GetInt("IsLogined", 0) == 1)
         {
-            InitGPGS();
+            Invoke("InitGPGS", 1f);
+            goolgeLoginBtn.gameObject.SetActive(false);
         }
-
-        MobileAds.Initialize(initStatus => { });
     }
 
     private void InitGPGS()
@@ -63,6 +66,9 @@ public class GPGSManager : MonoBehaviour
 
     public void SignIn()
     {
+        PlayGamesPlatform.DebugLogEnabled = true;
+        PlayGamesPlatform.Activate();
+
         PlayGamesPlatform.Instance.Authenticate(ProcessAuthentication);
     }
 
@@ -77,8 +83,12 @@ public class GPGSManager : MonoBehaviour
             //string id = PlayGamesPlatform.Instance.GetUserId();
 
             goolgeLoginBtn.gameObject.SetActive(false);
+            startBtn.interactable = true;
 
             Debug.Log("Succes \n " + name);
+            PlayerPrefs.SetInt("IsLogined", 1);
+
+            MobileAds.Initialize(initStatus => { });
         }
         else
         {
@@ -87,17 +97,20 @@ public class GPGSManager : MonoBehaviour
         }
     }
 
-    public bool SaveGameData(string jsonData)
+    public void SaveGameData(string jsonData, Action<bool> callback)
     {
-        bool isSuccess = false;
 
-        if (!PlayGamesPlatform.Instance.IsAuthenticated()) return false;
+        if (!PlayGamesPlatform.Instance.IsAuthenticated())
+        {
+            callback?.Invoke(false);
+            return;
+        }
 
         ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
         savedGameClient.OpenWithAutomaticConflictResolution(
             fileName,
             DataSource.ReadCacheOrNetwork,
-            ConflictResolutionStrategy.UseLongestPlaytime,
+            ConflictResolutionStrategy.UseLastKnownGood,
             (status, game) =>
             {
                 if (status == SavedGameRequestStatus.Success)
@@ -109,37 +122,39 @@ public class GPGSManager : MonoBehaviour
                         if (saveStatus == SavedGameRequestStatus.Success)
                         {
                             Debug.Log("(구글)데이터 저장 성공");
-                            isSuccess = true;
+                            callback?.Invoke(true);
                         }
                         else
                         {
                             Debug.Log("(구글)데이터 저장 실패");
+                            callback?.Invoke(false);
                             Debug.Log(saveStatus);
-                            isSuccess = false;
                         }
                     });
                 }
                 else
                 {
                     Debug.Log("파일 저장 실패(구글)");
-                    isSuccess = false;
                     Debug.Log(status);
+                    callback?.Invoke(false);
                 }
             }
         );
-
-        return isSuccess;
     }
 
-    public string LoadGameData(string jsonData)
+    public void LoadGameData(Action<string> onLoaded)
     {
-        if (!PlayGamesPlatform.Instance.IsAuthenticated()) return null;
+        if (!PlayGamesPlatform.Instance.IsAuthenticated())
+        {
+            onLoaded?.Invoke(null);
+            return;
+        }
 
         ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
         savedGameClient.OpenWithAutomaticConflictResolution(
             fileName,
             DataSource.ReadCacheOrNetwork,
-            ConflictResolutionStrategy.UseLongestPlaytime,
+            ConflictResolutionStrategy.UseLastKnownGood,
             (status, game) =>
             {
                 if (status == SavedGameRequestStatus.Success)
@@ -148,13 +163,17 @@ public class GPGSManager : MonoBehaviour
                     {
                         if (readStatus == SavedGameRequestStatus.Success)
                         {
-                            jsonData = Encoding.UTF8.GetString(data);
-                            Debug.Log("(구글) 불러온 데이터: " + jsonData);
+                            string json = Encoding.UTF8.GetString(data);
+                            Debug.Log("(구글) 불러오기 성공");
+
+                            onLoaded?.Invoke(json);
                         }
                         else
                         {
                             Debug.Log("(구글) 데이터 읽기 실패");
                             Debug.Log(status);
+
+                            onLoaded?.Invoke(null);
                         }
                     });
                 }
@@ -162,11 +181,11 @@ public class GPGSManager : MonoBehaviour
                 {
                     Debug.Log("(구글) 파일 열기 실패");
                     Debug.Log(status);
+
+                    onLoaded?.Invoke(null);
                 }
             }
         );
-
-        return jsonData;
     }
 
     public void LoadInterstitialAd()
