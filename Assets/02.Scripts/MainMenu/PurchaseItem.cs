@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,11 +7,7 @@ public class PurchaseItem : MonoBehaviour
     private Button myBtn;
     public GameObject purchaseInfo;
     public Button pButton;
-    public enum ItemType { Gold, Dia }
-    public ItemType itemType;
     public int itemValue;
-    public enum CostType { Gold, Dia, Money }
-    public CostType costType;
     public int itemCost;
 
     void Awake()
@@ -30,62 +27,26 @@ public class PurchaseItem : MonoBehaviour
         if (pButton != null)
         {
             pButton.onClick.RemoveAllListeners();
-            pButton.onClick.AddListener(BuyItem);
+            pButton.onClick.AddListener(BuyGold);
         }
     }
 
-    private void BuyItem()
+    private void BuyGold()
     {
-        switch (costType)
+        if(GameManager.Instance.Dia >= itemCost)
         {
-            case CostType.Gold:
-                if (GameManager.Instance.Gold >= itemCost)
-                {
-                    GameManager.Instance.Gold -= itemCost;
+            GameManager.Instance.Dia -= itemCost;
 
-                    switch (itemType)
-                    {
-                        case ItemType.Gold:
-                            GameManager.Instance.Gold += itemValue;
-                            break;
+            int gold = GameManager.Instance.Gold;
 
-                        case ItemType.Dia:
-                            GameManager.Instance.Gold += itemValue;
-                            break;
-                    }
-                    purchaseInfo.SetActive(false);
-                    UISoundManager.Instance.PlayBuySound();
-                }
+            GameManager.Instance.coinEffect.RewardPileOfCoin(gold, gold + itemValue, 0);
 
-                else
-                {
-                    UISoundManager.Instance.PlayCantBuySound();
-                }
-                break;
+            purchaseInfo.SetActive(false);
+        }
 
-            case CostType.Dia:
-                if (GameManager.Instance.Dia >= itemCost)
-                {
-                    GameManager.Instance.Dia -= itemCost;
-
-                    switch (itemType)
-                    {
-                        case ItemType.Gold:
-                            GameManager.Instance.Gold += itemValue;
-                            break;
-
-                        case ItemType.Dia:
-                            GameManager.Instance.Gold += itemValue;
-                            break;
-                    }
-                    purchaseInfo.SetActive(false);
-                    UISoundManager.Instance.PlayBuySound();
-                }
-                else
-                {
-                    UISoundManager.Instance.PlayCantBuySound();
-                }
-                break;
+        else
+        {
+            UISoundManager.Instance.PlayCantBuySound();
         }
     }
 }

@@ -1,7 +1,5 @@
 using System.Collections;
-using System.Runtime.CompilerServices;
 using Unity.Netcode;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -39,7 +37,7 @@ public class Slime : Enemy, IDamgeable
                 MaxHp = 30f;
                 Hp = MaxHp;
 
-                stat.attack = 5f;
+                stat.attack = 7f;
                 stat.attackRange = 2f;
                 stat.attackSpeed = 1.5f;
 
@@ -53,14 +51,14 @@ public class Slime : Enemy, IDamgeable
                 break;
 
             case SlimeType.Ice:
-                MaxHp = 100f;
+                MaxHp = 400f;
                 Hp = MaxHp;
 
-                stat.attack = 40f;
+                stat.attack = 70f;
                 stat.attackRange = 2f;
                 stat.attackSpeed = 1.5f;
 
-                stat.defense = 30f;
+                stat.defense = 45f;
 
                 stat.chaseRange = 5f;
                 stat.speed = 1f;
@@ -70,17 +68,17 @@ public class Slime : Enemy, IDamgeable
                 break;
 
             case SlimeType.Fire:
-                MaxHp = 500f;
+                MaxHp = 1000f;
                 Hp = MaxHp;
 
-                stat.attack = 100f;
+                stat.attack = 350f;
                 stat.attackRange = 2f;
                 stat.attackSpeed = 1.5f;
 
-                stat.defense = 100f;
+                stat.defense = 500f;
 
                 stat.chaseRange = 5f;
-                stat.speed = 1f;
+                stat.speed = 1.2f;
 
                 stat.exp = 500f;
                 stat.gold = 500;
@@ -142,7 +140,7 @@ public class Slime : Enemy, IDamgeable
         {
             int random_int = Random.Range(1, 101);
 
-            if (random_int <= 5)
+            if (random_int <= 10)
             {
                 DropItemManager.Instance.DropItemServerRpc(this.transform.position, _dropItem.Id, GetComponent<SortingGroup>().sortingLayerID);
             }

@@ -1,4 +1,5 @@
 using System;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -26,7 +27,15 @@ public class MainUIController : MonoBehaviour
         public Slider slider; // 프로필 경험치 바
     }
 
+    [Serializable]
+    public class SubMenuUI{
+        public RectTransform subMenuPanel;
+        public Button menuButton;
+        public bool isMenuOpen = false;
+    }
+
     public ProfileUI myPorfile = new ProfileUI();
+    public SubMenuUI myMenu = new SubMenuUI();
 
     void Start()
     {
@@ -39,6 +48,9 @@ public class MainUIController : MonoBehaviour
         // 프로필 이름변경 관련된 버튼들 리스너 추가
         nameEdit_Btn.onClick.AddListener(OpenInfo);
         change_Btn.onClick.AddListener(ChangeNickName);
+
+        myMenu.subMenuPanel.gameObject.SetActive(false);
+        myMenu.menuButton.onClick.AddListener(ToggleMenu);
     }
 
     // 닉네임 변경시 UI 업데이트
@@ -107,5 +119,27 @@ public class MainUIController : MonoBehaviour
         {
             UISoundManager.Instance.PlayCantBuySound();
         }
+    }
+
+    public void ToggleMenu()
+    {
+        UISoundManager.Instance.PlayClickSound();
+
+        if (myMenu.isMenuOpen)
+        {
+            // 메뉴 닫기
+            myMenu.subMenuPanel.DOAnchorPosY(-35f, 0.3f).SetEase(Ease.InBack)
+                .OnComplete(() => myMenu.subMenuPanel.gameObject.SetActive(false));
+
+            
+        }
+        else
+        {
+            // 메뉴 열기
+            myMenu.subMenuPanel.gameObject.SetActive(true);
+            myMenu.subMenuPanel.DOAnchorPosY(-405, 0.3f).SetEase(Ease.OutBack);
+        }
+
+        myMenu.isMenuOpen = !myMenu.isMenuOpen;
     }
 }

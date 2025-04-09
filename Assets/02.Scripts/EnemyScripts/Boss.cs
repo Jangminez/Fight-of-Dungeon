@@ -10,6 +10,7 @@ public class Boss : Enemy, IDamgeable
 
     [SerializeField]
     private ulong _lastAttackClientId;
+    [SerializeField] private StageTimer stageTimer;
 
     public override void OnNetworkSpawn()
     {
@@ -28,17 +29,17 @@ public class Boss : Enemy, IDamgeable
 
         _isPattern = false;
 
-        MaxHp = 10000f;
+        MaxHp = 15000f;
         Hp = MaxHp;
 
-        stat.attack = 1000f;
-        stat.attackRange = 5f;
-        stat.attackSpeed = 0.5f;
+        stat.attack = 2000f;
+        stat.attackRange = 6f;
+        stat.attackSpeed = 1f;
 
-        stat.defense = 1000f;
+        stat.defense = 2000f;
 
-        stat.speed = 1.2f;
-        stat.chaseRange = 10f;
+        stat.speed = 1.5f;
+        stat.chaseRange = 12f;
 
         stat.isDie = false;
 
@@ -135,6 +136,11 @@ public class Boss : Enemy, IDamgeable
 
         // 이긴 클라이언트 ID 
         EndGameClientRpc(_lastAttackClientId);
+
+        if(stageTimer != null)
+        {
+            stageTimer.EndStage(true);
+        }
     }
 
     public override IEnumerator EnemyAttack()

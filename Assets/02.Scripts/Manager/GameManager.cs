@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Threading.Tasks;
+using GooglePlayGames.BasicApi.SavedGame;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -33,6 +34,7 @@ public class GameManager : MonoBehaviour
     private int dia;
     private int winCount;
     private bool isChangeName;
+    private bool didTutorial;
 
     public string Nickname
     {
@@ -101,12 +103,12 @@ public class GameManager : MonoBehaviour
     public int Gold
     {
         set
-        {   
+        {
             gold = Math.Max(0, value);
 
             if (playerData != null)
                 playerData.gold = gold;
-            
+
             if (mainUI != null)
                 mainUI.SetGold(gold);
         }
@@ -133,10 +135,10 @@ public class GameManager : MonoBehaviour
         {
             winCount = Math.Max(0, value);
 
-            if(playerData != null)
+            if (playerData != null)
                 playerData.winCount = winCount;
 
-            if(mainUI != null)
+            if (mainUI != null)
                 mainUI.SetWinCount(winCount);
         }
 
@@ -149,7 +151,7 @@ public class GameManager : MonoBehaviour
         {
             isChangeName = value;
 
-            if(isChangeName && mainUI != null)
+            if (isChangeName && mainUI != null)
             {
                 mainUI.canChangeFirst.SetActive(false);
                 mainUI.nameEdit_Btn.interactable = false;
@@ -157,16 +159,21 @@ public class GameManager : MonoBehaviour
         }
         get => isChangeName;
     }
+
+    public bool DidTutorial { set => didTutorial = value; get => didTutorial; }
     #endregion
     [HideInInspector] public MainUIController mainUI;
+    [SerializeField] GameObject quitUI;
     public string playerPrefabName;
     public Player player;
     public int rewardGold;
+    public int rewardDia;
     public float rewardExp;
 
     public SaveSystem saveSystem;
     private PlayerData playerData;
     public CoinEffectManager coinEffect;
+    public float clearTime;
 
     private void Awake()
     {
@@ -182,14 +189,19 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    void Start()
+    void Update()
     {
-        LoadPlayerData();
-    }
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            quitUI.SetActive(true);
+            quitUI.transform.parent.GetChild(0).gameObject.SetActive(true);
+        }
 
-    public void LoadDataButton()
-    {
-        LoadPlayerData();
+        if (Input.GetKeyDown(KeyCode.Backspace))
+        {
+            quitUI.SetActive(true);
+            quitUI.transform.parent.GetChild(0).gameObject.SetActive(true);
+        }
     }
 
     public void SavePlayerData()
@@ -231,10 +243,12 @@ public class GameManager : MonoBehaviour
         Exp = playerData.exp;
         WinCount = playerData.winCount;
         IsChangeName = playerData.isChangeName;
+        DidTutorial = playerData.didTutorial;
     }
 
     private void ApplyRelicData()
     {
+        // 유물 정보 적용
         if (playerData == null || playerData.relicDict == null)
         {
             Debug.LogError("Relic 데이터를 불러올 수 없습니다.");
@@ -275,17 +289,48 @@ public class GameManager : MonoBehaviour
 
     public void BackToScene()
     {
-        LoadingScreen.Instance.ShowLoadingScreen();
-
-        NetworkManager.Singleton.Shutdown();
-        Destroy(NetworkManager.Singleton.gameObject);
-
-        GameLobby.Instance.LeaveLobby();
         StartCoroutine(BackToMain());
+        
+        if(!DidTutorial)
+        {
+            DidTutorial = true;
+            SavePlayerData();
+        }
     }
 
     private IEnumerator BackToMain()
     {
+        LoadingScreen.Instance.ShowLoadingScreen();
+
+        AsyncOperation asyncOperation = SceneManager.LoadSceneAsync("MainScene");
+
+        GameLobby.Instance.LeaveLobby();
+        NetworkManager.Singleton.Shutdown();
+        Destroy(NetworkManager.Singleton.gameObject);
+
+        while (!asyncOperation.isDone)
+        {
+            yield return null;
+        }
+
+        LoadPlayerData();
+
+        yield return new WaitForSeconds(1f);
+
+        LoadingScreen.Instance.HideLoadingScreen();
+    }
+
+    public void StartMainScene()
+    {
+        UISoundManager.Instance.PlayClickSound();
+
+        StartCoroutine(LoadMainSceneCoroutine());
+    }
+
+    private IEnumerator LoadMainSceneCoroutine()
+    {
+        LoadingScreen.Instance.ShowLoadingScreen();
+
         AsyncOperation asyncOperation = SceneManager.LoadSceneAsync("MainScene");
 
         while (!asyncOperation.isDone)
@@ -294,10 +339,20 @@ public class GameManager : MonoBehaviour
         }
 
         LoadPlayerData();
+
+        yield return new WaitForSeconds(1f);
+
+        // 튜토리얼을 한 적이 없다면 튜토리얼 씬으로 이동
+        if (!didTutorial)
+        {
+            StartAloneScene("TutorialScene");
+            yield break;
+        }
+
         LoadingScreen.Instance.HideLoadingScreen();
     }
 
-    public void StartScene(string sceneName)
+    public void StartAloneScene(string sceneName)
     {
         Task<string> code = ConnectRelay.Instance.CreateRelay();
         Debug.Log(code);
@@ -314,7 +369,9 @@ public class GameManager : MonoBehaviour
         NetworkManager.Singleton.SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
 
         if (sceneName == "TutorialScene")
+        {
             NetworkManager.Singleton.SceneManager.OnLoadComplete += SetTutorialPlayer;
+        }
     }
 
     private void SetTutorialPlayer(ulong clientId, string sceneName, LoadSceneMode loadSceneMode)
@@ -338,6 +395,9 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
+        if(!DidTutorial)
+            DidTutorial = true;
+
         NetworkManager.Singleton.Shutdown();
         Destroy(NetworkManager.Singleton.gameObject);
 
@@ -358,15 +418,15 @@ public class GameManager : MonoBehaviour
             yield return null;
         }
 
+        // 데이터 불러오기
+        LoadPlayerData();
+        yield return new WaitForSeconds(1f);
         LoadingScreen.Instance.HideLoadingScreen();
 
         // 게임 종료시 골드와 경험치 지급
         coinEffect.RewardPileOfCoin(Gold, Gold + rewardGold, 0);
-        Exp += rewardExp;   
-
-        // 플레이어 데이터 저장 & 불러오기
-        SavePlayerData();
-        LoadPlayerData();
+        coinEffect.RewardPileOfCoin(Dia, Dia + rewardDia, 1);
+        Exp += rewardExp;
     }
 
     public void GetPowerUp()
@@ -382,5 +442,12 @@ public class GameManager : MonoBehaviour
             player.MpRegen += 100f;
             player.Speed += 3f;
         }
+    }
+
+    public void GameQuit()
+    {
+        SavePlayerData();
+
+        Application.Quit();
     }
 }

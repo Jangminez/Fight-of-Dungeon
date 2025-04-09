@@ -1,14 +1,10 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using Unity.Netcode;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
 using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
-using Unity.Services.Relay;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameLobby : MonoBehaviour
@@ -29,6 +25,7 @@ public class GameLobby : MonoBehaviour
     public Button joinButton;
     public Text roomCode;
     public InputField inputField;
+    public GameObject waitingPlayer;
 
     private void Awake()
     {
@@ -51,7 +48,7 @@ public class GameLobby : MonoBehaviour
 
         joinButton.onClick.AddListener(JoinLobbyByCode);
 
-        playerName = "Hero" + UnityEngine.Random.Range(0, 100);
+        playerName = GameManager.Instance.Nickname;
     }
 
     void Update()
@@ -133,7 +130,40 @@ public class GameLobby : MonoBehaviour
         // 로비 생성 및 설정
         try
         {
-            string lobbyName = "GameLobby";
+            string lobbyName = "GameLobby" + UnityEngine.Random.Range(0, 100).ToString();
+            int maxPlayers = 2;
+
+            CreateLobbyOptions createLobbyOptions = new CreateLobbyOptions
+            {
+                IsPrivate = true,  // true로 변경 시 비공개 로비 생성 (입장코드를 통해서만 입장가능)
+                Player = GetPlayer(),
+                Data = new Dictionary<string, DataObject> {
+                    { KEY_START_GAME, new DataObject(DataObject.VisibilityOptions.Member, "0")}
+                }
+            };
+
+            Lobby lobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, maxPlayers, createLobbyOptions);
+
+            hostLobby = lobby;
+            joinedLobby = hostLobby;
+
+            roomCode.text = lobby.LobbyCode;
+
+            Debug.Log("Create Lobby! " + lobby.LobbyCode);
+        }
+
+        catch (LobbyServiceException e)
+        {
+            Debug.Log(e);
+        }
+    }
+
+    public async void CreateQuickLobby()
+    {
+        // 로비 생성 및 설정
+        try
+        {
+            string lobbyName = "GameLobby" + UnityEngine.Random.Range(0, 100).ToString();
             int maxPlayers = 2;
 
             CreateLobbyOptions createLobbyOptions = new CreateLobbyOptions
@@ -150,7 +180,7 @@ public class GameLobby : MonoBehaviour
             hostLobby = lobby;
             joinedLobby = hostLobby;
 
-            roomCode.text = lobby.LobbyCode;
+            waitingPlayer.SetActive(true);
 
             Debug.Log("Create Lobby! " + lobby.LobbyCode);
         }
@@ -177,7 +207,13 @@ public class GameLobby : MonoBehaviour
 
         catch (LobbyServiceException e)
         {
-            Debug.Log(e);
+            Debug.Log(e.ErrorCode);
+
+            if(e.ErrorCode == 16006)
+            {
+                // 참여 가능한 로비가 없다면 공개로비 생성
+                CreateQuickLobby();
+            }
         }
     }
 

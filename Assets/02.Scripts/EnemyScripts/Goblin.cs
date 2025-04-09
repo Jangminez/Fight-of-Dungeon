@@ -30,14 +30,14 @@ public class Goblin : Enemy, IDamgeable
             state = States.Idle;
         }
 
-        MaxHp = 1000f;
+        MaxHp = 1500f;
         Hp = MaxHp;
 
-        stat.attack = 300f;
+        stat.attack = 450f;
         stat.attackRange = 7f;
-        stat.attackSpeed = 0.7f;
+        stat.attackSpeed = 0.5f;
 
-        stat.defense = 100f;
+        stat.defense = 250f;
 
         stat.speed = 1.3f;
         stat.chaseRange = 10f;

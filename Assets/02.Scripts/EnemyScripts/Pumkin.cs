@@ -6,13 +6,11 @@ public class Pumkin : Enemy, IDamgeable
 {
     public GameObject _batPrefab;
     public GameObject _attackIndicator;
-    Transform _attackFill;
     public GameObject _attackEffect;
     bool _indiOn = false;
 
     public override void OnNetworkSpawn()
     {
-        _attackFill = _attackIndicator.transform.GetChild(0);
         stat.chaseRange = 6f;
 
         if(!IsServer) return;
@@ -41,16 +39,16 @@ public class Pumkin : Enemy, IDamgeable
         }
 
         //몬스터의 초기 스탯
-        MaxHp = 3500f;
+        MaxHp = 5000f;
         Hp = MaxHp;
 
-        stat.attack = 500f;
-        stat.attackRange = 4f;
-        stat.attackSpeed = 0.5f;
+        stat.attack = 1000f;
+        stat.attackRange = 3.5f;
+        stat.attackSpeed = 1.2f;
 
         stat.defense = 300f;
 
-        stat.speed = 1.3f;
+        stat.speed = 1.5f;
         stat.chaseRange = 6f;
 
         stat.exp = 2500f;
@@ -143,7 +141,6 @@ public class Pumkin : Enemy, IDamgeable
             {
                 SetDirection();
                 _indiOn = true;
-                _attackFill.localScale = Vector3.zero;
                 OnAttackIndicatorClientRpc();
             }
 
@@ -244,13 +241,12 @@ public class Pumkin : Enemy, IDamgeable
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         _attackIndicator.transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle - 90f));
 
-        // 인디케이터 게이지 채우기
+        // 공격까지 대기
         float elapsedTime = 0f;
         float duration = 1 / stat.attackSpeed;
 
         while (elapsedTime < duration)
         {
-            _attackFill.localScale = Vector3.Lerp(new Vector3(1f, 0f, 0f), new Vector3(1f, 1f, 0f), elapsedTime / duration);
             elapsedTime += Time.deltaTime;
 
             yield return null;
@@ -266,12 +262,11 @@ public class Pumkin : Enemy, IDamgeable
     {
         if(!IsServer) yield break;  
         
-        // 인디케이터가 모두 차징되면 공격 소환 
+        // 시간이 지나면 공격
         NetworkObject slash = NetworkObjectPool.Instance.GetNetworkObject(_attackEffect, transform.position, Quaternion.identity);
         
         slash.GetComponent<PumkinSlash>()._enemy = this;
         slash.GetComponent<PumkinSlash>().prefab = _attackEffect;
-        //slash.GetComponent<Animator>().SetTrigger("Slash");
         slash.transform.rotation = Quaternion.Euler(new Vector3(0,0, angle));
 
         if(!slash.IsSpawned)

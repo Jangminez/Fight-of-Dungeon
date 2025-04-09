@@ -8,19 +8,14 @@ public class PlayerSpawner : NetworkBehaviour
     private CameraFollow _cam;
     public bool isSpawn = false;
 
-    // void Awake()
-    // {
-    //     if(FindObjectOfType<PlayerSpawner>() != this)
-    //     {
-    //         Destroy(gameObject);
-    //         return;
-    //     }
-
-    //     DontDestroyOnLoad(this.gameObject);
-    // }
-
+    void Awake()
+    {
+        isSpawn = false;
+    }
+    
     public override void OnNetworkSpawn()
     {
+
         // 씬이 로드 되면 플레이어 오브젝트 생성
         NetworkManager.Singleton.SceneManager.OnLoadComplete += SpawnPlayerObject;
     }

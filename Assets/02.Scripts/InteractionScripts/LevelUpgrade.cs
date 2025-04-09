@@ -18,7 +18,7 @@ public class LevelUpgrade : MonoBehaviour
     [Serializable]
     public struct UpgradeInfo   // 업그레이드 정보 
     {
-        public enum upgradeType { Attack, AttackSpeed, Critical, MaxHp, HpRegen, Defense ,MaxMp, MpRegen };
+        public enum upgradeType { Attack, AttackSpeed, Critical, MaxHp, HpRegen, Defense, MaxMp, MpRegen };
         public upgradeType type;
         public float incValue;
         public int level;
@@ -92,15 +92,21 @@ public class LevelUpgrade : MonoBehaviour
     private void Upgrade()
     {
         UISoundManager.Instance.PlayClickSound();
-        
+
         // 레벨 포인트가 있다면 업그레이드 진행
-        if(_player.LvPoint > 0 && upgradeInfo.level < upgradeInfo.maxLevel){
+        if (_player.LvPoint > 0 && upgradeInfo.level < upgradeInfo.maxLevel)
+        {
             _player.LvPoint -= 1;
         }
 
-       else return;
+        else
+        {
+            UISoundManager.Instance.PlayCantBuySound();
+            return;
+        }
 
         _myValue += upgradeInfo.incValue;
+        upgradeInfo.level += 1;
 
         switch (upgradeInfo.type)
         {
@@ -139,33 +145,31 @@ public class LevelUpgrade : MonoBehaviour
                 SetUI(myUI.level, myUI.value, upgradeInfo.level, _myValue, upgradeInfo.incValue, "마나");
                 break;
 
-            case UpgradeInfo.upgradeType.MpRegen: 
+            case UpgradeInfo.upgradeType.MpRegen:
                 _player.MpRegen += upgradeInfo.incValue;
                 SetUI(myUI.level, myUI.value, upgradeInfo.level, _myValue, upgradeInfo.incValue, "마나 재생속도");
                 break;
         }
 
-        upgradeInfo.level += 1;
-
         // 레벨이 최대 레벨이라면 업그레이드 X
-        if(upgradeInfo.level >= upgradeInfo.maxLevel)
+        if (upgradeInfo.level >= upgradeInfo.maxLevel)
         {
             myUI.btn.interactable = false;
 
-            if(upgradeInfo.type == UpgradeInfo.upgradeType.Critical)
+            if (upgradeInfo.type == UpgradeInfo.upgradeType.Critical)
                 myUI.value.text = $"{Math.Round(_myValue, 2)}%";
 
-            else if(upgradeInfo.type == UpgradeInfo.upgradeType.HpRegen || upgradeInfo.type == UpgradeInfo.upgradeType.MpRegen)
+            else if (upgradeInfo.type == UpgradeInfo.upgradeType.HpRegen || upgradeInfo.type == UpgradeInfo.upgradeType.MpRegen)
                 myUI.value.text = $"초당 {Math.Round(_myValue, 2)}";
-            
+
             else
                 myUI.value.text = $"{Math.Round(_myValue, 2)}";
-                
+
             return;
         }
     }
 
-    private void SetUI(Text level, Text value, int Lv ,float initValue ,float increase, string name)
+    private void SetUI(Text level, Text value, int Lv, float initValue, float increase, string name)
     {
         //UI 세팅
         if (name == "크리티컬 확률")
@@ -175,7 +179,7 @@ public class LevelUpgrade : MonoBehaviour
             return;
         }
 
-        else if(name == "체력 재생속도" || name =="마나 재생속도")
+        else if (name == "체력 재생속도" || name == "마나 재생속도")
         {
             level.text = $"Lv{Lv + 1} {name}";
             value.text = $"초당 {Math.Round(initValue, 2)} -> {Math.Round(initValue + increase, 2)}";
@@ -186,16 +190,18 @@ public class LevelUpgrade : MonoBehaviour
         value.text = $"{Math.Round(initValue, 2)} -> {Math.Round(initValue + increase, 2)}";
     }
 
-    void ResetStat() 
+    void ResetStat()
     {
         UISoundManager.Instance.PlayClickSound();
 
         // 플레이어의 골드가 충분하면 초기화 진행
-        if(_player.Gold >= 3000 && upgradeInfo.type == UpgradeInfo.upgradeType.Attack) {
+        if (_player.Gold >= 3000 && upgradeInfo.type == UpgradeInfo.upgradeType.Attack)
+        {
             _player.Gold -= 3000;
         }
-        
-        else if(_player.Gold < 3000){
+
+        else if (_player.Gold < 3000)
+        {
             return;
         }
 
@@ -236,13 +242,14 @@ public class LevelUpgrade : MonoBehaviour
                 ResetUI(myUI.level, myUI.value, 0f, upgradeInfo.incValue, "마나");
                 break;
 
-            case UpgradeInfo.upgradeType.MpRegen: 
+            case UpgradeInfo.upgradeType.MpRegen:
                 _player.MpRegen -= _myValue;
                 ResetUI(myUI.level, myUI.value, 0f, upgradeInfo.incValue, "마나 재생속도");
                 break;
         }
 
-        if(upgradeInfo.level > 0){
+        if (upgradeInfo.level > 0)
+        {
             _player.LvPoint += upgradeInfo.level;
             _myValue = 0f;
             upgradeInfo.level = 0;
@@ -251,9 +258,9 @@ public class LevelUpgrade : MonoBehaviour
         myUI.btn.interactable = true;
     }
 
-    void ResetUI(Text level, Text value ,float initValue ,float increase, string name)
+    void ResetUI(Text level, Text value, float initValue, float increase, string name)
     {
-                //UI 세팅
+        //UI 세팅
         if (name == "크리티컬 확률")
         {
             level.text = $"Lv1 {name}";
@@ -261,9 +268,9 @@ public class LevelUpgrade : MonoBehaviour
             return;
         }
 
-        else if(name == "체력 재생속도" || name =="마나 재생속도")
+        else if (name == "체력 재생속도" || name == "마나 재생속도")
         {
-            level.text = $"Lv1 {name}";;
+            level.text = $"Lv1 {name}"; ;
             value.text = "초당 " + Math.Round(initValue, 2).ToString() + " -> " + Math.Round(initValue + increase, 2).ToString();
             return;
         }

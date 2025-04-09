@@ -4,6 +4,11 @@ using System.IO;
 using Newtonsoft.Json;
 using System;
 using System.Threading.Tasks;
+using GooglePlayGames.BasicApi.SavedGame;
+using GooglePlayGames;
+using GooglePlayGames.BasicApi;
+using System.Text;
+using WebSocketSharp;
 
 [Serializable]
 public class RelicData
@@ -23,6 +28,7 @@ public class PlayerData
     public int dia;
     public int winCount;
     public bool isChangeName;
+    public bool didTutorial;
     public Dictionary<int, RelicData> relicDict = new Dictionary<int, RelicData>();
 }
 
@@ -54,19 +60,31 @@ public class SaveSystem : MonoBehaviour
         else if (_instance != null)
             Destroy(gameObject);
 
-        filePath = Path.Combine(Application.persistentDataPath, "PlayerData.json");
+        filePath = Path.Combine(Application.persistentDataPath, "Player_Data.json");
         Debug.Log("데이터 저장경로 " + filePath);
 
         DontDestroyOnLoad(gameObject);
     }
 
+    public void SaveDataWithGPGS(PlayerData data, Action<bool> onComplete)
+    {
+        SavePlayerData(data);
+        SaveRelicData(data);
+
+        string json = JsonConvert.SerializeObject(data, Formatting.Indented);
+
+        GPGSManager.Instance.SaveGameData(json, (success) =>
+        {
+            onComplete?.Invoke(success);
+        });
+    }
     public void SaveData(PlayerData data)
     {
         SavePlayerData(data);
         SaveRelicData(data);
 
         string json = JsonConvert.SerializeObject(data, Formatting.Indented);
-        
+
         File.WriteAllText(filePath, json);
         Debug.Log("JSON 데이터 저장 완료 경로: " + filePath);
     }
@@ -88,6 +106,7 @@ public class SaveSystem : MonoBehaviour
         data.dia = GameManager.Instance.Dia;
         data.winCount = GameManager.Instance.WinCount;
         data.isChangeName = GameManager.Instance.IsChangeName;
+        data.didTutorial = GameManager.Instance.DidTutorial;
     }
 
     public void SaveRelicData(PlayerData data)
@@ -107,6 +126,24 @@ public class SaveSystem : MonoBehaviour
             data.relicDict[i].r_Level = relic.r_Level;
             data.relicDict[i].r_Count = relic.r_Count;
         }
+    }
+
+    public void LoadDataWithGPGS(Action<PlayerData> onComplete)
+    {
+        GPGSManager.Instance.LoadGameData((json) =>
+        {
+            if (!json.IsNullOrEmpty())
+            {
+                PlayerData data = JsonConvert.DeserializeObject<PlayerData>(json);
+                onComplete?.Invoke(data);
+            }
+
+            else
+            {
+                Debug.LogWarning("구글에 저장된 데이터 없음 불러오기 실패");
+                onComplete?.Invoke(null);
+            }
+        });
     }
 
     public PlayerData LoadData()
@@ -139,6 +176,7 @@ public class SaveSystem : MonoBehaviour
         newData.dia = 0;
         newData.winCount = 0;
         newData.isChangeName = false;
+        newData.didTutorial = false;
         newData.relicDict = new Dictionary<int, RelicData>();
 
         for (int i = 101; i <= 109; i++)

@@ -126,18 +126,24 @@ public class UpgradeAbility : MonoBehaviour
 
     private void Upgrade()
     {
-        UISoundManager.Instance.PlayClickSound();
+        
         
         // 골드가 충분하면 업그레이드 진행
         if (_player.Gold >= Int32.Parse(myUI.cost.text) && upgradeInfo.level < upgradeInfo.maxLevel)
         {
             _player.Gold -= Int32.Parse(myUI.cost.text);
+            UISoundManager.Instance.PlayClickSound();
         }
 
-        else return;
+        else 
+        {
+            UISoundManager.Instance.PlayCantBuySound();
+            return;
+        }
 
 
         _myValue += upgradeInfo.incValue;
+        upgradeInfo.level += 1;
         
         switch (upgradeInfo.type)
         {
@@ -181,8 +187,6 @@ public class UpgradeAbility : MonoBehaviour
                 SetUI(myUI.level, myUI.value, myUI.cost, upgradeInfo.level, _myValue, upgradeInfo.incValue, upgradeInfo.incCost, "마나 재생속도");
                 break;
         }
-
-        upgradeInfo.level += 1;
 
         if(upgradeInfo.level >= upgradeInfo.maxLevel)
         {
