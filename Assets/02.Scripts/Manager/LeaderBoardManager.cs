@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class LeaderBoardManager : MonoBehaviour
 {
-    private const string leaderboardId = "CgkIi5rtrNIQEAIQAQ";
+    private const string leaderboardId = "CgkI2teMsLASEAIQAQ";
     Button showButton;
 
     void Awake()

@@ -6,9 +6,8 @@ using UnityEngine.UI;
 
 public class CoinEffectManager : MonoBehaviour
 {
-    [SerializeField] private Sprite goldIcon;
-    [SerializeField] private Sprite diaIcon;
     [SerializeField] private GameObject PileofCoinParent;
+    [SerializeField] private GameObject PileofDiaParent;
     private Vector3[] InitialPos;
     private Quaternion[] InitialRotation;
     private Vector2 coinAnchorPos;
@@ -46,37 +45,48 @@ public class CoinEffectManager : MonoBehaviour
         ResetCoins();
 
         var delay = 0f;
-        Sprite coinSprite = null;
-
-        PileofCoinParent.SetActive(true);
 
         switch (coinType)
         {
             case 0:
-                coinSprite = goldIcon;
+                PileofCoinParent.SetActive(true);
+
                 coinAnchorPos = new Vector2(-200f, 1690f);
+
+                for (int i = 0; i < PileofCoinParent.transform.childCount; i++)
+                {
+                    PileofCoinParent.transform.GetChild(i).DOScale(1f, 0.3f).SetDelay(delay).SetEase(Ease.OutBack).OnStart(() => UISoundManager.Instance.PlayClickSound());
+
+                    PileofCoinParent.transform.GetChild(i).GetComponent<RectTransform>().DOAnchorPos(coinAnchorPos, 1f)
+                    .SetDelay(delay + 0.5f).SetEase(Ease.InBack);
+
+                    PileofCoinParent.transform.GetChild(i).DORotate(Vector3.zero, 0.5f).SetDelay(delay + 0.5f).SetEase(Ease.Flash);
+
+                    PileofCoinParent.transform.GetChild(i).DOScale(0f, 0.3f).SetDelay(delay + 1.5f).SetEase(Ease.OutBack);
+
+                    delay += 0.1f;
+                }
                 break;
 
             case 1:
-                coinSprite = diaIcon;
+                PileofDiaParent.SetActive(true);
+
                 coinAnchorPos = new Vector2(110f, 1690f);
+
+                for (int i = 0; i < PileofDiaParent.transform.childCount; i++)
+                {
+                    PileofDiaParent.transform.GetChild(i).DOScale(1f, 0.3f).SetDelay(delay).SetEase(Ease.OutBack).OnStart(() => UISoundManager.Instance.PlayClickSound());
+
+                    PileofDiaParent.transform.GetChild(i).GetComponent<RectTransform>().DOAnchorPos(coinAnchorPos, 1f)
+                    .SetDelay(delay + 0.5f).SetEase(Ease.InBack);
+
+                    PileofDiaParent.transform.GetChild(i).DORotate(Vector3.zero, 0.5f).SetDelay(delay + 0.5f).SetEase(Ease.Flash);
+
+                    PileofDiaParent.transform.GetChild(i).DOScale(0f, 0.3f).SetDelay(delay + 1.5f).SetEase(Ease.OutBack);
+
+                    delay += 0.1f;
+                }
                 break;
-        }
-
-        for (int i = 0; i < PileofCoinParent.transform.childCount; i++)
-        {
-            PileofCoinParent.transform.GetChild(i).GetComponent<Image>().sprite = coinSprite;
-
-            PileofCoinParent.transform.GetChild(i).DOScale(1f, 0.3f).SetDelay(delay).SetEase(Ease.OutBack).OnStart(()=> UISoundManager.Instance.PlayClickSound());
-
-            PileofCoinParent.transform.GetChild(i).GetComponent<RectTransform>().DOAnchorPos(coinAnchorPos, 1f)
-            .SetDelay(delay + 0.5f).SetEase(Ease.InBack);
-
-            PileofCoinParent.transform.GetChild(i).DORotate(Vector3.zero, 0.5f).SetDelay(delay + 0.5f).SetEase(Ease.Flash);
-
-            PileofCoinParent.transform.GetChild(i).DOScale(0f, 0.3f).SetDelay(delay + 1.5f).SetEase(Ease.OutBack);
-
-            delay += 0.1f;
         }
 
         StartCoroutine(SetCoin(pre_Coin, next_Coin, coinType));
@@ -117,7 +127,7 @@ public class CoinEffectManager : MonoBehaviour
         }
 
         UISoundManager.Instance.StopCoinIncreaseSound();
-        
+
         GameManager.Instance.SavePlayerData();
     }
 }

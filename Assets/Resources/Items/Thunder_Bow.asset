@@ -18,7 +18,7 @@ MonoBehaviour:
   statsList:
   - valuetype: 1
     caltype: 1
-    value: 70
+    value: 50
   - valuetype: 0
     caltype: 0
     value: 250
@@ -27,5 +27,7 @@ MonoBehaviour:
     value: 20
   itemDescription: "\uD55C \uBC1C \uD55C \uBC1C \uC3E0 \uB54C\uB9C8\uB2E4 \uBB35\uC9C1\uD55C\uAC83\uC774
     \uB300\uB2E8\uD55C \uB290\uB08C\uC774 \uB4E0\uB2E4."
-  itemCost: 130
-  needItem: []
+  itemCost: 13000
+  needItem:
+  - {fileID: 11400000, guid: 230fa1331c5864641b27a0183c4ffe76, type: 2}
+  - {fileID: 11400000, guid: 315bcfd4f54a7634bbd062bacd453d2e, type: 2}

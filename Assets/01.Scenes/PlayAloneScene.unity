@@ -13201,10 +13201,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   victoryUI: {fileID: 127889453}
   victoryGold: {fileID: 127889452}
+  victoryDia: {fileID: 1321459196}
   victoryExp: {fileID: 127889451}
   victoryBtn: {fileID: 127889450}
   loseUI: {fileID: 127889449}
   loseGold: {fileID: 127889448}
+  loseDia: {fileID: 1321459195}
   loseExp: {fileID: 127889447}
   loseBtn: {fileID: 127889446}
   playerLevel: 0
@@ -24962,6 +24964,8 @@ MonoBehaviour:
   _upgradeArrow: {fileID: 726800786}
   _shopArrow: {fileID: 1847224661}
   _slot1: {fileID: 560563291}
+  stepText: {fileID: 0}
+  stepContents: {fileID: 0}
   CheckItem:
     m_PersistentCalls:
       m_Calls:
@@ -74190,6 +74194,30 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1320155221}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1321459195 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9109924717976251034, guid: 4a83aae4f49d502439216af76053d953,
+    type: 3}
+  m_PrefabInstance: {fileID: 1439256907}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1321459196 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7549631082960961700, guid: 4a83aae4f49d502439216af76053d953,
+    type: 3}
+  m_PrefabInstance: {fileID: 1439256907}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1325358516
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -76057,6 +76085,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 572767081367238649, guid: 4a83aae4f49d502439216af76053d953,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -15
+      objectReference: {fileID: 0}
+    - target: {fileID: 878853481265977352, guid: 4a83aae4f49d502439216af76053d953,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 905008502931234388, guid: 4a83aae4f49d502439216af76053d953,
         type: 3}

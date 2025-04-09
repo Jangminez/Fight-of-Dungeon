@@ -167,6 +167,7 @@ public class GameManager : MonoBehaviour
     public string playerPrefabName;
     public Player player;
     public int rewardGold;
+    public int rewardDia;
     public float rewardExp;
 
     public SaveSystem saveSystem;
@@ -421,10 +422,10 @@ public class GameManager : MonoBehaviour
         LoadPlayerData();
         yield return new WaitForSeconds(1f);
         LoadingScreen.Instance.HideLoadingScreen();
-        GPGSManager.Instance.ShowInterstitialAd();
 
         // 게임 종료시 골드와 경험치 지급
         coinEffect.RewardPileOfCoin(Gold, Gold + rewardGold, 0);
+        coinEffect.RewardPileOfCoin(Dia, Dia + rewardDia, 1);
         Exp += rewardExp;
     }
 

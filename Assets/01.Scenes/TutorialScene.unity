@@ -13485,10 +13485,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   victoryUI: {fileID: 127889453}
   victoryGold: {fileID: 127889452}
+  victoryDia: {fileID: 579990602}
   victoryExp: {fileID: 127889451}
   victoryBtn: {fileID: 127889450}
   loseUI: {fileID: 127889449}
   loseGold: {fileID: 127889448}
+  loseDia: {fileID: 579990601}
   loseExp: {fileID: 127889447}
   loseBtn: {fileID: 127889446}
   playerLevel: 0
@@ -22872,6 +22874,30 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 565965117}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &579990601 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9109924717976251034, guid: 4a83aae4f49d502439216af76053d953,
+    type: 3}
+  m_PrefabInstance: {fileID: 1439256907}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &579990602 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7549631082960961700, guid: 4a83aae4f49d502439216af76053d953,
+    type: 3}
+  m_PrefabInstance: {fileID: 1439256907}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &583963288
 PrefabInstance:
   m_ObjectHideFlags: 0

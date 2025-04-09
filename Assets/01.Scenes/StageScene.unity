@@ -137,7 +137,7 @@ GameObject:
   - component: {fileID: 7704273}
   - component: {fileID: 7704272}
   - component: {fileID: 7704271}
-  m_Layer: 21
+  m_Layer: 7
   m_Name: Layer 2 - Wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7588,7 +7588,7 @@ GameObject:
   - component: {fileID: 245702147}
   - component: {fileID: 245702146}
   - component: {fileID: 245702145}
-  m_Layer: 22
+  m_Layer: 7
   m_Name: Layer 3 - Wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18704,6 +18704,30 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 472075650}
   m_CullTransparentMesh: 1
+--- !u!114 &472303271 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9109924717976251034, guid: 4a83aae4f49d502439216af76053d953,
+    type: 3}
+  m_PrefabInstance: {fileID: 4588061418629073281}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &472303272 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7549631082960961700, guid: 4a83aae4f49d502439216af76053d953,
+    type: 3}
+  m_PrefabInstance: {fileID: 4588061418629073281}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &474005268
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -30618,7 +30642,7 @@ GameObject:
   - component: {fileID: 619971348}
   - component: {fileID: 619971350}
   - component: {fileID: 619971349}
-  m_Layer: 21
+  m_Layer: 7
   m_Name: Layer 2 - Wall Shadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -37862,7 +37886,7 @@ GameObject:
   - component: {fileID: 1110730102}
   - component: {fileID: 1110730101}
   - component: {fileID: 1110730100}
-  m_Layer: 20
+  m_Layer: 7
   m_Name: Layer 1 - Wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -69485,10 +69509,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   victoryUI: {fileID: 1300990413}
   victoryGold: {fileID: 1300990412}
+  victoryDia: {fileID: 472303272}
   victoryExp: {fileID: 1300990411}
   victoryBtn: {fileID: 994825139}
   loseUI: {fileID: 1300990410}
   loseGold: {fileID: 1300990409}
+  loseDia: {fileID: 472303271}
   loseExp: {fileID: 1300990408}
   loseBtn: {fileID: 994825138}
   playerLevel: 0

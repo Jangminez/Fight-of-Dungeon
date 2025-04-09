@@ -23,17 +23,17 @@ public class Bat : Enemy, IDamgeable
         if (!stat.isDie)
             _initTransform = this.transform.position;
 
-        MaxHp = 800f;
+        MaxHp = 4000f;
         Hp = MaxHp;
 
-        stat.attack = 300f;
+        stat.attack = 500f;
         stat.attackRange = 2f;
         stat.attackSpeed = 2f;
 
         stat.defense = 100f;
 
-        stat.chaseRange = 5f;
-        stat.speed = 2f;
+        stat.chaseRange = 6f;
+        stat.speed = 2.5f;
 
         stat.exp = 1200f;
         stat.gold = 1000;
