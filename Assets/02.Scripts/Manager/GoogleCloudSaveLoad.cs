@@ -58,6 +58,8 @@ public class GoogleCloudSaveLoad : MonoBehaviour
                 .OnComplete(() =>
                 DOVirtual.DelayedCall(1f, () => successInfo.DOFade(0f, 1f).SetEase(Ease.InOutSine)));
 
+                GameManager.Instance.LoadPlayerDataWithGPGS(data);
+
                 Debug.Log("데이터 불러오기 성공!!!!!!");
             }
 

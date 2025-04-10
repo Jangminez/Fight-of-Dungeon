@@ -219,7 +219,21 @@ public class GameManager : MonoBehaviour
             ApplyPlayerData();
             ApplyRelicData();
         }
+        else
+        {
+            return;
+        }
+    }
 
+    public void LoadPlayerDataWithGPGS(PlayerData data)
+    {
+        playerData = data;
+
+        if (playerData != null)
+        {
+            ApplyPlayerData();
+            ApplyRelicData();
+        }
         else
         {
             return;
