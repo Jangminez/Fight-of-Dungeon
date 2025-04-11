@@ -584,7 +584,7 @@ public abstract class Player : NetworkBehaviour, IDamgeable
             }
         }
 
-        yield return new WaitForSeconds(1);
+        yield return WaitForSecondsCache.Wait(1);
 
         StartCoroutine("Regen");
     }
