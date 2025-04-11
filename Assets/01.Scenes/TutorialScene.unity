@@ -15508,7 +15508,7 @@ MonoBehaviour:
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1080, y: 2400}
-  m_ScreenMatchMode: 2
+  m_ScreenMatchMode: 1
   m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
@@ -39278,9 +39278,9 @@ RectTransform:
   - {fileID: 355525432}
   m_Father: {fileID: 513463563}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 250, y: -341}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -290, y: 859}
   m_SizeDelta: {x: 500, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1204061787
@@ -77725,27 +77725,27 @@ PrefabInstance:
     - target: {fileID: 6663000414941422253, guid: 4a83aae4f49d502439216af76053d953,
         type: 3}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 6663000414941422253, guid: 4a83aae4f49d502439216af76053d953,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 6663000414941422253, guid: 4a83aae4f49d502439216af76053d953,
         type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 6663000414941422253, guid: 4a83aae4f49d502439216af76053d953,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 6663000414941422253, guid: 4a83aae4f49d502439216af76053d953,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: -980
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 6663000414941422253, guid: 4a83aae4f49d502439216af76053d953,
         type: 3}
@@ -77755,7 +77755,7 @@ PrefabInstance:
     - target: {fileID: 6663000414941422253, guid: 4a83aae4f49d502439216af76053d953,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -161
+      value: 1039
       objectReference: {fileID: 0}
     - target: {fileID: 6673560389638989622, guid: 4a83aae4f49d502439216af76053d953,
         type: 3}
@@ -77786,6 +77786,11 @@ PrefabInstance:
         type: 3}
       propertyPath: upgradeInfo.incValue
       value: 0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 7624688059791480636, guid: 4a83aae4f49d502439216af76053d953,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -1.3000488
       objectReference: {fileID: 0}
     - target: {fileID: 8124669531060598570, guid: 4a83aae4f49d502439216af76053d953,
         type: 3}

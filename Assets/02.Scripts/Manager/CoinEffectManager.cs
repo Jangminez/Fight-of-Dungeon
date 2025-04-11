@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using DG.Tweening;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class CoinEffectManager : MonoBehaviour
 {
@@ -10,7 +9,8 @@ public class CoinEffectManager : MonoBehaviour
     [SerializeField] private GameObject PileofDiaParent;
     private Vector3[] InitialPos;
     private Quaternion[] InitialRotation;
-    private Vector2 coinAnchorPos;
+    [SerializeField] private RectTransform goldAnchorPos;
+    [SerializeField] private RectTransform diaAnchorPos;
     void Start()
     {
         GameManager.Instance.coinEffect = this;
@@ -51,13 +51,11 @@ public class CoinEffectManager : MonoBehaviour
             case 0:
                 PileofCoinParent.SetActive(true);
 
-                coinAnchorPos = new Vector2(-200f, 1690f);
-
                 for (int i = 0; i < PileofCoinParent.transform.childCount; i++)
                 {
                     PileofCoinParent.transform.GetChild(i).DOScale(1f, 0.3f).SetDelay(delay).SetEase(Ease.OutBack).OnStart(() => UISoundManager.Instance.PlayClickSound());
 
-                    PileofCoinParent.transform.GetChild(i).GetComponent<RectTransform>().DOAnchorPos(coinAnchorPos, 1f)
+                    PileofCoinParent.transform.GetChild(i).GetComponent<RectTransform>().DOAnchorPos(goldAnchorPos.position, 1f)
                     .SetDelay(delay + 0.5f).SetEase(Ease.InBack);
 
                     PileofCoinParent.transform.GetChild(i).DORotate(Vector3.zero, 0.5f).SetDelay(delay + 0.5f).SetEase(Ease.Flash);
@@ -71,13 +69,11 @@ public class CoinEffectManager : MonoBehaviour
             case 1:
                 PileofDiaParent.SetActive(true);
 
-                coinAnchorPos = new Vector2(110f, 1690f);
-
                 for (int i = 0; i < PileofDiaParent.transform.childCount; i++)
                 {
                     PileofDiaParent.transform.GetChild(i).DOScale(1f, 0.3f).SetDelay(delay).SetEase(Ease.OutBack).OnStart(() => UISoundManager.Instance.PlayClickSound());
 
-                    PileofDiaParent.transform.GetChild(i).GetComponent<RectTransform>().DOAnchorPos(coinAnchorPos, 1f)
+                    PileofDiaParent.transform.GetChild(i).GetComponent<RectTransform>().DOAnchorPos(diaAnchorPos.position, 1f)
                     .SetDelay(delay + 0.5f).SetEase(Ease.InBack);
 
                     PileofDiaParent.transform.GetChild(i).DORotate(Vector3.zero, 0.5f).SetDelay(delay + 0.5f).SetEase(Ease.Flash);
