@@ -238,7 +238,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -105541197
   m_SortingLayer: 4
-  m_SortingOrder: 2
+  m_SortingOrder: 3
   m_Sprite: {fileID: 1417751240171363681, guid: be0f8f5011baba14c83d3ce9822f26d2,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -348,13 +348,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 0}
   audioController: {fileID: 0}
-  _initTransform: {x: 0, y: 0, z: 0}
-  state: 0
-  _target: {fileID: 0}
   FloatingDamagePrefab: {fileID: 7107079607422933807, guid: 21182ee54ba58c647ba5d2063400e63f,
     type: 3}
   FloatingGoldExpPrefab: {fileID: 7145864357256277105, guid: 9b61fc9b659b53a49a0c824b9f943c04,
     type: 3}
+  _initTransform: {x: 0, y: 0, z: 0}
+  state: 0
+  _target: {fileID: 0}
   stat:
     attack: 0
     attackSpeed: 0

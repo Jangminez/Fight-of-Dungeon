@@ -55,7 +55,7 @@ public class CoinEffectManager : MonoBehaviour
                 {
                     PileofCoinParent.transform.GetChild(i).DOScale(1f, 0.3f).SetDelay(delay).SetEase(Ease.OutBack).OnStart(() => UISoundManager.Instance.PlayClickSound());
 
-                    PileofCoinParent.transform.GetChild(i).GetComponent<RectTransform>().DOAnchorPos(goldAnchorPos.position, 1f)
+                    PileofCoinParent.transform.GetChild(i).GetComponent<RectTransform>().DOAnchorPos(goldAnchorPos.localPosition, 1f)
                     .SetDelay(delay + 0.5f).SetEase(Ease.InBack);
 
                     PileofCoinParent.transform.GetChild(i).DORotate(Vector3.zero, 0.5f).SetDelay(delay + 0.5f).SetEase(Ease.Flash);
@@ -73,7 +73,7 @@ public class CoinEffectManager : MonoBehaviour
                 {
                     PileofDiaParent.transform.GetChild(i).DOScale(1f, 0.3f).SetDelay(delay).SetEase(Ease.OutBack).OnStart(() => UISoundManager.Instance.PlayClickSound());
 
-                    PileofDiaParent.transform.GetChild(i).GetComponent<RectTransform>().DOAnchorPos(diaAnchorPos.position, 1f)
+                    PileofDiaParent.transform.GetChild(i).GetComponent<RectTransform>().DOAnchorPos(diaAnchorPos.localPosition, 1f)
                     .SetDelay(delay + 0.5f).SetEase(Ease.InBack);
 
                     PileofDiaParent.transform.GetChild(i).DORotate(Vector3.zero, 0.5f).SetDelay(delay + 0.5f).SetEase(Ease.Flash);

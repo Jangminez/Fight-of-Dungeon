@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class StageTimer : MonoBehaviour
 {
-    private const string leaderboardId = "CgkIi5rtrNIQEAIQAQ";
+    private const string leaderboardId = "CgkI2teMsLASEAIQAQ";
     public Text clearTimeUI; // 클리어 타임을 표시할 UI
     public Text countDownUI; // 제한 시간 표시할 UI
     public Slider timeSlider; // 제한 시간 슬라이더UI

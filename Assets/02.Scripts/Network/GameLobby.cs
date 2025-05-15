@@ -33,6 +33,11 @@ public class GameLobby : MonoBehaviour
 
     }
 
+    public void SetPlayerName(string name)
+    {
+        playerName = name;
+    }
+
     private async void Start()
     {
         // 코드 비동기 실행

@@ -402,11 +402,6 @@ public class GameManager : MonoBehaviour
         NetworkManager.Singleton.SceneManager.OnLoadComplete -= SetTutorialPlayer;
     }
 
-    public void ChangeCharacter(string name)
-    {
-        playerPrefabName = name;
-    }
-
     public void GameOver()
     {
         if(!DidTutorial)

@@ -798,7 +798,7 @@ SortingGroup:
   m_Enabled: 1
   m_SortingLayerID: -105541197
   m_SortingLayer: 4
-  m_SortingOrder: 5
+  m_SortingOrder: 3
   m_SortAtRoot: 0
 --- !u!95 &7212934507539183786
 Animator:
@@ -926,13 +926,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 0}
   audioController: {fileID: 0}
-  _initTransform: {x: 0, y: 0, z: 0}
-  state: 0
-  _target: {fileID: 0}
   FloatingDamagePrefab: {fileID: 7107079607422933807, guid: 21182ee54ba58c647ba5d2063400e63f,
     type: 3}
   FloatingGoldExpPrefab: {fileID: 7145864357256277105, guid: 9b61fc9b659b53a49a0c824b9f943c04,
     type: 3}
+  _initTransform: {x: 0, y: 0, z: 0}
+  state: 0
+  _target: {fileID: 0}
   stat:
     attack: 0
     attackSpeed: 0
@@ -1007,23 +1007,9 @@ MonoBehaviour:
     Layer: 0
     OriginatingState: 429643684
     DestinationState: 1526706326
-    TransitionDuration: 0.25
+    TransitionDuration: 0.25147423
     TriggerNameHash: 657687027
     TransitionIndex: 0
-  - IsCrossFadeExit: 0
-    Layer: 0
-    OriginatingState: 1324401630
-    DestinationState: 429643684
-    TransitionDuration: 0.089495234
-    TriggerNameHash: 20298039
-    TransitionIndex: 1
-  - IsCrossFadeExit: 0
-    Layer: 0
-    OriginatingState: 1324401630
-    DestinationState: 1654612129
-    TransitionDuration: 0.25
-    TriggerNameHash: 1654612129
-    TransitionIndex: 2
   - IsCrossFadeExit: 0
     Layer: 0
     OriginatingState: 1526706326
@@ -1033,18 +1019,11 @@ MonoBehaviour:
     TransitionIndex: 0
   - IsCrossFadeExit: 0
     Layer: 0
-    OriginatingState: 1526706326
-    DestinationState: 429643684
-    TransitionDuration: 0.047475863
-    TriggerNameHash: 20298039
+    OriginatingState: 1654612129
+    DestinationState: 1324401630
+    TransitionDuration: 0.1720311
+    TriggerNameHash: 1080829965
     TransitionIndex: 1
-  - IsCrossFadeExit: 0
-    Layer: 0
-    OriginatingState: 1526706326
-    DestinationState: 1654612129
-    TransitionDuration: 0.25
-    TriggerNameHash: 1654612129
-    TransitionIndex: 2
   m_Animator: {fileID: 7212934507539183786}
 --- !u!114 &3640631517288857173
 MonoBehaviour:

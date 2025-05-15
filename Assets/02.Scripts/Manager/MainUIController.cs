@@ -51,6 +51,8 @@ public class MainUIController : MonoBehaviour
 
         myMenu.subMenuPanel.gameObject.SetActive(false);
         myMenu.menuButton.onClick.AddListener(ToggleMenu);
+
+        SetNickName(GameManager.Instance.Nickname);
     }
 
     // 닉네임 변경시 UI 업데이트
